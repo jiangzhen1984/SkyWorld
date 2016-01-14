@@ -1,0 +1,318 @@
+Protocol Version: M1
+Protocol Version: M2 
+               Add PUSH API
+               Add username property in answer json protocol
+
+
+=======================================Register JSON Protocol =====================================
+Register
+
+{
+    "header": 
+    {
+         "action" : "register"
+    }, 
+    "body" :
+    {
+        "cellphone":"1381196123",
+        "username" : "138",
+        "pwd" : "a",
+        "confirm_pwd" : "a"
+    }
+}
+
+成功返回：  
+{
+    "ret":0,
+    "token":"95189457043652618",
+    "user":
+    {
+       "mail":"138",
+       "cellphone":"1381196123",
+       "type":0,
+       "username":"138"
+    }
+}
+
+解析失败返回：  {ret: -1}  
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+用户名或者手机号已经存在返回：  {ret: -101}  
+密码不匹配返回：  {ret: -102}  
+内部错误：  {ret: -103}  
+
+测试地址：
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data= { "header": {"action" : "register"}, "body" : {"cellphone":"1381196123", "username" : "138", "pwd" : "a", "confirm_pwd" : "a"}}
+
+
+
+=======================================Login JSON Protocol =====================================
+Login :
+
+{ 
+   "header":
+   {
+      "action" : "login"
+   },
+   "body" :
+   { 
+      "username" : "138",
+      "pwd" : "a"
+   }
+}
+
+成功返回： 
+{
+    "ret":0,
+    "token":"95189457043652618",
+    "user":
+    {
+       "mail":"138",
+       "cellphone":"1381196123",
+       "type":0,
+       "username":"138"
+    }
+}
+解析失败返回：  {ret: -1}  
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+用户或者密码错误返回：  {ret: -201}  
+
+测试地址:
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "login"}, "body" : { "username" : "138", "pwd" : "a"}}
+
+
+=======================================Logout JSON Protocol =====================================
+logout协议：
+
+{ 
+    "header":
+    {
+        "action" : "logout",
+        "token": "TOKEN-ID"
+    },
+    "body" :
+    {
+    }
+}
+
+返回结果：
+成功返回：  {ret: 0}  
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+token 格式不正确：  {ret: -4}  
+token 不合法：  {ret: -401}  
+测试地址:
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data= { "header": {"action" : "logout", "token": token}}
+
+
+
+=======================================Upgrade JSON Protocol =====================================
+Upgrade:
+
+{
+    "header":
+    {
+       "action" : "upgrade",
+       "token": "token"
+    },
+    "body":
+    {
+    }
+}
+
+
+成功返回：  
+{
+    "ret":0,
+    "token":"95189457043652618",  ---> This token is new token, different from prior
+    "user":
+    {
+       "mail":"138",
+       "cellphone":"1381196123",
+       "type":1,
+       "username":"138"
+    }
+}
+
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
+升级内部错误 :{ret : -501}
+不合法的用户TOKEN :{ret : -502}
+用户已经升级过了 :{ret : -503}
+测试地址:
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upgrade", "token": token},"body":{}}
+
+
+=======================================Question JSON Protocol =====================================
+Question:
+新问题：
+{
+     "header":
+     {
+        "action": "question",
+        "token":"95189486473904140"
+     },
+     "body":
+     {
+        "opt":1,
+        "question" :"aaa"
+     }
+}
+
+
+取消问题：
+{
+     "header":
+     {
+        "action": "question",
+        "token":"95189486473904140"
+     },
+     "body":
+     {
+        "opt":2,
+        "question_id" : question_id
+     }
+}
+
+
+结束问题：
+{
+     "header":
+     {
+        "action": "question",
+        "token":"95189486473904140"
+     },
+     "body":
+     {
+        "opt":3,
+        "question_id" : question_id
+     }
+}
+
+成功返回：  {"ret":0,"question_id":1}
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
+opt unsupported：  {ret: -301}  
+内部错误：  {ret: -302}  
+没有该问题：  {ret: -303}  --> 针对取消， 结束问题时会返回该值
+测试地址:
+http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI?data={"header": {"action": "question", "token":"95189486473904140"}, "body": { "opt":1, "question" :"aaa"}}
+
+
+=======================================Answer JSON Protocol =====================================
+Answer:
+
+{
+    "header":
+    {
+      "action": "answer",
+      "token":"95056787646578688"
+    },
+    "body":
+    {
+      "answer":"content",
+      "question_id" : quid
+    }
+}
+
+成功返回：  {"ret":0}
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
+No Such Question：  {ret: -601}  
+Not Servicer：  {ret: -602}  
+测试地址:
+http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI?data={"header": {"action": "answer", "token":"95056787646578688"}, "body": { "answer":"content", "question_id" : quid}}
+
+
+Push Connect API:
+121.42.207.185/SkyWorld/push
+=======================================Push New Question JSON Protocol =====================================
+New question  json:
+
+{
+    "header" :
+     {
+        "category":"question"
+     },
+    "body" :
+    {
+        "datetime" : 1452221529441,
+        "quest_id" : 0,
+        "asker" :
+        {
+            "id" : 2,
+            "username":"akser_mail",
+            "easemob" :
+                {
+                    "username":"138"
+                },
+            "cellphone":"138"
+        },
+        "quest":"Who am I?",
+        "opt": [0/1]  0: new Question  1: question was cancelled
+    }
+
+}
+
+
+=======================================Push New Answer JSON Protocol =====================================
+New Answer json:
+
+{
+    "header":
+    {
+        "category":"answer"
+    },
+    "body":
+    {
+        "ans":
+         {
+            "answer":"U r test case"
+        },
+        "syservicer":
+        {
+            "id":2,
+            "easemob":
+            {
+                "username":"138"
+            },
+            "cellphone":"138",
+            "username":"syservicer_mail"
+        },
+        "quest":
+        {
+            "quest_id":0,
+            "quest":"Who am I?"
+        }
+    }
+
+}
+
+
+=======================================Push Easemob Account Info JSON Protocol =====================================
+
+{
+    "header":
+    {
+        "category":"easemob"
+    }
+    "body":
+    {
+        "id":2,
+        "cellphone":"138",
+        "easemob_username":"138"
+    }
+
+}
+
+
