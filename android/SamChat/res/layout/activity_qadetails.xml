@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#FFFFFF">
+    
+    <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="10dp">
+    	<ImageView
+    	    android:id="@+id/back"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:contentDescription="@null"
+        	android:src="@drawable/back"/>
+    	
+    	<TextView
+             android:id="@+id/username"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="20dp"
+             android:textSize="20sp"/>
+
+	</LinearLayout>
+	
+    <View android:layout_height="2dp" 
+          android:background="#009ACD" 
+          android:layout_width="match_parent"
+          android:layout_marginTop="10dp">
+    </View>
+    
+    <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical" >
+    
+    	<ListView
+	 		android:id="@+id/qa_detail_list"
+	 		android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:divider="@null"
+			android:scrollbars="none">
+		</ListView>
+		
+    	<LinearLayout 
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+   		 	android:layout_marginTop="5dp"
+   		 	android:layout_marginLeft="10dp"
+   		 	android:layout_marginBottom="5dp"
+   		 	android:layout_marginRight="10dp"
+   		 	android:orientation="horizontal" >
+   		 	
+    	    <EditText
+            	android:id="@+id/answer_input"
+        		android:layout_width="0dp"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:layout_marginTop="5dp"
+        		android:layout_marginBottom="2dp"
+        		android:layout_marginLeft="3dp"
+				android:layout_gravity="center_vertical"
+        		android:textSize="18sp"
+        		android:singleLine="false"
+        		android:maxLines="4"
+        		android:hint="@null"
+        		android:background="@drawable/bg_answer_edit"/>
+    	    
+    	    <LinearLayout
+    	      	android:id="@+id/question_action_layout" 
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_marginLeft="5dp">
+    	    <TextView
+        	 android:id="@+id/question_action"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="5dp"
+   		 	 android:layout_marginLeft="5dp"
+   		 	 android:layout_marginBottom="5dp"
+   		 	 android:layout_marginRight="5dp"
+             android:textSize="15sp"
+             android:gravity="center"
+             android:layout_gravity="center"
+             android:text="@string/answer"
+             android:textStyle="bold"/>
+    	    </LinearLayout>   
+   		 	
+    	</LinearLayout>   
+	
+    </LinearLayout>
+
+</LinearLayout>

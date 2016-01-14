@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+        <ImageView
+            android:id="@+id/tab_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+            android:contentDescription="@null"/>
+         
+        <ImageView 
+            android:id="@+id/tab_redSmallPoint"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_alignParentTop="true"
+			android:layout_alignRight="@id/tab_imageview"
+    		android:src="@drawable/red_point"
+    		android:visibility="invisible"
+    		android:contentDescription="@null">
+        </ImageView>
+        
+        <TextView
+            android:id="@+id/tab_msgNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/tab_imageview"
+            android:layout_alignTop="@id/tab_imageview"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:visibility="invisible"
+            android:background="@drawable/txt_red"
+            android:gravity="center"/>
+ 
+         <!-- android:background="@drawable/tab_unread_bg" -->
+         
+    </RelativeLayout>  
+    
+   
+    <TextView
+        android:id="@+id/tab_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="10dp" />
+</LinearLayout>

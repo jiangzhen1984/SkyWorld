@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SamChat</string>
+    <string name="settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="sam_services">Sam-services</string>
+    <string name="sam_chats">Sam-chats</string>
+    <string name="sam_me">Me</string>
+    <string name="sam_public">Sam-public</string>
+    <string name="sam_contact">Sam-contact</string>
+    <string name="action_search">Search</string>
+    <string name="action_plus">Add</string>
+    <string name="action_album">Album</string>
+    <string name="action_collection">Favirate</string>
+    <string name="action_card">Bank Card</string>
+    <string name="action_feed">Feedback</string>
+    <string name="plus_group_chat">Grop Chat</string>
+    <string name="plus_add_friend">Add Friend</string>
+    <string name="plus_video_chat">Video Chat</string>
+    <string name="plus_scan">Scan</string>
+    <string name="plus_take_photo">Take Photo</string>
+    <string name="ask_question">Ask help from Sam &#8230;&#8230;&#8230; </string>
+    <string name="network_status_no">No Network!</string>
+    <string name="network_status_error">Network Error!</string>
+    <string name="sam_register">Sign Up</string>
+    <string name="sam_signin">Sign In</string>
+    <string name="weixin_signin">WeiXin Sign In</string>
+    <string name="username">Phone/Username</string>
+    <string name="password">Password</string>
+    <string name="signin">Sign in</string>
+    <string name="signup">Sign up</string>
+    <string name="forget_passwd">forget password ?</string>
+    <string name="cancel">Cancel</string>
+    <string name="phonenumber">phone number</string>
+    <string name="send_verify_code">send veriy code</string>
+    <string name="verify_code">verified code</string>
+    <string name="next_step">Next step</string>
+    <string name="agreement">has read and agree</string>
+    <string name="sam_protocol">sam user protocol</string>
+    <string name="sam_account">Account</string>
+    <string name="username_limit">3~15 username</string>
+    <string name="username_used">used</string>
+    <string name="password_limit">6~32 password</string>
+    <string name="password_safe">safe</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_ok">OK</string>
+    <string name="cc_illegal_title">Country Code Error</string>
+    <string name="cc_illegal_statement">Sorry, SamChat only support China and US now!</string>
+    <string name="ph_illegal_title">Phone Number Error</string>
+    <string name="ph_illegal_statement">Please input correct phone number!</string>
+    <string name="sign_up_now">Signing up now ......</string>
+    <string name="sign_in_now">Signing in now ......</string>
+    <string name="nw_illegal_title">Network Error</string>
+    <string name="sign_in_timeout_title">Sign in timeout</string>
+    <string name="sign_in_timeout_statement">Sign in timeout,please try again later</string>
+    <string name="sign_up_timeout_title">Sign up timeout</string>
+    <string name="sign_up_timeout_statement">Sign up timeout,please try again later</string>
+    <string name="exit_app_confirmation">Exit application if click again</string>
+    <string name="sign_in_failed_title">Sign in failed</string>
+    <string name="sign_in_failed_reason_unpd">username or passwd is wrong</string>
+    <string name="sign_in_failed_reason_others">sign in error!please try again later</string>
+
+    <string name="sign_up_failed_title">Sign up failed</string>
+    <string name="sign_up_failed_reason_unph">username or phone number has been existed!</string>
+    <string name="sign_up_failed_reason_others">sign up error!please try again later</string>
+    
+    
+    
+    <string name="samservice_search">search</string>
+    <string name="samservice_top_serach_txt">Top Search</string>
+    
+    <string name="samservice_answer">answer is on the way ......</string>
+    
+    <string name="reminder">Reminder</string>
+    <string name="cancel_reminder">Are you sure cancel the question?</string> 
+    
+    <string name="question_publish">Publish</string>
+    <string name="question_publish_now">Publish now ......</string>
+    <string name="question_publish_failed">Publish Failed</string>
+    <string name="question_cancel">Cancel</string>
+    <string name="question_cancel_now">Cancel now ......</string>
+    <string name="question_cancel_failed">Cancel Failed</string>
+       
+    <string name="question_action_error_statement">Make sure network connection worked</string>
+    <string name="question_action_server_error_statement">Server error, please try again later</string>
+    
+    <string name="exit_app">Close app</string>
+    <string name="logout">Logout account</string>
+    <string name="exitapp_reminder">if close app,message could not be received immediately.It will have impact to user experience.</string>
+    <string name="logout_reminder">Hisotry data will not be deleted although logout.The data could also be used if login next time.</string>
+    
+    <string name="upgrade">upgrade to servicer</string>
+    <string name="sam_gbdy">Sam, Come on!</string>
+	<string name="process">Waiting ......</string>
+    <string name="upgrade_reminder">Servicer could received the question from end user.Excellent servicer could get bonus.</string>
+    <string name="upgrade_already">You are servicer already, do not need to apply again</string>
+    
+	<string name="upgrade_failed_title">apply failed</string>
+    <string name="upgrade_succeed_title">apply succeed</string>
+    <string name="upgrade_failed_statement">apply failed，Please try again later.</string>
+    <string name="upgrade_succeed_statement">Congratulation。You have been succeessfully to be our servicer, we appreacitate your contribution</string>
+    
+    
+    <string name="sam_question_and_answer">Sam QA</string>
+    <string name="answer">answer</string>
+    
+     <string name="temp_talk">talk temporally</string>
+     <string name="add_friends">Add Friends</string>
+     
+     <string name="new_friends">New Friends</string>
+</resources>

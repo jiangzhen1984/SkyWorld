@@ -1,0 +1,189 @@
+package com.android.samchat;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.android.samservice.*;
+import com.android.samservice.info.*;
+
+public class QuestionAnswerDetailListAdapter extends BaseAdapter{
+	static private String TAG = "QuestionAnswerDetailListAdapter";
+	
+
+	private final int TYPE_QUESTION = 0;
+	private final int TYPE_ANSWER = 1;
+	
+	private final int TYPE_MAX = TYPE_ANSWER + 1;
+
+
+	private Context mContext;
+	private LayoutInflater mInflater;
+	private int mCount = 20;
+
+	private ContactUser user;
+	private ReceivedQuestion receivedQuest;
+	private ArrayList<SendAnswer> sendAnswerArray;
+
+	public void setContactUser(ContactUser user){
+		this.user = user;
+	}
+
+	public void setReceivedQuestion(ReceivedQuestion receivedQuest){
+		this.receivedQuest = receivedQuest;
+	}
+
+	public ReceivedQuestion getReceivedQuestion(){
+		return this.receivedQuest;
+	}
+
+	public void setSendAnswerArray(ArrayList<SendAnswer> sendAnswerArray){
+		this.sendAnswerArray = sendAnswerArray;
+	}
+
+	public ArrayList<SendAnswer> getSendAnswerArray(){
+		return this.sendAnswerArray;
+	}
+
+	public QuestionAnswerDetailListAdapter(Context context){
+		this.mContext = context;
+		this.mInflater = LayoutInflater.from(mContext);
+	}
+	
+	public void setCount(int count){
+		mCount = count;
+	}
+	
+	@Override
+	public int getCount(){
+		return mCount;
+	}
+	
+	@Override
+	public int getViewTypeCount(){
+		return TYPE_MAX;
+	}
+	
+	@Override
+	public int getItemViewType(int position){
+		return position==0?TYPE_QUESTION:TYPE_ANSWER;
+	}
+	
+	@Override
+	public View getView(int position,View convertView, ViewGroup parent){
+		int viewType = getItemViewType(position);
+		ViewHolder holder;
+		
+		if(convertView == null){
+			holder = new ViewHolder();
+			if(viewType == TYPE_QUESTION){
+				convertView = mInflater.inflate(R.layout.question_detail_list_item,parent,false);
+				holder.date = (TextView) convertView.findViewById(R.id.date);
+				holder.userimage = (ImageView)convertView.findViewById(R.id.userimage);
+				holder.username = (TextView)convertView.findViewById(R.id.username);
+				holder.question = (TextView)convertView.findViewById(R.id.question);
+			}else if(viewType == TYPE_ANSWER){
+				convertView = mInflater.inflate(R.layout.answer_detail_list_item_right,parent,false);
+				holder.date = (TextView) convertView.findViewById(R.id.date);
+				holder.userimage =  (ImageView)convertView.findViewById(R.id.userimage);
+				holder.username = (TextView)convertView.findViewById(R.id.username);
+				holder.answer =  (TextView)convertView.findViewById(R.id.answershow);
+				holder.processimage = (ImageView)convertView.findViewById(R.id.sendprocessbar);
+				holder.myname = SamService.getInstance().get_current_user().getusername();
+			}
+			
+			convertView.setTag(holder);
+		}else{
+			holder = (ViewHolder)convertView.getTag();
+		}
+		
+		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss");
+		Date curDate;
+		
+		switch(viewType){
+			case TYPE_QUESTION:
+				ReceivedQuestion question = receivedQuest;
+				long time = question.receivedtime;//System.currentTimeMillis();
+				SamLog.e(TAG,"time:"+time);
+				curDate = new Date(time);   
+				String strRecvTime = formatter.format(curDate); 
+				holder.date.setText(strRecvTime);
+				holder.userimage.setImageResource(R.drawable.samqa);
+				holder.question.setText(question.question);
+				holder.username.setText(user.get_username());
+			
+				break;
+			case TYPE_ANSWER:
+				SendAnswer answer = sendAnswerArray.get(position-1);
+				curDate = new Date(answer.sendtime);   
+				String strSendTime = formatter.format(curDate);
+				holder.date.setText(strSendTime);
+				holder.userimage.setImageResource(R.drawable.samqa);
+				holder.answer.setText(answer.answer);
+				holder.username.setText(holder.myname);
+
+				int status = answer.getstatus();
+				if(status ==SendAnswer.SEND_ING){
+					Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.sendaprocess); 
+					LinearInterpolator lin = new LinearInterpolator(); 
+					operatingAnim.setInterpolator(lin);
+ 					holder.processimage.startAnimation(operatingAnim); 
+				}else if(status == SendAnswer.SEND_FAILED){
+					holder.processimage.clearAnimation(); 
+					holder.processimage.setImageResource(R.drawable.failed);
+				}else if(status == SendAnswer.SEND_SUCCEED){
+					holder.processimage.clearAnimation(); 
+					holder.processimage.setVisibility(View.INVISIBLE);
+				}else{
+					SamLog.e(TAG,"Send Answer status: send_others,shoudl never run here");
+					holder.processimage.clearAnimation(); 
+					holder.processimage.setVisibility(View.INVISIBLE);
+				}
+			
+				break;
+			}
+
+		return convertView;
+			
+	}
+		
+		
+	
+	@Override
+	public long getItemId(int position){
+		return position;
+	}
+	
+	@Override
+	public String getItem(int position){
+		return null;
+	}
+	
+	
+	public static class ViewHolder{
+		public TextView date;
+		public ImageView userimage;
+		public TextView username;
+		public TextView question;
+		public TextView answer;
+		public ImageView processimage;
+		public String myname;
+		
+	}
+	
+	
+	
+}
+

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout 
+        android:id="@+id/sign_in_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+	    android:background="#FFFFFF"
+	    android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/weixin_sign_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+		    android:layout_weight="0.25"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:clickable="true">
+        <ImageView
+            android:id="@+id/weixin_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal ="true"
+            android:contentDescription="@null"
+            android:src="@drawable/weixin_icon"/>
+        <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_below="@id/weixin_icon"
+             android:layout_centerHorizontal ="true"
+             android:textSize="12sp"
+             android:text="@string/weixin_signin"/>
+        </RelativeLayout>
+            
+        <TextView
+             android:layout_width="0dp"
+             android:layout_height="match_parent"
+             android:layout_weight="0.5"
+             android:textSize="25sp"
+             android:gravity="center"
+             android:text="@string/sam_signin"/>
+        
+       
+        <RelativeLayout
+            android:id="@+id/signup_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:clickable="true">
+        <ImageView
+            android:id="@+id/signup_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal ="true"
+            android:contentDescription="@null"
+            android:src="@drawable/signup_icon"/>
+        <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_below="@id/signup_icon"
+             android:layout_centerHorizontal ="true"
+             android:textSize="12sp"
+             android:text="@string/signup"/>
+        </RelativeLayout>
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:id="@+id/sign_in_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/sam_input_border" >
+        <EditText
+            android:id="@+id/username"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="5dp"
+        	android:layout_marginLeft="5dp"
+        	android:hint="@string/username"
+        	android:textSize="20sp"
+        	android:singleLine="true"
+        	android:maxLines="1"
+        	android:background="@null"/>
+        
+        <View android:layout_height="2dp"
+            android:layout_marginTop="5dp" 
+            android:background="#999999" 
+            android:layout_width="match_parent">
+    	</View>
+    	
+        <EditText
+            android:id="@+id/password"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="5dp"
+        	android:layout_marginTop="5dp"
+        	android:layout_marginBottom="5dp"
+        	android:inputType="textPassword"
+        	android:hint="@string/password"
+        	android:textSize="20sp"
+        	android:singleLine="true"
+        	android:maxLines="1"
+        	android:background="@null"/>
+    </LinearLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        
+        <LinearLayout 
+        android:id="@+id/layout_signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#BFBFBF">
+        	<Button
+          		android:id="@+id/button_signin"
+          		android:layout_width="match_parent"
+          		android:layout_height="wrap_content"
+          		android:layout_marginTop="8dp"
+        		android:layout_marginBottom="8dp"
+          		android:text="@string/signin"
+          		android:background="#BFBFBF"
+                android:textColor="#999999"
+          		android:textSize="20sp"> 
+        	</Button>
+        </LinearLayout>
+        
+        <LinearLayout 
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="vertical"
+        	android:layout_below="@id/layout_signin"
+        	android:layout_marginTop="10dp">
+        	<TextView
+        	    android:id="@+id/forget_pwd"
+             	android:layout_width="wrap_content"
+             	android:layout_height="wrap_content"
+             	android:textSize="15sp"
+             	android:gravity="right"
+             	android:layout_gravity="right"
+             	android:text="@string/forget_passwd"
+             	android:textColor="@drawable/forget_passwd_click"
+             	android:clickable="true"
+             	/>
+        </LinearLayout>
+        
+    </RelativeLayout>
+    
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@null"
+            android:src="@drawable/samlauncherui"
+            android:scaleType="fitXY"/>
+    
+</LinearLayout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#BFBFBF">
+
+    <LinearLayout
+        android:id="@+id/setting_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:orientation="horizontal"
+    	android:background="#FFFFFF">
+    	
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/setting"/>
+        <TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_gravity="center_vertical"
+			android:textSize="15sp"
+			android:text="@string/settings"/>
+	</LinearLayout>
+	
+    <LinearLayout
+        android:id="@+id/upgrade_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:orientation="horizontal"
+    	android:background="#FFFFFF">
+    	
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/setting"/>
+        <TextView
+            android:id="@+id/upgrade_spec"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_gravity="center_vertical"
+			android:textSize="15sp"
+			android:text="@string/upgrade"/>
+	</LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/logout_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:orientation="horizontal"
+    	android:background="#FFFFFF">
+    	
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/setting"/>
+        <TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_gravity="center_vertical"
+			android:textSize="15sp"
+			android:text="@string/logout"/>
+	</LinearLayout>
+	
+    
+	
+    <LinearLayout
+        android:id="@+id/exitapp_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="2dp"
+    	android:orientation="horizontal"
+    	android:background="#FFFFFF">
+    	
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/setting"/>
+        <TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_gravity="center_vertical"
+			android:textSize="15sp"
+			android:text="@string/exit_app"/>
+	</LinearLayout>
+
+
+	
+</LinearLayout>
