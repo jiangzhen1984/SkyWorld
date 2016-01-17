@@ -16,3 +16,9 @@ hs_err_pid*
 .settings
 
 server/target
+
+android/EaseUI/bin
+android/EaseUI/gen
+
+android/SamChat/bin
+android/SamChat/gen
