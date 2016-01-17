@@ -54,6 +54,7 @@ public class ServiceFactory {
 			((APIChainService)mApiService).addActionMapping("answer", new APIAnswerService());
 			((APIChainService)mApiService).addActionMapping("logout", new APILogoutService());
 			((APIChainService)mApiService).addActionMapping("query", new APIQueryService());
+			((APIChainService)mApiService).addActionMapping("update-avatar", new APIUpdateAvatarService());
 		}
 		
 		return mApiService;

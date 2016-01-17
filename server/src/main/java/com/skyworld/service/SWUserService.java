@@ -10,6 +10,7 @@ import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.dsf.UserType;
 import com.skyworld.service.po.SWPUser;
+import com.skyworld.service.po.SWPUserAvatar;
 
 
 public class SWUserService extends BaseService {
@@ -25,6 +26,7 @@ public class SWUserService extends BaseService {
 		User user = null;
 		if (list.size() > 0) {
 			user = new User((SWPUser)list.get(0));
+			user.setAvatar(queryAvatar(user, session));
 		}
 		session.close();
 		return user;
@@ -58,11 +60,38 @@ public class SWUserService extends BaseService {
 		esu.setName(user.getName());
 		esu.setPassword(user.getPassword());
 		esu.setuType(user.getUserType().ordinal());
+	
+		
+		if (user.getAvatar() != null) {
+			SWPUserAvatar swp = new SWPUserAvatar();
+			swp.setUser(esu);
+			swp.setOriginPath(user.getAvatarPath());
+			session.save(swp);
+			esu.setAvatar(swp);
+			user.getAvatar().setId(esu.getId());
+		}
+		
 		session.save(esu);
 		user.setId(esu.getId());
 		t.commit();
 		session.close();
 		return 0;
+	}
+	
+	
+	public SWPUserAvatar queryAvatar(User user, Session sess) {
+		Session session = null;
+		if (sess == null) {
+			session = openSession();
+		} else {
+			session = sess;
+		}
+		SWPUserAvatar av = (SWPUserAvatar)session.load(SWPUserAvatar.class, user.getAvatarId());
+		SWPUserAvatar tmp = new SWPUserAvatar(av);
+		if (sess == null) {
+			session.close();
+		}
+		return tmp;
 	}
 	
 
@@ -83,6 +112,21 @@ public class SWUserService extends BaseService {
 		session.close();
 		
 		return true;
+	}
+	
+	
+	
+	public SWPUserAvatar updateUserAvatar(User user) {
+		Session session = openSession();
+		if (user.getAvatarId() > 0) {
+			SWPUserAvatar avatar  = (SWPUserAvatar)session.load(SWPUserAvatar.class, user.getAvatarId());
+			avatar.setOriginPath(user.getAvatarPath());
+			session.update(avatar);
+		} else {
+			session.save(user.getAvatar());
+		}
+		session.close();
+		return user.getAvatar();
 	}
 
 

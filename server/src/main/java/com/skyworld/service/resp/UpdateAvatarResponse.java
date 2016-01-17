@@ -6,20 +6,16 @@ import com.skyworld.cache.Token;
 import com.skyworld.service.APICode;
 import com.skyworld.service.dsf.User;
 
-public class RegisterResponse extends JSONBasicResponse {
+public class UpdateAvatarResponse extends JSONBasicResponse {
 	
 	private User user;
 	
-	private Token token;
-	
-
 	
 
 
-	public RegisterResponse(User user, Token token) {
+	public UpdateAvatarResponse(User user) {
 		super();
 		this.user = user;
-		this.token = token;
 	}
 
 
@@ -30,7 +26,6 @@ public class RegisterResponse extends JSONBasicResponse {
 	public JSONObject getResponseJSON() {
 		JSONObject resp = new JSONObject();
 		resp.put("ret", APICode.SUCCESS);
-		resp.put("token", token);
 		
 		JSONObject userResp = new JSONObject();
 		resp.put("user", userResp);
@@ -64,21 +59,6 @@ public class RegisterResponse extends JSONBasicResponse {
 		this.user = user;
 	}
 
-
-
-
-
-	public Token getToken() {
-		return token;
-	}
-
-
-
-
-
-	public void setToken(Token token) {
-		this.token = token;
-	}
 
 	
 	

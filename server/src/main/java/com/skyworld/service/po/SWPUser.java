@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -35,6 +36,11 @@ public class SWPUser {
 	@Column(name="U_TYPE", columnDefinition="NUMERIC(1)")
 	private int uType;
 
+	@Column(name="avatar_id", columnDefinition="NUMERIC(20)")
+	private long avatarId;
+	
+	@Transient
+	private SWPUserAvatar avatar;
 	
 	
 	public SWPUser() {
@@ -102,6 +108,25 @@ public class SWPUser {
 
 	public void setuType(int uType) {
 		this.uType = uType;
+	}
+
+	public SWPUserAvatar getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(SWPUserAvatar avatar) {
+		this.avatar = avatar;
+		if (this.avatar != null) {
+			this.avatarId = this.avatar.getId();
+		}
+	}
+
+	public long getAvatarId() {
+		return avatarId;
+	}
+
+	public void setAvatarId(long avatarId) {
+		this.avatarId = avatarId;
 	}
 	
 	

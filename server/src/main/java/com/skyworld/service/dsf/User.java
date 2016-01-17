@@ -7,6 +7,7 @@ import com.skyworld.cache.Token;
 import com.skyworld.push.ClientTerminal;
 import com.skyworld.push.event.SHPEvent;
 import com.skyworld.service.po.SWPUser;
+import com.skyworld.service.po.SWPUserAvatar;
 
 
 
@@ -33,6 +34,8 @@ public class User extends SWPUser {
 		this.setId(u.getId());
 		this.setMail(u.getMail());
 		this.setPassword(u.getPassword());
+		this.setAvatarId(u.getAvatarId());
+		this.setAvatar(u.getAvatar());
 		switch(u.getuType()) {
 		case 0:
 			this.userType = UserType.CUSTOMER;
@@ -53,6 +56,8 @@ public class User extends SWPUser {
 		this.setName(u.getName());
 		this.setId(u.getId());
 		this.setMail(u.getMail());
+		this.setAvatarId(u.getAvatarId());
+		this.setAvatar(u.getAvatar());
 		switch(u.getuType()) {
 		case 0:
 			this.userType = UserType.CUSTOMER;
@@ -91,6 +96,21 @@ public class User extends SWPUser {
 		this.userType = userType;
 	}
 	
+	public String getAvatarPath() {
+		if (this.getAvatar() == null) {
+			return null;
+		}
+		return this.getAvatar().getOriginPath();
+	}
+	
+	
+	public void setAvatarPath(String path) {
+		if (this.getAvatar() == null) {
+			this.setAvatar(new SWPUserAvatar());
+		}
+		this.getAvatar().setOriginPath(path);
+		this.getAvatar().setUser(this);
+	}
 	
 	
 	public synchronized void addPendingEvent(SHPEvent event) {
