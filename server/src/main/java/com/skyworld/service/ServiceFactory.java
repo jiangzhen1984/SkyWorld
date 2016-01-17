@@ -53,6 +53,7 @@ public class ServiceFactory {
 			((APIChainService)mApiService).addActionMapping("question", new APIInquireService());
 			((APIChainService)mApiService).addActionMapping("answer", new APIAnswerService());
 			((APIChainService)mApiService).addActionMapping("logout", new APILogoutService());
+			((APIChainService)mApiService).addActionMapping("query", new APIQueryService());
 		}
 		
 		return mApiService;

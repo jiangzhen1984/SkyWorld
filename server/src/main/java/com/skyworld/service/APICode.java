@@ -42,4 +42,8 @@ public class APICode {
 	
 	public static final int ANSWER_ERROR_NO_SUCH_QUESTION = -601;
 	public static final int ANSWER_ERROR_NOT_SERVICER = -602;
+	
+	
+	public static final int QUERY_ERROR_OPT_NOT_SUPPORT = -701;
+	public static final int QUERY_ERROR_NO_ELEMENTS = -702;
 }
