@@ -37,6 +37,7 @@
 
         <mapping class="com.skyworld.service.po.SWPUser" />
         <mapping class="com.skyworld.service.po.SWPQuestion" />
+        <mapping class="com.skyworld.service.po.SWPUserAvatar" />
     </session-factory>
 
 </hibernate-configuration>

@@ -123,13 +123,18 @@ public class SWUserService extends BaseService {
 	
 	public SWPUserAvatar updateUserAvatar(User user) {
 		Session session = openSession();
+		Transaction t = session.beginTransaction();
 		if (user.getAvatarId() > 0) {
 			SWPUserAvatar avatar  = (SWPUserAvatar)session.load(SWPUserAvatar.class, user.getAvatarId());
 			avatar.setOriginPath(user.getAvatarPath());
 			session.update(avatar);
 		} else {
 			session.save(user.getAvatar());
+			SWPUser u  = (SWPUser)session.load(SWPUser.class, user.getId());
+			u.setAvatarId(user.getAvatar().getId());
+			session.update(u);
 		}
+		t.commit();
 		session.close();
 		return user.getAvatar();
 	}

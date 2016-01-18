@@ -14,41 +14,53 @@
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
-    
-    <servlet>
-        <servlet-name>StartupServlet</servlet-name>
-        <servlet-class>com.skyworld.init.StartupServlet</servlet-class>
-        <load-on-startup>0</load-on-startup>
-    </servlet>
-    
-    
-     <servlet>
-        <servlet-name>SimplePushServlet</servlet-name>
-        <servlet-class>com.skyworld.push.SimplePushServlet</servlet-class>
-        
-    </servlet>
-    <servlet>
-        <servlet-name>UserAPI</servlet-name>
-        <servlet-class>com.skyworld.api.UserApi</servlet-class>
-    </servlet>
-    
-     <servlet>
-        <servlet-name>QuestionAPI</servlet-name>
-        <servlet-class>com.skyworld.api.QuestionApi</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>UserAPI</servlet-name>
-        <url-pattern>/api/1.0/UserAPI</url-pattern>
-    </servlet-mapping>
-    
-     <servlet-mapping>
-        <servlet-name>QuestionAPI</servlet-name>
-        <url-pattern>/api/1.0/QuestionAPI</url-pattern>
-    </servlet-mapping>
-    
-      <servlet-mapping>
-        <servlet-name>SimplePushServlet</servlet-name>
-        <url-pattern>/push</url-pattern>
-    </servlet-mapping>
+
+	<servlet>
+		<servlet-name>StartupServlet</servlet-name>
+		<servlet-class>com.skyworld.init.StartupServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+
+	<servlet>
+		<servlet-name>SimplePushServlet</servlet-name>
+		<servlet-class>com.skyworld.push.SimplePushServlet</servlet-class>
+
+	</servlet>
+	<servlet>
+		<servlet-name>UserAPI</servlet-name>
+		<servlet-class>com.skyworld.api.UserApi</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>QuestionAPI</servlet-name>
+		<servlet-class>com.skyworld.api.QuestionApi</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>UserAvatarAPI</servlet-name>
+		<servlet-class>com.skyworld.api.UserAvatarApi</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>UserAPI</servlet-name>
+		<url-pattern>/api/1.0/UserAPI</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>QuestionAPI</servlet-name>
+		<url-pattern>/api/1.0/QuestionAPI</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>UserAvatarAPI</servlet-name>
+		<url-pattern>/api/1.0/UserAvatarAPI</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>SimplePushServlet</servlet-name>
+		<url-pattern>/push</url-pattern>
+	</servlet-mapping>
+
+
 </web-app>

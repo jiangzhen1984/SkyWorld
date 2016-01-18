@@ -4,13 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -45,12 +43,7 @@ public abstract class APIBasicJsonApiService implements APIService {
 			writeResponse(new RTCodeResponse(APICode.ACTION_NOT_SUPPORT), req, resp);
 			return;
 		}
-
-		try {
-			root.put("parts", req.getParts());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	
 		writeResponse(hanldeService.service(root), req, resp);
 	}
 	
