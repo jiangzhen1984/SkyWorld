@@ -86,8 +86,13 @@ public class SWUserService extends BaseService {
 		} else {
 			session = sess;
 		}
-		SWPUserAvatar av = (SWPUserAvatar)session.load(SWPUserAvatar.class, user.getAvatarId());
-		SWPUserAvatar tmp = new SWPUserAvatar(av);
+		SWPUserAvatar tmp = null;
+		if (user.getAvatarId() >0) {
+			SWPUserAvatar av = (SWPUserAvatar)session.get(SWPUserAvatar.class, user.getAvatarId());
+			if (av != null) {
+				tmp = new SWPUserAvatar(av);
+			}
+		}
 		if (sess == null) {
 			session.close();
 		}

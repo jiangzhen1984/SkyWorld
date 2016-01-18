@@ -165,6 +165,7 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upg
     }
 }
 
+成功返回: {"ret":0,"users":[{"mail":"138","username":"138","cellphone":"1381196123","type":0}]}
 解析失败返回：  {ret: -1}
 action参数不支持返回：  {ret: -2}  
 参数不满足返回：  {ret: -3}  
@@ -172,6 +173,10 @@ token 格式不正确：  {ret: -4}
 token不存在：  {ret: -5}  
 opt不支持 :{ret : -701}  
 Not Found Any data :{ret : -702}  
+
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": token},"body":{"opt" : 1, "param" : { "username" : "138"}}}
+
+
 
 =======================================Question JSON Protocol =====================================
 Question:
