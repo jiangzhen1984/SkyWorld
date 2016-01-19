@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<!-- <properties> <maven.test.skip>true</maven.test.skip> </properties> -->
+	<!--properties> <maven.test.skip>true</maven.test.skip> </properties-->
 	<repositories>
 		<repository>
 			<id>mvnrepository</id>
@@ -91,6 +91,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
+                        <scope>test</scope>
 		</dependency>
 
 
@@ -98,7 +99,18 @@
 
 	<build>
 		<finalName>${project.name}</finalName>
-		<sourceDirectory>${basedir}/src</sourceDirectory>
+		<sourceDirectory>src/main/java </sourceDirectory>  
+    		<testSourceDirectory>src/test/java</testSourceDirectory>  
+    		<resources>  
+        		<resource>  
+            			<directory>src/main/resources</directory>  
+        		</resource>  
+    		</resources>  
+    		<testResources>  
+        		<testResource>  
+            			<directory>src/main/resources</directory>  
+        		</testResource>  
+    		</testResources>  
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -109,6 +121,7 @@
 					<target>7</target>
 					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
+   					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 			<plugin>
