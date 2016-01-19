@@ -301,6 +301,7 @@ token 格式不正确：  {ret: -4}
 token不存在：  {ret: -5}  
 上传失败：  {ret: -801}  
 type not support：  {ret: -802}  
+头像size过大：  {ret: -803}  
 测试地址:
 http://121.42.207.185/SkyWorld/test.html
 

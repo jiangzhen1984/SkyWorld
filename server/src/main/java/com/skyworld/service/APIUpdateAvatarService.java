@@ -19,6 +19,7 @@ import org.json.JSONTokener;
 
 import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.TokenFactory;
+import com.skyworld.init.GlobalConstants;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
@@ -41,6 +42,8 @@ public class APIUpdateAvatarService implements APIService {
 			parts = (Collection<Part>)req.getParts();
 		} catch (Exception e) {
 			e.printStackTrace();
+			writeResponse(new RTCodeResponse(APICode.UPDATE_AVATAR_SIZE_EXCEED_MAX_LIMITION), req, resp);
+			return;
 		} 
 		if (parts == null || parts.size() <=0) {
 			writeResponse(new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED), req, resp);
@@ -92,7 +95,11 @@ public class APIUpdateAvatarService implements APIService {
 		case TYPE_ORIGIN:
 			InputStream in = null;
 			try {
-				in =  parts.iterator().next().getInputStream();
+				Part p =  parts.iterator().next();
+				if (p.getSize() > GlobalConstants.MAX_AVATAR_SIZE) {
+					return new RTCodeResponse(APICode.UPDATE_AVATAR_SIZE_EXCEED_MAX_LIMITION);
+				}
+				in = p.getInputStream();
 				return handleUpdateAvatarOrigin(user,  in);
 			} catch (IOException e) {
 				e.printStackTrace();

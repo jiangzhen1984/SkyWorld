@@ -50,4 +50,5 @@ public class APICode {
 	
 	public static final int UPDATE_AVATAR_ERROR = -801;
 	public static final int UPDATE_AVATAR_TYPE_NOT_SUPPORT = -802;
+	public static final int UPDATE_AVATAR_SIZE_EXCEED_MAX_LIMITION = -803;
 }
