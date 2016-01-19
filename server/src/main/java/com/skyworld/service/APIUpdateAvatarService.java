@@ -134,7 +134,8 @@ public class APIUpdateAvatarService implements APIService {
 		
 		String filename = "origin_"+System.currentTimeMillis()+".png";
 		OutputStream out = null;
-		File image = new File(imageDir.getAbsoluteFile()+filename);
+		File image = new File(imageDir.getAbsoluteFile()+"/" + filename);
+		log.info("write avatar to :"  +  image.getAbsolutePath());
 		byte[] buf = new byte[2048];
 		int n = -1;
 		try {

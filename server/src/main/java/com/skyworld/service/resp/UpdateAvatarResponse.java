@@ -3,6 +3,7 @@ package com.skyworld.service.resp;
 import org.json.JSONObject;
 
 import com.skyworld.cache.Token;
+import com.skyworld.init.GlobalConstants;
 import com.skyworld.service.APICode;
 import com.skyworld.service.dsf.User;
 
@@ -38,7 +39,7 @@ public class UpdateAvatarResponse extends JSONBasicResponse {
 		if (user.getAvatar() != null) {
 			JSONObject avatar = new JSONObject();
 			userResp.put("avatar", avatar);
-			avatar.put("origin", user.getAvatarPath());
+			avatar.put("origin",  GlobalConstants.AVATAR_HOST+user.getAvatarPath());
 		}
 		return resp;
 	}
