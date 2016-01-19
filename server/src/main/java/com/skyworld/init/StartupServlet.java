@@ -22,7 +22,10 @@ public class StartupServlet extends GenericServlet {
 	
 	@Override
 	public void destroy() {
-		super.destroy();
+		super.destroy(); 
+		log.info("============Start to close Session factory=======");
+		ServiceFactory.getESUserService().getSessionFactory().close();
+		log.info("============Close Session factory successfully=======");
 		log.info("============server destroyed=======");
 	}
 
