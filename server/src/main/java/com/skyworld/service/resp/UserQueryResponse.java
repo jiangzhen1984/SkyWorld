@@ -45,7 +45,7 @@ public class UserQueryResponse extends JSONBasicResponse {
 					avatar.put("origin",  GlobalConstants.AVATAR_HOST+u.getAvatarPath());
 				}
 				
-				
+				jsonUser.put("lastupdate", u.getLastUpdate());
 			}
 			resp.put("users", users);
 		}

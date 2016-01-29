@@ -39,6 +39,10 @@ public class SWPUser {
 	@Column(name="avatar_id", columnDefinition="NUMERIC(20)")
 	private long avatarId;
 	
+	
+	@Column(name="LAST_UPDATE", columnDefinition="NUMERIC(30)")
+	private long lastUpdate;
+	
 	@Transient
 	private SWPUserAvatar avatar;
 	
@@ -127,6 +131,14 @@ public class SWPUser {
 
 	public void setAvatarId(long avatarId) {
 		this.avatarId = avatarId;
+	}
+
+	public long getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(long lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 	
 	

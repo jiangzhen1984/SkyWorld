@@ -43,7 +43,7 @@ public class APIRegisterService extends APIBasicJsonApiService {
 		}
 		
 		
-		User user = ServiceFactory.getESUserService().selectUser(cellphone, uname);
+		User user = ServiceFactory.getESUserService().selectUser(cellphone, uname, false);
 		if (user != null) {
 			return new RTCodeResponse(APICode.REGISTER_ERROR_USER_EXIST);
 		} 

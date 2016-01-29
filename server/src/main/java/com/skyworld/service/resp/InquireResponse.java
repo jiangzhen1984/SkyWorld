@@ -2,7 +2,6 @@ package com.skyworld.service.resp;
 
 import org.json.JSONObject;
 
-import com.skyworld.cache.Token;
 import com.skyworld.service.APICode;
 import com.skyworld.service.dsf.Question;
 import com.skyworld.service.dsf.User;

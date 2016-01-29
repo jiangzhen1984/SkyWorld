@@ -46,6 +46,7 @@ public class RegisterResponse extends JSONBasicResponse {
 			userResp.put("avatar", avatar);
 			avatar.put("origin", GlobalConstants.AVATAR_HOST+user.getAvatarPath());
 		}
+		userResp.put("lastupdate", user.getLastUpdate());
 		return resp;
 	}
 

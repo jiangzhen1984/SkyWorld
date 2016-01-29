@@ -50,6 +50,7 @@ public class ClientTerminal  implements Serializable {
 		this.transformer = transformer;
 		lastUpdate = System.currentTimeMillis();
 		events = new LinkedBlockingDeque<SHPEvent>();
+		log.info("token :" + token+"  Event queue:" + events.toString());
 	}
 	
 	
@@ -105,18 +106,18 @@ public class ClientTerminal  implements Serializable {
 			ev = events.poll();
 			if (ev == null) {
 				try {
-					log.info("Wait1:  Thread:"+ Thread.currentThread());
-					events.wait();
-					log.info(events+ "Resume2:  Thread:"+ Thread.currentThread());
+					log.info("Wait:  Thread:"+ Thread.currentThread());
+					events.wait(60000);
+					log.info(" Resume:  Thread:"+ Thread.currentThread());
+					if (attacher != Thread.currentThread()) {
+						log.warn("attacher["+attacher+"] quit due to not match" + Thread.currentThread());
+						events.notifyAll();
+						return;
+					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				
-				if (attacher != Thread.currentThread()) {
-					log.warn("attacher quit due to not match" + Thread.currentThread());
-					events.notifyAll();
-					return;
-				}
 				ev = events.poll();
 			}
 		}
