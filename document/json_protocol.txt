@@ -8,6 +8,8 @@ Protocol Version: M4
                Add User avatar definition
                Add User List Query API
                Add timestamp for user update
+Protocol Version: M5
+               Add User Avatar information in question or answer message
 
 
 =======================================Register JSON Protocol =====================================
@@ -380,10 +382,15 @@ New question  json:
             "id" : 2,
             "username":"akser_mail",
             "easemob" :
-                {
+            {
                     "username":"138"
-                },
-            "cellphone":"138"
+            },
+            "cellphone":"138",
+            "avatar":
+            {
+                 "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
+            },
+            "lastupdate":1454076248624
         },
         "quest":"Who am I?",
         "opt": [0/1]  0: new Question  1: question was cancelled
@@ -415,6 +422,11 @@ New Answer json:
             },
             "cellphone":"138",
             "username":"syservicer_mail"
+            "avatar":
+            {
+                 "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
+            },
+            "lastupdate":1454076248624
         },
         "quest":
         {
