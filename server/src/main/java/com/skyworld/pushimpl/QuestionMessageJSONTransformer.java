@@ -1,21 +1,18 @@
 package com.skyworld.pushimpl;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.json.JSONObject;
 
-import com.skyworld.push.HttpPushMessageTransformer;
-import com.skyworld.push.msg.HttpPushMessage;
+import com.skyworld.init.GlobalConstants;
 
 
 
-public class QuestionMessageJSONTransformer implements HttpPushMessageTransformer<HttpPushMessage>  {
+public class QuestionMessageJSONTransformer extends  BaseJSONTransformer<QuestionMessage> {
+
+
 
 	@Override
-	public String serialize(HttpPushMessage message) {
-		QuestionMessage qm = (QuestionMessage)message;
-		JSONObject root = new JSONObject();
+	protected JSONObject transform(JSONObject root, QuestionMessage t) {
+		QuestionMessage qm =  t;
 		JSONObject header = new JSONObject();
 		JSONObject body = new JSONObject();
 		
@@ -40,20 +37,15 @@ public class QuestionMessageJSONTransformer implements HttpPushMessageTransforme
 		asker.put("easemob", easemob);
 		easemob.put("username", qm.getQuestion().getAsker().getCellPhone());
 		
-		return root.toString();
+		if (qm.getQuestion().getAsker().getAvatar() != null) {
+			JSONObject avatar = new JSONObject();
+			asker.put("avatar", avatar);
+			avatar.put("origin", GlobalConstants.AVATAR_HOST+qm.getQuestion().getAsker().getAvatarPath());
+		}
+		
+		return root;
 	}
 
-	@Override
-	public HttpPushMessage unserialize(InputStream in) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getContentType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 	

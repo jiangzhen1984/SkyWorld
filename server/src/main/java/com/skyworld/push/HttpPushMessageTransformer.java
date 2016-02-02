@@ -9,7 +9,7 @@ public interface HttpPushMessageTransformer<T extends HttpPushMessage> {
 	
 	
 	
-	public HttpPushMessage unserialize(InputStream in) throws IOException;
+	public T unserialize(InputStream in) throws IOException;
 	
 	
 	

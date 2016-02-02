@@ -42,6 +42,8 @@ public class ClientTerminal  implements Serializable {
 	
 	private Thread attacher;
 	
+	private int refCount;
+	
 	
 
 	public ClientTerminal(Token token, TerminalSocket socket, HttpPushMessageTransformer<HttpPushMessage> transformer) {
@@ -107,7 +109,9 @@ public class ClientTerminal  implements Serializable {
 			if (ev == null) {
 				try {
 					log.info("Wait:  Thread:"+ Thread.currentThread());
-					events.wait(60000);
+					refCount ++;
+					events.wait();
+					refCount --;
 					log.info(" Resume:  Thread:"+ Thread.currentThread());
 					if (attacher != Thread.currentThread()) {
 						log.warn("attacher["+attacher+"] quit due to not match" + Thread.currentThread());
@@ -130,6 +134,12 @@ public class ClientTerminal  implements Serializable {
 			handleEvent(ev);
 		} catch (IOException e) {
 			log.error("handle event error " + ev , e);
+		}
+		if (refCount > 0) {
+			synchronized (events) {
+				log.warn("Dead Thread count" + refCount+"  Notifiy all ");
+				events.notifyAll();
+			}
 		}
 		
 	}
