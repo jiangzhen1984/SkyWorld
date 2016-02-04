@@ -196,6 +196,21 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             />
+         
+         <activity 
+            android:name="com.android.samchat.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            />
+         
+         <activity 
+            android:name="com.android.samchat.SecuritySettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            />
+         
+         
+         
 
         
          

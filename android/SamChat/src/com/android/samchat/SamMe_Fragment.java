@@ -88,7 +88,7 @@ public class SamMe_Fragment extends Fragment{
 			mSettingLayout.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View arg0) {
-					
+					launchSettingActivity();
 				}
 			});
 			
@@ -492,6 +492,14 @@ public class SamMe_Fragment extends Fragment{
 	}
 	
 
+	private void launchSettingActivity(){
+		Intent newIntent = new Intent(getActivity(),SettingActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+
+	}
+	
 	private void launchSignInActivity()
 	{
 		Intent newIntent = new Intent(getActivity(),SignInActivity.class);

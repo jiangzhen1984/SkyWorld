@@ -155,4 +155,13 @@
     <string name="uploading_avatar">正在上传头像</string>
 
     
+    <string name="new_msg_reminder">新消息提醒</string>
+    <string name="privacy">隐私</string>
+    <string name="security_setting">安全设置</string>
+    <string name="feedback">反馈</string>
+    
+    <string name="old_passwd">输入现在密码</string>
+    <string name="new_passwd">输入新的密码</string>
+    <string name="confrim_passwd">再次输入新的密码</string>
+    
 </resources>

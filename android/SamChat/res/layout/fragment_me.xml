@@ -24,6 +24,8 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:contentDescription="@null"
             android:src="@drawable/em_default_avatar"
             android:scaleType="fitXY"/>
@@ -31,7 +33,7 @@
             android:id="@+id/myname" 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
+			android:layout_marginLeft="20dp"
 			android:layout_gravity="center_vertical"
 			android:textSize="15sp"
 			android:text="@string/avatar"/>
@@ -42,7 +44,7 @@
         android:id="@+id/setting_layout" 
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:layout_marginTop="10dp"
+    	android:layout_marginTop="20dp"
     	android:orientation="horizontal"
     	android:background="#FFFFFF">
     	
@@ -65,7 +67,7 @@
         android:id="@+id/upgrade_layout" 
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:layout_marginTop="10dp"
+    	android:layout_marginTop="20dp"
     	android:orientation="horizontal"
     	android:background="#FFFFFF">
     	
@@ -91,7 +93,7 @@
         android:id="@+id/logout_layout" 
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:layout_marginTop="10dp"
+    	android:layout_marginTop="20dp"
     	android:orientation="horizontal"
     	android:background="#FFFFFF">
     	

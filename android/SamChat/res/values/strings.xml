@@ -148,4 +148,13 @@
     <string name="avatar">head portrait</string>
     <string name="start_crop_window_failed">start crop window failed</string>
     <string name="uploading_avatar">uploading avatar </string>
+    
+    <string name="new_msg_reminder">new message reminder</string>
+    <string name="privacy">privacy</string>
+    <string name="security_setting">security setting</string>
+    <string name="feedback">feedback</string>
+    
+    <string name="old_passwd">input password</string>
+    <string name="new_passwd">input new password</string>
+    <string name="confrim_passwd">input new password again</string>
 </resources>

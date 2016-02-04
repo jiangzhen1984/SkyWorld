@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFFFFF"
+    android:scrollbars="none">
+
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/common_bg"
+    android:orientation="vertical" >
+
+   
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/top_bar_normal_bg">
+
+        <ImageView
+    	    android:id="@+id/back"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft = "5dp"
+        	android:contentDescription="@null"
+        	android:layout_centerVertical="true"
+        	android:src="@drawable/em_mm_title_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/settings"
+            android:textColor="@color/bottom_text_color_normal"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout 
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="#BFBFBF"
+   		android:orientation="vertical" >
+        
+        <LinearLayout
+            android:id="@+id/security_setting_layout" 
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+   			android:orientation="horizontal" 
+   			android:background="#FFFFFF">
+        
+        <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="15dp"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:text="@string/security_setting"
+             android:textSize="18sp"/>
+    	</LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/new_msg_reminder_layout"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="1dp"
+   			android:orientation="horizontal"
+   			android:background="#FFFFFF" >
+        
+        <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="15dp"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:text="@string/new_msg_reminder"
+             android:textSize="18sp"/>
+    	</LinearLayout>
+    	
+        <LinearLayout
+            android:id="@+id/privacy_layout" 
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="1dp"
+   			android:orientation="horizontal"
+   			android:background="#FFFFFF" >
+        
+        <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="15dp"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:text="@string/privacy"
+             android:textSize="18sp"/>
+    	</LinearLayout>
+    	
+        
+        <LinearLayout
+            android:id="@+id/feedback_layout"  
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+   			android:orientation="horizontal"
+   			android:layout_marginTop="1dp"
+   			android:background="#FFFFFF" >
+        
+        <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="15dp"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:text="@string/feedback"
+             android:textSize="18sp"/>
+    	</LinearLayout>
+   
+	</LinearLayout>
+	
+    
+    
+</LinearLayout>
+</ScrollView>
