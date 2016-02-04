@@ -3,7 +3,7 @@ package com.android.samservice.info;
 
 
 /*
-	id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username
+	id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
 */
 
 public class LoginUser
@@ -29,6 +29,7 @@ public class LoginUser
 	public long unique_id;
 	public String easemob_username;
 	public int easemob_status;
+	public long lastupdate;
 
 	public LoginUser(String cellphone,String username,String password){
 		this.id = 0;
@@ -44,6 +45,7 @@ public class LoginUser
 		this.unique_id = 0;
 		this.easemob_username = null;
 		this.easemob_status = INACTIVE;
+		this.lastupdate=0;
 		
 	}
 	
@@ -60,7 +62,8 @@ public class LoginUser
 		this.logouttime = 0;
 		this.unique_id = 0;
 		this.easemob_username = null;
-		easemob_status = INACTIVE;
+		this.easemob_status = INACTIVE;
+		this.lastupdate=0;
 	}
 	
 	public int getUserType(){
@@ -83,4 +86,15 @@ public class LoginUser
 		return this.password;
 	}
 
+	public String getphonenumber(){
+		return this.phonenumber;
+	}
+
+	public long getlastupdate(){
+		return this.lastupdate;
+	}
+
+	public void seteasemob_status(int easemob_status){
+		this.easemob_status  = easemob_status;
+	}
 }

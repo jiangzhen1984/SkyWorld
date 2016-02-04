@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFFFFF"
+    android:scrollbars="none">
+  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">  
+      
+    <RelativeLayout 
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:layout_marginLeft="10dp">
+    	<ImageView
+    	    android:id="@+id/back"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:contentDescription="@null"
+        	android:src="@drawable/back"/>
+    	
+    	<TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_toRightOf="@id/back"
+             android:layout_alignBottom="@id/back"
+             android:layout_marginLeft="20dp"
+             android:textSize="20sp"
+             android:text="@string/user_info"/>
+             
+	</RelativeLayout>
+	
+    <RelativeLayout
+        android:id="@+id/basic_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        
+         <ImageView
+            android:id="@+id/userimg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft ="10dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@null"
+            android:src="@drawable/samqa"/>
+         
+         <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="10dp"
+            android:layout_toRightOf="@id/userimg"
+            android:layout_alignTop="@id/userimg"/>
+        
+    </RelativeLayout>
+	
+    <RelativeLayout
+        android:id="@+id/residence_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/residence_constant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="5dp"
+            android:text="@string/residence"/>
+         
+        <TextView
+            android:id="@+id/residence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/residence_constant"
+            android:layout_marginLeft ="15dp"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/visitence_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/visitence_constant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="5dp"
+            android:text="@string/visitence"/>
+         
+        <TextView
+            android:id="@+id/visitence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="15dp"
+            android:layout_toRightOf="@id/visitence_constant"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/career_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/career_info_constant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="5dp"
+            android:layout_gravity="center_vertical"
+            android:text="@string/career_info"/>
+         
+        <TextView
+            android:id="@+id/career_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="15dp"
+            android:layout_toRightOf="@id/career_info_constant"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/social_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/social_info_constant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="5dp"
+            android:text="@string/social_info"/>
+         
+        <TextView
+            android:id="@+id/social_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="15dp"
+            android:layout_toRightOf="@id/social_info_constant"/>
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/add_friend_layout" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="#00acff">
+    
+        <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="5dp"
+             android:layout_marginBottom="5dp"
+             android:textSize="18sp"
+             android:gravity="center"
+             android:layout_gravity="center"
+             android:textStyle="bold"
+             android:text="@string/add_to_contacts"/>
+	</LinearLayout>
+	
+    <LinearLayout
+        android:id="@+id/send_msg_layout" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="#00acff">
+    
+        <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="5dp"
+             android:layout_marginBottom="5dp"
+             android:textSize="18sp"
+             android:gravity="center"
+             android:layout_gravity="center"
+             android:textStyle="bold"
+             android:text="@string/send_msg"/>
+	</LinearLayout>
+   
+  </LinearLayout>
+</ScrollView>
+

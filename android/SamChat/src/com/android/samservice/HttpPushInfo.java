@@ -9,6 +9,7 @@ public class HttpPushInfo{
 	public long unique_id;
 	public String cellphone;
 	public String easemob_username;
+	public String avatar;
 
 	public String quest_id;
 	public String quest;
@@ -34,6 +35,7 @@ public class HttpPushInfo{
 		cellphone = null;
 
 		easemob_username = null;
+		avatar = null;
 
 		answer = null;
 		

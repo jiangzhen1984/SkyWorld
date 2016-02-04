@@ -35,7 +35,8 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 	public static final String HIDE_SAMCHATS_REDPOINT = "com.android.sam.hidesrp";
 	public static final String SHOW_SAMCHATS_REDPOINT = "com.android.sam.showsrp";
 	public static final int MSG_QUESTION_RECEIVED = 1;
-	public static final int MSG_ANSWER_SEND_CALLBACK = 2;
+	public static final int MSG_QUESTION_CANCEL = 2;
+	public static final int MSG_ANSWER_SEND_CALLBACK = 3;
 
 	private static boolean need_show = true;
 
@@ -152,11 +153,18 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 	}
 
 
-	private void update_questions( ){
+	private void update_questions_newq( ){
 		if(!need_show){
 			launchQAActivity();
 		}else{
 			showBage();
+		}
+	
+	}
+
+	private void update_questions_cancelq( ){
+		if(!need_show){
+			launchQAActivity();
 		}
 	
 	}
@@ -254,7 +262,11 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 			switch(msg.what){
 			case MSG_QUESTION_RECEIVED:
 				SamLog.e(TAG,"MSG_QUESTION_RECEIVED!");
-				update_questions();
+				update_questions_newq();
+				break;
+			case MSG_QUESTION_CANCEL:
+				SamLog.e(TAG,"MSG_QUESTION_CANCEL!");
+				update_questions_cancelq();	
 				break;
 			}
 		}

@@ -1,8 +1,10 @@
 package com.android.samchat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.samservice.*;
+import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.ReceivedAnswer;
+import com.easemob.easeui.utils.EaseUserUtils;
 
 public class SearchListAdapter extends BaseAdapter{
 	static private String TAG = "SearchListAdapter";
@@ -31,8 +35,8 @@ public class SearchListAdapter extends BaseAdapter{
 	private LayoutInflater mInflater;
 	private int mCount = 20;
 
-	private ArrayList<ReceivedAnswer> answerArray = new ArrayList<ReceivedAnswer>();
-	private ArrayList<readOrNot> isReadArray = new ArrayList<readOrNot>();
+	private List<ReceivedAnswer> answerArray = new ArrayList<ReceivedAnswer>();
+	private List<readOrNot> isReadArray = new ArrayList<readOrNot>();
 	
 	private class readOrNot{
 		public boolean isRead;
@@ -143,12 +147,27 @@ public class SearchListAdapter extends BaseAdapter{
 		break;
 		case TYPE_ANSWER:
 			ReceivedAnswer info = answerArray.get(position);
-			if(holder.user == null){
-				holder.user = SamService.getInstance().query_ContactUser_db(info.getcontactuserid());
-				holder.username.setText(holder.user.get_username());
-				holder.userdesc.setText(holder.user.get_description());
+			//if(holder.user == null){
+				holder.user = SamService.getInstance().getDao().query_ContactUser_db(info.getcontactuserid());
+				SamLog.e(TAG,"getcontactuserid:"+info.getcontactuserid());
+				SamLog.e(TAG,"show:"+holder.user.getusername());
+				holder.username.setText(holder.user.getusername());
+				holder.userdesc.setText(holder.user.getdescription());
 				holder.userimage.setImageResource(R.drawable.logo);
-			}
+				ContactUser cuser = holder.user;
+				if(cuser!=null){
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+					if(rd!=null && rd.getavatarname()!=null){
+						Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
+												   50,
+												   50);
+						if(bp!=null){
+							holder.userimage.setImageBitmap(bp);
+						}
+					}
+				}
+				
+			//}
 			
 			holder.answer.setText(info.answer);
 			if(!getRead(position)){

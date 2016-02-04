@@ -106,6 +106,46 @@
     
      <string name="temp_talk">talk temporally</string>
      <string name="add_friends">Add Friends</string>
-     
      <string name="new_friends">New Friends</string>
+    <string name="new_friends_search_hint">phone number</string>
+    
+    <string name="query_user_info_failed_title">Search Failed </string>
+    <string name="query_user_info_failed_statement">search failed, try again later</string>
+    <string name="query_user_info_no_user_statement">phone number is not existed</string>
+
+    <string name="user_info">User Information</string>
+    <string name="residence">Resident City</string>
+    <string name="visitence">Visit City</string>
+    
+    <string name="career_info">Career Information</string>
+    <string name="social_info">Social Information</string>
+    <string name="add_to_contacts">add to contacts</string>
+    <string name="send_msg">send message</string>
+    <string name="send">send</string>
+    <string name="send_msg_statement">you need send verification application and wait for approve</string>
+    <string name="send_msg_failed">send message failed ......</string>
+    <string name="send_msg_succeed">send message successfully ......</string>
+    <string name="request_add_friends">request to be friend</string>
+    <string name="accepted">accepted</string>
+    <string name="added">added</string>
+    <string name="refused">refused</string>
+    
+    <string name="groupchat">Group Chat</string>
+    <string name="The_new_group_chat">New Group Chat</string>
+    
+    <string name="group_nick">Group Nick:</string>
+    <string name="group_owner">Group Owner:</string>
+    <string name="messages_are_empty">messages are empty</string>
+    
+    <string name="delete">delete</string>
+    <string name="move_to_blacklist">move into blacklist</string>
+    <string name="move_from_blacklist">move from blacklist</string>
+    
+    <string name="delete_contact">Delete Contact</string>
+    <string name="delete_contact_statement">If delete this contact, the chat history with him will be also deleted</string>
+    
+    
+    <string name="avatar">head portrait</string>
+    <string name="start_crop_window_failed">start crop window failed</string>
+    <string name="uploading_avatar">uploading avatar </string>
 </resources>

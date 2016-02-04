@@ -1,10 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFFFFF"
+    android:scrollbars="none">
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#BFBFBF">
-
+    
+    <LinearLayout
+        android:id="@+id/avatar_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:orientation="horizontal"
+    	android:background="#FFFFFF">
+    	
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/em_default_avatar"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:id="@+id/myname" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_gravity="center_vertical"
+			android:textSize="15sp"
+			android:text="@string/avatar"/>
+	</LinearLayout>
+    
+   
     <LinearLayout
         android:id="@+id/setting_layout" 
     	android:layout_width="match_parent"
@@ -51,6 +84,8 @@
 			android:textSize="15sp"
 			android:text="@string/upgrade"/>
 	</LinearLayout>
+	
+    
     
     <LinearLayout
         android:id="@+id/logout_layout" 
@@ -99,7 +134,11 @@
 			android:textSize="15sp"
 			android:text="@string/exit_app"/>
 	</LinearLayout>
+	
+    
+    
 
 
 	
 </LinearLayout>
+</ScrollView>

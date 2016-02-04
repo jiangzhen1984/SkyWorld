@@ -1,9 +1,11 @@
 package com.android.samservice.info;
 
+import java.io.Serializable;
+
 	/*
-	id(primary) | username | phone number |image file | user type | description |
+	id(primary) | username | phonenumber | usertype | imagefile |description | unique_id | easemob_username |lastupdate
 	*/
-public class ContactUser
+public class ContactUser implements Serializable
 {
 	public long id;
 	public String username;
@@ -13,6 +15,7 @@ public class ContactUser
 	public String description;
 	public long unique_id;
 	public String easemob_username;
+	public long lastupdate;
 
 	public ContactUser(){
 		this.id = 0;
@@ -23,65 +26,85 @@ public class ContactUser
 		this.description = null;
 		this.unique_id = 0;
 		this.easemob_username = null;
+		this.lastupdate = 0;
 	}
 
-	public long get_id(){
+	public void setid(long id){
+		this.id = id;
+	}
+	public long getid(){
 		return this.id;
 	}
+	
 
-	public String get_username(){
+	public void setusername(String username){
+		this.username = username;
+	}
+	public String getusername(){
 		return this.username;
 	}
 
-	public void set_username(String username){
-		this.username = username;
-	}
 
-	public long get_unique_id(){
-		return this.unique_id;
-	}
-
-	public void set_unique_id(long unique_id){
-		this.unique_id = unique_id;
-	}
-
-	public String get_easemob_username(){
-		return this.easemob_username;
-	}
-
-	public void set_easemob_username(String easemob_username){
-		this.easemob_username = easemob_username;
-	}
-
-	public String get_phonenumber(){
+	public String getphonenumber(){
 		return this.phonenumber;
 	}
-
-	public void set_phonenumber(String phonenumber){
+	public void setphonenumber(String phonenumber){
 		this.phonenumber = phonenumber;
 	}
 
-	public String get_imagefile(){
-		return this.imagefile;
-	}
-
-	public void set_imagefile(String imagefile){
-		this.imagefile = imagefile;
-	}
-
-	public int get_usertype(){
+	
+	public int getusertype(){
 		return this.usertype;
 	}
-
-	public void set_usertype(int usertype){
+	public void setusertype(int usertype){
 		this.usertype = usertype;
 	}
 
-	public String get_description(){
-		return this.description;
+
+	public void setimagefile(String imagefile){
+		this.imagefile = imagefile;
+	}
+	public String getimagefile(){
+		return this.imagefile;
 	}
 
-	public void set_description(String description){
+
+	public String getdescription(){
+		return this.description;
+	}
+	public void setdescription(String description){
 		this.description = description;
 	}
+
+
+	public long getunique_id(){
+		return this.unique_id;
+	}
+	public void setunique_id(long unique_id){
+		this.unique_id = unique_id;
+	}
+
+
+	public String geteasemob_username(){
+		return this.easemob_username;
+	}
+	public void seteasemob_username(String easemob_username){
+		this.easemob_username = easemob_username;
+	}
+
+	public long getlastupdate(){
+		return this.lastupdate;
+	}
+	public void setlastupdate(long lastupdate){
+		this.lastupdate = lastupdate;
+	}
+
+	
+	
+
+	
+
+	
+
+	
 }

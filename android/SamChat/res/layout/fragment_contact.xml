@@ -57,6 +57,47 @@
         		android:layout_gravity="center_vertical"/>
 	</LinearLayout>
 	</LinearLayout>
+	
+    <LinearLayout
+        android:id="@+id/groupchat_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="2dp"
+    	android:orientation="vertical">
+    <LinearLayout 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal">
+    	
+        <RelativeLayout
+            android:id="@+id/groupchat_relativelayout"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="5dp">
+        	
+            <ImageView
+                android:id="@+id/groupchatImg"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_marginLeft="5dp"
+            	android:layout_marginRight="5dp"
+            	android:layout_marginTop="5dp"
+            	android:contentDescription="@null"
+            	android:src="@drawable/samqa"
+            	android:background="#DDDDDD"/>
+       
+        </RelativeLayout>  
+    	
+        <TextView
+            	android:id="@+id/groupchattxt"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_marginLeft = "5dp"
+        		android:textSize="15sp"
+        		android:text="@string/groupchat"
+        		android:layout_gravity="center_vertical"/>
+	</LinearLayout>
+	</LinearLayout>
 
     <FrameLayout
         android:id="@+id/content_container"

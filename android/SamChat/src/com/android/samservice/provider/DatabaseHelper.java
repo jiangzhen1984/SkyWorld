@@ -18,12 +18,12 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final String DATABASE_NAME = "SamDB.db";
 	public static final String TABLE_NAME_LOGIN_USER = "LoginUserTable";
 	/*
-	id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status
+	id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
 	*/
 	
 	public static final String TABLE_NAME_CONTACT_USER = "ContactUserTable";
 	/*
-	id(primary) | username | phonenumber | imagefile |description | unique_id | easemob_username
+	id(primary) | username | phonenumber | imagefile |description | unique_id | easemob_username | lastupdate
 	*/
 	
 	public static final String TABLE_NAME_SEND_QUESTION = "SendQuestionTable";
@@ -42,6 +42,21 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	id(primary) |question_id | answer |status | loginuserid | sendtime 
 	*/
 	public static final String TABLE_NAME_SEND_ANSWER = "SendAnswerTable";
+
+	/*
+	id(primary) |sender | receiver | status |reason
+	*/
+	public static final String TABLE_CONTACT_INVITE_RECORD = "InviteMsgTable";
+
+	/*
+	id(primary) |user | friend
+	*/
+	public static final String TABLE_NAME_USER_FRIEND = "UserFriendTable";
+
+	/*
+	id(primary) |phonenumber | avatarname
+	*/
+	public static final String TABLE_NAME_AVATAR = "AvatarTable";
 
     // 构造函数，调用父类SQLiteOpenHelper的构造函数
     public DatabaseHelper(Context context, String name, CursorFactory factory,
@@ -70,7 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 	private void createLoginUserTable(SQLiteDatabase db){
 	/*
-		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status
+		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
 	*/
 		StringBuffer sBuffer = new StringBuffer();
 		sBuffer.append("CREATE TABLE [" + TABLE_NAME_LOGIN_USER + "] (");
@@ -86,14 +101,15 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		sBuffer.append("[logouttime] INTEGER,"); //System.getCurrentMilliseconds
 		sBuffer.append("[unique_id] INTEGER,"); 
 		sBuffer.append("[easemob_username] TEXT,"); //null: easemob history 
-		sBuffer.append("[easemob_status] INTEGER )"); //0:no login 1:login
+		sBuffer.append("[easemob_status] INTEGER,"); //0:no login 1:login
+		sBuffer.append("[lastupdate] INTEGER )"); //last user info udate time recroded in server side
 		// 执行创建表的SQL语句
         	db.execSQL(sBuffer.toString());
 	}
 
 	private void createContactUserTable(SQLiteDatabase db){
 	/*
-		id(primary) | username | phonenumber | usertype | imagefile |description | unique_id | easemob_username
+		id(primary) | username | phonenumber | usertype | imagefile |description | unique_id | easemob_username |lastupdate
 	*/
 		StringBuffer sBuffer = new StringBuffer();
 		sBuffer.append("CREATE TABLE [" + TABLE_NAME_CONTACT_USER + "] (");
@@ -104,7 +120,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		sBuffer.append("[imagefile] TEXT,");
 		sBuffer.append("[description] TEXT,");
 		sBuffer.append("[unique_id] INTEGER,");
-		sBuffer.append("[easemob_username] TEXT )");
+		sBuffer.append("[easemob_username] TEXT,");
+		sBuffer.append("[lastupdate] TEXT )");
+		
 		// 执行创建表的SQL语句
         	db.execSQL(sBuffer.toString());
 	}
@@ -143,7 +161,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 	private void createReceivedQuestionTableForServicer(SQLiteDatabase db){
 	/*
-		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |shown
+		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |loginuserid
 	*/
 		StringBuffer sBuffer = new StringBuffer();
 		sBuffer.append("CREATE TABLE [" + TABLE_NAME_RECEIVED_QUESTION + "] (");
@@ -154,7 +172,8 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		sBuffer.append("[status] INTEGER, ");
 		sBuffer.append("[shown] INTEGER,");
 		sBuffer.append("[receivedtime] INTEGER,");
-		sBuffer.append("[canceledtime] INTEGER)");
+		sBuffer.append("[canceledtime] INTEGER,");
+		sBuffer.append("[receivercellphone] TEXT)");
 		// 执行创建表的SQL语句
         	db.execSQL(sBuffer.toString());
 		
@@ -176,6 +195,49 @@ public class DatabaseHelper extends SQLiteOpenHelper
         	db.execSQL(sBuffer.toString());
 	}
 
+	
+	private void createInviteMsgTable(SQLiteDatabase db){
+	/*
+	id(primary) |sender | receiver | status |reason | time
+	*/
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("CREATE TABLE [" + TABLE_CONTACT_INVITE_RECORD + "] (");
+		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+        	sBuffer.append("[sender] TEXT, ");
+		sBuffer.append("[receiver] TEXT,");
+		sBuffer.append("[status] INTEGER,");
+		sBuffer.append("[reason] TEXT,");
+		sBuffer.append("[time] INTEGER )");
+		// 执行创建表的SQL语句
+        	db.execSQL(sBuffer.toString());
+	}
+
+	private void createUserFriendTable(SQLiteDatabase db){
+	/*
+	id(primary) |user | friend
+	*/
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("CREATE TABLE [" + TABLE_NAME_USER_FRIEND+ "] (");
+		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+        	sBuffer.append("[user] TEXT, ");
+		sBuffer.append("[friend] TEXT )");
+		// 执行创建表的SQL语句
+        	db.execSQL(sBuffer.toString());
+	}
+
+	private void createAvatarTable(SQLiteDatabase db){
+	/*
+	id(primary) |phonenumber | avatarname |nickname
+	*/
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("CREATE TABLE [" + TABLE_NAME_AVATAR+ "] (");
+		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+        	sBuffer.append("[phonenumber] TEXT, ");
+		sBuffer.append("[avatarname] TEXT,");
+		sBuffer.append("[nickname] TEXT )");
+		// 执行创建表的SQL语句
+        	db.execSQL(sBuffer.toString());
+	}
 
 
     // 继承SQLiteOpenHelper类,必须要覆写的三个方法：onCreate(),onUpgrade(),onOpen()
@@ -187,8 +249,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
     	createContactUserTable(db);
     	createSendQuestionTable(db);
     	createReceviedAnswerTable(db);
-	createReceivedQuestionTableForServicer(db);
-	createSendAnswerTableForServicer(db);
+    	createReceivedQuestionTableForServicer(db);
+    	createSendAnswerTableForServicer(db);
+    	createInviteMsgTable(db);
+    	createUserFriendTable(db);
+    	createAvatarTable(db);
     }
 
     @Override
@@ -199,6 +264,10 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_SEND_QUESTION);
 	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RECEIVED_ANSWER);
 	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RECEIVED_QUESTION);
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_SEND_ANSWER);
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACT_INVITE_RECORD);
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER_FRIEND);
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_AVATAR);
 	onCreate(db);
     }
 

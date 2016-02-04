@@ -8,7 +8,8 @@ public class SamLog {
 	}
 	
 	public static void i(String Tag,String data){
-		if(SamService.DEBUG) Log.i(Tag,data);
+		return;
+		//if(SamService.DEBUG) Log.i(Tag,data);
 	}
 	
 	public static void w(String Tag,String data){

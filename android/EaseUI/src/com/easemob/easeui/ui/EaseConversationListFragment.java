@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
+import android.util.Log;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -92,7 +93,7 @@ public class EaseConversationListFragment extends EaseBaseFragment{
             });
         }
         
-        EMChatManager.getInstance().addConnectionListener(connectionListener);
+ //       EMChatManager.getInstance().addConnectionListener(connectionListener);
         
         query.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -126,6 +127,9 @@ public class EaseConversationListFragment extends EaseBaseFragment{
                 return false;
             }
         });
+
+
+	
     }
     
     
@@ -209,6 +213,7 @@ public class EaseConversationListFragment extends EaseBaseFragment{
                 if (conversation.getAllMessages().size() != 0) {
                     //if(conversation.getType() != EMConversationType.ChatRoom){
                         sortList.add(new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(), conversation));
+			 //  Log.e("test","msg total number:"+conversation.getAllMessages().size());
                     //}
                 }
             }
@@ -267,10 +272,11 @@ public class EaseConversationListFragment extends EaseBaseFragment{
 
     @Override
     public void onResume() {
+	Log.e("EaseConversationListFragment","EaseConversationListFragment onResume");
         super.onResume();
-        if (!hidden) {
+        //if (!hidden) {
             refresh();
-        }
+        //}
     }
     
     @Override

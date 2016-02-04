@@ -128,7 +128,7 @@ public class SignUpActivity extends Activity {
 	    mBtnVerify.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
-	    		if(!NetworkMonitor.isNetworkAvailable(SignUpActivity.this)){
+	    		if(!NetworkMonitor.isNetworkAvailable()){
 	    			launchDialogActivity(getString(R.string.nw_illegal_title),getString(R.string.network_status_no));
 	    			return;
 	    		}

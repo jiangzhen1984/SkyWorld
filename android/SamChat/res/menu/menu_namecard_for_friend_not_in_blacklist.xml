@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.android.samchat.NameCardActivity" >
+
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ease_mm_title_remove"
+        android:showAsAction="never"
+        android:title="@string/delete"/>
+    
+    <item
+        android:id="@+id/action_move_to_blacklist"
+        android:icon="@drawable/ease_search_clear_normal"
+        android:showAsAction="never"
+        android:title="@string/move_to_blacklist"/>
+</menu>

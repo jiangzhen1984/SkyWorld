@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import android.util.Log;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -170,10 +171,11 @@ public class EaseContactListFragment extends EaseBaseFragment {
 
     @Override
     public void onResume() {
+    	Log.e(TAG,"EaseContactList Fragment onResume");
         super.onResume();
-        if (!hidden) {
+        //if (!hidden) {
             refresh();
-        }
+        //}
     }
 
 

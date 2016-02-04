@@ -23,6 +23,14 @@ public class SamCoreObj{
 	public boolean isSenda(){
 		return (this instanceof SendaCoreObj);
 	}
+
+	public boolean isQueryui(){
+		return (this instanceof QueryuiCoreObj);
+	}
+
+	public boolean isUploadAvatar(){
+		return (this instanceof UploadAvatarCoreObj);
+	}
 }
 
 

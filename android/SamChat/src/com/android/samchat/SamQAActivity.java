@@ -1,6 +1,7 @@
 package com.android.samchat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
@@ -70,11 +71,11 @@ public class SamQAActivity extends Activity {
 			@Override   
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {   
 				/*arg2 is postion*/
-				ArrayList<ReceivedQuestion> array = mAdpater.getReceivedQuestionArray();
+				List<ReceivedQuestion> array = mAdpater.getReceivedQuestionArray();
 				ReceivedQuestion question = array.get(arg2);
 				/*update Received Question Status*/
 				question.setshown(ReceivedQuestion.SHOWN);
-				SamService.getInstance().add_update_ReceivedQuestion_db(question);
+				SamService.getInstance().getDao().add_update_ReceivedQuestion_db(question);
 				
 				Intent intent = new Intent();
 				intent.setClass(SamQAActivity.this,SamQADetailActivity.class);
@@ -103,7 +104,7 @@ public class SamQAActivity extends Activity {
 		super.onResume();
 
 		/*query newest question*/
-		ArrayList<ReceivedQuestion> array = SamService.getInstance().query_RecentReceivedQuestion_db(read_item_num);
+		List<ReceivedQuestion> array = SamService.getInstance().getDao().query_RecentReceivedQuestion_db(read_item_num);
 		mAdpater.setReceivedQuestionArray(array);
 		mAdpater.setCount(array.size());
 		mAdpater.notifyDataSetChanged();

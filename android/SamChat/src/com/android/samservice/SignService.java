@@ -1,12 +1,14 @@
 package com.android.samservice;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import org.apache.http.HttpStatus;
 
 import com.android.samchat.*;
+import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.LoginUser;
 
 
@@ -117,8 +119,86 @@ public class SignService{
     	mHandlerThread.getLooper().quit();
     	mSignService = null;
     }
-    
 
+	private boolean saveAvatar(String path, String fileName,byte[] data){
+		File filePath = null; 
+		File file = null;
+		FileOutputStream fos = null;
+
+		SamLog.e(TAG,"data size:" + data.length);
+
+		try{
+			filePath = new File(path);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+
+			file = new File(path  + "/" + fileName);
+
+			if(!file.exists()){
+				file.createNewFile();
+			}
+  
+			fos = new FileOutputStream(file);    
+  
+			fos.write(data); 
+
+			return true;
+  
+		}catch(Exception e){
+			return false;
+		}finally{
+			try{
+				if(fos!=null) fos.close();
+			}catch(Exception e){
+
+			}
+
+		}
+
+	}
+
+	private void deleteOldAvatar(String oldAvatar){
+		if(oldAvatar == null){
+			return;
+		}
+		
+		//delete avatar file
+		File filePath = new File(SamService.sam_cache_path+SamService.AVATAR_FOLDER);
+
+		if(filePath.exists()){
+			File file = new File(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+oldAvatar);
+			if(file.exists()){
+				file.delete();
+			}
+		}
+	}
+
+	private void downloadAvatar(HttpCommClient hcc){
+		byte[] data=null;
+		String shortImg=null;
+		boolean downSucceed=false;
+		StringBuffer oldAvatar=new StringBuffer();
+		if(hcc.userinfo.imagefile!=null && (shortImg = getShortImgName(hcc.userinfo.imagefile))!=null){
+			data = hcc.getImage(hcc.userinfo.imagefile);
+			if(data!=null){
+				downSucceed = saveAvatar(SamService.sam_cache_path+SamService.AVATAR_FOLDER, shortImg, data);
+			}
+		}
+
+		if(downSucceed){
+			SamService.getInstance().getDao().add_update_AvatarRecord_db(
+				hcc.userinfo.phonenumber,
+				hcc.userinfo.username,
+				shortImg,
+				oldAvatar
+			);
+
+			if(oldAvatar.length()!=0){
+				deleteOldAvatar(oldAvatar.toString());
+			}
+		}
+	}
     
     private boolean auto_sign_with_token(){
     	return false;
@@ -190,9 +270,48 @@ public class SignService{
 		/*Auto sign with password and username*/
 		HttpCommClient hcc = new HttpCommClient();
 		if(auto_sign_with_un_pa(hcc)){
+			boolean need_update = false;
+			/*store login user into db*/
+			LoginUser user = hcc.userinfo;
+			LoginUser userdb = SamService.getInstance().getDao().query_activie_LoginUser_db();
+			if(userdb == null){
+				throw new RuntimeException("fatal error: auto signin but no active user!");
+			}else if(userdb!=null && userdb.getlastupdate()!=user.getlastupdate()){
+				need_update = true;
+				userdb.username = user.username;
+				userdb.phonenumber = user.phonenumber;
+				userdb.password = user.password;
+				userdb.usertype = user.usertype;
+				userdb.lastupdate = user.lastupdate;
+				userdb.imagefile = user.imagefile;
+				user = userdb;
+			}else if(user.imagefile!=null){
+				String shortImg = getShortImgName(user.imagefile);
+				if(shortImg != null){
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(user.getphonenumber());
+					if(rd == null || rd.getavatarname()==null){
+						need_update = true;
+					}else if(!rd.getavatarname().equals(shortImg)){
+						need_update = true;
+					}
+				}
+			}
+
+			user = userdb;
+			
+			user.id = SamService.getInstance().getDao().add_update_LoginUser_db(user);
+			SamService.getInstance().set_current_user(user);
+
+			/*********************/
+					
 			cbobj.sinfo.token = hcc.token_id;
+			SamLog.e(TAG,"hcc token id:"+hcc.token_id);
 			SamService.getInstance().store_current_token(hcc.token_id);
-			SamService.getInstance().set_current_user(SamService.getInstance().query_activie_LoginUser_db());
+
+			if(need_update){
+				downloadAvatar(hcc);
+			}
+			
 			try{
 				SamFile sfd = new SamFile();
 				sfd.writeSamFile(SamService.sam_cache_path , SamService.TOKEN_FILE,hcc.token_id);
@@ -249,6 +368,15 @@ public class SignService{
 	return hcc.signin(username, passwd);
 	
     }
+
+	private String getShortImgName(String photoPath) {
+		int index  = photoPath.lastIndexOf("origin_");
+		if(index != -1) {
+			return photoPath.substring(index);
+		} else {
+			return null;
+		}
+	}
 	
     private void do_sign_in(CBObj cbobj){
 	if(cbobj==null || cbobj.cbHandler==null ){
@@ -265,19 +393,53 @@ public class SignService{
 
 	if(signin_with_un_pa(cbobj.sinfo,hcc)){
                 if(hcc.ret == RET_SI_FROM_SERVER_OK){
+			boolean need_update = false;
 			/*store login user into db*/
 			LoginUser user = hcc.userinfo;
+			LoginUser userdb = SamService.getInstance().getDao().query_LoginUser_db(user.getphonenumber());
+			if(userdb == null){
+				need_update = true;
+			}else if(userdb!=null && userdb.getlastupdate()!=user.getlastupdate()){
+				need_update = true;
+				userdb.username = user.username;
+				userdb.phonenumber = user.phonenumber;
+				userdb.password = user.password;
+				userdb.usertype = user.usertype;
+				userdb.lastupdate = user.lastupdate;
+				userdb.imagefile = user.imagefile;
+				user = userdb;
+			}else if(user.imagefile!=null){
+				String shortImg = getShortImgName(user.imagefile);
+				if(shortImg != null){
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(user.getphonenumber());
+					if(rd == null || rd.getavatarname()==null){
+						need_update = true;
+					}else if(!rd.getavatarname().equals(shortImg)){
+						need_update = true;
+					}
+				}
+
+				user = userdb;
+			}else{
+				user = userdb;
+			}
+			
 			user.logintime = System.currentTimeMillis();
 			user.status = LoginUser.ACTIVE;
 			
-			SamService.getInstance().add_update_LoginUser_db(user);
-			SamService.getInstance().set_current_user(SamService.getInstance().query_activie_LoginUser_db());
+			user.id = SamService.getInstance().getDao().add_update_LoginUser_db(user);
+			SamService.getInstance().set_current_user(user);
 
 			/*********************/
 					
 			cbobj.sinfo.token = hcc.token_id;
 			SamLog.e(TAG,"hcc token id:"+hcc.token_id);
 			SamService.getInstance().store_current_token(hcc.token_id);
+
+			if(need_update){
+				downloadAvatar(hcc);
+			}
+			
 			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_IN_OK, hcc.ret,cbobj.sinfo);
 			hndl.sendMessage(msg);
                 }else{
@@ -335,8 +497,10 @@ public class SignService{
 				LoginUser user = hcc.userinfo;
 				user.logintime = System.currentTimeMillis();
 				user.status = LoginUser.ACTIVE;
-				SamService.getInstance().add_update_LoginUser_db(user);
-				SamService.getInstance().set_current_user(SamService.getInstance().query_activie_LoginUser_db());
+				
+				user.id = SamService.getInstance().getDao().add_update_LoginUser_db(user);
+				
+				SamService.getInstance().set_current_user(user);
 
 				/*********************/
 				cbobj.sinfo.token = hcc.token_id;
@@ -355,6 +519,19 @@ public class SignService{
     	}
     }
 
+
+	/*reset all data after sign out*/
+	private void reset(){
+		//delete avatar file
+		File filePath = new File(SamService.sam_cache_path);
+
+		if(filePath.exists()){
+			File file = new File(SamService.sam_cache_path + SamService.AVATAR);
+			if(file.exists()){
+				file.delete();
+			}
+		}
+	}
 	
 	private void do_sign_out(CBObj cbobj){
 		if(cbobj==null || cbobj.cbHandler==null ){
@@ -373,21 +550,23 @@ public class SignService{
 		String token = SamService.getInstance().get_current_token();
 		if(user!=null && hcc.signout(user.username,user.phonenumber,token)){
 			if(hcc.ret == RET_SOUT_FROM_SERVER_OK || hcc.ret == RET_SOUT_FROM_SERVER_TOKEN_INVALUD){
-				SamService.getInstance().update_LogoutUser_db(user);
+				SamService.getInstance().getDao().update_LogoutUser_db(user.getphonenumber());
 				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_OUT_OK, -1);
 				hndl.sendMessage(msg);
 			}else{
 				SamLog.e(TAG,"Fatal Error, need fix this error");
-				SamService.getInstance().update_LogoutUser_db(user);
+				SamService.getInstance().getDao().update_LogoutUser_db(user.getphonenumber());
 				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_OUT_FAILED, -1);
 				hndl.sendMessage(msg);
 			}
 			
 		}else{
-			SamService.getInstance().update_LogoutUser_db(user);
+			SamService.getInstance().getDao().update_LogoutUser_db(user.getphonenumber());
 			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_OUT_FAILED, -1);
 			hndl.sendMessage(msg);
 		}
+
+		reset();
 
 	} 
     
@@ -540,7 +719,7 @@ public class SignService{
 		}
 		*/
 
-		LoginUser user = SamService.getInstance().query_activie_LoginUser_db();
+		LoginUser user = SamService.getInstance().getDao().query_activie_LoginUser_db();
 		if(user != null){
 			if(user.username!=null && user.username.length()>=SamService.MIN_USERNAME_LENGTH){
 				u_p.username = user.username;

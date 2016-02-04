@@ -3,8 +3,10 @@ package com.android.samchat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.android.samservice.*;
 import com.android.samservice.info.*;
+import com.easemob.easeui.utils.EaseUserUtils;
 
 public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 	static private String TAG = "QuestionAnswerDetailListAdapter";
@@ -35,7 +38,7 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 
 	private ContactUser user;
 	private ReceivedQuestion receivedQuest;
-	private ArrayList<SendAnswer> sendAnswerArray;
+	private List<SendAnswer> sendAnswerArray;
 
 	public void setContactUser(ContactUser user){
 		this.user = user;
@@ -49,11 +52,11 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 		return this.receivedQuest;
 	}
 
-	public void setSendAnswerArray(ArrayList<SendAnswer> sendAnswerArray){
+	public void setSendAnswerArray(List<SendAnswer> sendAnswerArray){
 		this.sendAnswerArray = sendAnswerArray;
 	}
 
-	public ArrayList<SendAnswer> getSendAnswerArray(){
+	public List<SendAnswer> getSendAnswerArray(){
 		return this.sendAnswerArray;
 	}
 
@@ -121,8 +124,24 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 				String strRecvTime = formatter.format(curDate); 
 				holder.date.setText(strRecvTime);
 				holder.userimage.setImageResource(R.drawable.samqa);
+
+				if(user!=null){
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(user.getphonenumber());
+					if(rd!=null && rd.getavatarname()!=null){
+						SamLog.e(TAG,"rd is existed:"+holder.userimage.getHeight()+":"+holder.userimage.getWidth());
+						Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
+												   43,
+												   43);
+						if(bp!=null){
+							SamLog.e(TAG,"bp is existed");
+							holder.userimage.setImageBitmap(bp);
+						}
+					}
+				}
+
+				
 				holder.question.setText(question.question);
-				holder.username.setText(user.get_username());
+				holder.username.setText(user.getusername());
 			
 				break;
 			case TYPE_ANSWER:
@@ -131,6 +150,22 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 				String strSendTime = formatter.format(curDate);
 				holder.date.setText(strSendTime);
 				holder.userimage.setImageResource(R.drawable.samqa);
+
+				LoginUser currentuser = SamService.getInstance().get_current_user();
+				AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(currentuser.getphonenumber());
+				if(rd!=null && rd.getavatarname()!=null){
+					SamLog.e(TAG,"rd is existed:"+holder.userimage.getHeight()+":"+holder.userimage.getWidth());
+					Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
+											   43,
+											   43);
+					if(bp!=null){
+						SamLog.e(TAG,"bp is existed");
+						holder.userimage.setImageBitmap(bp);
+					}
+				}
+
+
+				
 				holder.answer.setText(answer.answer);
 				holder.username.setText(holder.myname);
 

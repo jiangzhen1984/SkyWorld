@@ -31,7 +31,7 @@ public class DBManager
 		//DatabaseHelper:TABLE_NAME_LOGIN_USER
 		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
 		/*
-		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status
+		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
 		*/
 		ContentValues cv = new ContentValues();
 		cv.put("status",user.status);
@@ -46,6 +46,7 @@ public class DBManager
 		cv.put("unique_id",user.unique_id);
 		cv.put("easemob_username",user.easemob_username);
 		cv.put("easemob_status",user.easemob_status);
+		cv.put("lastupdate",user.lastupdate);
 
 		return db.insert(table,null,cv);
 		
@@ -56,7 +57,7 @@ public class DBManager
 		//DatabaseHelper:TABLE_NAME_LOGIN_USER
 		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
 		/*
-		id(primary) | status | username | phone number |password |user type | image file |description |login time|logout time
+		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
 		*/
 		ContentValues cv = new ContentValues();
 		cv.put("status",user.status);
@@ -71,6 +72,7 @@ public class DBManager
 		cv.put("unique_id",user.unique_id);
 		cv.put("easemob_username",user.easemob_username);
 		cv.put("easemob_status",user.easemob_status);
+		cv.put("lastupdate",user.lastupdate);
 
 		String whereClause = "id=?";
 		String [] whereArgs = {""+id+""};
@@ -79,13 +81,61 @@ public class DBManager
 		
 	}
 
+	public long updateLoginUserEasemobStatus(String phonenumber,int status){
+		//DatabaseHelper:TABLE_NAME_LOGIN_USER
+		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
+		/*
+		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
+		*/
+
+		ContentValues cv = new ContentValues();
+		cv.put("easemob_status",status);
+		String whereClause = "phonenumber=?";
+		String [] whereArgs = {phonenumber};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	public long updateLoginUserAllStatus(String phonenumber,int status){
+		//DatabaseHelper:TABLE_NAME_LOGIN_USER
+		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
+		/*
+		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
+		*/
+
+		ContentValues cv = new ContentValues();
+		cv.put("status",status);
+		cv.put("easemob_status",status);
+		String whereClause = "phonenumber=?";
+		String [] whereArgs = {phonenumber};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	public long updateLoginUserLogoutStatus(String phonenumber,int status,long logouttime){
+		//DatabaseHelper:TABLE_NAME_LOGIN_USER
+		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
+		/*
+		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
+		*/
+
+		ContentValues cv = new ContentValues();
+		cv.put("status",status);
+		cv.put("logouttime",logouttime);
+		String whereClause = "phonenumber=?";
+		String [] whereArgs = {phonenumber};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
 	public LoginUser queryLogInUser(String phonenumber){
 		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
 		LoginUser user = null;
 		Cursor c = db.query(table,null,"phonenumber=?",new String[]{phonenumber},null,null,null);
 
 		if(c.getCount()>1){
-			SamLog.e(TAG, "Fatal Error for query login user");
+			SamLog.e(TAG, "Fatal Error for query login user 1");
+			throw new RuntimeException("Fatal Error for query login user 1!");
 		}
 		
 		while(c.moveToNext()){
@@ -103,6 +153,7 @@ public class DBManager
 			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
 			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
 			user.easemob_status = c.getInt(c.getColumnIndex("easemob_status"));
+			user.lastupdate = c.getLong(c.getColumnIndex("lastupdate"));
 		}
 
 		c.close();
@@ -116,7 +167,8 @@ public class DBManager
 		Cursor c = db.query(table,null,"status=?",new String[]{""+LoginUser.ACTIVE+""},null,null,null);
 
 		if(c.getCount()>1){
-			SamLog.e(TAG, "Fatal Error for query login user");
+			SamLog.e(TAG, "Fatal Error for query login user 2");
+			throw new RuntimeException("Fatal Error for query login user 2!");
 		}
 		
 		while(c.moveToNext()){
@@ -134,11 +186,45 @@ public class DBManager
 			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
 			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
 			user.easemob_status = c.getInt(c.getColumnIndex("easemob_status"));
+			user.lastupdate = c.getLong(c.getColumnIndex("lastupdate"));
 		}
 
 		c.close();
 
 		return user;
+	}
+
+
+	public List<LoginUser> queryAllLoginUser(){
+		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER ;
+
+		List<LoginUser> array = new ArrayList<LoginUser>();
+		LoginUser user = null;
+
+		Cursor c = db.query(table,null,"status=? or easemob_status=?",new String[]{""+LoginUser.ACTIVE,""+LoginUser.ACTIVE},null,null,null);
+		while(c.moveToNext()){
+			user = new LoginUser();
+			user.id = c.getLong(c.getColumnIndex("id"));
+			user.status = c.getInt(c.getColumnIndex("status"));
+			user.username = c.getString(c.getColumnIndex("username"));
+			user.phonenumber = c.getString(c.getColumnIndex("phonenumber"));
+			user.password = c.getString(c.getColumnIndex("password"));
+ 			user.usertype = c.getInt(c.getColumnIndex("usertype"));
+			user.imagefile = c.getString(c.getColumnIndex("imagefile"));
+			user.description = c.getString(c.getColumnIndex("description"));
+ 			user.logintime = c.getLong(c.getColumnIndex("logintime"));
+			user.logouttime = c.getLong(c.getColumnIndex("logouttime"));
+			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
+			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
+			user.easemob_status = c.getInt(c.getColumnIndex("easemob_status"));
+			user.lastupdate = c.getLong(c.getColumnIndex("lastupdate"));
+
+			array.add(user);
+		}
+
+		c.close();
+
+		return array;
 	}
 
 	public long addContactUser(ContactUser user)
@@ -191,6 +277,8 @@ public class DBManager
 
 		if(c.getCount()>1){
 			SamLog.e(TAG, "Fatal Error for query contact user 1");
+			throw new RuntimeException("Fatal Error for query contact user 1!");
+			
 		}
 		
 		while(c.moveToNext()){
@@ -217,6 +305,7 @@ public class DBManager
 
 		if(c.getCount()>1){
 			SamLog.e(TAG, "Fatal Error for query contact user 2");
+			throw new RuntimeException("Fatal Error for query contact user 2!");
 		}
 		
 		while(c.moveToNext()){
@@ -284,6 +373,7 @@ public class DBManager
 
 		if(c.getCount()>1){
 			SamLog.e(TAG, "Fatal Error for query send question");
+			throw new RuntimeException("Fatal Error for query send question!");
 		}
 		
 		while(c.moveToNext()){
@@ -319,13 +409,13 @@ public class DBManager
 		
 	}
 
-	public ArrayList<ReceivedAnswer> queryReceivedAnswer(String question_id){
+	public List<ReceivedAnswer> queryReceivedAnswer(String question_id){
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_ANSWER ;
 		/*
 		id(primary) |question_id | answer |contact user id | received time 
 		*/
 
-		ArrayList<ReceivedAnswer> answerArray = new ArrayList<ReceivedAnswer>();
+		List<ReceivedAnswer> answerArray = new ArrayList<ReceivedAnswer>();
 
 		Cursor c = db.query(table,null,"question_id=?",new String[]{question_id},null,null,null);
 		while(c.moveToNext()){
@@ -348,7 +438,7 @@ public class DBManager
 	{
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION;
 		/*
-		id(primary) |question_id | question |contact user id | status | shown | received time | canceled time
+		id(primary) |question_id | question |contact user id | status | shown | received time | canceled time |receivercellphone
 		*/
 		ContentValues cv = new ContentValues();
 		cv.put("question_id",question.question_id);
@@ -358,6 +448,7 @@ public class DBManager
 		cv.put("shown",question.shown );
 		cv.put("receivedtime",question.receivedtime );
 		cv.put("canceledtime",question.canceledtime );
+		cv.put("receivercellphone",question.receivercellphone );
 		
 		return db.insert(table,null,cv);
 		
@@ -377,7 +468,8 @@ public class DBManager
 		cv.put("shown",question.shown );
 		cv.put("receivedtime",question.receivedtime );
 		cv.put("canceledtime",question.canceledtime );
-
+		cv.put("receivercellphone",question.receivercellphone );
+		
 		String whereClause = "id=?";
 		String [] whereArgs = {""+id+""};
 
@@ -404,6 +496,7 @@ public class DBManager
 			question.shown = c.getInt(c.getColumnIndex("shown"));
 			question.receivedtime  = c.getLong(c.getColumnIndex("receivedtime"));
 			question.canceledtime =  c.getLong(c.getColumnIndex("canceledtime"));
+			question.receivercellphone = c.getString(c.getColumnIndex("receivercellphone"));
 		}
 
 		c.close();
@@ -419,7 +512,7 @@ public class DBManager
 		return count;
 	}
 
-	public ArrayList<ReceivedQuestion> queryRecentReceivedQuestion(long num){
+	public List<ReceivedQuestion> queryRecentReceivedQuestion(long num,String phonenumber){
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION ;
 		long start_id = 1;
 		long count = fetchPlacesCount(table);
@@ -432,10 +525,10 @@ public class DBManager
 		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time
 		*/
 
-		ArrayList<ReceivedQuestion> ReceivedQuestionArray = new ArrayList<ReceivedQuestion>();
+		List<ReceivedQuestion> ReceivedQuestionArray = new ArrayList<ReceivedQuestion>();
 		ReceivedQuestion question = null;
 
-		Cursor c = db.query(table,null,"id>=?",new String[]{""+start_id+""},null,null,null);
+		Cursor c = db.query(table,null,"id>=? and receivercellphone=?",new String[]{""+start_id+"",phonenumber},null,null,null);
 		while(c.moveToNext()){
 			question = new ReceivedQuestion();
 			question.id = c.getLong(c.getColumnIndex("id"));
@@ -446,7 +539,8 @@ public class DBManager
 			question.shown = c.getInt(c.getColumnIndex("shown"));
 			question.receivedtime  = c.getLong(c.getColumnIndex("receivedtime"));
 			question.canceledtime =  c.getLong(c.getColumnIndex("canceledtime"));
-
+			question.receivercellphone = c.getString(c.getColumnIndex("receivercellphone"));
+			
 			ReceivedQuestionArray.add(question);
 		}
 
@@ -491,14 +585,14 @@ public class DBManager
 		
 	}
 
-	public ArrayList<SendAnswer> querySendAnswer(String question_id){
+	public List<SendAnswer> querySendAnswer(String question_id){
 		String table = DatabaseHelper.TABLE_NAME_SEND_ANSWER ;
 
 		/*
 			id(primary) |question_id | answer |status | loginuserid | sendtime 
 		*/
 
-		ArrayList<SendAnswer> sendAnswerArray = new ArrayList<SendAnswer>();
+		List<SendAnswer> sendAnswerArray = new ArrayList<SendAnswer>();
 		SendAnswer answer=null;
 
 		Cursor c = db.query(table,null,"question_id=?",new String[]{question_id},null,null,null);
@@ -518,6 +612,289 @@ public class DBManager
 
 		return sendAnswerArray;
 	}
+
+
+	
+	public long addInviteRecord(InviteMessageRecord record)
+	{
+		String table = DatabaseHelper.TABLE_CONTACT_INVITE_RECORD;
+		/*
+			id(primary) |sender | receiver | status | reason | time
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("sender",record.sender);
+		cv.put("receiver",record.receiver);
+		cv.put("status",record.status);
+		cv.put("reason",record.reason);
+		cv.put("time",record.time);
+		
+		return db.insert(table,null,cv);
+	}
+
+	public long updateInviteRecord(long id, InviteMessageRecord record)
+	{
+		String table = DatabaseHelper.TABLE_CONTACT_INVITE_RECORD;
+		/*
+			id(primary) |sender | receiver | status | reason | time
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("sender",record.sender);
+		cv.put("receiver",record.receiver);
+		cv.put("status",record.status);
+		cv.put("reason",record.reason);
+		cv.put("time",record.time);
+
+		String whereClause = "id=?";
+		String [] whereArgs = {""+id+""};
+
+		return db.update(table,cv,whereClause,whereArgs);
+		
+	}
+
+	public long updateInviteRecord(long id, ContentValues values){
+		String table = DatabaseHelper.TABLE_CONTACT_INVITE_RECORD;
+		/*
+			id(primary) |sender | receiver | status | reason | time
+		*/
+		String whereClause = "id=?";
+		String [] whereArgs = {""+id+""};
+
+		return db.update(table,values,whereClause,whereArgs);
+	}
+
+	public void deleteInviteRecord(String receiver,String sender){
+		String table = DatabaseHelper.TABLE_CONTACT_INVITE_RECORD;
+		/*
+			id(primary) |sender | receiver | status | reason | time
+		*/
+		db.delete(table, "receiver=? and sender = ?", new String[]{receiver,sender});
+	}
+
+	public List<InviteMessageRecord> queryInviteRecordBasedReceiver(String receiver){
+		String table = DatabaseHelper.TABLE_CONTACT_INVITE_RECORD ;
+
+		/*
+			id(primary) |sender | receiver | status | reason | time
+		*/
+
+		List<InviteMessageRecord> ContactInviteRecordArray = new ArrayList<InviteMessageRecord>();
+		InviteMessageRecord record = null;
+
+		Cursor c = db.query(table,null,"receiver=?",new String[]{receiver},null,null,null);
+		while(c.moveToNext()){
+			record = new InviteMessageRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.sender = c.getString(c.getColumnIndex("sender"));
+			record.receiver= c.getString(c.getColumnIndex("receiver"));
+			record.status = c.getInt(c.getColumnIndex("status"));
+			record.reason= c.getString(c.getColumnIndex("reason"));
+			record.time = c.getLong(c.getColumnIndex("time"));
+
+			ContactInviteRecordArray.add(record);
+		}
+
+		c.close();
+
+		return ContactInviteRecordArray;
+	}
+
+	public List<InviteMessageRecord> queryInviteRecordBasedReceiver(String receiver,int status){
+		String table = DatabaseHelper.TABLE_CONTACT_INVITE_RECORD ;
+
+		/*
+			id(primary) |sender | receiver | status | reason | time
+		*/
+
+		List<InviteMessageRecord> ContactInviteRecordArray = new ArrayList<InviteMessageRecord>();
+		InviteMessageRecord record = null;
+
+		Cursor c = db.query(table,null,"receiver=? and status=?",new String[]{receiver,""+status},null,null,null);
+		while(c.moveToNext()){
+			record = new InviteMessageRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.sender = c.getString(c.getColumnIndex("sender"));
+			record.receiver= c.getString(c.getColumnIndex("receiver"));
+			record.status = c.getInt(c.getColumnIndex("status"));
+			record.reason= c.getString(c.getColumnIndex("reason"));
+			record.time = c.getLong(c.getColumnIndex("time"));
+
+			ContactInviteRecordArray.add(record);
+		}
+
+		c.close();
+
+		return ContactInviteRecordArray;
+	}
+
+	public List<InviteMessageRecord> queryInviteRecordBasedReceiverSender(String receiver,String sender){
+		String table = DatabaseHelper.TABLE_CONTACT_INVITE_RECORD ;
+
+		/*
+			id(primary) |sender | receiver | status | reason | time
+		*/
+
+		List<InviteMessageRecord> ContactInviteRecordArray = new ArrayList<InviteMessageRecord>();
+		InviteMessageRecord record = null;
+
+		Cursor c = db.query(table,null,"receiver=? and sender=?",new String[]{receiver,sender},null,null,null);
+		while(c.moveToNext()){
+			record = new InviteMessageRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.sender = c.getString(c.getColumnIndex("sender"));
+			record.receiver= c.getString(c.getColumnIndex("receiver"));
+			record.status = c.getInt(c.getColumnIndex("status"));
+			record.reason= c.getString(c.getColumnIndex("reason"));
+			record.time = c.getLong(c.getColumnIndex("time"));
+			ContactInviteRecordArray.add(record);
+		}
+
+		c.close();
+
+		return ContactInviteRecordArray;
+	}
+
+	public long addUserFriendRecord(UserFriendRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_USER_FRIEND;
+		/*
+			id(primary) | friend
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("friend",record.friend);
+		
+		return db.insert(table,null,cv);
+	}
+
+	public long updateUserFriendRecord(long id, UserFriendRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_USER_FRIEND;
+		/*
+			id(primary) | friend
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("friend",record.friend);
+
+		String whereClause = "id=?";
+		String [] whereArgs = {""+id+""};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	public List<UserFriendRecord> queryUserFriendRecord(){
+		String table = DatabaseHelper.TABLE_NAME_USER_FRIEND ;
+
+		/*
+			id(primary) |friend
+		*/
+
+		List<UserFriendRecord> recordArray = new ArrayList<UserFriendRecord>();
+		UserFriendRecord record = null;
+
+		Cursor c = db.rawQuery("select * from " + table, null);
+
+		while(c.moveToNext()){
+			record = new UserFriendRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.friend= c.getString(c.getColumnIndex("friend"));
+			recordArray.add(record);
+		}
+
+		c.close();
+
+		return recordArray;
+	}
+
+	public UserFriendRecord queryUserFriendRecord(String easemob_name){
+		String table = DatabaseHelper.TABLE_NAME_USER_FRIEND ;
+
+		/*
+			id(primary) |friend
+		*/
+
+		UserFriendRecord record = null;
+
+		Cursor c = db.query(table,null,"friend=?",new String[]{easemob_name},null,null,null);
+
+		while(c.moveToNext()){
+			record = new UserFriendRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.friend= c.getString(c.getColumnIndex("friend"));
+		}
+
+		c.close();
+
+		return record;
+	}
+
+	public void clearUserFriendTable(){
+		String table = DatabaseHelper.TABLE_NAME_USER_FRIEND ;
+		db.delete(table, null, null);
+	}
+
+	public void deleteUserFriend(String easemob_name){
+		String table = DatabaseHelper.TABLE_NAME_USER_FRIEND ;
+
+		/*
+			id(primary) | friend
+		*/
+		db.delete(table, "friend=?", new String[]{easemob_name});
+	}
+
+	public long addAvatarRecord(AvatarRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_AVATAR;
+		/*
+		id(primary) |phonenumber | avatarname |nickname
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("phonenumber",record.phonenumber);
+		cv.put("avatarname",record.avatarname);
+		cv.put("nickname",record.nickname);
+		
+		return db.insert(table,null,cv);
+	}
+
+	public long updateAvatarRecord(long id, AvatarRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_AVATAR;
+		/*
+		id(primary) |phonenumber | avatarname |nickname
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("phonenumber",record.phonenumber);
+		cv.put("avatarname",record.avatarname);
+		cv.put("nickname",record.nickname);
+
+		String whereClause = "id=?";
+		String [] whereArgs = {""+id+""};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	public AvatarRecord queryAvatarRecord(String phonenumber){
+		String table = DatabaseHelper.TABLE_NAME_AVATAR ;
+
+		/*
+		id(primary) |phonenumber | avatarname |nickname
+		*/
+
+		AvatarRecord record = null;
+
+		Cursor c = db.query(table,null,"phonenumber=?",new String[]{phonenumber},null,null,null);
+
+		while(c.moveToNext()){
+			record = new AvatarRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.phonenumber= c.getString(c.getColumnIndex("phonenumber"));
+			record.avatarname= c.getString(c.getColumnIndex("avatarname"));
+			record.nickname= c.getString(c.getColumnIndex("nickname"));
+		}
+
+		c.close();
+
+		return record;
+	}
+	
 
     /**
      * close database

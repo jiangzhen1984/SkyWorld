@@ -136,6 +136,74 @@
             </intent-filter>
         </activity>
         
+        <activity
+            android:name="com.android.samchat.NameCardActivity"
+            android:theme="@style/AppBaseTheme"  
+            android:screenOrientation="portrait">
+            <intent-filter>
+              
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.android.samchat.SendVerifyMsgActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" 
+            android:screenOrientation="portrait">
+            <intent-filter>
+              
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.android.samchat.GroupsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+        
+        <activity
+            android:name="com.android.samchat.NewGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+        
+         <activity
+            android:name="com.android.samchat.GroupPickContactsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+        
+         <activity
+            android:name="com.android.samchat.GroupDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+        
+         
+         <activity
+            android:name="com.android.samchat.ExitGroupDialog"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+        
+         <activity
+    		android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" 
+    		android:screenOrientation="portrait"
+    		android:theme="@android:style/Theme.Light.NoTitleBar"/>
+         <!--android:configChanges="orientation|screenSize"  -->
+         
+         <activity 
+            android:name="com.easemob.easeui.ui.EaseShowBigImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            />
+
+        
+         
+        
+        
+        
+        
+        
         
         
          <activity
@@ -146,7 +214,8 @@
                 <action android:name="com.android.samchat.cancel_question"/>
                 <action android:name="com.android.samchat.exitapp"/>
                 <action android:name="com.android.samchat.logout"/>
-                <action android:name="com.android.samchat.upgrade"/>                
+                <action android:name="com.android.samchat.upgrade"/> 
+                <action android:name="com.android.samchat.deleteuserfriend"/>
              	<category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

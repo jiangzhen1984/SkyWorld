@@ -110,5 +110,49 @@
     <string name="new_friends">新的朋友</string>
     <string name="new_friends_search_hint">手机号</string>
     
+    <string name="query_user_info_failed_title">搜索失败 </string>
+    <string name="query_user_info_failed_statement">搜索失败,请稍候再试</string>
+    <string name="query_user_info_no_user_statement">电话号码不存在</string>
+    
+    <string name="user_info">用户信息</string>
+    
+    <string name="residence">常驻地</string>
+    <string name="visitence">访问地</string>
+    
+    <string name="career_info">职业信息</string>
+    <string name="social_info">社交信息</string>
+    <string name="add_to_contacts">添加到通讯录</string>
+    <string name="send_msg">发送消息</string>
+    <string name="send">发送</string>
+    <string name="send_msg_statement">你需要发送验证申请,等待对方通过</string>
+    <string name="send_msg_failed">发送消息失败......</string>
+    <string name="send_msg_succeed">发送消息成功 ......</string>
+    <string name="request_add_friends">对方请求加为好友</string>
+    <string name="accepted">接受</string>
+    <string name="added">已添加</string>
+    <string name="refused">拒绝</string>
+    
+    <string name="groupchat">群聊</string>
+    <string name="The_new_group_chat">新建群组</string>
+    
+    <string name="group_nick">聊天室名称:</string>
+    <string name="group_owner">群主：</string>
+    <string name="messages_are_empty">记录已清空</string>
+    
+    <string name="delete">删除</string>
+    <string name="move_to_blacklist">移入黑名单</string>
+    <string name="move_to_blacklist_statement">移入黑名单,你将不在接收对方的消息</string>
+    <string name="move_from_blacklist">移出黑名单</string>
+    <string name="delete_contact">删除联系人</string>
+    <string name="delete_contact_statement">删除此联系人,将同时删除与该联系人的聊天记录</string>
+    <string name="deleting">正在删除</string>
+    <string name="delete_failed">删除失败</string>
+    
+    
+    
+    <string name="avatar">头像</string>
+    <string name="start_crop_window_failed">启动裁减窗口失败</string>
+    <string name="uploading_avatar">正在上传头像</string>
+
     
 </resources>

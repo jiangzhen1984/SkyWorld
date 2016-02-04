@@ -1,6 +1,7 @@
 package com.android.samchat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
@@ -183,8 +184,8 @@ public class SamQADetailActivity extends Activity {
 		if (intent != null) {
 			question = (ReceivedQuestion)intent.getSerializableExtra("ReceivedQuestion");
 			long contactuserid = question.getcontactuserid();
-			user = SamService.getInstance().query_ContactUser_db(contactuserid);
-			mUsername.setText(user.get_username());
+			user = SamService.getInstance().getDao().query_ContactUser_db(contactuserid);
+			mUsername.setText(user.getusername());
 		}
 	}
 
@@ -195,7 +196,7 @@ public class SamQADetailActivity extends Activity {
 		mAdpater.setReceivedQuestion(question);
 		mAdpater.setContactUser(user);
 		/*query newest answer*/
-		ArrayList<SendAnswer> answerArray = SamService.getInstance().query_SendAnswer_db(question.getquestion_id());
+		List<SendAnswer> answerArray = SamService.getInstance().getDao().query_SendAnswer_db(question.getquestion_id());
 		mAdpater.setSendAnswerArray(answerArray);
 		mAdpater.setCount(1+answerArray.size());
 		mAdpater.notifyDataSetChanged();

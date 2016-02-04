@@ -1,9 +1,16 @@
 package com.android.samchat;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.android.samchat.easemobdemo.InviteMessgeDao;
+import com.android.samservice.Constants;
+import com.android.samservice.SMCallBack;
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
+import com.android.samservice.info.ContactUser;
+import com.android.samservice.info.InviteMessageRecord;
+import com.android.samservice.info.LoginUser;
 import com.android.samservice.info.ReceivedQuestion;
 
 import android.app.Activity;
@@ -28,6 +35,7 @@ import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.content.BroadcastReceiver;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.content.IntentFilter;
 import android.util.Log;
@@ -35,6 +43,8 @@ import android.util.Log;
 
 public class NewFriendActivity extends Activity {
 	private final String TAG = "NewFriendActivity";
+
+	public static final int MSG_QUERY_USR_INFO_CALLBACK = 1;
 	
 	private Context mContext;
 	private ImageView mBack;
@@ -42,7 +52,13 @@ public class NewFriendActivity extends Activity {
 	private ImageView mCancel;
 	
 	private ListView mNewFriendList;
-	//private NewFriendListAdapter mAdapter;
+	private NewFriendListAdapter mAdapter;
+
+	private SamProcessDialog mDialog;
+
+	private BroadcastReceiver broadcastReceiver;
+	private LocalBroadcastManager broadcastManager;
+
 
 	private void closeInputMethod() {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -56,7 +72,9 @@ public class NewFriendActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-	
+
+		mDialog = new SamProcessDialog();
+
 		setContentView(R.layout.activity_new_friend);
 		mContext = getBaseContext();
 
@@ -67,15 +85,26 @@ public class NewFriendActivity extends Activity {
 				NewFriendActivity.this.setResult(1);
 				finish();
 			}
-		    	
 		});
 
 		mSearch = (EditText) findViewById(R.id.search_input);
 		mSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {  
-			public boolean onEditorAction(TextView v, int actionId,KeyEvent event)  {    
+			public boolean onEditorAction(TextView v, int actionId,KeyEvent event) {    
 				if (actionId==EditorInfo.IME_ACTION_SEARCH ||(event!=null&&event.getKeyCode()== KeyEvent.KEYCODE_ENTER)) { 
-					SamLog.e(TAG, "start search new friend");
 					closeInputMethod();
+
+					String phonenumber = mSearch.getText().toString().trim();
+					if(!phonenumber.equals("")){
+						SamLog.e(TAG, "start search new friend");
+						if(mDialog!=null){
+    							mDialog.launchProcessDialog(NewFriendActivity.this,getString(R.string.process));
+    						}
+
+						/*query user info from server*/
+						query_user_info_from_server(phonenumber);
+							
+					}
+					
 					return true;  
 				}    
 				return false;    
@@ -91,14 +120,104 @@ public class NewFriendActivity extends Activity {
 		    		mSearch.setText("");
 		    	}
 		});
+
+		mNewFriendList = (ListView) findViewById(R.id.new_friend_list);
+		mAdapter = new NewFriendListAdapter(mContext);
+		mNewFriendList.setAdapter(mAdapter);
+
+
+		registerBroadcastReceiver();
+		updateNewFriendList();
+
+		
 		
 	       
+	}
+
+	private void query_user_info_from_server(String phonenumber){
+		SamService.getInstance().query_user_info_from_server(phonenumber,new SMCallBack(){
+			@Override
+			public void onSuccess(Object obj) {
+				if(mDialog!=null){
+	    				mDialog.dismissPrgoressDiglog();
+	    			}
+				/*launch user namecard activity*/
+				SamLog.i(TAG,"query user info succeed ...");
+
+				List<ContactUser> uiArray = (List<ContactUser>)obj;
+				if(uiArray.size()>0){
+					ContactUser userinfo = uiArray.get(0);
+					launchNameCardActivity(userinfo);
+				}else{
+					launchDialogActivity(getString(R.string.query_user_info_failed_title),getString(R.string.query_user_info_no_user_statement));	
+				}
+				
+			}
+
+			@Override
+			public void onFailed(int code) {
+				SamLog.i(TAG,"query user info failed ...");
+				/*send question failed due to server error*/
+				if(mDialog!=null){
+	    				mDialog.dismissPrgoressDiglog();
+	    			}
+
+				if(code == SamService.RET_QUERY_USERINFO_SERVER_NO_SUCH_USER){
+					launchDialogActivity(getString(R.string.query_user_info_failed_title),getString(R.string.query_user_info_no_user_statement));	
+				}else{
+					launchDialogActivity(getString(R.string.query_user_info_failed_title),getString(R.string.query_user_info_failed_statement));				
+				}
+			}
+
+			@Override
+			public void onError(int code) {
+				SamLog.i(TAG,"query user info errorr ...");
+				if(mDialog!=null){
+	    				mDialog.dismissPrgoressDiglog();
+	    			}
+
+				launchDialogActivity(getString(R.string.query_user_info_failed_title),getString(R.string.query_user_info_failed_statement));
+			}
+
+		});
+	}
+
+	private void registerBroadcastReceiver() {
+		broadcastManager = LocalBroadcastManager.getInstance(this);
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Constants.ACTION_CONTACT_CHANAGED);
+
+		broadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				updateNewFriendList();
+			}
+        };
+		
+        broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+		
+    }
+	
+	private void unregisterBroadcastReceiver(){
+	    broadcastManager.unregisterReceiver(broadcastReceiver);
+	}
+
+	private void updateNewFriendList(){
+		InviteMessgeDao dao = new InviteMessgeDao(mContext);
+		List<InviteMessageRecord> recordList = dao.getMessagesList();
+
+		SamLog.e(TAG,"updateNewFriendList size:"+recordList.size());
+		
+		mAdapter.setContactInviteRecordArray(recordList);
+		mAdapter.setCount(recordList.size());
+		mAdapter.notifyDataSetChanged();
+		
 	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		SamLog.e(TAG,"QA activity onNewIntent");
+		SamLog.e(TAG,"onNewIntent");
 		this.onResume();
 	}
 
@@ -120,10 +239,31 @@ public class NewFriendActivity extends Activity {
 		super.onDestroy();
 		this.setResult(1);
 		SamLog.e(TAG,"new friend activity destroy and send broadcast");
-		
-		//Intent intent = new Intent();
-		//intent.setAction(SamChats_Fragment.HIDE_QA_BADGE);
-		//sendBroadcast(intent);	
+		unregisterBroadcastReceiver();
+
 	}
+
+	private void launchDialogActivity(String title,String msg){
+		Intent newIntent = new Intent(this,DialogActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		newIntent.putExtra("title", title);
+		newIntent.putExtra("message", msg);
+		startActivity(newIntent);
+	}
+
+	private void launchNameCardActivity(ContactUser userinfo){
+		Intent newIntent = new Intent(this,NameCardActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("ContactUser",userinfo);
+		newIntent.putExtras(bundle);
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+	}
+
+
+	
+
 }
 

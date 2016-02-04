@@ -20,6 +20,7 @@ public class ReceivedQuestion implements Serializable{
 	public int shown;
 	public long receivedtime;
 	public long canceledtime;
+	public String receivercellphone;
 
 	public void ReceivedQuestion(){
 		id = 0;
@@ -30,6 +31,7 @@ public class ReceivedQuestion implements Serializable{
 		shown = NOT_SHOWN;
 		receivedtime = 0;
 		canceledtime = 0;
+		receivercellphone = null;
 	}
 
 	public long getid(){
@@ -94,5 +96,15 @@ public class ReceivedQuestion implements Serializable{
 	public void setcanceledtime(long canceledtime){
 		this.canceledtime = canceledtime;
 	}
+
+	public String getreceivercellphone(){
+		return receivercellphone;
+	}
+
+	public void setreceivercellphone(String receivercellphone){
+		this.receivercellphone = receivercellphone;
+	}
+
+	
 	
 }

@@ -9,18 +9,29 @@ import java.util.Map;
 import java.util.zip.Inflater;
 
 import com.android.samchat.R;
+import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samservice.*;
 import com.android.samservice.info.LoginUser;
 import com.easemob.EMCallBack;
+import com.easemob.EMEventListener;
+import com.easemob.EMNotifierEvent;
+import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMContactListener;
+import com.easemob.chat.EMContactManager;
 import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMGroupManager;
+import com.easemob.chat.EMMessage;
 import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.domain.EaseUser;
 import com.easemob.easeui.ui.EaseContactListFragment;
 import com.easemob.easeui.ui.EaseContactListFragment.EaseContactListItemClickListener;
 import com.easemob.easeui.ui.EaseConversationListFragment;
 import com.easemob.easeui.ui.EaseConversationListFragment.EaseConversationListItemClickListener;
+import com.easemob.exceptions.EaseMobException;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +46,7 @@ import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -56,7 +68,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends FragmentActivity implements
-		OnPageChangeListener, OnTabChangeListener {
+		OnPageChangeListener, OnTabChangeListener, EMEventListener{
 
 	static private final String TAG="SamChat_Main";
 	static public final String ACTIVITY_NAME = "com.android.samchat.MainActivity";
@@ -88,6 +100,17 @@ public class MainActivity extends FragmentActivity implements
 	private List<Fragment> list = new ArrayList<Fragment>();
 	private ViewPager vp;
 	private static int currentTabPostition = 0;
+
+	private SamService_Fragment fragment_samservice;
+	private SamChats_Fragment fragment_samchats;
+	private SamMe_Fragment fragment_samme;
+	private SamContact_Fragment fragment_samcontact;
+
+	private BroadcastReceiver broadcastReceiver;
+	private LocalBroadcastManager broadcastManager;
+
+	private ConnectivityManager mConnectivityManager; 
+   	private NetworkInfo netInfo; 
 	
 	public static int getCurrentTab(){
 		return currentTabPostition;
@@ -113,6 +136,18 @@ public class MainActivity extends FragmentActivity implements
 		initPage();
 
 		//setOverflowShowingAlways();
+		EMGroupManager.getInstance().loadAllGroups();
+		EMChatManager.getInstance().loadAllConversations();
+
+	}
+
+	private void updateBadgeForSamContactNewFriend(){
+		fragment_samcontact.addInviteMsgNum();
+		if(fragment_samcontact.mHandler!=null){
+			Message msg = fragment_samcontact.mHandler.obtainMessage(SamContact_Fragment.MSG_UPDATE_BAGE_NEW_FRIEND,null);
+			 fragment_samcontact.mHandler.sendMessage(msg);
+			 SamLog.e(TAG,"updateBadgeForSamContactNewFriend");
+		}
 
 	}
 
@@ -143,43 +178,154 @@ public class MainActivity extends FragmentActivity implements
 	 * ≥ı ºªØFragment
 	 */
 	private void initPage() {
-		SamService_Fragment fragment1 = new SamService_Fragment();
-		SamChats_Fragment fragment2 = new SamChats_Fragment();
-		fragment2.setConversationListItemClickListener(new EaseConversationListItemClickListener() {
+		fragment_samservice = new SamService_Fragment();
+		fragment_samchats = new SamChats_Fragment();
+		fragment_samchats.setConversationListItemClickListener(new EaseConversationListItemClickListener() {
 			@Override
 			public void onListItemClicked(EMConversation conversation) {
-				startActivity(new Intent(MainActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, conversation.getUserName()));
+				Intent newIntent = new Intent(MainActivity.this, ChatActivity.class);
+				if(conversation.isGroup()){
+					newIntent.putExtra(Constants.EXTRA_CHAT_TYPE, Constants.CHATTYPE_GROUP);
+				}
+
+				newIntent.putExtra(Constants.EXTRA_USER_ID, conversation.getUserName());
+				startActivity(newIntent);
 			}
 		});
 		
-		SamMe_Fragment fragment3 = new SamMe_Fragment();
+		fragment_samme = new SamMe_Fragment();
 		
-		SamContact_Fragment fragment4 = new SamContact_Fragment();
-		fragment4.setContactsMap(getContacts());
-		fragment4.setContactListItemClickListener(new EaseContactListItemClickListener() {
+		fragment_samcontact= new SamContact_Fragment();
+		fragment_samcontact.setContactsMap(getContacts());
+		fragment_samcontact.setContactListItemClickListener(new EaseContactListItemClickListener() {
 			@Override
 			public void onListItemClicked(EaseUser user) {
                		 startActivity(new Intent(MainActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, user.getUsername()));
 			}
         	});
+
+		registerBroadcastReceiver();
+		registerNetworkStatusReceiver();
+		EMChatManager.getInstance().registerEventListener(this,
+				new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage ,EMNotifierEvent.Event.EventOfflineMessage, EMNotifierEvent.Event.EventConversationListChanged});
 		
-		list.add(fragment1);
-		list.add(fragment2);
-		list.add(fragment3);
-		list.add(fragment4);
+		list.add(fragment_samservice);
+		list.add(fragment_samchats);
+		list.add(fragment_samme);
+		list.add(fragment_samcontact);
 		vp.setAdapter(new MyFragmentAdapter(getSupportFragmentManager(), list));
 		vp.setOffscreenPageLimit(3);
 
-		SamService.getInstance().onActivityLaunched(fragment1,fragment2);
+		SamService.getInstance().onActivityLaunched(fragment_samservice,fragment_samchats);
+	}
+
+	@Override
+	public void onEvent(EMNotifierEvent event) {
+	SamLog.e(TAG,"onEvent!!!");
+		switch (event.getEvent()) {
+		case EventNewMessage: 
+		{
+			EMMessage message = (EMMessage) event.getData();
+
+			//DemoHelper.getInstance().getNotifier().onNewMsg(message);
+
+			refreshUIWithMessage();
+			break;
+		}
+
+		case EventOfflineMessage: {
+		    refreshUIWithMessage();
+			break;
+		}
+
+		case EventConversationListChanged: {
+		    refreshUIWithMessage();
+		    break;
+		}
+		
+		default:
+			break;
+		}
+	}
+
+	private void refreshUIWithMessage() {
+		SamLog.e(TAG,"refreshUIWithMessage!!!");
+		runOnUiThread(new Runnable() {
+			public void run() {
+				//updateUnreadLabel();
+				//if (currentTabPostition == 1) {
+					if (fragment_samchats != null) {
+						fragment_samchats.refresh();
+					}
+				//}
+			}
+		});
+	}
+   
+	private BroadcastReceiver myNetReceiver = new BroadcastReceiver() { 
+   		@Override 
+		public void onReceive(Context context, Intent intent) { 
+     			String action = intent.getAction(); 
+			if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) { 
+				mConnectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE); 
+				netInfo = mConnectivityManager.getActiveNetworkInfo();   
+				if(netInfo != null && netInfo.isAvailable()) { 
+					SamLog.e(TAG,"network connected!!!!!!!!!!!!");
+   					SamService.getInstance().onNetworkConnect();
+				} else { 
+					SamLog.e(TAG,"network disconnected!!!!!!!!!!!!");
+   					SamService.getInstance().onNetworkDisconnect();
+				} 
+			} 
+   
+		}  
+	}; 
+
+	private void registerNetworkStatusReceiver(){
+		IntentFilter mFilter = new IntentFilter(); 
+		mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); 
+		registerReceiver(myNetReceiver, mFilter); 
+	}
+
+	private void unregisterNetworkStatusReceiver(){
+		if(myNetReceiver!=null){ 
+			unregisterReceiver(myNetReceiver); 
+		}
+	}
+
+	private void registerBroadcastReceiver() {
+		broadcastManager = LocalBroadcastManager.getInstance(this);
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Constants.ACTION_CONTACT_CHANAGED);
+
+		broadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				boolean isInvite = intent.getBooleanExtra("isInvite",false);
+				if(isInvite){
+					updateBadgeForSamContactNewFriend();
+				}else{
+					SamLog.e(TAG,"update contacts");
+					fragment_samcontact.setContactsMap(EaseMobHelper.getInstance().getContactList());
+					fragment_samcontact.refresh();
+
+					refreshUIWithMessage();
+				}
+
+			}
+		};
+		
+		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+	}
+		
+
+	
+	private void unregisterBroadcastReceiver(){
+	    broadcastManager.unregisterReceiver(broadcastReceiver);
 	}
 
 	private Map<String, EaseUser> getContacts(){
-		Map<String, EaseUser> contacts = new HashMap<String, EaseUser>();
-		EaseUser user = new EaseUser("13911791236" );
-		contacts.put("13911791236", user);
-
-		user = new EaseUser("13810137846" );
-		contacts.put("13810137846", user);
+		Map<String, EaseUser> contacts = EaseMobHelper.getInstance().getContactList();
 		
 		return contacts;
 	}
@@ -342,7 +488,9 @@ public class MainActivity extends FragmentActivity implements
 		super.onDestroy();
 		SamLog.i(TAG,"MainActivity onDestroy!");
 		unregisterReceiver(HideShowSamChatRDPReceiver);
-		SamService.getInstance().stopSamService();
+		unregisterNetworkStatusReceiver();
+		unregisterBroadcastReceiver();
+		
 	}
 	
 	@Override
@@ -384,6 +532,8 @@ public class MainActivity extends FragmentActivity implements
         } else { 
              
             SamLog.e(TAG, "exit application"); 
+
+	     SamService.getInstance().stopSamService();
                
             this.finish(); 
         } 
@@ -404,6 +554,7 @@ public class MainActivity extends FragmentActivity implements
 
 	public void exitActivity(){
 		SamLog.e(TAG, "exit main activity"); 
+		SamService.getInstance().stopSamService();
 		this.finish();
 	}
 }

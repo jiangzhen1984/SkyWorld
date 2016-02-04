@@ -67,8 +67,8 @@
     
         <ImageView
              android:id="@+id/userimage"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
+             android:layout_width="43dp"
+             android:layout_height="43dp"
              android:contentDescription="@null"
              android:src="@drawable/samqa"
              android:layout_marginLeft="5dp"/>

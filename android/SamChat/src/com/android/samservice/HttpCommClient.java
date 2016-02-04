@@ -1,16 +1,26 @@
 package com.android.samservice;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -23,25 +33,27 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.LoginUser;
 import com.android.samservice.info.SendAnswer;
-
-import android.util.Log;
 
 public class HttpCommClient {
 	public static final String TAG="HttpCommClient";
 	public static final String URL = "http://121.42.207.185/SkyWorld/api/1.0/UserAPI";
 	public static final String URL_QUESTION = "http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI";
 	public static final String PUSH_URL = "http://121.42.207.185/SkyWorld/push";
-	//public static final String URL = "http://222.222.222.111";
+	public static final String URL_AVATAR = "http://121.42.207.185/SkyWorld/api/1.0/UserAvatarAPI";
 	public static final int CONNECTION_TIMEOUT = 20000;
 	public static final int HTTP_TIMEOUT = 10000;
 
-	
+	private HttpClient pushhttpclient;
+	private Object pushLock;
+	private boolean isInterrupt;
 	
 	public int statusCode;
 	public int ret;
@@ -49,6 +61,8 @@ public class HttpCommClient {
 	public String question_id;
 	public LoginUser userinfo;
 	public HttpPushInfo hpinfo;
+	public List<ContactUser> uiArray;
+	
 	
 	HttpCommClient(){
 		statusCode = 0;
@@ -57,20 +71,51 @@ public class HttpCommClient {
 		question_id=null;
 		userinfo = new LoginUser();
 		hpinfo = new HttpPushInfo();
+		uiArray = new ArrayList<ContactUser>();
+
+		pushhttpclient = null;
+		pushLock = new Object();
+		isInterrupt = false;
+	}
+
+	public void InterruptHttpPushWait(){
+		synchronized(pushLock){
+			isInterrupt = true;
+			if(pushhttpclient!=null){
+				pushhttpclient.getConnectionManager().shutdown();
+				pushhttpclient = null;
+			}
+		}
 	}
 
 	public boolean HttpPushWait(String token){
 		SamLog.e(TAG,"In HttpPushWait for question ...");
-		try {  
-			HttpClient httpclient = new DefaultHttpClient();  
-			HttpPost httppost = new HttpPost(PUSH_URL);   
+		HttpPost httppost = null;
+		HttpClient httpclient = null;
+		try {
+			
+			synchronized(pushLock){
+				if(isInterrupt){
+					isInterrupt = false;
+					return false;
+				}
+				
+				pushhttpclient = new DefaultHttpClient();
+
+				httpclient = pushhttpclient;  
+			}
+			
+			httppost = new HttpPost(PUSH_URL);;   
 			JSONObject obj = new JSONObject();  
 			
 			httppost.addHeader("Authorization", token); 
 			httppost.addHeader("Accept", "application/json"); 
 
+			SamLog.e(TAG,"before execute");
 			HttpResponse response;  
-			response = httpclient.execute(httppost);  
+			response = httpclient.execute(httppost); 
+			SamLog.e(TAG,"after execute");
+			
  
 			statusCode = response.getStatusLine().getStatusCode();  
 			if (statusCode == HttpStatus.SC_OK) {  
@@ -100,6 +145,8 @@ public class HttpCommClient {
 					
 					JSONObject easemob = asker.getJSONObject("easemob");
 					hpinfo.easemob_username = easemob.getString("username");
+
+					hpinfo.avatar = getImageFilename(asker);
 					
 				}else if(category.equals("answer")){
 					SamLog.e(TAG,"it is answer");
@@ -113,6 +160,7 @@ public class HttpCommClient {
 					hpinfo.username = syservicer.getString("username");
 					JSONObject easemobA = syservicer.getJSONObject("easemob");
 					hpinfo.easemob_username = easemobA.getString("username");
+					hpinfo.avatar = getImageFilename(syservicer);
 
 					JSONObject quest = body.getJSONObject("quest");
 					hpinfo.quest_id = quest.getString("quest_id");
@@ -131,20 +179,36 @@ public class HttpCommClient {
 				
 			} 
 
+			
+
 			return true;
 		} catch (ClientProtocolException e) {
 			SamLog.e(TAG,"ClientProtocolException");
-			e.printStackTrace(); 
+			//e.printStackTrace(); 
 			return false;
 		} catch (IOException e) { 
 			SamLog.e(TAG,"IOException");
-			e.printStackTrace(); 
+			//e.printStackTrace(); 
+			synchronized(pushLock){
+				if(isInterrupt){
+					isInterrupt = false;
+					
+				}
+			}
 			return false;
 		} catch (Exception e) { 
 			SamLog.e(TAG,"Exception");
-			e.printStackTrace(); 
+			//e.printStackTrace(); 
 			return false;
-		}  
+		} finally{
+			if(httppost!=null) httppost.abort();
+			synchronized(pushLock){
+				if(pushhttpclient!=null){
+					pushhttpclient.getConnectionManager().shutdown();
+					pushhttpclient = null;
+				}
+			}  
+		}
 	}
 	
 	private void HttpPostData() {  
@@ -178,10 +242,12 @@ public class HttpCommClient {
 		} 
 	
 	private boolean HttpGetData(String uri){
+		DefaultHttpClient client = null;
+		HttpGet requestGet = null;
 		try{
 			//Log.e(TAG,"start HttpGetData...");
-			HttpGet requestGet = new HttpGet(uri);
-			DefaultHttpClient client = new DefaultHttpClient();
+			requestGet = new HttpGet(uri);
+			client = new DefaultHttpClient();
 			HttpParams params = client.getParams();
 			if(params==null){
 				params = new BasicHttpParams();
@@ -215,7 +281,13 @@ public class HttpCommClient {
 	    	SamLog.e(TAG,"Exception");
 	    	e.printStackTrace(); 
 	    	return false;
-	    } 
+	    } finally{
+			if(requestGet!=null) requestGet.abort();
+			if(client!=null){
+				client.getConnectionManager().shutdown();
+				client = null;
+			}
+		}
 	}
 	
 	public boolean signin(String username,String password){
@@ -267,6 +339,9 @@ public class HttpCommClient {
 					userinfo.phonenumber = user.getString("cellphone");
 					userinfo.password = password;
 					userinfo.usertype = user.getInt("type");
+					userinfo.lastupdate = user.getLong("lastupdate");
+					userinfo.imagefile = getImageFilename(user);
+					
 				}else{
 					SamLog.e(TAG,"ret:"+ret);
 				}
@@ -411,11 +486,13 @@ public class HttpCommClient {
 					userinfo.phonenumber = user.getString("cellphone");
 					userinfo.password = password;
 					userinfo.usertype = user.getInt("type");
+					userinfo.lastupdate = user.getLong("lastupdate");
 				}else{
 					SamLog.e(TAG,"ret:"+ret);
 				}
 				return true;
 			}else{
+				SamLog.e(TAG,"sign up statuc code:"+statusCode);
 				return false;
 			}
 		
@@ -718,5 +795,406 @@ public class HttpCommClient {
 
 		
 	}
+
+
+	private String getImageFilename(JSONObject jo){
+		String imgFileName = null;
+		
+		try{
+			JSONObject avatar = jo.getJSONObject("avatar");
+			imgFileName = avatar.getString("origin");
+			SamLog.e(TAG,"getImageFilename:"+imgFileName);
+			return imgFileName;
+		}catch(JSONException e){
+			SamLog.e(TAG,"no avatar for this user");	
+			return null;
+		}
+	}
+
+	
+	public boolean queryui(String phonenumber,String token){
+		try{
+			JSONObject queryui_header = new JSONObject();
+			queryui_header.putOpt("action", "query");
+			queryui_header.putOpt("token",token);
+
+			JSONObject jsonparam = new JSONObject();
+			jsonparam.putOpt("username", phonenumber);
+			
+			JSONObject queryui_body = new JSONObject();
+			queryui_body.putOpt("opt", 1);
+			queryui_body.put("param",jsonparam);
+
+			
+			JSONObject queryui_data = new JSONObject();
+			queryui_data.put("header", queryui_header);
+			queryui_data.put("body", queryui_body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",queryui_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL + "?" + param;
+			
+			SamLog.e(TAG,url+"test:"+queryui_data.toString());
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());
+				SamLog.e(TAG,"rev:"+rev);
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				if(ret == SamService.RET_QUERY_USERINFO_SERVER_OK){
+					JSONArray jsonArrayX = obj.getJSONArray("users");
+					for (int i = 0; i < jsonArrayX.length(); i++) {
+						JSONObject jo = (JSONObject) jsonArrayX.get(i);
+						ContactUser ui = new ContactUser();
+						//{"mail":"138","username":"138","cellphone":"1381196123","type":0}
+						ui.setusername(jo.getString("username"));
+						ui.setphonenumber(jo.getString("cellphone"));
+						ui.seteasemob_username(jo.getString("cellphone"));
+						ui.setusertype(jo.getInt("type"));
+						ui.setlastupdate(jo.getLong("lastupdate"));
+						ui.setimagefile(getImageFilename(jo));
+						uiArray.add(ui);
+					}
+					
+				}else{
+					SamLog.e(TAG,"ret:"+ret);
+				}
+				return true;
+			}else{
+				return false;
+			}
+		}catch (JSONException e) {  
+			// TODO Auto-generated catch block  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
+		
+	}
+
+
+
+	public boolean queryui(List<String> usernames,String token){
+		try{
+			JSONObject queryui_header = new JSONObject();
+			queryui_header.putOpt("action", "query");
+			queryui_header.putOpt("token",token);
+
+			JSONObject jsonparam = new JSONObject();
+			JSONArray paramArray = new JSONArray();
+			for(int i=0;i<usernames.size();i++){
+				paramArray.put(usernames.get(i));
+			}
+			jsonparam.put("usernames", paramArray);
+			
+			JSONObject queryui_body = new JSONObject();
+			queryui_body.putOpt("opt", 2);
+			queryui_body.put("param",jsonparam);
+
+			
+			JSONObject queryui_data = new JSONObject();
+			queryui_data.put("header", queryui_header);
+			queryui_data.put("body", queryui_body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",queryui_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL + "?" + param;
+			
+			SamLog.e(TAG,url+"test:"+queryui_data.toString());
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());
+				SamLog.e(TAG,"rev:"+rev);
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				if(ret == SamService.RET_QUERY_USERINFO_SERVER_OK){
+					JSONArray jsonArrayX = obj.getJSONArray("users");
+					for (int i = 0; i < jsonArrayX.length(); i++) {
+						JSONObject jo = (JSONObject) jsonArrayX.get(i);
+						ContactUser ui = new ContactUser();
+						//{"mail":"138","username":"138","cellphone":"1381196123","type":0}
+						ui.setusername(jo.getString("username"));
+						ui.setphonenumber(jo.getString("cellphone"));
+						ui.seteasemob_username(jo.getString("cellphone"));
+						ui.setusertype(jo.getInt("type"));
+						ui.setlastupdate(jo.getLong("lastupdate"));
+						ui.setimagefile(getImageFilename(jo));
+						uiArray.add(ui);
+					}
+					
+				}else{
+					SamLog.e(TAG,"ret:"+ret);
+				}
+				return true;
+			}else{
+				return false;
+			}
+		}catch (JSONException e) {  
+			// TODO Auto-generated catch block  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
+		
+	}
+
+public boolean uploadavatar(String filePath, String token){
+		String CrLf = "\r\n";
+
+		HttpURLConnection conn = null;
+		OutputStream os = null;
+		InputStream is = null;
+		String photoName = getPhotoName(filePath);
+
+		if(photoName == null) {
+			return false;
+		}
+
+		try {
+			JSONObject av_header = new JSONObject();
+			av_header.putOpt("action", "update-avatar");
+			av_header.putOpt("token", token);
+			
+			JSONObject av_body = new JSONObject();
+			av_body.putOpt("type", "1");
+			
+			JSONObject av_data = new JSONObject();
+			av_data.put("header", av_header);
+			av_data.put("body", av_body);
+			
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",av_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url_chat = URL_AVATAR + "?" + param;
+
+			
+			java.net.URL url = new java.net.URL(url_chat);
+			conn = (HttpURLConnection)url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+
+			InputStream imgIs = new FileInputStream(new File(filePath));
+			byte[] imgData = new byte[imgIs.available()];
+			imgIs.read(imgData);
+			imgIs.close();
+
+			String message1 = "";
+			message1 += "Accept:"
+					+ " text/html,application/xml,"
+					+ "application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"
+					+ CrLf;
+			message1 += "Connection:" + " Keep-Alive" + CrLf;
+			message1 += "User-Agent:"
+					+ " Mozilla/5.0 (X11; U; Linux "
+					+ "i686; en-US; rv:1.8.1.6) Gecko/20061201 Firefox/2.0.0.6 (Ubuntu-feisty)"
+					+ CrLf;
+				
+			message1 += "-----------------------------4664151417711" + CrLf;
+			message1 += "Content-Disposition: form-data; name=\"photo\"; filename=\""+filePath.trim()+"\""
+					+ CrLf;
+			message1 += "Content-Type: image/jpeg" + CrLf;
+			message1 += CrLf;
+				
+			// the image is sent between the messages in the multipart
+			// message.
+
+			String message2 = "";
+			message2 += CrLf
+					+ "-----------------------------4664151417711--" + CrLf;
+
+			conn.setRequestProperty("Content-Type",
+					"multipart/form-data; boundary=---------------------------4664151417711");
+
+			
+			// might not need to specify the content-length when sending
+			// chunked
+			// data.
+			conn.setRequestProperty(
+					"Content-Length",
+					String.valueOf((message1.length() + message2.length() + imgData.length)));
+
+			SamLog.e(TAG,"m1:"+message1.length() +" m2:"+message2.length() + " imgLength:"+imgData.length );
+
+			os = conn.getOutputStream();
+
+			os.write(message1.getBytes());
+
+			// FIXME
+			int index = 0;
+			int size = 1024;
+			do {
+				if ((index + size) > imgData.length) {
+					size = imgData.length - index;
+				}
+				os.write(imgData, index, size);
+				index += size;
+			} while (index < imgData.length);
+
+			os.write(message2.getBytes());
+			os.flush();
+
+			is = conn.getInputStream();
+			StringBuilder sb = new StringBuilder();
+			char buff = 512;
+			int len;
+			byte[] data = new byte[buff];
+			do {
+				len = is.read(data);
+
+				if (len > 0) {
+					sb.append(new String(data, 0, len));
+				}
+			} while (len > 0);
+
+			String rev = sb.toString();
+			SamLog.e(TAG,"rev:"+rev);
+
+			JSONObject obj = new JSONObject(rev);
+			ret = obj.getInt("ret");
+
+			if(ret == SamService.RET_UPLOAD_AVATAR_SERVER_OK){
+				return true;
+			}else{
+				return false;
+			}
+		} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+		} finally {
+			try {
+				if(os!=null) os.close();
+			} catch (Exception e) {
+			}
+
+			try {
+				if(is!=null) is.close();
+			} catch (Exception e) {
+			}
+
+			try {
+				if(conn!=null) conn.disconnect();
+			} catch (Exception e) {
+			}
+
+			
+		}
+	}
+
+	private String getPhotoName(String photoPath) {
+		int index  = photoPath.lastIndexOf("/");
+		if(index != -1) {
+			return photoPath.substring(index);
+		} else {
+			return null;
+		}
+	}
+	
+	private byte[] readStream(InputStream inStream) throws Exception{   
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();   
+        byte[] buffer = new byte[1024];   
+        int len = 0;   
+        while( (len=inStream.read(buffer)) != -1){   
+            outStream.write(buffer, 0, len);   
+        }   
+        outStream.close();   
+        inStream.close();   
+        return outStream.toByteArray();   
+    } 
+
+	public byte[] getImage(String path){   
+		HttpURLConnection conn =null;
+
+		try{
+			java.net.URL url = new java.net.URL(path);   
+			conn = (HttpURLConnection) url.openConnection();   
+			conn.setRequestMethod("GET");   
+			InputStream inStream = conn.getInputStream();   
+			if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){   
+				return readStream(inStream);   
+			}
+			return null;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try {
+				if(conn!=null) conn.disconnect();
+			} catch (Exception e) {
+			}
+		}
+ 
+	}
+
+	/*
+	private String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException
+	{
+    StringBuilder result = new StringBuilder();
+    boolean first = true;
+
+    for (NameValuePair pair : params)
+    {
+        if (first)
+            first = false;
+        else
+            result.append("&");
+
+        result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+        result.append("=");
+        result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
+    }
+
+    return result.toString();
+	}*/
 	
 }

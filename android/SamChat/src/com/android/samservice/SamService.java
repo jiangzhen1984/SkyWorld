@@ -1,9 +1,11 @@
 package com.android.samservice;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,10 +16,12 @@ import com.android.samchat.SamMe_Fragment;
 import com.android.samchat.SamContact_Fragment;
 import com.android.samchat.SamQADetailActivity;
 import com.android.samchat.SamService_Fragment;
+import com.android.samchat.skyworld;
 import com.android.samservice.info.*;
 import com.android.samservice.provider.*;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
@@ -36,17 +40,22 @@ public class SamService{
 	public static final String TAG="SamService";
 	
     public static final int MIN_MPHONE_NUMBER_LENGTH = 6;
-    public static final int MIN_USERNAME_LENGTH = 3;
+    public static final int MIN_USERNAME_LENGTH = 1;
     public static final int MAX_USERNAME_LENGTH = 15;
     public static final int MIN_PASSWORD_LENGTH = 6;
     public static final int MAX_PASSWORD_LENGTH = 32;
     public static final int SAMSERVICE_HANDLE_TIMEOUT=10000;
+    public static final int SAMSERVICE_PUSH_HANDLE_RECONNECT_TIMEOUT=60000;
 	
     public static final String FINISH_ALL_SIGN_ACTVITY = "com.android.sam.finishAllSign";
     public static final String EASEMOBNAMEGOT = "com.android.sam.easemobnamegot";
+    public static final String CONTACT_INVITE_NEW = "com.android.sam.contactinvitenew";
+    public static final String CONTACT_INVITE_UPDATE = "com.android.sam.contactinviteupdate";
     
     public static String sam_cache_path;
     public static String sam_download_path;
+    public static String AVATAR_FOLDER = "/avfolder";
+    public static String AVATAR="/avatar";
     public static final String TOKEN_FILE="token";
     public static final String UP_FILE="up";
 
@@ -137,10 +146,52 @@ public class SamService{
 	public static final int RET_ANSWER_FROM_SERVER_NO_SUCH_QUESTION = -601;
 	public static final int RET_ANSWER_FROM_SERVER_NOT_SYSERVICER = -602;
 
+    public static final int MSG_QUERY_USERINFO=6;
+	//query user info
+    	public static final int R_QUERY_USERINFO_OK=0;
+    	public static final int R_QUERY_USERINFO_ERROR=1;
+    	public static final int R_QUERY_USERINFO_FAILED=2;
+
+	public static final int R_QUERY_USERINFO_ERROR_TOKEN_FILE_EXCEPTION = 0;
+	public static final int R_QUERY_USERINFO_ERROR_TOKEN_FILE_NULL = 1;
+	public static final int R_QUERY_USERINFO_ERROR_HTTP_EXCEPTION = 2;
+	public static final int R_QUERY_USERINFO_ERROR_TIMEOUT = 3;
+
+	public static final int RET_QUERY_USERINFO_SERVER_OK = 0;
+	public static final int RET_QUERY_USERINFO_SERVER_HTTP_FAILED = -1;//parse http failed
+	public static final int RET_QUERY_USERINFO_SERVER_ACTION_NOT_SUPPORT = -2;
+	public static final int RET_QUERY_USERINFO_SERVER_PARAM_NOT_SUPPORT = -3;
+	public static final int RET_QUERY_USERINFO_SERVER_TOKEN_FORMAT_ERROR = -4;
+	public static final int RET_QUERY_USERINFO_SERVER_TOKEN_INVALID = -5;
+	public static final int RET_QUERY_USERINFO_SERVER_NO_SUCH_USER = -601;
+
+    public static final int MSG_UPLOAD_AVATAR = 7;
+	//upload avatar
+    	public static final int R_UPLOAD_AVATAR_OK=0;
+    	public static final int R_UPLOAD_AVATAR_ERROR=1;
+    	public static final int R_UPLOAD_AVATAR_FAILED=2;
+
+	public static final int R_UPLOAD_AVATAR_ERROR_TOKEN_FILE_EXCEPTION = 0;
+	public static final int R_UPLOAD_AVATAR_ERROR_TOKEN_FILE_NULL = 1;
+	public static final int R_UPLOAD_AVATAR_ERROR_HTTP_EXCEPTION = 2;
+	public static final int R_UPLOAD_AVATAR_ERROR_TIMEOUT = 3;
+
+	public static final int RET_UPLOAD_AVATAR_SERVER_OK = 0;
+	public static final int RET_UPLOAD_AVATAR_SERVER_HTTP_FAILED = -1;//parse http failed
+	public static final int RET_UPLOAD_AVATAR_SERVER_ACTION_NOT_SUPPORT = -2;
+	public static final int RET_UPLOAD_AVATAR_SERVER_PARAM_NOT_SUPPORT = -3;
+	public static final int RET_UPLOAD_AVATAR_SERVER_TOKEN_FORMAT_ERROR = -4;
+	public static final int RET_UPLOAD_AVATAR_SERVER_TOKEN_INVALID = -5;
+	public static final int RET_UPLOAD_AVATAR_SERVER_NO_SUCH_USER = -601;
+
+
+	
+
 	public static final int MSG_PUSH_MSG_GOTANSWER = 0;
 	public static final int MSG_PUSH_MSG_PUSHSERVERSHUTDOWN = 1;	
 	public static final int MSG_PUSH_MSG_GOTQUESTION = 2;
 	public static final int MSG_PUSH_MSG_EASEMOB_INFO = 3;
+	public static final int MSG_PUSH_MSG_RECONNECT_TIMOUT = 4;
 
 	private static SamService mSamService;
 	private static Context mContext;
@@ -159,16 +210,17 @@ public class SamService{
 	
 	private String current_question_id;
 	private String current_token;
-	private Object dbLock;
-	private DBManager dbHandle;
 
-	
+	private SamDBDao dao;	
 
 	private LoginUser current_user;
 
-	private ArrayList<ActiveQuestion> activeQuestionArray = new ArrayList<ActiveQuestion>();
+	private List<ActiveQuestion> activeQuestionArray = new ArrayList<ActiveQuestion>();
 
-	public ArrayList<ActiveQuestion> getActiveQuestionArray(){
+
+	
+
+	public List<ActiveQuestion> getActiveQuestionArray(){
 		return activeQuestionArray;
 	}
 
@@ -179,133 +231,6 @@ public class SamService{
 	public LoginUser get_current_user(){
 		return current_user;
 	}
-
-	public long add_update_LoginUser_db(LoginUser user){
-		synchronized(dbLock){
-			LoginUser tuser = dbHandle.queryLogInUser(user.phonenumber);
-			if(tuser !=null){
-				return dbHandle.updateLogInUser(tuser.id, user);
-			}else{
-				return dbHandle.addLogInUser(user);
-			}	
-		}
-		
-	}
-
-	public long update_LogoutUser_db(LoginUser user){
-		synchronized(dbLock){
-			user.status = LoginUser.INACTIVE;
-			user.logouttime = System.currentTimeMillis();
-			return dbHandle.updateLogInUser(user.id, user);
-		}
-	}
-
-	public LoginUser query_activie_LoginUser_db(){
-		synchronized(dbLock){
-			return dbHandle.queryLogInUser();
-		}
-	}
-
-	public LoginUser query_LoginUser_db(String cellphone){
-		synchronized(dbLock){
-			return dbHandle.queryLogInUser(cellphone);
-		}
-	}
-
-	public long add_update_SendQuestion_db(SendQuestion question){
-		synchronized(dbLock){
-			SendQuestion tq = dbHandle.querySendQuestion(question.question_id);
-			if(tq !=null){
-				return dbHandle.updateSendQuestion(tq.id, question);
-			}else{
-				return dbHandle.addSendQuestion(question);
-			}	
-		}
-
-	}
-
-	public SendQuestion query_send_question_db(String question_id){
-		synchronized(dbLock){
-			return dbHandle.querySendQuestion(question_id);
-		}
-
-	}
-
-	public long add_update_ContactUser_db(ContactUser user){
-		synchronized(dbLock){
-			ContactUser tuser = dbHandle.queryContactUser(user.get_phonenumber());
-			if(tuser !=null){
-				return dbHandle.updateContactUser(tuser.get_id(), user);
-			}else{
-				return dbHandle.addContactUser(user);
-			}	
-		}
-	}
-
-	public  ContactUser query_ContactUser_db(String phonenumber){
-		synchronized(dbLock){
-			return dbHandle.queryContactUser(phonenumber);
-		}
-
-	}
-
-	public  ContactUser query_ContactUser_db(long id){
-		synchronized(dbLock){
-			return dbHandle.queryContactUser(id);
-		}
-
-	}
-
-	
-	public long add_update_ReceivedQuestion_db(ReceivedQuestion quest){
-		synchronized(dbLock){
-			ReceivedQuestion tq = dbHandle.queryReceivedQuestion(quest.getquestion_id());
-			if(tq !=null){
-				return dbHandle.updateReceivedQuestion(tq.getid(), quest);
-			}else{
-				return dbHandle.addReceivedQuestion(quest);
-			}	
-		}
-	}
-
-	public ArrayList<ReceivedQuestion> query_RecentReceivedQuestion_db(long num){
-		synchronized(dbLock){
-			return dbHandle.queryRecentReceivedQuestion(num);
-		}
-	}
-
-	public long add_SendAnswer_db(SendAnswer answer){
-		synchronized(dbLock){
-				return dbHandle.addSendAnswer(answer);
-		}
-	}
-
-	public long update_SendAnswer_db(SendAnswer answer){
-		synchronized(dbLock){
-				return dbHandle.updateSendAnswer(answer.getid(),answer);
-		}
-	}
-
-	public ArrayList<SendAnswer> query_SendAnswer_db(String question_id){
-		synchronized(dbLock){
-				return dbHandle.querySendAnswer(question_id);
-		}
-	}
-
-	public long add_ReceivedAnswer_db(ReceivedAnswer answer){
-		synchronized(dbLock){
-				return dbHandle.addReceivedAnswer(answer);
-		}
-	}
-
-	public ArrayList<ReceivedAnswer> query_ReceivedAnswer_db(String question_id){
-		synchronized(dbLock){
-				return dbHandle.queryReceivedAnswer(question_id);
-		}
-	}
-
-
-	
 
 	synchronized public void store_current_token(String token){
 			current_token = token;
@@ -354,6 +279,7 @@ public class SamService{
     }
 
 	public static synchronized SamService getInstance(){
+		mContext = skyworld.appContext;
 		if(mSamService == null){
 			mSamService	= new SamService();
 		}
@@ -361,19 +287,22 @@ public class SamService{
 	}
 
 	public static synchronized SamService getInstance(Activity activity){
-		mContext = activity.getApplicationContext();
+		mContext = skyworld.appContext;//activity.getApplicationContext();
 		if(mSamService == null){
 			mSamService	 = new SamService();
 		}
 		return mSamService;
 	}
+
+	public SamDBDao getDao(){
+		return dao;
+	}
+
+	private SamService(){
+		dao = new SamDBDao(mContext);
 	
-    private SamService(){
-	dbHandle = new DBManager(mContext);
-	dbLock = new Object();
-	
-    	InitHandlerThread();
-    }
+		InitHandlerThread();
+	}
     
     private void InitHandlerThread(){
     	mHandlerThread = new HandlerThread("SamService");
@@ -401,10 +330,17 @@ public class SamService{
 		mSamServiceHandler.removeMessages(MSG_AUTOLOGIN_CALLBACK);
 		mSamServiceHandler.removeMessages(MSG_SEND_QUESTION);
 		mSamServiceHandler.removeMessages(MSG_CANCEL_QUESTION);
+		mSamServiceHandler.removeMessages(MSG_UPGRADE_TO_SERVICER);
+		mSamServiceHandler.removeMessages(MSG_ANSWER_QUESTION);
+		mSamServiceHandler.removeMessages(MSG_QUERY_USERINFO);
+		mSamServiceHandler.removeMessages(MSG_UPLOAD_AVATAR);
+
 		mHandlerThread.getLooper().quit();
 
 		mSamPushServiceHandler.removeMessages(MSG_PUSH_MSG_GOTANSWER);
 		mSamPushServiceHandler.removeMessages(MSG_PUSH_MSG_PUSHSERVERSHUTDOWN);
+		mSamPushServiceHandler.removeMessages(MSG_PUSH_MSG_GOTQUESTION);
+		mSamPushServiceHandler.removeMessages(MSG_PUSH_MSG_EASEMOB_INFO);
 		mPushThread.getLooper().quit();
 
 		synchronized(pushLock){
@@ -417,8 +353,10 @@ public class SamService{
 		answer_hndl = null;
 		servicer_question_hndl = null;
 		
-		if(dbHandle!=null) 
-			dbHandle.closeDB();
+		if(dao!=null){ 
+			dao.close();
+			dao = null;
+		}
 
 
 	}
@@ -465,7 +403,7 @@ public class SamService{
     				return;
 			}
 			
-			if(!cbobj.isBroadcast){
+			if(!cbobj.isBroadcast && cbobj.smcb==null){
     				if(cbobj.cbHandler==null || (hndl = cbobj.cbHandler.get() )== null){
 					SamLog.e(TAG, "SamServiceTimeOutHandler:cbhandler has been destroy, drop cbMsg ...");
     					return;
@@ -495,7 +433,7 @@ public class SamService{
 						}else if(samobj.isSenda()){
 							SendAnswer sda = ((SendaCoreObj)samobj).sda;
 							sda.setstatus(SendAnswer.SEND_FAILED);
-							update_SendAnswer_db(sda);
+							dao.update_SendAnswer_db(sda);
 							Intent intent = new Intent();
 							intent.setAction(SamQADetailActivity.SEND_ANSWER_STATUS_BROADCAST);
 							Bundle bundle = new Bundle();
@@ -503,6 +441,10 @@ public class SamService{
 							intent.putExtras(bundle);
 							intent.putExtra("NoSuchQuestion", true);
 							SamLog.e(TAG,"Send Answer FAILED:timeout!");
+						}else if(samobj.isQueryui()){
+							cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_TIMEOUT);
+						}else if(samobj.isUploadAvatar()){
+							cbobj.smcb.onError(R_UPLOAD_AVATAR_ERROR_TIMEOUT);
 						}
 					}
 
@@ -529,7 +471,7 @@ public class SamService{
     			return;
 		}
 			
-		if(!cbobj.isBroadcast){
+		if(!cbobj.isBroadcast && cbobj.smcb ==null){
     			if(cbobj.cbHandler==null || (hndl = cbobj.cbHandler.get() )== null){
 				SamLog.e(TAG, "SamServiceHandler:cbhandler has been destroy, drop cbMsg ...");
     				return;
@@ -551,6 +493,13 @@ public class SamService{
 
 		case MSG_ANSWER_QUESTION:
 			do_answer_question((SamCoreObj)msg.obj);
+			break;
+		case MSG_QUERY_USERINFO:
+			do_query_userinfo((SamCoreObj)msg.obj);
+			break;
+
+		case MSG_UPLOAD_AVATAR:
+			do_upload_avatar((SamCoreObj)msg.obj);
 			break;
 
 		case MSG_AUTOLOGIN_CALLBACK:
@@ -577,6 +526,14 @@ public class SamService{
 					upgrade(cbobj.cbHandler.get(),cbobj.cbMsg);
 				}else if(samobj.isSenda()){
 					reanswer_question(((SendaCoreObj)samobj).sda);
+				}else if(samobj.isQueryui()){
+					if(((QueryuiCoreObj)samobj).phonenumber!=null){
+						query_user_info_from_server(((QueryuiCoreObj)samobj).phonenumber,cbobj.smcb);
+					}else if(((QueryuiCoreObj)samobj).easemob_names!=null){
+						query_user_info_from_server(((QueryuiCoreObj)samobj).easemob_names,cbobj.smcb);
+					}
+				}else if(samobj.isUploadAvatar()){
+					upload_avatar(((UploadAvatarCoreObj)samobj).filePath, cbobj.smcb);
 				}
 			}else{
 				SamCoreObj samobj = (SamCoreObj)msg.obj;
@@ -604,7 +561,7 @@ public class SamService{
 				}else if(samobj.isSenda()){
 					SendAnswer sda = ((SendaCoreObj)samobj).sda;
 					sda.setstatus(SendAnswer.SEND_FAILED);
-					update_SendAnswer_db(sda);
+					dao.update_SendAnswer_db(sda);
 					Intent intent = new Intent();
 					intent.setAction(SamQADetailActivity.SEND_ANSWER_STATUS_BROADCAST);
 					Bundle bundle = new Bundle();
@@ -612,6 +569,10 @@ public class SamService{
 					intent.putExtras(bundle);
 					intent.putExtra("FatalError", false);
 					SamLog.e(TAG,"Send Answer FAILED: Auto Sign in!");
+				}else if(samobj.isQueryui()){
+					cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_TOKEN_FILE_NULL);
+				}else if(samobj.isUploadAvatar()){
+					cbobj.smcb.onError(R_UPLOAD_AVATAR_ERROR_TOKEN_FILE_NULL);
 				}
 				
 			}
@@ -636,7 +597,7 @@ public class SamService{
 		}
 
 		private boolean needPushToUI(int msg){
-			if(msg == MSG_PUSH_MSG_EASEMOB_INFO ){
+			if(msg == MSG_PUSH_MSG_EASEMOB_INFO || msg == MSG_PUSH_MSG_RECONNECT_TIMOUT){
 				return false;
 			}else{
 				return true;
@@ -676,20 +637,23 @@ public class SamService{
 				SamLog.i(TAG,"answer is got!");
 				HttpPushInfo phinfoa = (HttpPushInfo)msg.obj;
 				ContactUser user_answer = new ContactUser();
-				user_answer.set_username(phinfoa.username);
-				user_answer.set_phonenumber(phinfoa.cellphone);
-				user_answer.set_unique_id(phinfoa.unique_id);
-				user_answer.set_easemob_username(phinfoa.easemob_username);
-				add_update_ContactUser_db(user_answer);
-				user_answer = query_ContactUser_db(phinfoa.cellphone);
+				user_answer.setusername(phinfoa.username);
+				user_answer.setphonenumber(phinfoa.cellphone);
+				user_answer.setunique_id(phinfoa.unique_id);
+				user_answer.seteasemob_username(phinfoa.easemob_username);
+				dao.add_update_ContactUser_db(user_answer);
+				user_answer = dao.query_ContactUser_db(phinfoa.cellphone);
 
 				ReceivedAnswer ra = new ReceivedAnswer();
 				ra.answer = phinfoa.answer;
-				ra.contactuserid = user_answer.get_id();
+				ra.contactuserid = user_answer.getid();
 				ra.question_id = phinfoa.quest_id;
 
 				if(isAnswerValid(phinfoa.quest_id)){
-					add_ReceivedAnswer_db(ra);
+					if(phinfoa.avatar!=null){
+						downloadAvatar(new HttpCommClient(),phinfoa.avatar,user_answer.getphonenumber(),user_answer.getusername());
+					}
+					dao.add_ReceivedAnswer_db(ra);
 					Message msg1 = hndl.obtainMessage(SamService_Fragment.MSG_ANSWER_BACK, ra);
 					hndl.sendMessage(msg1);
 				}
@@ -707,54 +671,85 @@ public class SamService{
 					break;
 				}else{
 					HttpPushInfo phinfoq = (HttpPushInfo)msg.obj;
-					
 					ContactUser user = new ContactUser();
-					user.set_username(phinfoq.username);
-					user.set_phonenumber(phinfoq.cellphone);
-					user.set_unique_id(phinfoq.unique_id);
-					user.set_easemob_username(phinfoq.easemob_username);
-					add_update_ContactUser_db(user);
-					user = query_ContactUser_db(phinfoq.cellphone);
+					user.setusername(phinfoq.username);
+					user.setphonenumber(phinfoq.cellphone);
+					user.setunique_id(phinfoq.unique_id);
+					user.seteasemob_username(phinfoq.easemob_username);
+					dao.add_update_ContactUser_db(user);
+					//SamLog.e(TAG,"user id:"+user.getid());
+					user = dao.query_ContactUser_db(phinfoq.cellphone);
+					//SamLog.e(TAG,"user "+phinfoq.cellphone+" id:"+user2.getid());
+					
 
-					ReceivedQuestion rq = new ReceivedQuestion();
-					rq.setquestion_id(phinfoq.quest_id);
-					rq.setquestion(phinfoq.quest);
-					rq.setcontactuserid(user.get_id());
-					rq.setstatus(ReceivedQuestion.ACTIVE);
-					rq.setshown(ReceivedQuestion.NOT_SHOWN);
-					rq.setreceivedtime(phinfoq.datetime);	
-					SamLog.e(TAG,"Store in time:"+phinfoq.datetime);
-					add_update_ReceivedQuestion_db(rq);
+					ReceivedQuestion rq=null;
+					int msgid=0;
+					if(phinfoq.opt == 0){
+						rq = new ReceivedQuestion();
+						rq.setquestion_id(phinfoq.quest_id);
+						rq.setquestion(phinfoq.quest);
+						rq.setcontactuserid(user.getid());
+						rq.setstatus(ReceivedQuestion.ACTIVE);
+						rq.setshown(ReceivedQuestion.NOT_SHOWN);
+						rq.setreceivedtime(phinfoq.datetime);
+						rq.setreceivercellphone(get_current_user().getphonenumber());
+						msgid = SamChats_Fragment.MSG_QUESTION_RECEIVED;
+					}else if(phinfoq.opt == 1){
+						rq = dao.query_ReceivedQuestion_db(phinfoq.quest_id);
+						if(rq!=null){
+							rq.setstatus(ReceivedQuestion.CANCEL);
+							rq.setcanceledtime(phinfoq.datetime);
+							msgid = SamChats_Fragment.MSG_QUESTION_CANCEL;
+						}else{
+							break;
+						}
+					}else{
+						break;
+					}
 
-					Message msg1 = sq_hndl.obtainMessage(SamChats_Fragment.MSG_QUESTION_RECEIVED, null);
+					if(phinfoq.avatar!=null){
+						downloadAvatar(new HttpCommClient(),phinfoq.avatar,user.getphonenumber(),user.getusername());
+					}
+
+					dao.add_update_ReceivedQuestion_db(rq);
+					Message msg1 = sq_hndl.obtainMessage(msgid, null);
 					sq_hndl.sendMessage(msg1);
+					
 					break;
 				}
 			case MSG_PUSH_MSG_EASEMOB_INFO:
 				SamLog.i(TAG,"EASEMOB_INFO is got");
 				HttpPushInfo phinfoq = (HttpPushInfo)msg.obj;
-				LoginUser user = query_LoginUser_db(phinfoq.cellphone);
+				LoginUser user = dao.query_LoginUser_db(phinfoq.cellphone);
 				if(user != null){
 					if(user.easemob_username == null){
-						SamLog.i(TAG,"EASEMOB_INFO not exited, store into db:easemob_username = "+phinfoq.easemob_username);
+						SamLog.i(TAG,"EASEMOB_INFO not existed, store into db:easemob_username = "+phinfoq.easemob_username);
 						user.unique_id = phinfoq.unique_id;
 						user.easemob_username = phinfoq.easemob_username;
-						add_update_LoginUser_db(user);
-						
+						dao.add_update_LoginUser_db(user);
+												
 						if(user.status == LoginUser.ACTIVE){
 							set_current_user(user);
 							Intent intent = new Intent();
 							intent.setAction(SamService.EASEMOBNAMEGOT);
 							mContext.sendBroadcast(intent);
+							SamLog.i(TAG,"update current user:" + user.easemob_username);
 						}
 						
-						SamLog.i(TAG,"update current user:" + user.easemob_username);
+						
 						
 					}else{
 						SamLog.i(TAG,"EASEMOB_INFO existed, drop it");
 					}
 				}else{
 					SamLog.i(TAG,"Invalid cellphone number ,  drop this EASEMOB_INFO");
+				}
+				break;
+
+			case MSG_PUSH_MSG_RECONNECT_TIMOUT:
+				cancelHeartTimeOut();
+				if(mWaitThread!=null){
+					mWaitThread.InterruptWaitThread();
 				}
 				break;
 			
@@ -779,6 +774,9 @@ public class SamService{
 			return ret;
 		}
 	}
+
+	
+	
 	
 	public void cancel_question(Handler callback,int cbMsg){
 		CBObj obj = new CBObj(callback,cbMsg);
@@ -823,7 +821,7 @@ public class SamService{
 		sda.setquestion_id(question_id);
 		sda.setanswer(answer);
 		sda.setloginuserid(get_current_user().getid());
-		long id = add_SendAnswer_db(sda);
+		long id = dao.add_SendAnswer_db(sda);
 		sda.setid(id);
 		SamLog.e(TAG,"store answer into db:"+id);
 		
@@ -848,6 +846,334 @@ public class SamService{
 		startTimeOut(samobj);
 
 		SamLog.e(TAG,"answer_question");
+	}
+
+	
+	/*public void query_user_info_from_server(Handler callback,int cbMsg,String phonenumber){
+ 		CBObj obj = new CBObj(callback,cbMsg);
+		SamCoreObj samobj = new QueryuiCoreObj(obj,phonenumber);
+
+		Message msg = mSamServiceHandler.obtainMessage(MSG_QUERY_USERINFO, samobj);
+		mSamServiceHandler.sendMessage(msg);
+
+		startTimeOut(samobj);
+
+	}*/
+
+
+	public void query_user_info_from_server(List<String>easemob_names,SMCallBack SMcb){
+ 		CBObj obj = new CBObj(SMcb);
+		SamCoreObj samobj = new QueryuiCoreObj(obj,easemob_names);
+
+		Message msg = mSamServiceHandler.obtainMessage(MSG_QUERY_USERINFO, samobj);
+		mSamServiceHandler.sendMessage(msg);
+
+		startTimeOut(samobj);
+
+	}
+
+	public void query_user_info_from_server(String phonenumber,SMCallBack SMcb){
+ 		CBObj obj = new CBObj(SMcb);
+		SamCoreObj samobj = new QueryuiCoreObj(obj,phonenumber);
+
+		Message msg = mSamServiceHandler.obtainMessage(MSG_QUERY_USERINFO, samobj);
+		mSamServiceHandler.sendMessage(msg);
+
+		startTimeOut(samobj);
+
+	}
+
+	public void upload_avatar(String filePath, SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj  samobj = new UploadAvatarCoreObj(obj,filePath);
+		Message msg = mSamServiceHandler.obtainMessage(MSG_UPLOAD_AVATAR,samobj);
+		mSamServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+	}
+
+	
+
+	private void do_upload_avatar(SamCoreObj samobj){
+		CBObj cbobj = samobj.refCBObj;
+		UploadAvatarCoreObj avobj = (UploadAvatarCoreObj)samobj;
+		
+		String token = get_current_token();
+
+		if(token == null){
+			SamLog.e(TAG, "token is null, should never run to here");
+			cbobj.smcb.onError(R_UPLOAD_AVATAR_ERROR_TOKEN_FILE_NULL);
+			return;
+		}
+
+		HttpCommClient hcc = new HttpCommClient();
+		if(hcc.uploadavatar(avobj.filePath, token)){
+			if(hcc.ret == RET_UPLOAD_AVATAR_SERVER_OK){
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				
+				SamLog.e(TAG,"upload avatar ok");
+				cbobj.smcb.onSuccess(null);
+				
+			}else if(hcc.ret == RET_UPLOAD_AVATAR_SERVER_TOKEN_INVALID){
+				SamLog.e(TAG,"upload avatar TOKEN INVALIDE!");
+				/*auto sign in*/
+				SignService.getInstance().attemptAutoSignIn(mSamServiceHandler, MSG_AUTOLOGIN_CALLBACK,samobj);
+			}else{
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
+			}
+
+		}else{
+			boolean continue_run = true;
+			cancelTimeOut(samobj);
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+
+			cbobj.smcb.onError(R_UPLOAD_AVATAR_ERROR_HTTP_EXCEPTION);
+		}
+	}
+
+
+	private String getShortImgName(String photoPath) {
+		int index  = photoPath.lastIndexOf("origin_");
+		if(index != -1) {
+			return photoPath.substring(index);
+		} else {
+			return null;
+		}
+	}
+
+	private boolean saveAvatar(String path, String fileName,byte[] data){
+		File filePath = null; 
+		File file = null;
+		FileOutputStream fos = null;
+
+		SamLog.e(TAG,"data size:" + data.length);
+
+		try{
+			filePath = new File(path);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+
+			file = new File(path  +"/"+ fileName);
+
+			if(!file.exists()){
+				file.createNewFile();
+			}
+  
+			fos = new FileOutputStream(file);    
+  
+			fos.write(data); 
+
+			return true;
+  
+		}catch(Exception e){
+			return false;
+			
+		}finally{
+			try{
+				if(fos!=null) fos.close();
+			}catch(Exception e){
+
+			}
+
+		}
+
+	}
+
+	public void deleteOldAvatar(String oldAvatar){
+		if(oldAvatar == null){
+			return;
+		}
+		
+		//delete avatar file
+		File filePath = new File(SamService.sam_cache_path+SamService.AVATAR_FOLDER);
+
+		if(filePath.exists()){
+			File file = new File(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+oldAvatar);
+			if(file.exists()){
+				file.delete();
+			}
+		}
+	}
+
+	private void downloadAvatar(HttpCommClient hcc,String imagefile,String phonenumber,String username){
+		byte[] data=null;
+		String shortImg=null;
+		boolean downSucceed=false;
+		StringBuffer oldAvatar=new StringBuffer();
+		if(imagefile!=null && (shortImg = getShortImgName(imagefile))!=null 
+			&& (!dao.isAvatarExistedInDB(phonenumber,shortImg)||!dao.isAvatarExistedInFS(shortImg))){
+			data = hcc.getImage(imagefile);
+			if(data!=null){
+				downSucceed = saveAvatar(SamService.sam_cache_path+SamService.AVATAR_FOLDER, shortImg, data);
+			}
+		}
+
+		if(downSucceed){
+			SamLog.e(TAG,"download avatar succeed and update into db");
+			dao.add_update_AvatarRecord_db(
+				phonenumber,
+				username,
+				shortImg,
+				oldAvatar
+			);
+
+			if(oldAvatar.length()!=0){
+				deleteOldAvatar(oldAvatar.toString());
+			}
+		}
+	}
+
+
+	private void do_query_userinfo(SamCoreObj samobj){
+		boolean ret = false;
+		CBObj cbobj = samobj.refCBObj;
+		QueryuiCoreObj quiobj = (QueryuiCoreObj)samobj;
+		String phonenumber = quiobj.phonenumber;
+		List<String> easemob_usernames = quiobj.easemob_names;
+		
+		String token = get_current_token();
+
+		if(token == null){
+			SamLog.e(TAG, "token is null, should never run to here");
+			cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_TOKEN_FILE_NULL);
+			return;
+		}
+
+		HttpCommClient hcc = new HttpCommClient();
+
+		if(phonenumber!=null){
+			SamLog.e(TAG,"query phonenumber:"+phonenumber);
+			ret = hcc.queryui(phonenumber,token);
+		}else if(easemob_usernames!=null){
+			SamLog.e(TAG,"query username list");
+			ret = hcc.queryui(easemob_usernames,token);
+		}else{
+			throw new RuntimeException("fatal error: query userinfo param error!");
+		}
+		
+		if(ret){
+			if(hcc.ret == RET_QUERY_USERINFO_SERVER_OK){
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				
+				SamLog.e(TAG,"query phonenumber R_QUERY_USERINFO_OK");
+				
+				ContactUser userdb=null;
+				boolean need_update = false;
+
+				quiobj.uiArray = hcc.uiArray;
+				for(ContactUser cuser : hcc.uiArray){
+					need_update = false;
+					userdb = dao.query_ContactUser_db(cuser.getphonenumber());
+					if(userdb == null){
+						need_update = true;
+					}else if(userdb!=null && userdb.getlastupdate()!=cuser.getlastupdate()){
+						need_update = true;
+					} 
+
+					if(need_update){
+						dao.add_update_ContactUser_db(cuser);
+					}
+
+					if(cuser.imagefile!=null){
+						String shortImg = getShortImgName(cuser.imagefile);
+						if(shortImg != null){
+							AvatarRecord rd = dao.query_AvatarRecord_db(cuser.getphonenumber());
+							if(rd == null || rd.getavatarname()==null){
+								downloadAvatar(hcc, cuser.imagefile,cuser.phonenumber,cuser.username);
+							}else if(!rd.getavatarname().equals(shortImg)){
+								downloadAvatar(hcc, cuser.imagefile,cuser.phonenumber,cuser.username);
+							}else if(!dao.isAvatarExistedInFS(shortImg)){
+								downloadAvatar(hcc, cuser.imagefile,cuser.phonenumber,cuser.username);
+							}
+						}
+						
+					}
+				}
+				
+				cbobj.smcb.onSuccess((Object)hcc.uiArray);
+				
+			}else if(hcc.ret == RET_QUERY_USERINFO_SERVER_TOKEN_INVALID){
+				SamLog.e(TAG,"Query user info  TOKEN INVALIDE!");
+				/*auto sign in*/
+				SignService.getInstance().attemptAutoSignIn(mSamServiceHandler, MSG_AUTOLOGIN_CALLBACK,samobj);
+			}else{
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
+
+			}	
+
+		}else{
+				boolean continue_run = true;
+				cancelTimeOut(samobj);
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_HTTP_EXCEPTION);
+		}
+		
+
+
+		
 	}
 
 	private void do_answer_question(SamCoreObj samobj){
@@ -878,7 +1204,7 @@ public class SamService{
 				if(!continue_run) return;
 				
 				sda.setstatus(SendAnswer.SEND_SUCCEED);
-				update_SendAnswer_db(sda);
+				dao.update_SendAnswer_db(sda);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("SendAnswer",sda);
 				intent.putExtras(bundle);
@@ -902,7 +1228,7 @@ public class SamService{
 				if(!continue_run) return;
 
 				sda.setstatus(SendAnswer.SEND_FAILED);
-				update_SendAnswer_db(sda);
+				dao.update_SendAnswer_db(sda);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("SendAnswer",sda);
 				intent.putExtras(bundle);
@@ -922,16 +1248,16 @@ public class SamService{
 				if(!continue_run) return;
 				
 				sda.setstatus(SendAnswer.SEND_FAILED);
-				update_SendAnswer_db(sda);
+				dao.update_SendAnswer_db(sda);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("SendAnswer",sda);
 				intent.putExtras(bundle);
-				intent.putExtra("NoSuchQuestion", true);
+				intent.putExtra("NoSuchQuestion", false);
 				SamLog.e(TAG,"Send Answer FAILED:Send Failed!");
 			}
 		}else{
 			sda.setstatus(SendAnswer.SEND_FAILED);
-			update_SendAnswer_db(sda);
+			dao.update_SendAnswer_db(sda);
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("SendAnswer",sda);
 			intent.putExtras(bundle);
@@ -987,14 +1313,19 @@ public class SamService{
 				store_current_token(hcc.token_id);
 				
 				//update question info into db
-				LoginUser user = query_activie_LoginUser_db();
+				LoginUser user = dao.query_activie_LoginUser_db();
 				user.usertype = LoginUser.MIDSERVER;
-				add_update_LoginUser_db(user);
+				dao.add_update_LoginUser_db(user);
 				set_current_user(user);
 				
 
 				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_OK, 0,null);
 				hndl.sendMessage(msg);
+
+				if(mWaitThread!=null){
+					mWaitThread.InterruptWaitThread();
+				}
+				
 			}else{
 
 				if(hcc.ret == RET_UPGRADE_FROM_SERVER_TOKEN_INVALID){
@@ -1091,11 +1422,11 @@ public class SamService{
 
 				
 				//update question info into db
-				SendQuestion question = query_send_question_db(current_question_id);
+				SendQuestion question = dao.query_send_question_db(current_question_id);
 				if(question !=null){
 					question.canceltime = System.currentTimeMillis();
 					question.status = SendQuestion.CANCEL;
-					add_update_SendQuestion_db(question);
+					dao.add_update_SendQuestion_db(question);
 				}
 				
 				cbobj.qinfo.ret = hcc.ret;
@@ -1204,7 +1535,7 @@ public class SamService{
 
 				/*store new question into db*/
 				SendQuestion question = new SendQuestion(current_user.id,hcc.question_id,cbobj.qinfo.question);
-				if(add_update_SendQuestion_db(question)!=-1){
+				if(dao.add_update_SendQuestion_db(question)!=-1){
 					SamLog.e(TAG,"insert question success");
 				}
 				
@@ -1263,23 +1594,89 @@ public class SamService{
     }
 
 
+	private void cancelHeartTimeOut() {
+		if(mWaitThread!=null && mWaitThread.push_hndl!=null){
+			synchronized(pushLock){
+				SamPushServiceHandler ph = mWaitThread.push_hndl.get();
+				if(ph!=null){
+					ph.removeMessages(MSG_PUSH_MSG_RECONNECT_TIMOUT);
+				}
+			}
+		}
+	}
+
+	private void startHeartTimeOut() {
+		if(mWaitThread!=null && mWaitThread.push_hndl!=null){
+			synchronized(pushLock){
+				SamPushServiceHandler ph = mWaitThread.push_hndl.get();
+				if(ph!=null){
+					Message msg = ph.obtainMessage(MSG_PUSH_MSG_RECONNECT_TIMOUT, 0, 0);
+					ph.sendMessageDelayed(msg, SAMSERVICE_PUSH_HANDLE_RECONNECT_TIMEOUT);
+				}
+			}
+		}
+	}
+
+
+	public void onNetworkDisconnect(){
+		if(mWaitThread!=null){
+			mWaitThread.networkAvaliable = false;
+		}
+	}
+
+	public void onNetworkConnect(){
+		if(mWaitThread!=null){
+			mWaitThread.networkAvaliable = true;
+			mWaitThread.notifyNetwork();
+		}
+	}
 
 	public class WaitThread extends Thread {  
 		private boolean run=true;
 		private HttpCommClient hcc;
-		private WeakReference <SamPushServiceHandler>  push_hndl;
+		public WeakReference <SamPushServiceHandler>  push_hndl;
+		public boolean networkAvaliable;
+		public Object networklock;
   
 		public WaitThread (){}  
 		public WaitThread (String name){  
 			super(name);
 			push_hndl = new WeakReference <SamPushServiceHandler>(mSamPushServiceHandler);
+			networkAvaliable = false;
+			networklock = new Object();
 			
-		}  
+		} 
+
+		public void waitNetwork(){
+			synchronized (networklock){
+				try {
+					networklock.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+    			}
+		}
+
+		public void notifyNetwork(){
+			synchronized (networklock){
+				try {
+					networklock.notify();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+    			}	
+		}
       
 		@Override  
 		public void run() {  
 			hcc = new HttpCommClient();
-			while(run){   
+			networkAvaliable = NetworkMonitor.isNetworkAvailable();
+			while(run){
+				if(!networkAvaliable){
+					/*pending wait thread to power save*/
+					cancelHeartTimeOut();
+					waitNetwork();
+				}
 				/*connect to server*/
 				if(current_token == null){
 					SamLog.e(TAG,"WaitThread: current token is null");
@@ -1287,8 +1684,14 @@ public class SamService{
 					continue;
 				}
 
+				
+				cancelHeartTimeOut();
+				startHeartTimeOut();
+
+				//SamLog.w(TAG,"Connect Push URL");
+
 				if(!hcc.HttpPushWait(get_current_token())){
-					SystemClock.sleep(5000);
+					SystemClock.sleep(2000);
 					SamLog.e(TAG,"WaitThread: HttpPushWait false");
 					continue;
 				}else{
@@ -1317,6 +1720,7 @@ public class SamService{
 						continue;
 					}else if(hcc.statusCode == 408){ //server cancel connection , need resend wait cmd
 						SamLog.e(TAG,"WaitThread: server cancel connection , need resend wait cmd");
+						cancelHeartTimeOut();
 						continue;
 					}else if(hcc.statusCode == 503){
 						SamLog.e(TAG,"WaitThread:Push servier is shutdown");
@@ -1336,11 +1740,19 @@ public class SamService{
 				
 				
 			}
+
+			SamLog.e(TAG,"WaitThread exit !!!!");
     		} 
 
 		public void StopThread(){
 			run = false;
+			InterruptWaitThread();
 			
+		}
+
+		public void InterruptWaitThread(){
+			SamLog.e(TAG,"InterruptWaitThread");
+			hcc.InterruptHttpPushWait();
 		}
 
 	}   

@@ -3,6 +3,7 @@ package com.easemob.easeui.adapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import android.util.Log;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -126,6 +127,8 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
             EMMessage lastMessage = conversation.getLastMessage();
             holder.message.setText(EaseSmileUtils.getSmiledText(getContext(), EaseCommonUtils.getMessageDigest(lastMessage, (this.getContext()))),
                     BufferType.SPANNABLE);
+
+	     //Log.d("test","last msg:"+EaseSmileUtils.getSmiledText(getContext(), EaseCommonUtils.getMessageDigest(lastMessage, (this.getContext()))));
 
             holder.time.setText(DateUtils.getTimestampString(new Date(lastMessage.getMsgTime())));
             if (lastMessage.direct == EMMessage.Direct.SEND && lastMessage.status == EMMessage.Status.FAIL) {

@@ -20,7 +20,7 @@ public class ChatActivity extends EaseBaseActivity{
         activityInstance = this;
         //聊天人或群id
         toChatUsername = getIntent().getExtras().getString(EaseConstant.EXTRA_USER_ID);
-        chatFragment = new EaseChatFragment();
+        chatFragment = new SamChatFragment();
         //传入参数
         chatFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();

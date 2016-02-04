@@ -1,8 +1,10 @@
 package com.android.samchat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.samservice.*;
+import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.ReceivedQuestion;
+import com.easemob.easeui.utils.EaseUserUtils;
 
 public class QuestionListAdapter extends BaseAdapter{
 	static private String TAG = "QuestionListAdapter";
@@ -29,13 +33,13 @@ public class QuestionListAdapter extends BaseAdapter{
 	private LayoutInflater mInflater;
 	private int mCount = 20;
 
-	private ArrayList<ReceivedQuestion> receivedQuestionArray;
+	private List<ReceivedQuestion> receivedQuestionArray;
 
-	public void setReceivedQuestionArray(ArrayList<ReceivedQuestion> array){
+	public void setReceivedQuestionArray(List<ReceivedQuestion> array){
 		receivedQuestionArray = array;
 	}
 
-	public ArrayList<ReceivedQuestion> getReceivedQuestionArray(){
+	public List<ReceivedQuestion> getReceivedQuestionArray(){
 		return receivedQuestionArray;
 	}
 
@@ -89,10 +93,26 @@ public class QuestionListAdapter extends BaseAdapter{
 		case TYPE_TEXT:
 			ReceivedQuestion question = receivedQuestionArray.get(position);
 			if(holder.user == null){
-				holder.user = SamService.getInstance().query_ContactUser_db(question.getcontactuserid());
+				holder.user = SamService.getInstance().getDao().query_ContactUser_db(question.getcontactuserid());
 			}
+
 			holder.userimage.setImageResource(R.drawable.samqa);
-			holder.username.setText(holder.user.get_username());
+			
+			if(holder.user!=null){
+				AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(holder.user.getphonenumber());
+				if(rd!=null && rd.getavatarname()!=null){
+					SamLog.e(TAG,"rd is existed:"+holder.userimage.getHeight()+":"+holder.userimage.getWidth());
+					Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
+												   43,
+												   43);
+					if(bp!=null){
+						SamLog.e(TAG,"bp is existed");
+						holder.userimage.setImageBitmap(bp);
+					}
+				}
+			}
+			
+			holder.username.setText(holder.user.getusername());
 			holder.question.setText(question.question);
 			if(question.shown == ReceivedQuestion.NOT_SHOWN){
 				holder.badge.setText("1");

@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.android.samservice.*;
 import com.android.samservice.info.LoginUser;
 import com.easemob.EMCallBack;
+import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 
@@ -65,11 +66,14 @@ public class SignInActivity extends Activity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 					SamLog.i(TAG,"login easemob successfully");
+					EMChat.getInstance().setAutoLogin(true);
+					//EMChatManager.getInstance().updateCurrentUserNick(SamService.getInstance().get_current_user().getusername());
+					LoginUser user = SamService.getInstance().get_current_user();
+					user.seteasemob_status(LoginUser.ACTIVE);
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.ACTIVE);
 					if(mDialog!=null){
 						mDialog.dismissPrgoressDiglog();
 					}
-					//EMGroupManager.getInstance().loadAllGroups();
-					//EMChatManager.getInstance().loadAllConversations();
 					launchMainActivity();
 				}
 			});
@@ -83,6 +87,10 @@ public class SignInActivity extends Activity {
 		@Override
 		public void onError(int code, String message) {
 			SamLog.ship(TAG,"login easemob failed code:"+code+ " message:" + message);
+			LoginUser user = SamService.getInstance().get_current_user();
+			user.seteasemob_status(LoginUser.INACTIVE);
+			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);
+			
 			if(mDialog!=null){
 				mDialog.dismissPrgoressDiglog();
 			}
@@ -106,8 +114,10 @@ public class SignInActivity extends Activity {
 
 		SamService.getInstance().startWaitThread();
 
-		String userName = SamService.getInstance().get_current_user().geteasemob_username();
-		String password = SamService.getInstance().get_current_user().getpassword();
+		skyworld.EaseMobInit();
+
+		final String userName = SamService.getInstance().get_current_user().geteasemob_username();
+		final String password = SamService.getInstance().get_current_user().getpassword();
 
 		if(userName == null){
 			IntentFilter easemob_filter = new IntentFilter();
@@ -117,8 +127,16 @@ public class SignInActivity extends Activity {
 			startEaseMobNameGotTimeOut();
 			return;
 		}
-		
-		EMChatManager.getInstance().login(userName,password,EMcb);
+
+
+		new Thread(new Runnable() {
+					@Override
+					public void run() {
+						
+						EMChatManager.getInstance().login(userName,password,EMcb);
+					}
+				}).start();
+
 	}
 		
 	Handler mHandler = new Handler() {
@@ -252,7 +270,7 @@ public class SignInActivity extends Activity {
 		mBtnSignin.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				if(!NetworkMonitor.isNetworkAvailable(SignInActivity.this)){
+				if(!NetworkMonitor.isNetworkAvailable()){
 					launchDialogActivity(getString(R.string.nw_illegal_title),getString(R.string.network_status_no));
 					return;
 				}
@@ -400,12 +418,19 @@ public class SignInActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(SamService.EASEMOBNAMEGOT)){
 				cancelEaseMobNameGotTimeOut();
-				String userName = SamService.getInstance().get_current_user().geteasemob_username();
-				String password = SamService.getInstance().get_current_user().getpassword();
+				final String userName = SamService.getInstance().get_current_user().geteasemob_username();
+				final String password = SamService.getInstance().get_current_user().getpassword();
 				
 				unregisterReceiver(EaseMobNameGotReceiver);
+
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						EMChatManager.getInstance().login(userName,password,EMcb);
+					}
+				}).start();
 				
-				EMChatManager.getInstance().login(userName,password,EMcb);
+				
 			}	
 	    }
 	};

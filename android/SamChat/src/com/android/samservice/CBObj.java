@@ -13,6 +13,7 @@ public class CBObj{
 	public 	QuestionInfo qinfo;
 	public 	SamCoreObj samobj;
 	public	boolean isBroadcast;
+	public	SMCallBack smcb;
 
 	CBObj(){
 		this.cbHandler = null;
@@ -21,6 +22,17 @@ public class CBObj{
 		this.qinfo = new QuestionInfo();
 		this.samobj = null;
 		this.isBroadcast = true;
+		this.smcb = null;
+	}
+
+	CBObj(SMCallBack SMCB){
+		this.cbHandler = null;
+		this.cbMsg = 0;
+		this.sinfo = new SignInfo("","");
+		this.qinfo = new QuestionInfo();
+		this.samobj = null;
+		this.isBroadcast = false;
+		this.smcb = SMCB;
 	}
 
 	
@@ -31,6 +43,7 @@ public class CBObj{
 		this.qinfo = new QuestionInfo();
 		this.samobj = null;
 		this.isBroadcast = false;
+		this.smcb = null;
 	}
 
 		
@@ -41,6 +54,7 @@ public class CBObj{
 		this.qinfo = new QuestionInfo();
 		this.samobj = samobj;
 		this.isBroadcast = false;
+		this.smcb = null;
 	}
 
 	CBObj(Handler cbHandler, int cbMsg, String un,String pwd){
@@ -49,6 +63,7 @@ public class CBObj{
 		this.sinfo = new SignInfo(un,pwd);
 		this.samobj = null;
 		this.isBroadcast = false;
+		this.smcb = null;
 	}	
 	
 	CBObj(Handler cbHandler, int cbMsg, String un,String pwd,String cellphone){
@@ -56,6 +71,7 @@ public class CBObj{
 		this.cbMsg = cbMsg;
 		this.sinfo = new SignInfo(un,pwd,cellphone);
 		this.isBroadcast = false;
+		this.smcb = null;
 	}
 
 	CBObj(Handler cbHandler, int cbMsg, String question){
@@ -64,6 +80,7 @@ public class CBObj{
 		this.qinfo = new QuestionInfo(question);
 		this.samobj = null;
 		this.isBroadcast = false;
+		this.smcb = null;
 	}
 	
 

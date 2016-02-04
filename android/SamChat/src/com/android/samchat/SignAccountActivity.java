@@ -3,6 +3,10 @@ package com.android.samchat;
 import java.io.IOException;
 
 import com.android.samservice.*;
+import com.android.samservice.info.LoginUser;
+import com.easemob.EMCallBack;
+import com.easemob.chat.EMChat;
+import com.easemob.chat.EMChatManager;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -30,6 +34,7 @@ public class SignAccountActivity extends Activity {
 	static final String TAG="SamChat_SignAccount";
 	public static final int MSG_SIGNUP_CALLBACK = 1;
 	public static final int MSG_SIGNUP_TIMEOUT= 2;
+	public static final int  MSG_EASEMOB_NAME_GOT_TIMEOUT = 3;
 
 	public static final int SAM_SIGNUP_TIMEOUT=20000;
 	
@@ -52,6 +57,84 @@ public class SignAccountActivity extends Activity {
 	
 	SamProcessDialog mDialog;
 
+
+	EMCallBack EMcb = new EMCallBack() {//»Øµ÷
+		@Override
+		public void onSuccess() {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					SamLog.i(TAG,"login easemob successfully");
+					//EMChatManager.getInstance().updateCurrentUserNick(SamService.getInstance().get_current_user().getusername());
+					EMChat.getInstance().setAutoLogin(true);
+					LoginUser user = SamService.getInstance().get_current_user();
+					user.seteasemob_status(LoginUser.ACTIVE);
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.ACTIVE);
+					if(mDialog!=null){
+						mDialog.dismissPrgoressDiglog();
+					}
+					launchMainActivity();
+				}
+			});
+		}
+
+		@Override
+		public void onProgress(int progress, String status) {
+ 
+		}
+ 
+		@Override
+		public void onError(int code, String message) {
+			SamLog.ship(TAG,"login easemob failed code:"+code+ " message:" + message);
+			LoginUser user = SamService.getInstance().get_current_user();
+			user.seteasemob_status(LoginUser.INACTIVE);
+			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);
+
+			if(mDialog!=null){
+				mDialog.dismissPrgoressDiglog();
+			}
+			
+			launchMainActivity();
+		}
+	};
+
+	private void cancelEaseMobNameGotTimeOut() {
+		mHandler.removeMessages(MSG_EASEMOB_NAME_GOT_TIMEOUT);
+	}
+
+	private void startEaseMobNameGotTimeOut() {
+		Message msg = mHandler.obtainMessage(MSG_EASEMOB_NAME_GOT_TIMEOUT);
+		// Reset timeout.
+		cancelTimeOut();
+		mHandler.sendMessageDelayed(msg, SAM_SIGNUP_TIMEOUT);
+	}
+
+	private void login_easemob(){
+
+		SamService.getInstance().startWaitThread();
+
+		skyworld.EaseMobInit();
+
+		final String userName = SamService.getInstance().get_current_user().geteasemob_username();
+		final String password = SamService.getInstance().get_current_user().getpassword();
+
+		if(userName == null){
+			IntentFilter easemob_filter = new IntentFilter();
+			easemob_filter.addAction(SamService.EASEMOBNAMEGOT);
+			registerReceiver(EaseMobNameGotReceiver, easemob_filter);
+
+			startEaseMobNameGotTimeOut();
+			return;
+		}
+
+		
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				EMChatManager.getInstance().login(userName,password,EMcb);
+			}
+		}).start();
+	}
 	
 	Handler mHandler = new Handler() {
 	    @Override
@@ -80,10 +163,11 @@ public class SignAccountActivity extends Activity {
 				}catch(IOException e){
 					e.printStackTrace(); 
 				}finally{
-					if(mDialog!=null){
-						mDialog.dismissPrgoressDiglog();
-					}
-					launchMainActivity();
+					login_easemob();
+					//if(mDialog!=null){
+					//	mDialog.dismissPrgoressDiglog();
+					//}
+					//launchMainActivity();
 				}
 	            	}else if(msg.arg1 == SignService.R_SIGN_UP_FAILED){
 				if(mDialog!=null){
@@ -113,6 +197,15 @@ public class SignAccountActivity extends Activity {
 	    	    			mDialog.dismissPrgoressDiglog();
 	    	    		}
 	            		launchDialogActivity(getString(R.string.sign_up_timeout_title),getString(R.string.sign_up_timeout_statement));
+				break;
+		    case MSG_EASEMOB_NAME_GOT_TIMEOUT:
+				SamLog.ship(TAG,"MSG_EASEMOB_NAME_GOT_TIMEOUT happened...");
+				cancelEaseMobNameGotTimeOut();
+				unregisterReceiver(EaseMobNameGotReceiver);
+				if(mDialog!=null){
+	    	    			mDialog.dismissPrgoressDiglog();
+	    	    		}
+				launchMainActivity();
 				break;
 	        }
 	    }
@@ -184,7 +277,7 @@ public class SignAccountActivity extends Activity {
 	    mBtnSignup.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
-	    		if(!NetworkMonitor.isNetworkAvailable(SignAccountActivity.this)){
+	    		if(!NetworkMonitor.isNetworkAvailable()){
 	    			launchDialogActivity(getString(R.string.nw_illegal_title),getString(R.string.network_status_no));
 	    			return;
 	    		}
@@ -309,6 +402,27 @@ public class SignAccountActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(SamService.FINISH_ALL_SIGN_ACTVITY)){
 				finish();
+			}	
+	    }
+	};
+
+
+	private BroadcastReceiver EaseMobNameGotReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction().equals(SamService.EASEMOBNAMEGOT)){
+				cancelEaseMobNameGotTimeOut();
+				final String userName = SamService.getInstance().get_current_user().geteasemob_username();
+				final String password = SamService.getInstance().get_current_user().getpassword();
+				
+				unregisterReceiver(EaseMobNameGotReceiver);
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						EMChatManager.getInstance().login(userName,password,EMcb);
+					}
+				}).start();
 			}	
 	    }
 	};

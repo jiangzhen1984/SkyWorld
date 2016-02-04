@@ -1,5 +1,6 @@
 package com.android.samchat;
 
+import com.android.samservice.SMCallBack;
 import com.android.samservice.SamService;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.ReceivedAnswer;
@@ -28,6 +29,8 @@ public class SamAnswerDetailActivity extends Activity {
 	private TextView mAdd_friend;
 
 
+	private SamProcessDialog mDialog;
+
 	private ReceivedAnswer answer;
 	private SamAnswerDetailListAdapter mAdapter;
 
@@ -38,6 +41,8 @@ public class SamAnswerDetailActivity extends Activity {
 	protected void onCreate(Bundle icicle){
 		super.onCreate(icicle);
 		setContentView(R.layout.activity_sam_answer_detail);
+
+		mDialog = new SamProcessDialog();
 
 		mBack =  (ImageView) findViewById(R.id.back);
 		mBack.setOnClickListener(new OnClickListener(){
@@ -66,7 +71,7 @@ public class SamAnswerDetailActivity extends Activity {
 		mTemp_talk.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				EaseUser user = new EaseUser(syservicer.get_easemob_username());
+				EaseUser user = new EaseUser(syservicer.geteasemob_username());
 				startActivity(new Intent(SamAnswerDetailActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, user.getUsername()));
 			}
 		    	
@@ -75,7 +80,7 @@ public class SamAnswerDetailActivity extends Activity {
 		mAdd_friend.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				
+				query_user_info_from_server(syservicer.getphonenumber());
 			}
 		    	
 		});
@@ -96,9 +101,9 @@ public class SamAnswerDetailActivity extends Activity {
 	private void initFromIntent(Intent intent) {
 		if (intent != null) {
 			answer = (ReceivedAnswer)intent.getSerializableExtra("ReceivedAnswer");
-			syservicer = SamService.getInstance().query_ContactUser_db(answer.getcontactuserid());
+			syservicer = SamService.getInstance().getDao().query_ContactUser_db(answer.getcontactuserid());
 			if(syservicer!=null){
-				mServicer_name.setText(syservicer.get_username());
+				mServicer_name.setText(syservicer.getusername());
 			}
 		}
 	}
@@ -107,5 +112,63 @@ public class SamAnswerDetailActivity extends Activity {
 	public void onBackPressed(){
 		this.setResult(1);
 		finish();
+	}
+
+	private void query_user_info_from_server(String phonenumber){
+		SamService.getInstance().query_user_info_from_server(phonenumber,new SMCallBack(){
+			@Override
+			public void onSuccess(Object obj) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+	    						mDialog.dismissPrgoressDiglog();
+	    					}
+
+						launchNameCardActivity(syservicer);
+					}
+				});
+				
+				
+			}
+
+			@Override
+			public void onFailed(int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+	    						mDialog.dismissPrgoressDiglog();
+	    					}
+
+						launchNameCardActivity(syservicer);
+					}
+				});
+			}
+
+			@Override
+			public void onError(int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+	    						mDialog.dismissPrgoressDiglog();
+	    					}
+
+						launchNameCardActivity(syservicer);
+					}
+				});
+			}
+
+		});
+	}
+
+	private void launchNameCardActivity(ContactUser userinfo){
+		Intent newIntent = new Intent(this,NameCardActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("ContactUser",syservicer);
+		newIntent.putExtras(bundle);
+		
+		startActivity(newIntent);
 	}
 }
