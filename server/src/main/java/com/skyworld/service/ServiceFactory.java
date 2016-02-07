@@ -15,6 +15,8 @@ public class ServiceFactory {
 	
 	private static SWQuestionService eQuestionService;
 	
+	private static SystemBasicService eSystemBasicService;
+	
 	private static EaseMobDeamon  mEaseMobDeamon;
 	
 	private static APIService[] mApiService;
@@ -47,6 +49,15 @@ public class ServiceFactory {
 		}
 		
 		return eQuestionService;
+	}
+	
+	
+	public static SystemBasicService getSystemBasicService() {
+		if (eSystemBasicService == null) {
+			eSystemBasicService = new SystemBasicService();
+		}
+		
+		return eSystemBasicService;
 	}
 	
 	
@@ -83,6 +94,7 @@ public class ServiceFactory {
 		((APIChainService)mApiService[API_CODE_USER]).addActionMapping("answer", new APIAnswerService());
 		((APIChainService)mApiService[API_CODE_USER]).addActionMapping("logout", new APILogoutService());
 		((APIChainService)mApiService[API_CODE_USER]).addActionMapping("query", new APIQueryService());
+		((APIChainService)mApiService[API_CODE_USER]).addActionMapping("feedback", new APIFeedbackService());
 		
 		
 		mApiService[API_CODE_USER_QUESTION] = mApiService[API_CODE_USER];

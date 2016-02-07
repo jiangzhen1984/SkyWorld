@@ -10,6 +10,9 @@ Protocol Version: M4
                Add timestamp for user update
 Protocol Version: M5
                Add User Avatar information in question or answer message
+Protocol Version: M6
+               Add User Feedback API
+
 
 
 =======================================Register JSON Protocol =====================================
@@ -319,6 +322,28 @@ Not Servicer：  {ret: -602}
 http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI?data={"header": {"action": "answer", "token":"95056787646578688"}, "body": { "answer":"content", "question_id" : quid}}
 
 
+=======================================Feedback JSON Protocol =====================================
+Feedback协议：
+
+{ 
+    "header":
+    {
+        "action" : "feedback",
+        "token": "TOKEN-ID"
+    },
+    "body" :
+    {
+        "comment" : "feed back"
+    }
+}
+
+返回结果：
+成功返回：  {ret: 0}  
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+测试地址:
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={"header": {"action": "feedback", "token":"95056787646578688"}, "body": { "comment":"content"}}
+
 
 
 =======================================Update UserAvatar Protocol =====================================
@@ -358,6 +383,8 @@ type not support：  {ret: -802}
 头像size过大：  {ret: -803}  
 测试地址:
 http://121.42.207.185/SkyWorld/test.html
+
+
 
 
 

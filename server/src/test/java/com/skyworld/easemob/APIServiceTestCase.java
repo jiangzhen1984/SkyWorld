@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.skyworld.service.APIAnswerService;
 import com.skyworld.service.APIChainService;
 import com.skyworld.service.APICode;
+import com.skyworld.service.APIFeedbackService;
 import com.skyworld.service.APIInquireService;
 import com.skyworld.service.APILoginService;
 import com.skyworld.service.APIRegisterService;
@@ -37,6 +38,7 @@ public class APIServiceTestCase extends TestCase {
 		((APIChainService)service).addActionMapping("upgrade", new APIUpgradeService());
 		((APIChainService)service).addActionMapping("question", new APIInquireService());
 		((APIChainService)service).addActionMapping("answer", new APIAnswerService());
+		((APIChainService)service).addActionMapping("feedback", new APIFeedbackService());
 	}
 
 	@Test
@@ -250,6 +252,15 @@ public class APIServiceTestCase extends TestCase {
 		assertEquals(APICode.ANSWER_ERROR_NOT_SERVICER, respJson.getInt("ret"));
 		
 		
+		
+		//feedback
+		response.resetBuffer();
+		request.setParam("data", buildNormalFeedback(cusToken));
+		service.service(request, response);
+		str = response.getFlusedBuffer();
+		respJson = parse(str);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+				
 	}
 	
 	
@@ -485,6 +496,22 @@ public class APIServiceTestCase extends TestCase {
 		header.put("token", token);
 		body.put("question_id", id);
 		body.put("answer", "this is answer");
+		
+		return root.toString();
+	}
+	
+	
+	String buildNormalFeedback(String token) {
+		JSONObject root = new JSONObject();
+		JSONObject header = new JSONObject();
+		JSONObject body = new JSONObject();
+		
+		root.put("header", header);
+		root.put("body", body);
+		
+		header.put("action", "feedback");
+		header.put("token", token);
+		body.put("comment", "aaaa");
 		
 		return root.toString();
 	}
