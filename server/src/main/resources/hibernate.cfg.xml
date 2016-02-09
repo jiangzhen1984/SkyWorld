@@ -41,6 +41,11 @@
 		<mapping class="com.skyworld.service.po.SWPQuestion" />
 		<mapping class="com.skyworld.service.po.SWPUserAvatar" />
 		<mapping class="com.skyworld.service.po.SWPFeedback" />
+		<mapping class="com.skyworld.service.po.SWPArticle" />
+		<mapping class="com.skyworld.service.po.SWPArticleComment" />
+		<mapping class="com.skyworld.service.po.SWPArticlePicture" />
+		<mapping class="com.skyworld.service.po.SWPArticleRecommendation" />
+		
 	</session-factory>
 
 </hibernate-configuration>

@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.skyworld.cache.CacheManager;
 import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.dsf.UserType;
@@ -18,7 +19,26 @@ import com.skyworld.service.po.SWPUserAvatar;
 
 
 public class SWUserService extends BaseService {
+	
+	
+	public User getUser(long uid) {
+		User user = CacheManager.getIntance().getUser(uid);
+		if (user == null) {
+			user = selectUser(uid);
+			CacheManager.getIntance().putUser(uid, user);
+		}
+		return user;
+	}
 
+	
+	public User selectUser(long uid) {
+		Session session = openSession();
+		User u = (User)session.load(User.class, uid);
+		User user = new User(u);
+		user.setAvatar(queryAvatar(user, session));
+		session.close();
+		return user;
+	}
 	
 	public User selectUser(String userName, String mail, String password) {
 		Session session = openSession();

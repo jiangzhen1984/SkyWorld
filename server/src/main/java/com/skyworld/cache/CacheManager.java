@@ -11,6 +11,9 @@ import com.skyworld.service.dsf.UserType;
 
 public class CacheManager {
 	
+	
+	private ConcurrentHashMap<Long, User> mUserInternalCache;
+	
 	private ConcurrentHashMap<Token, User> mUserCache;
 	private ConcurrentHashMap<Long, Token> mUserIdCache;
 	
@@ -37,6 +40,7 @@ public class CacheManager {
 		mCustomerIDCache = new ConcurrentHashMap<Long, Token>();
 		
 		pendingQuestion = new  ConcurrentHashMap<Long, Question>();
+		mUserInternalCache= new ConcurrentHashMap<Long, User>();
 	}
 
 	
@@ -130,5 +134,15 @@ public class CacheManager {
 	
 	public Question removePendingQuestion(long id) {
 		return pendingQuestion.remove(id);
+	}
+	
+	
+	public User getUser(long id) {
+		User u = mUserInternalCache.get(id);
+		return u;
+	}
+	
+	public void putUser(long id, User u) {
+		mUserInternalCache.put(id, u);
 	}
 }
