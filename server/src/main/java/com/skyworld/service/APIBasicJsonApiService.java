@@ -78,7 +78,7 @@ public abstract class APIBasicJsonApiService implements APIService {
 		resp.setCharacterEncoding("utf8");
 		String strResp = response.getResponse();
 		resp.setContentType("application/json");
-		resp.setContentLength(strResp.length());
+		resp.setHeader("Content-Length", Integer.toOctalString(strResp.length()));
 		try {
 			resp.getWriter().write(strResp);
 			resp.flushBuffer();
