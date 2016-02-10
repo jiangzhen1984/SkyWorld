@@ -33,7 +33,7 @@ public class SWUserService extends BaseService {
 	
 	public User selectUser(long uid) {
 		Session session = openSession();
-		User u = (User)session.load(User.class, uid);
+		SWPUser u = (SWPUser)session.load(SWPUser.class, uid);
 		User user = new User(u);
 		user.setAvatar(queryAvatar(user, session));
 		session.close();

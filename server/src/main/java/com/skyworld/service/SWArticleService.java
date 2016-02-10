@@ -1,5 +1,6 @@
 package com.skyworld.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -144,7 +145,7 @@ public class SWArticleService extends BaseService {
 	}
 	
 	
-	public List<Article> queryArticle(List<Integer> userIds) {
+	public List<Article> queryArticle(List<Long> userIds) {
 		Calendar c = Calendar.getInstance();
 		java.util.Date start = c.getTime();
 		
@@ -155,24 +156,20 @@ public class SWArticleService extends BaseService {
 	
 	
 	
-	public List<Article> queryArticle(List<Integer> userIds, java.util.Date start, java.util.Date end, int pageSize) {
+	public List<Article> queryArticle(List<Long> userIds, java.util.Date start, java.util.Date end, int pageSize) {
 		if (userIds == null || userIds.size() <= 0 ) {
 			return null;
 		}
 		int num = userIds.size();
 		StringBuffer queryBuffer = new StringBuffer();
-		queryBuffer.append(" select a.id as aid a.AR_COMMENT, a.USER_ID ,u.CELL_PHONE, u.NAME, u.U_TYPE ap.id as apid, ap.ORIGIN_PATH as opp, ");
-		queryBuffer.append("  ua.origin_path ");
-		queryBuffer.append(" from SWPArticle a join SW_ARTICLE_PICTURE ap ");
+		queryBuffer.append(" select a.id as aid, a.AR_COMMENT, a.USER_ID , ap.id as apid, ap.ORIGIN_PATH as opp ");
+		queryBuffer.append(" from SW_Article a join SW_ARTICLE_PICTURE ap ");
 		queryBuffer.append("  on ap.ARTICLE_ID = a.id ");
-		queryBuffer.append("  left join SW_USER u on u.id = a.user_id ");
-		queryBuffer.append("  on ap.ARTICLE_ID = a.id ");
-		queryBuffer.append("  left join SW_USER_AVATAR ua on ua.id = u.avatar_id ");
 		
 		queryBuffer.append(" WHERE  ");
 		queryBuffer.append(" ( a.USER_ID = ? ");
 		for (int i = 1; i < num; i++) {
-			queryBuffer.append(" AND a.USER_ID = ? ");
+			queryBuffer.append(" OR a.USER_ID = ? ");
 		}
 		queryBuffer.append(" ) ");
 		queryBuffer.append(" and (a.AR_TIME_STAMP <= ? and a.AR_TIME_STAMP >= ?) ");
@@ -182,31 +179,39 @@ public class SWArticleService extends BaseService {
 		SQLQuery query = session.createSQLQuery(queryBuffer.toString());
 
 		for (int i = 0; i < num; i++) {
-			query.setLong(0, userIds.get(i));
+			query.setLong(i, userIds.get(i));
 		}
 		
 		query.setLong(num, start.getTime());
-		query.setLong(num + 1, start.getTime());
+		query.setLong(num + 1, end.getTime());
 		
 		
 		List<Object[]> cache = (List<Object[]>)query.list();
 		List<Article> list = new ArrayList<Article>(cache.size());
 		
 		Iterator<Object[]> it = cache.iterator();
+		Article last = null;
 		while (it.hasNext()) {
 			Object[] obj = it.next();
-			Article ar = new Article();
-			ar.setId(((BigInteger)obj[0]).longValue());
-			ar.setComment((String)obj[1]);
-			User publiser = new User();
-			publiser.setId(((BigInteger)obj[2]).longValue());
-			publiser.setAvatarPath((String)obj[8]);
-			publiser.setName((String)obj[4]);
-			publiser.setCellPhone((String)obj[3]);
-			ar.setPublisher(publiser);
+			Article ar = null;
+			if (last == null || last.getId() != ((BigInteger)obj[0]).longValue()) {
+				ar = new Article();
+				ar.setId(((BigInteger)obj[0]).longValue());
+				ar.setComment((String)obj[1]);
+				ar.setPublisher(ServiceFactory.getESUserService()
+						.getUser(((BigDecimal)obj[2]).longValue()));
+				
+				queryArticleData(session, ar, 0);
+			} else {
+				ar = last;
+			}
 			
-			queryArticleData(session, ar, 0);
-			list.add(ar);
+			ar.addPic(((BigInteger)obj[3]).longValue(), (String)obj[4]);
+			
+			if (ar != last) {
+				list.add(ar);
+			}
+			last = ar;
 		}
 		
 		session.close();
@@ -225,19 +230,20 @@ public class SWArticleService extends BaseService {
 	
 	private void queryArticleData(Session session, Article article, int type) {
 		Query query = session.createQuery(" from SWPArticleComment where articleId =?" );
-	
+	    query.setLong(0, article.getId());
 		List<SWPArticleComment> list = query.list();
 		Iterator<SWPArticleComment> it = list.iterator();
 		while (it.hasNext()) {
 			SWPArticleComment c = it.next();
 			article.addComment(c.getId(), ServiceFactory.getESUserService()
-					.getUser(c.getUserId()), c.getComment(), ServiceFactory
+					.getUser(c.getUserId()), c.getComment(), c.getToUserId() <= 0 ? null :ServiceFactory
 					.getESUserService().getUser(c.getToUserId()));
 		}
 		
 		
 		
 		query = session.createQuery(" from SWPArticleRecommendation where articleId =?" );
+		query.setLong(0, article.getId());
 		
 		List<SWPArticleRecommendation> listRecomend = query.list();
 		Iterator<SWPArticleRecommendation> itRecomend = listRecomend.iterator();
