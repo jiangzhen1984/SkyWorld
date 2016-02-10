@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.CacheMode;
+import org.hibernate.FlushMode;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -103,6 +105,7 @@ public class SWArticleService extends BaseService {
 	
 	public SWPArticleRecommendation addRecommendation(long arId, long userId) {
 		Session session = openSession();
+		session.setCacheMode(CacheMode.IGNORE);
 		Transaction t = session.beginTransaction();
 		SWPArticleRecommendation co = new SWPArticleRecommendation();
 		co.setArticleId(arId);
@@ -114,6 +117,7 @@ public class SWArticleService extends BaseService {
 		query.setLong(0, arId);
 		query.executeUpdate();
 		
+		session.flush();
 		t.commit();
 		session.close();
 		return co;
@@ -130,8 +134,10 @@ public class SWArticleService extends BaseService {
 	
 	public void cancelRecommedation(long arId, long userId) {
 		Session session = openSession();
+		session.setCacheMode(CacheMode.NORMAL);
+		session.setFlushMode(FlushMode.COMMIT);
 		Transaction t = session.beginTransaction();
-		SQLQuery query = session.createSQLQuery(" delete  from SW_ARTICLE_RECOMMENDATION where ARTICLE_ID = ? and USER_ID =? ");
+		Query query = session.createQuery(" delete  from SWPArticleRecommendation where articleId = ? and userId =? ");
 		query.setLong(0, arId);
 		query.setLong(1, userId);
 		query.executeUpdate();
@@ -141,9 +147,29 @@ public class SWArticleService extends BaseService {
 		query.executeUpdate();
 		
 		t.commit();
+		
 		session.close();
 	}
 	
+	
+	public Article queryArticle(long articleId) {
+		Session session = openSession();
+		SWPArticle  ar = (SWPArticle) session.get(SWPArticle.class, articleId);
+		Article article = null;
+		if (ar != null) {
+			article = new Article();
+			article.setId(ar.getId());
+			article.setComment(ar.getComment());
+			article.setLat(ar.getLat());
+			article.setLng(ar.getLng());
+			article.setLocation(ar.getLocation());
+			article.setPublisher(ServiceFactory.getESUserService().getUser(ar.getUserId()));
+			article.setTime(new Date(ar.getTimeStamp()));
+			queryArticleData(session, article, true, true, true);
+		}
+		session.close();
+		return article;
+	}
 	
 	public List<Article> queryArticle(List<Long> userIds) {
 		Calendar c = Calendar.getInstance();
@@ -163,7 +189,7 @@ public class SWArticleService extends BaseService {
 		int num = userIds.size();
 		StringBuffer queryBuffer = new StringBuffer();
 		queryBuffer.append(" select a.id as aid, a.AR_COMMENT, a.USER_ID , ap.id as apid, ap.ORIGIN_PATH as opp ");
-		queryBuffer.append(" from SW_Article a join SW_ARTICLE_PICTURE ap ");
+		queryBuffer.append(" from SW_Article a join SW_ARTICLE_MEDIA ap ");
 		queryBuffer.append("  on ap.ARTICLE_ID = a.id ");
 		
 		queryBuffer.append(" WHERE  ");
@@ -201,12 +227,14 @@ public class SWArticleService extends BaseService {
 				ar.setPublisher(ServiceFactory.getESUserService()
 						.getUser(((BigDecimal)obj[2]).longValue()));
 				
-				queryArticleData(session, ar, 0);
+				queryArticleData(session, ar, true, true, false);
 			} else {
 				ar = last;
 			}
 			
-			ar.addPic(((BigInteger)obj[3]).longValue(), (String)obj[4]);
+			// 0 for image
+			ar.addMedia(((BigInteger)obj[3]).longValue(), (String)obj[4], 0);
+			//TODO if exist video add video
 			
 			if (ar != last) {
 				list.add(ar);
@@ -221,36 +249,52 @@ public class SWArticleService extends BaseService {
 	
 	
 	
-	public void queryArticleRelatedData(Article article, int type) {
+	public void queryArticleRelatedData(Article article, boolean comment, boolean recom, boolean media) {
 		Session session = openSession();
-		queryArticleData(session, article, type);
+		queryArticleData(session, article, comment, recom, media);
 		session.close();
 	}
 	
 	
-	private void queryArticleData(Session session, Article article, int type) {
-		Query query = session.createQuery(" from SWPArticleComment where articleId =?" );
-	    query.setLong(0, article.getId());
-		List<SWPArticleComment> list = query.list();
-		Iterator<SWPArticleComment> it = list.iterator();
-		while (it.hasNext()) {
-			SWPArticleComment c = it.next();
-			article.addComment(c.getId(), ServiceFactory.getESUserService()
-					.getUser(c.getUserId()), c.getComment(), c.getToUserId() <= 0 ? null :ServiceFactory
-					.getESUserService().getUser(c.getToUserId()));
+	private void queryArticleData(Session session, Article article, boolean comment, boolean recom, boolean media) {
+		if (comment) {
+			Query query = session.createQuery(" from SWPArticleComment where articleId =?" );
+		    query.setLong(0, article.getId());
+			List<SWPArticleComment> list = query.list();
+			Iterator<SWPArticleComment> it = list.iterator();
+			while (it.hasNext()) {
+				SWPArticleComment c = it.next();
+				article.addComment(c.getId(), ServiceFactory.getESUserService()
+						.getUser(c.getUserId()), c.getComment(), c.getToUserId() <= 0 ? null :ServiceFactory
+						.getESUserService().getUser(c.getToUserId()), c.getTimeStamp().getTime());
+			}
 		}
 		
 		
+		if (recom) {
+			Query query = session.createQuery(" from SWPArticleRecommendation where articleId =?" );
+			query.setLong(0, article.getId());
+			
+			List<SWPArticleRecommendation> listRecomend = query.list();
+			Iterator<SWPArticleRecommendation> itRecomend = listRecomend.iterator();
+			while (itRecomend.hasNext()) {
+				SWPArticleRecommendation c = itRecomend.next();
+				article.addRecommend(c.getId(), ServiceFactory.getESUserService()
+						.getUser(c.getUserId()));
+			}
+		}
 		
-		query = session.createQuery(" from SWPArticleRecommendation where articleId =?" );
-		query.setLong(0, article.getId());
 		
-		List<SWPArticleRecommendation> listRecomend = query.list();
-		Iterator<SWPArticleRecommendation> itRecomend = listRecomend.iterator();
-		while (itRecomend.hasNext()) {
-			SWPArticleRecommendation c = itRecomend.next();
-			article.addRecommend(c.getId(), ServiceFactory.getESUserService()
-					.getUser(c.getUserId()));
+		if (media) {
+			Query query = session.createQuery(" from SWPArticlePicture where articleId =?" );
+			query.setLong(0, article.getId());
+			
+			List<SWPArticlePicture> listRecomend = query.list();
+			Iterator<SWPArticlePicture> itRecomend = listRecomend.iterator();
+			while (itRecomend.hasNext()) {
+				SWPArticlePicture c = itRecomend.next();
+				article.addMedia(c.getId(), c.getOriginPath(), 0);
+			}
 		}
 	}
 }

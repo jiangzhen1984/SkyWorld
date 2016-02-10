@@ -9,13 +9,16 @@ public class ServiceFactory {
 	public static final int API_CODE_USER = API_CODE_FIRST;
 	public static final int API_CODE_USER_AVATAR = 2;
 	public static final int API_CODE_USER_QUESTION = 3;
-	public static final int API_MAX = API_CODE_USER_QUESTION + 1;
+	public static final int API_CODE_ARTICLE = 4;
+	public static final int API_MAX = API_CODE_ARTICLE + 1;
 	
 	private static SWUserService eUserService;
 	
 	private static SWQuestionService eQuestionService;
 	
 	private static SystemBasicService eSystemBasicService;
+	
+	private static SWArticleService eArticleService;
 	
 	private static EaseMobDeamon  mEaseMobDeamon;
 	
@@ -41,6 +44,15 @@ public class ServiceFactory {
 		return eUserService;
 	}
 	
+	
+	
+	public static SWArticleService getEArticleService() {
+		if (eArticleService == null) {
+			eArticleService = new SWArticleService();
+		}
+		
+		return eArticleService;
+	}
 	
 	
 	public static SWQuestionService getQuestionService() {
@@ -99,7 +111,14 @@ public class ServiceFactory {
 		
 		mApiService[API_CODE_USER_QUESTION] = mApiService[API_CODE_USER];
 		mApiService[API_CODE_USER_AVATAR] =  new APIUpdateAvatarService();
+		
+		mApiService[API_CODE_ARTICLE] =  new APIJsonPartDispatchService();
+		((APIJsonPartDispatchService)mApiService[API_CODE_ARTICLE]).addActionMapping("article-publish", new APIArticlePushlihService());
+		((APIJsonPartDispatchService)mApiService[API_CODE_ARTICLE]).addActionMapping("article-recommend", new APIArticleRecommendationService());
+		((APIJsonPartDispatchService)mApiService[API_CODE_ARTICLE]).addActionMapping("article-comment", new APIArticleCommentService());
 	}
+	
+	
 	
 	
 	

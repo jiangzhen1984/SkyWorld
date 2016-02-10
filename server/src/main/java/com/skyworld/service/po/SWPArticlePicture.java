@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="SW_ARTICLE_PICTURE")
+@Table(name="SW_ARTICLE_MEDIA")
 public class SWPArticlePicture {
 
 	@Id
@@ -26,6 +26,15 @@ public class SWPArticlePicture {
 	
 	@Column(name="ORIGIN_PIC_2", columnDefinition="VARCHAR(300)")
 	protected String pic2;
+	
+	@Column(name="M_1", columnDefinition="VARCHAR(300)")
+	protected String media1;
+	
+	@Column(name="M_2", columnDefinition="VARCHAR(300)")
+	protected String media2;
+	
+	@Column(name="M_3", columnDefinition="VARCHAR(300)")
+	protected String media3;
 	
 
 	public long getId() {
@@ -68,6 +77,32 @@ public class SWPArticlePicture {
 		this.pic2 = pic2;
 	}
 
+	public String getMedia1() {
+		return media1;
+	}
+
+	public void setMedia1(String media1) {
+		this.media1 = media1;
+	}
+
+	public String getMedia2() {
+		return media2;
+	}
+
+	public void setMedia2(String media2) {
+		this.media2 = media2;
+	}
+
+	public String getMedia3() {
+		return media3;
+	}
+
+	public void setMedia3(String media3) {
+		this.media3 = media3;
+	}
+
+	
+	
 	
 	
 }

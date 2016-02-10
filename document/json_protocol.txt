@@ -12,6 +12,10 @@ Protocol Version: M5
                Add User Avatar information in question or answer message
 Protocol Version: M6
                Add User Feedback API
+Protocol Version: M7
+               Add Article publish API
+               Add Article recommend API
+               Add Article comment API
 
 
 
@@ -383,6 +387,95 @@ type not support：  {ret: -802}
 头像size过大：  {ret: -803}  
 测试地址:
 http://121.42.207.185/SkyWorld/test.html
+
+
+=======================================Article Publish Protocol =====================================
+API: /SkyWorld/api/1.0/ArticleApi
+http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+This API only support POST and body must use multipart/form-data
+HTTP - parameter data: 
+----------------------------------------------------------------------
+{
+    "header":
+    {
+      "action": "article-publish",
+      "token": "95056787646578688"
+    },
+    "body":
+    {
+      "comment" : "conent"
+    }
+}
+
+http boundary   image data
+
+
+成功返回：
+    {"ret":0,"article":{"timestamp":1455094524478,"id":4,"recommends":[],"status":0,"comment":"eeeee","comments":[],"publisher":{"id":6,"mail":"12346","cellphone":"12346"}}}
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
+handle stream failed：  {ret: -6}  
+
+
+=======================================Article Recommend JSON Protocol =====================================
+Recommend协议：
+
+{ 
+    "header":
+    {
+        "action" : "article-recommend",
+        "token"  : "TOKEN-ID"
+    },
+    "body" :
+    {
+        "article_id" :  article id,
+        "flag"       :  [true/false] //true for recommend , false for cancel
+    }
+}
+
+返回结果：
+成功返回：   {"ret":0,"article":{"timestamp":1455095011210,"id":3,"recommends":[{"id":3,"mail":"1","cellphone":"1"}],"status":0,"comment":"eeeee","comments":[],"publisher":{"id":2,"mail":"1234","cellphone":"1234"}}} 
+
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
+article not exist : { ret : -901}
+
+
+
+
+=======================================Article Comment JSON Protocol =====================================
+Comment协议：
+
+{ 
+    "header":
+    {
+        "action" : "article-comment",
+        "token"  : "TOKEN-ID"
+    },
+    "body" :
+    {
+        "article_id" :  article id,
+        "comment"    : conent
+    }
+}
+
+返回结果：
+成功返回 {"ret":0,"article":{"timestamp":1455095205297,"id":4,"recommends":[],"status":0,"comment":"eeeee","comments":[{"content":"eee","user":{"id":5,"mail":"17","cellphone":"17"}}],"publisher":{"id":4,"mail":"12345","cellphone":"12345"}}}
+
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
+article not exist : { ret : -901}
+
+
 
 
 

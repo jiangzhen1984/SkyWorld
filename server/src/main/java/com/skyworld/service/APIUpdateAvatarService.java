@@ -24,6 +24,8 @@ import com.skyworld.service.dsf.User;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
 import com.skyworld.service.resp.UpdateAvatarResponse;
+import com.skyworld.utils.GlobalPath;
+import com.skyworld.utils.ImageUtil;
 
 public class APIUpdateAvatarService implements APIService {
 
@@ -120,41 +122,15 @@ public class APIUpdateAvatarService implements APIService {
 	
 	
 	private BasicResponse handleUpdateAvatarOrigin(User user, InputStream in) throws IOException {
-		String home = System.getProperty("catalina.home", null);
-		if (home == null) {
-			throw new NullPointerException("Didn't find  catalina home");
-		}
-		Calendar c = Calendar.getInstance();
-		String contextPath =  c.get(Calendar.YEAR)+"/"+ (c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DAY_OF_MONTH)+"/";
-		File imageDir = new File(home + "/webapps/avatar/" + contextPath);
-		if (!imageDir.exists()) {
-			boolean ret = imageDir.mkdirs();
-			log.info("Create dir ret:" + ret+"   ===>" + imageDir.getAbsolutePath());
-		}
 		
 		String filename = "origin_"+System.currentTimeMillis()+".png";
-		OutputStream out = null;
-		File image = new File(imageDir.getAbsoluteFile()+"/" + filename);
-		log.info("write avatar to :"  +  image.getAbsolutePath());
-		byte[] buf = new byte[2048];
-		int n = -1;
-		try {
-			out = new FileOutputStream(image);
-			while((n = in.read(buf, 0, 2048)) != -1) {
-				out.write(buf, 0, n);
-			}
-		} catch (IOException e) {
-			throw e;
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+		String imageDir = GlobalPath.getAvatarHome();
+		String contextPath = GlobalPath.getAvatarContext();
+		log.info("write avatar to :"  +  (imageDir+"/" + filename));
+		boolean ret = ImageUtil.copyImage(in, imageDir+"/" + filename);
+		if (!ret) {
+			return new RTCodeResponse(APICode.HANDLER_STREAM_FAILED);
 		}
-		
 		user.setAvatarPath(contextPath+filename);
 		ServiceFactory.getESUserService().updateUserAvatar(user);
 		return new UpdateAvatarResponse(user);

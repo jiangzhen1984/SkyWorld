@@ -42,6 +42,12 @@
 		<servlet-class>com.skyworld.api.UserAvatarApi</servlet-class>
 	</servlet>
 
+	
+	<servlet>
+		<servlet-name>ArticleApi</servlet-name>
+		<servlet-class>com.skyworld.api.ArticleApi</servlet-class>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>UserAPI</servlet-name>
 		<url-pattern>/api/1.0/UserAPI</url-pattern>
@@ -55,6 +61,11 @@
 	<servlet-mapping>
 		<servlet-name>UserAvatarAPI</servlet-name>
 		<url-pattern>/api/1.0/UserAvatarAPI</url-pattern>
+	</servlet-mapping>
+	
+		<servlet-mapping>
+		<servlet-name>ArticleApi</servlet-name>
+		<url-pattern>/api/1.0/ArticleApi</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

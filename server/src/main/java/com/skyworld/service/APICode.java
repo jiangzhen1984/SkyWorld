@@ -16,6 +16,8 @@ public class APICode {
 	
 	public static final int TOKEN_INVALID = -5;
 	
+	public static final int HANDLER_STREAM_FAILED = -6;
+	
 
 	
 	public static final int REGISTER_ERROR_USER_EXIST = -101;
@@ -51,4 +53,8 @@ public class APICode {
 	public static final int UPDATE_AVATAR_ERROR = -801;
 	public static final int UPDATE_AVATAR_TYPE_NOT_SUPPORT = -802;
 	public static final int UPDATE_AVATAR_SIZE_EXCEED_MAX_LIMITION = -803;
+	
+	
+	
+	public static final int ARTICLE_ERROR_ARTICLE_NOT_EXIST = -901;
 }

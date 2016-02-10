@@ -6,6 +6,9 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.skyworld.init.GlobalConstants;
+import com.skyworld.service.dsf.User;
+
 public class JSONFormat {
 
 	public static Map<String, JSONObject> parse(String data) {
@@ -25,6 +28,24 @@ public class JSONFormat {
 			e.printStackTrace();
 		}
 		return map;
+	}
+	
+	
+	
+	public static void populateUserData(JSONObject jsobj, User user) {
+		if (jsobj == null || user == null) {
+			throw new NullPointerException(" jsobj or user is null");
+		}
+		
+		jsobj.put("id", user.getId());
+		jsobj.put("name", user.getName());
+		jsobj.put("cellphone", user.getCellPhone());
+		jsobj.put("mail", user.getMail());
+		if (user.getAvatar() != null) {
+			JSONObject avatar = new JSONObject();
+			jsobj.put("avatar", avatar);
+			avatar.put("origin", GlobalConstants.AVATAR_HOST+user.getAvatarPath());
+		}
 	}
 
 }

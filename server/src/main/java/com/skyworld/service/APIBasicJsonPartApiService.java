@@ -1,11 +1,14 @@
 package com.skyworld.service;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,11 +18,11 @@ import org.json.JSONTokener;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
 
-public abstract class APIBasicJsonApiService implements APIService {
+public abstract class APIBasicJsonPartApiService implements APIService {
 
 	protected Log log = LogFactory.getLog(this.getClass());
 	
-	private Map<String, APIBasicJsonApiService> mapping = new HashMap<String, APIBasicJsonApiService>();
+	private Map<String, APIBasicJsonPartApiService> mapping = new HashMap<String, APIBasicJsonPartApiService>();
 	
 	@Override
 	public void service(HttpServletRequest req, HttpServletResponse resp) {
@@ -37,23 +40,31 @@ public abstract class APIBasicJsonApiService implements APIService {
 			return;
 		}
 		String action = header.getString("action");
-		APIBasicJsonApiService hanldeService = mapping.get(action);
+		APIBasicJsonPartApiService hanldeService = mapping.get(action);
 		log.info(" action ==>   " + action+"    servicer===>" + hanldeService);
 		if (hanldeService == null) {
 			writeResponse(new RTCodeResponse(APICode.ACTION_NOT_SUPPORT), req, resp);
 			return;
 		}
 	
-		writeResponse(hanldeService.service(root), req, resp);
+		try {
+			writeResponse(hanldeService.service(root, req.getParts()), req, resp);
+		} catch (IOException e) {
+			log.error("get parts failed", e);
+			writeResponse(new RTCodeResponse(APICode.HANDLER_STREAM_FAILED), req, resp);
+		} catch (ServletException e) {
+			log.error("get parts failed", e);
+			writeResponse(new RTCodeResponse(APICode.HANDLER_STREAM_FAILED), req, resp);
+		}
 	}
 	
 	
-	public void addActionMapping(String key, APIBasicJsonApiService service) {
+	public void addActionMapping(String key, APIBasicJsonPartApiService service) {
 		mapping.put(key, service);
 	}
 	
 	
-	protected abstract BasicResponse service(JSONObject json);
+	protected abstract BasicResponse service(JSONObject json, Collection<Part> parts);
 
 	
 	
@@ -77,7 +88,6 @@ public abstract class APIBasicJsonApiService implements APIService {
 	private void writeResponse(BasicResponse response, HttpServletRequest req, HttpServletResponse resp) {
 		resp.setCharacterEncoding("utf8");
 		String strResp = response.getResponse();
-		log.info("===> ["+Integer.toOctalString(strResp.length())+"]" + strResp);
 		resp.setContentType("application/json");
 		try {
 			resp.getWriter().write(strResp);

@@ -40,10 +40,10 @@ public class SWArticleServiceTestCase extends TestCase {
 	public void testAddArticle() {
 		Article article = new Article();
 		article.setComment("aaaa");
-		article.addPic(0, "bbb");
+		article.addMedia(0, "bbb", 0);
 		article.setLat(2.0D);
 		article.setLng(1.0D);
-		article.addPic(0, "9999");
+		article.addMedia(0, "9999", 0);
 		article.setPublisher(u);
 		service.addArticle(article);
 		assertTrue(article.getId() > 0); 
@@ -53,10 +53,10 @@ public class SWArticleServiceTestCase extends TestCase {
 	public void testAddCommentArticleUserUserString() {
 		Article article = new Article();
 		article.setComment("aaaa");
-		article.addPic(0, "bbb");
+		article.addMedia(0, "bbb", 0);
 		article.setLat(2.0D);
 		article.setLng(1.0D);
-		article.addPic(0, "9999");
+		article.addMedia(0, "9999", 0);
 		article.setPublisher(u);
 		service.addArticle(article);
 		
@@ -77,10 +77,10 @@ public class SWArticleServiceTestCase extends TestCase {
 	public void testAddCommentLongLongLongString() {
 		Article article = new Article();
 		article.setComment("aaaa");
-		article.addPic(0, "bbb");
+		article.addMedia(0, "bbb", 0);
 		article.setLat(2.0D);
 		article.setLng(1.0D);
-		article.addPic(0, "9999");
+		article.addMedia(0, "9999", 0);
 		article.setPublisher(u);
 		service.addArticle(article);
 		
@@ -101,10 +101,10 @@ public class SWArticleServiceTestCase extends TestCase {
 	public void testAddRecommendationArticleUser() {
 		Article article = new Article();
 		article.setComment("aaaa");
-		article.addPic(0, "bbb");
+		article.addMedia(0, "bbb", 0);
 		article.setLat(2.0D);
 		article.setLng(1.0D);
-		article.addPic(0, "9999");
+		article.addMedia(0, "9999", 0);
 		article.setPublisher(u);
 		service.addArticle(article);
 		
@@ -118,10 +118,10 @@ public class SWArticleServiceTestCase extends TestCase {
 	public void testAddRecommendationLongLong() {
 		Article article = new Article();
 		article.setComment("aaaa");
-		article.addPic(0, "bbb");
+		article.addMedia(0, "bbb", 0);
 		article.setLat(2.0D);
 		article.setLng(1.0D);
-		article.addPic(0, "9999");
+		article.addMedia(0, "9999", 0);
 		article.setPublisher(u);
 		service.addArticle(article);
 		
@@ -134,10 +134,10 @@ public class SWArticleServiceTestCase extends TestCase {
 	public void testCancelRecommedationArticleUser() {
 		Article article = new Article();
 		article.setComment("aaaa");
-		article.addPic(0, "bbb");
+		article.addMedia(0, "bbb", 0);
 		article.setLat(2.0D);
 		article.setLng(1.0D);
-		article.addPic(0, "9999");
+		article.addMedia(0, "9999", 0);
 		article.setPublisher(u);
 		service.addArticle(article);
 		
@@ -151,10 +151,10 @@ public class SWArticleServiceTestCase extends TestCase {
 	public void testCancelRecommedationLongLong() {
 		Article article = new Article();
 		article.setComment("aaaa");
-		article.addPic(0, "bbb");
+		article.addMedia(0, "bbb", 0);
 		article.setLat(2.0D);
 		article.setLng(1.0D);
-		article.addPic(0, "9999");
+		article.addMedia(0, "9999", 0);
 		article.setPublisher(u);
 		service.addArticle(article);
 		
@@ -170,10 +170,10 @@ public class SWArticleServiceTestCase extends TestCase {
 		for (int i =0; i < 10; i++) {
 			Article article = new Article();
 			article.setComment("aaaa");
-			article.addPic(0, "bbb");
+			article.addMedia(0, "bbb", 0);
 			article.setLat(2.0D);
 			article.setLng(1.0D);
-			article.addPic(0, "9999");
+			article.addMedia(0, "9999", 0);
 			article.setPublisher(u);
 			service.addArticle(article);
 			

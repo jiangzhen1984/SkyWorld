@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -28,6 +30,7 @@ public class MockHttpServletRequest implements  HttpServletRequest {
 
 	
 	private Map<String, String> map = new HashMap<String, String>();
+	private List<Part> p = new ArrayList<Part>();
 	public MockHttpServletRequest() {
 		
 	}
@@ -323,8 +326,7 @@ public class MockHttpServletRequest implements  HttpServletRequest {
 
 	@Override
 	public Collection<Part> getParts() throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		return null;
+		return p;
 	}
 
 	@Override
@@ -433,6 +435,11 @@ public class MockHttpServletRequest implements  HttpServletRequest {
 	public void logout() throws ServletException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	public void addPart(Part pr) {
+		p.add(pr);
 	}
 
 }

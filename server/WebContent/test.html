@@ -8,9 +8,28 @@
 
 <form method="post" enctype="multipart/form-data" action="/SkyWorld/api/1.0/UserAvatarAPI">
 	<input name="sd" type="file" />
-	<input name="data" value="" size="60" />
+	<input name="data" value="" size="160" />
 	<input type="submit" />
 </form>
 
+<hr><br>
+Publish
+<form method="post" enctype="multipart/form-data" action="/SkyWorld/api/1.0/ArticleApi">
+	<input name="pic1" type="file" />
+	<input name="pic2" type="file" />
+	<input name="pic3" type="file" />
+	<input name="pic4" type="file" />
+	<input name="data" value="" size="160" />
+	<input type="submit" />
+</form>
+
+
+
+<hr><br>
+Recommend
+<form method="post" enctype="multipart/form-data" action="/SkyWorld/api/1.0/ArticleApi">
+	<input name="data" value="" size="160" />
+	<input type="submit" />
+</form>
 </body>
 </html>

@@ -33,7 +33,7 @@ public class Article {
 	
 	private List<Recommendation> recommendations;
 	
-	
+	private int status;
 	
 	public Article() {
 		super();
@@ -49,8 +49,8 @@ public class Article {
 	}
 	
 	
-	public void addPic(long id, String originPath) {
-		pics.add(new Pic(id, originPath));
+	public void addMedia(long id, String originPath,int type) {
+		pics.add(new Pic(id, originPath, type));
 	}
 	
 	public String getPicPath(int index) {
@@ -71,8 +71,8 @@ public class Article {
 	}
 
 	
-	public void addComment(long id, User user, String comment, User toUser) {
-		comments.add(new Comment(id, user,toUser, comment));
+	public void addComment(long id, User user, String comment, User toUser, long timestamp) {
+		comments.add(new Comment(id, user,toUser, comment, timestamp));
 	}
 	
 	public Comment getComment(int index) {
@@ -95,6 +95,12 @@ public class Article {
 		recommendations.add(new Recommendation(id, user));
 	}
 	
+	public User getRecommendationUser(int index) {
+		if (index < 0 || index >= recommendations.size()) {
+			throw new IndexOutOfBoundsException("index incorrect :"+ recommendations.size()+"  index:"+ index);
+		}
+		return recommendations.get(index).rUser;
+	}
 
 	public long getId() {
 		return id;
@@ -202,13 +208,32 @@ public class Article {
 
 
 
+	public int getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+
+
+
+
+
+
+
 	class Pic {
 		long id;
 		String path;
-		public Pic(long id, String path) {
+		int type;
+		long time;
+		public Pic(long id, String path, int type) {
 			super();
 			this.id = id;
 			this.path = path;
+			this.type = type;
 		}
 		
 		
@@ -216,17 +241,19 @@ public class Article {
 	
 	
 	
-	class Comment {
-		long id;
-		User commentUser;
-		User toUser;
-		String comment;
-		public Comment(long id, User commentUser, User toUser, String comment) {
+	public class Comment {
+		public long id;
+		public User commentUser;
+		public User toUser;
+		public String comment;
+		public long time;
+		public Comment(long id, User commentUser, User toUser, String comment, long time) {
 			super();
 			this.id = id;
 			this.commentUser = commentUser;
 			this.toUser = toUser;
 			this.comment = comment;
+			this.time = time;
 		}
 		
 		

@@ -71,11 +71,16 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 	@Override
 	public void resetBuffer() {
-		pw.close();
-		try {
-			buffer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (pw != null) {
+			pw.close();
+		}
+		
+		if (buffer != null) {
+			try {
+				buffer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		pw = null;
