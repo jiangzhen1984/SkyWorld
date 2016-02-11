@@ -14,6 +14,7 @@ import com.skyworld.cache.CacheManager;
 import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.dsf.UserType;
+import com.skyworld.service.po.SWPRelationship;
 import com.skyworld.service.po.SWPUser;
 import com.skyworld.service.po.SWPUserAvatar;
 
@@ -25,6 +26,9 @@ public class SWUserService extends BaseService {
 		User user = CacheManager.getIntance().getUser(uid);
 		if (user == null) {
 			user = selectUser(uid);
+			if (user == null) {
+				return null;
+			}
 			CacheManager.getIntance().putUser(uid, user);
 		}
 		return user;
@@ -33,7 +37,10 @@ public class SWUserService extends BaseService {
 	
 	public User selectUser(long uid) {
 		Session session = openSession();
-		SWPUser u = (SWPUser)session.load(SWPUser.class, uid);
+		SWPUser u = (SWPUser)session.get(SWPUser.class, uid);
+		if (u == null) {
+			return null;
+		}
 		User user = new User(u);
 		user.setAvatar(queryAvatar(user, session));
 		session.close();
@@ -188,6 +195,8 @@ public class SWUserService extends BaseService {
 		user.setLastUpdate(esu.getLastUpdate());
 		t.commit();
 		session.close();
+		//put to cache
+		CacheManager.getIntance().putUser(user.getId(), user);
 		return 0;
 	}
 	
@@ -216,6 +225,9 @@ public class SWUserService extends BaseService {
 	
 	
 	public boolean updradeUserToSKServicer(SKServicer servicer) {
+		if (servicer == null) {
+			throw new NullPointerException("user is null");
+		}
 		Session session = openSession();
 		Query query = session.createQuery(" from SWPUser where id = ?");
 		query.setLong(0, servicer.getId());
@@ -231,12 +243,16 @@ public class SWUserService extends BaseService {
 		}
 		session.close();
 		
+		//FIXME update cache
 		return true;
 	}
 	
 	
 	
 	public SWPUserAvatar updateUserAvatar(User user) {
+		if (user == null) {
+			throw new NullPointerException("user is null");
+		}
 		Session session = openSession();
 		Transaction t = session.beginTransaction();
 		if (user.getAvatarId() > 0) {
@@ -252,6 +268,76 @@ public class SWUserService extends BaseService {
 		t.commit();
 		session.close();
 		return user.getAvatar();
+	}
+	
+	
+	public void makeRelation(User user1, User user2, boolean both) {
+		if (user1 == null || user2 == null) {
+			throw new NullPointerException("user is null");
+		}
+		//FIXME should check exist first
+		SWPRelationship ship1 = new SWPRelationship();
+		ship1.setUserId1(user1.getId());
+		ship1.setUserId2(user2.getId());
+		
+		Session session = openSession();
+		Transaction t = session.beginTransaction();
+		session.save(ship1);
+		if (both) {
+			SWPRelationship ship2 = new SWPRelationship();
+			ship2.setUserId1(user2.getId());
+			ship2.setUserId2(user1.getId());
+			session.save(ship2);
+		}
+		t.commit();
+		session.close();
+		
+		user1.addFriend(user2);
+		if (both) {
+			user2.addFriend(user1);
+		}
+	}
+	
+	
+	
+	public void removeRelation(User user1, User user2, boolean both) {
+		if (user1 == null || user2 == null) {
+			throw new NullPointerException("user is null");
+		}
+
+		Session session = openSession();
+		Transaction t = session.beginTransaction();
+		Query query = session.createQuery(" delete from SWPRelationship where (userId1 = ? and userId2 =? )"+(both ? " or (userId1 = ? and userId2 =?)  " : ""));
+		query.setLong(0, user1.getId());
+		query.setLong(1, user2.getId());
+		if (both) {
+			query.setLong(2, user2.getId());
+			query.setLong(3, user1.getId());
+		}
+		query.executeUpdate();
+		t.commit();
+		session.close();
+		
+		user1.removeFriend(user2);
+		if (both) {
+			user2.removeFriend(user1);
+		}
+	}
+	
+	
+	public void queryUserRelation(User user) {
+		if (user == null) {
+			throw new NullPointerException("user is null");
+		}
+		Session session = openSession();
+		Query query = session.createQuery(" from SWPRelationship r  where userId1 = ?");
+		query.setLong(0, user.getId());
+		List<SWPRelationship> list = query.list();
+		Iterator<SWPRelationship> it = list.iterator();
+		while(it.hasNext()) {
+			user.addFriend(getUser(it.next().getUserId1()));
+		}
+		session.close();
 	}
 
 

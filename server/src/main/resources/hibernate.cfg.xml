@@ -45,6 +45,7 @@
 		<mapping class="com.skyworld.service.po.SWPArticleComment" />
 		<mapping class="com.skyworld.service.po.SWPArticlePicture" />
 		<mapping class="com.skyworld.service.po.SWPArticleRecommendation" />
+		<mapping class="com.skyworld.service.po.SWPRelationship" />
 		
 	</session-factory>
 

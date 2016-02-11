@@ -33,6 +33,7 @@ public class UserQueryResponse extends JSONBasicResponse {
 			for (User u : userList) {
 				JSONObject jsonUser = new JSONObject();
 				users.put(jsonUser);
+				jsonUser.put("id", u.getId());
 				jsonUser.put("name", u.getName());
 				jsonUser.put("cellphone", u.getCellPhone());
 				jsonUser.put("mail", u.getMail());

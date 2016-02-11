@@ -1,5 +1,7 @@
 package com.skyworld.service.dsf;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -21,10 +23,13 @@ public class User extends SWPUser {
 	private UserType userType;
 	
 	private Queue<SHPEvent> pengingEvents;
+	
+	private List<User> relationUser;
 
 	public User() {
 		super();
 		userType = UserType.CUSTOMER;
+		relationUser = new ArrayList<User>();
 	}
 	
 	public User(User u) {
@@ -47,6 +52,7 @@ public class User extends SWPUser {
 			this.userType = UserType.GROUP;
 			break;
 		}
+		relationUser = new ArrayList<User>();
 		
 	}
 
@@ -69,6 +75,7 @@ public class User extends SWPUser {
 			this.userType = UserType.GROUP;
 			break;
 		}
+		relationUser = new ArrayList<User>();
 	}
 
 	public Token getToken() {
@@ -124,14 +131,28 @@ public class User extends SWPUser {
 	public Queue<SHPEvent> getPendingEvents() {
 		return pengingEvents;
 	}
+	
+	
+	public void addFriend(User u) {
+		this.relationUser.add(u);
+	}
+	
+	public void removeFriend(User u) {
+		this.relationUser.remove(u);
+	}
+	
+	
+	public boolean isInRelation(User u) {
+		int index = this.relationUser.indexOf(u);
+		return !(index == -1);
+	}
 
 	@Override
 	public String toString() {
 		return "User [token=" + token + ", userType=" + userType + ", id=" + id
 				+ "]";
 	}
-	
-	
+
 	
 
 }

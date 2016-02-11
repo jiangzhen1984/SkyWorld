@@ -29,7 +29,7 @@ public class UpdateAvatarResponse extends JSONBasicResponse {
 		
 		JSONObject userResp = new JSONObject();
 		resp.put("user", userResp);
-		
+		userResp.put("id", user.getId());
 		userResp.put("name", user.getName());
 		userResp.put("cellphone", user.getCellPhone());
 		userResp.put("mail", user.getMail());

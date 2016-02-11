@@ -11,6 +11,7 @@ import com.skyworld.service.APIAnswerService;
 import com.skyworld.service.APIChainService;
 import com.skyworld.service.APICode;
 import com.skyworld.service.APIFeedbackService;
+import com.skyworld.service.APIFollowService;
 import com.skyworld.service.APIInquireService;
 import com.skyworld.service.APILoginService;
 import com.skyworld.service.APIRegisterService;
@@ -39,7 +40,122 @@ public class APIServiceTestCase extends TestCase {
 		((APIChainService)service).addActionMapping("question", new APIInquireService());
 		((APIChainService)service).addActionMapping("answer", new APIAnswerService());
 		((APIChainService)service).addActionMapping("feedback", new APIFeedbackService());
+		((APIChainService)service).addActionMapping("follow", new APIFollowService());
 	}
+	
+	
+	@Test
+	public void testAPIFollowService() {
+		//check for not staticist parameters
+		response.resetBuffer();
+		request.setParam("data", buildNotEnoughParamForFollowService());
+		service.service(request, response);
+		String str = response.getFlusedBuffer();
+		JSONObject respJson = parse(str);
+		assertEquals(APICode.REQUEST_PARAMETER_NOT_STISFIED, respJson.getInt("ret"));
+		
+		
+		
+		//register two users
+		response.resetBuffer();
+		request.setParam("data", buildNormalRegister("11", "11"));
+		service.service(request, response);
+		str = response.getFlusedBuffer();
+		respJson = parse(str);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		assertTrue(respJson.has("user"));
+		assertTrue(respJson.has("token"));
+		String token1 = respJson.getString("token");
+		long uid1 = respJson.getJSONObject("user").getLong("id");
+		
+		
+		//register two users
+		response.resetBuffer();
+		request.setParam("data", buildNormalRegister("12", "12"));
+		service.service(request, response);
+		str = response.getFlusedBuffer();
+		respJson = parse(str);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		assertTrue(respJson.has("user"));
+		assertTrue(respJson.has("token"));
+		String token2 = respJson.getString("token");
+		long uid2 = respJson.getJSONObject("user").getLong("id");
+				
+		
+		System.out.println(buildMakeRelationParamForFollowService(token1, uid2));
+		//check for make relation
+		response.resetBuffer();
+		request.setParam("data", buildMakeRelationParamForFollowService(token1, uid2));
+		service.service(request, response);
+		str = response.getFlusedBuffer();
+		respJson = parse(str);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		
+		
+		System.out.println(buildMakeRelationParamForFollowService(token1, uid2));
+		//check for make relation
+		response.resetBuffer();
+		request.setParam("data", buildMakeRemoveRelationParamForFollowService(token1, uid2));
+		service.service(request, response);
+		str = response.getFlusedBuffer();
+		respJson = parse(str);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		
+	}
+	
+	
+	String buildNotEnoughParamForFollowService() {
+		JSONObject root = new JSONObject();
+		JSONObject header = new JSONObject();
+		JSONObject body = new JSONObject();
+		
+		root.put("header", header);
+		root.put("body", body);
+		
+		header.put("action", "follow");
+		header.put("token", "aaa");
+		
+		body.put("user_id", "1");
+		body.put("flag", 1);
+		return root.toString();
+	}
+	
+	String buildMakeRelationParamForFollowService(String token, long uid2) {
+		JSONObject root = new JSONObject();
+		JSONObject header = new JSONObject();
+		JSONObject body = new JSONObject();
+		
+		root.put("header", header);
+		root.put("body", body);
+		
+		header.put("action", "follow");
+		header.put("token", token);
+		
+		body.put("user_id", uid2);
+		body.put("flag", 1);
+		body.put("both", true);
+		return root.toString();
+	}
+	
+	
+	String buildMakeRemoveRelationParamForFollowService(String token, long uid2) {
+		JSONObject root = new JSONObject();
+		JSONObject header = new JSONObject();
+		JSONObject body = new JSONObject();
+		
+		root.put("header", header);
+		root.put("body", body);
+		
+		header.put("action", "follow");
+		header.put("token", token);
+		
+		body.put("user_id", uid2);
+		body.put("flag", 2);
+		body.put("both", false);
+		return root.toString();
+	}
+	
+	
 
 	@Test
 	public void testServiceHttpServletRequestHttpServletResponse() {

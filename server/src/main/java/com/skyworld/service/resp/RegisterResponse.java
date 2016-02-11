@@ -41,6 +41,7 @@ public class RegisterResponse extends JSONBasicResponse {
 		userResp.put("mail", user.getMail());
 		userResp.put("username", user.getMail());
 		userResp.put("type", user.getUserType().ordinal());
+		userResp.put("id", user.getId());
 		if (user.getAvatar() != null) {
 			JSONObject avatar = new JSONObject();
 			userResp.put("avatar", avatar);

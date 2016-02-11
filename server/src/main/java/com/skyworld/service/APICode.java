@@ -57,4 +57,11 @@ public class APICode {
 	
 	
 	public static final int ARTICLE_ERROR_ARTICLE_NOT_EXIST = -901;
+	
+	
+	public static final int FOLLOW_ERROR_USER_NOT_EXIST = -1001;
+	public static final int FOLLOW_ERROR_UN_SUPPORT_FLAG = -1002;
+	
 }
+
+

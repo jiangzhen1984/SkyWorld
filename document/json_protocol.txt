@@ -16,6 +16,9 @@ Protocol Version: M7
                Add Article publish API
                Add Article recommend API
                Add Article comment API
+Protocol Version: M8
+              Add user Id property in register response and login response, query response 
+              Add Follow protocol definition
 
 
 
@@ -42,6 +45,7 @@ Register
     "token":"95189457043652618",
     "user":
     {
+       "id"  : id,
        "mail":"138",
        "cellphone":"1381196123",
        "type":0,
@@ -87,6 +91,7 @@ Login :
     "token":"95189457043652618",
     "user":
     {
+       "id"  : id,
        "mail":"138",
        "cellphone":"1381196123",
        "type":0,
@@ -153,6 +158,7 @@ Upgrade:
     "token":"95189457043652618",  ---> This token is new token, different from prior
     "user":
     {
+       "id"  : id,
        "mail":"138",
        "cellphone":"1381196123",
        "type":1,
@@ -209,6 +215,7 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upg
      "ret"    : 0,
      "users"  :[
          {
+            "id"  : id,
             "mail":"138",
             "name":"138",
             "username":"138",
@@ -372,7 +379,7 @@ http boundary  and avatar image data
 
 -------------------------------------------------------------------------
 
-成功返回：  {"ret":0,"user":{"mail":"138","username":"138","cellphone":"1381196123","avatar":{"origin":"2016/1/18/origin_1453123489091.png"},"type":0}}
+成功返回：  {"ret":0,"user":{ "id" : id, "mail":"138","username":"138","cellphone":"1381196123","avatar":{"origin":"2016/1/18/origin_1453123489091.png"},"type":0}}
 
         avatar: user avatar information
         origin: user avatar full http url
@@ -411,7 +418,7 @@ http boundary   image data
 
 
 成功返回：
-    {"ret":0,"article":{"timestamp":1455094524478,"id":4,"recommends":[],"status":0,"comment":"eeeee","comments":[],"publisher":{"id":6,"mail":"12346","cellphone":"12346"}}}
+    {"ret":0,"article":{"timestamp":1455094524478,"id":4,"recommends":[],"status":0,"comment":"eeeee","comments":[],"publisher":{"id":6,"mail":"12346","cellphone":"12346"}, "pics":[{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098490900_1.png"},{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098492736_2.png"}]}}
 解析失败返回：  {ret: -1}
 action参数不支持返回：  {ret: -2}  
 参数不满足返回：  {ret: -3}  
@@ -437,7 +444,7 @@ Recommend协议：
 }
 
 返回结果：
-成功返回：   {"ret":0,"article":{"timestamp":1455095011210,"id":3,"recommends":[{"id":3,"mail":"1","cellphone":"1"}],"status":0,"comment":"eeeee","comments":[],"publisher":{"id":2,"mail":"1234","cellphone":"1234"}}} 
+成功返回：   {"ret":0,"article":{"timestamp":1455095011210,"id":3,"recommends":[{"id":3,"mail":"1","cellphone":"1"}],"status":0,"comment":"eeeee","comments":[],"publisher":{"id":2,"mail":"1234","cellphone":"1234"}, "pics":[{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098490900_1.png"},{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098492736_2.png"}]}} 
 
 解析失败返回：  {ret: -1}
 action参数不支持返回：  {ret: -2}  
@@ -466,7 +473,7 @@ Comment协议：
 }
 
 返回结果：
-成功返回 {"ret":0,"article":{"timestamp":1455095205297,"id":4,"recommends":[],"status":0,"comment":"eeeee","comments":[{"content":"eee","user":{"id":5,"mail":"17","cellphone":"17"}}],"publisher":{"id":4,"mail":"12345","cellphone":"12345"}}}
+成功返回 {"ret":0,"article":{"timestamp":1455095205297,"id":4,"recommends":[],"status":0,"comment":"eeeee","comments":[{"content":"eee","user":{"id":5,"mail":"17","cellphone":"17"}}],"publisher":{"id":4,"mail":"12345","cellphone":"12345"}, "pics":[{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098490900_1.png"},{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098492736_2.png"}]}}
 
 解析失败返回：  {ret: -1}
 action参数不支持返回：  {ret: -2}  
@@ -478,7 +485,31 @@ article not exist : { ret : -901}
 
 
 
+=======================================Follow JSON Protocol =====================================
+Follow :
 
+{ 
+   "header":
+   {
+      "action" : "follow",
+      "token"  : token id
+   },
+   "body" :
+   { 
+      "user_id" : userId,
+      "flag"    : [1/2]  1: make follow 2 make unfollow
+      "both"    : [true/false]  true: make relationship for eachother, false only for request user
+   }
+}
+
+成功返回： { "ret":0 }
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
+user doesn't exist : {ret: -1001}
+unsupport flag : {ret: -1002}
 
 
 ############################################################################################################
