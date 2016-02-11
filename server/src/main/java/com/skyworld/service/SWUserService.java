@@ -338,6 +338,7 @@ public class SWUserService extends BaseService {
 			user.addFriend(getUser(it.next().getUserId1()));
 		}
 		session.close();
+		user.setRelationQueryFlag(true);
 	}
 
 

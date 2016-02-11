@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import com.skyworld.service.APIArticleCommentService;
 import com.skyworld.service.APIArticlePushlihService;
+import com.skyworld.service.APIArticleQuery;
 import com.skyworld.service.APIArticleRecommendationService;
 import com.skyworld.service.APIChainService;
 import com.skyworld.service.APICode;
@@ -48,6 +49,8 @@ public class APIArticleTestCase extends TestCase {
 		service.addActionMapping("article-publish", new APIArticlePushlihService());
 		service.addActionMapping("article-recommend", new APIArticleRecommendationService());
 		service.addActionMapping("article-comment", new APIArticleCommentService());
+		service.addActionMapping("article-query", new APIArticleQuery());
+		
 
 	}
 	
@@ -268,6 +271,124 @@ public class APIArticleTestCase extends TestCase {
 		
 	}
 	
+	
+	
+	@Test
+	public void testArticleQuery() {
+		String result;
+		JSONObject respJson;
+		
+		
+		// for no token and no comment no image
+		response.resetBuffer();
+		request.setParam("data", buildInvalidData("article-publish"));
+		service.service(request, response);
+		result = response.getFlusedBuffer();
+		respJson = parse(result);
+		assertEquals(APICode.REQUEST_PARAMETER_NOT_STISFIED, respJson.getInt("ret"));
+		
+		
+		
+		//register
+		response.resetBuffer();
+		request.setParam("data", buildNormalRegister("aaaaa", "aa"));
+		userService.service(request, response);
+		result = response.getFlusedBuffer();
+		respJson = parse(result);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		assertTrue(respJson.has("user"));
+		assertTrue(respJson.has("token"));
+		
+		String token = respJson.getString("token");
+		
+		// for with comment and no image
+		response.resetBuffer();
+		request.setParam("data", buildNormalDataWithoutPic("article-publish", "eeeee", token));
+		service.service(request, response);
+		result = response.getFlusedBuffer();
+		respJson = parse(result);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		
+		
+		
+		// for with comment and no image
+		response.resetBuffer();
+		request.setParam("data", buildNormalDataWithoutPic("article-publish", "eeeee", token));
+		request.addPart(new LocalPart("/home/jiangzhen/Pictures/b.png"));
+		request.addPart(new LocalPart("/home/jiangzhen/Pictures/b1.png"));
+		request.addPart(new LocalPart("/home/jiangzhen/Pictures/c.png"));
+		
+		service.service(request, response);
+		result = response.getFlusedBuffer();
+		respJson = parse(result);
+		System.out.println(result);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		long arid = respJson.getJSONObject("article").getLong("id");
+		
+		
+		response.resetBuffer();
+		request.setParam("data", buildNormalDataForComment(token, arid, "eee"));
+		service.service(request, response);
+		result = response.getFlusedBuffer();
+		respJson = parse(result);
+		System.out.println(result);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		assertEquals(1, respJson.getJSONObject("article").getJSONArray("comments").length());
+		
+		
+		response.resetBuffer();
+		request.setParam("data", buildNormalDataForComment(token, arid, "eee"));
+		service.service(request, response);
+		result = response.getFlusedBuffer();
+		respJson = parse(result);
+		System.out.println(result);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		assertEquals(2, respJson.getJSONObject("article").getJSONArray("comments").length());
+		
+		
+		
+		response.resetBuffer();
+		request.setParam("data", buildNormalDataForRecommend(token, arid, true));
+		service.service(request, response);
+		result = response.getFlusedBuffer();
+		respJson = parse(result);
+		System.out.println(result);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		assertEquals(1, respJson.getJSONObject("article").getJSONArray("recommends").length());
+		
+		
+		// for  query
+		response.resetBuffer();
+		request.setParam("data", buildNormalArticleQuery(token));
+		
+		service.service(request, response);
+		result = response.getFlusedBuffer();
+		respJson = parse(result);
+		System.out.println(result);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		assertTrue(respJson.getInt("articles_count") >= 2);
+		assertTrue(respJson.getJSONArray("articles").length() >= 2);
+	}
+	
+	
+	
+	
+	String buildNormalArticleQuery(String token) {
+		JSONObject root = new JSONObject();
+		JSONObject header = new JSONObject();
+		JSONObject body = new JSONObject();
+		
+		root.put("header", header);
+		root.put("body", body);
+		
+		header.put("token", token);
+		header.put("action", "article-query");
+		
+		body.put("timestamp_start", System.currentTimeMillis());
+		
+		body.put("timestamp_end", System.currentTimeMillis() - 3600 * 1000);
+		return root.toString();
+	}
 	
 	
 	String buildNormalRegister(String cellphone, String pwd) {

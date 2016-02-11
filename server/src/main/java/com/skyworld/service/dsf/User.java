@@ -25,6 +25,8 @@ public class User extends SWPUser {
 	private Queue<SHPEvent> pengingEvents;
 	
 	private List<User> relationUser;
+	
+	private boolean relationQueryFlag;
 
 	public User() {
 		super();
@@ -145,6 +147,25 @@ public class User extends SWPUser {
 	public boolean isInRelation(User u) {
 		int index = this.relationUser.indexOf(u);
 		return !(index == -1);
+	}
+	
+	public int getRelationUserCount() {
+		return relationUser.size();
+	}
+	
+	public User getRelationUser(int index) {
+		if (index < 0 || index >=relationUser.size()) {
+			throw new IndexOutOfBoundsException("index["+index+"] out of array");
+		}
+		return relationUser.get(index);
+	}
+
+	public boolean isRelationQueryFlag() {
+		return relationQueryFlag;
+	}
+
+	public void setRelationQueryFlag(boolean relationQueryFlag) {
+		this.relationQueryFlag = relationQueryFlag;
 	}
 
 	@Override

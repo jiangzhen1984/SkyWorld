@@ -19,6 +19,8 @@ Protocol Version: M7
 Protocol Version: M8
               Add user Id property in register response and login response, query response 
               Add Follow protocol definition
+Protocol Version: M9
+              Add Query Article protocol definition 
 
 
 
@@ -510,6 +512,74 @@ token 格式不正确：  {ret: -4}
 token不存在：  {ret: -5}  
 user doesn't exist : {ret: -1001}
 unsupport flag : {ret: -1002}
+
+
+
+
+=======================================Article Query JSON Protocol =====================================
+Article Query
+
+{
+    "header": 
+    {
+         "action" : "article-query",
+         "token"  :  token id
+    }, 
+    "body":  
+    {
+        "timestamp_end"  :  1455174572266,  //millisecons end
+        "timestamp_start":  1455178172266   //millisecons start
+        "fetch_count"    :  count // optional  default is 15
+    }
+}
+
+成功返回：  
+{
+   "ret":0,
+   "articles_count": 2,
+   "articles"  :
+   [
+       {
+            "timestamp":1455178172279,
+            "id":2,
+            "pics":[],
+            "recommends":
+            [
+               {"id":1,"mail":"aaaaa","cellphone":"aaaaa"}
+            ],
+            "status":0,
+            "comment":"eeeee",
+            "comments":
+            [
+               {
+                   "content":"eee",
+                   "user": { "id":1, "mail":"aaaaa", "cellphone":"aaaaa" }
+               },
+               {
+                   "content":"eee",
+                   "user":{"id":1,"mail":"aaaaa","cellphone":"aaaaa"}
+               }
+            ],
+           "publisher":{"id":1,"mail":"aaaaa","cellphone":"aaaaa"}
+      },
+      {
+           "timestamp":1455178172282,
+           "id":1,
+           "pics":[],
+           "recommends":[],
+           "status":0,
+           "comment":"eeeee",
+           "comments":[],
+           "publisher":{"id":1,"mail":"aaaaa","cellphone":"aaaaa"}
+     }
+   ]
+}
+
+解析失败返回：  {ret: -1}
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
 
 
 ############################################################################################################

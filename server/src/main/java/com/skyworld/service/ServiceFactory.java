@@ -115,7 +115,8 @@ public class ServiceFactory {
 		mApiService[API_CODE_ARTICLE] =  new APIJsonPartDispatchService();
 		((APIJsonPartDispatchService)mApiService[API_CODE_ARTICLE]).addActionMapping("article-publish", new APIArticlePushlihService());
 		((APIJsonPartDispatchService)mApiService[API_CODE_ARTICLE]).addActionMapping("article-recommend", new APIArticleRecommendationService());
-		((APIJsonPartDispatchService)mApiService[API_CODE_ARTICLE]).addActionMapping("article-comment", new APIArticleCommentService());
+		((APIJsonPartDispatchService)mApiService[API_CODE_ARTICLE]).addActionMapping("article-comment", new APIArticleCommentService()); 
+		((APIJsonPartDispatchService)mApiService[API_CODE_ARTICLE]).addActionMapping("article-query", new APIArticleQuery());
 	}
 	
 	

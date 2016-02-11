@@ -188,7 +188,7 @@ public class SWArticleService extends BaseService {
 		int num = userIds.size();
 		StringBuffer queryBuffer = new StringBuffer();
 		queryBuffer.append(" select a.id as aid, a.AR_COMMENT, a.USER_ID , ap.id as apid, ap.ORIGIN_PATH as opp ");
-		queryBuffer.append(" from SW_Article a join SW_ARTICLE_MEDIA ap ");
+		queryBuffer.append(" from SW_Article a left join SW_ARTICLE_MEDIA ap ");
 		queryBuffer.append("  on ap.ARTICLE_ID = a.id ");
 		
 		queryBuffer.append(" WHERE  ");
@@ -230,9 +230,11 @@ public class SWArticleService extends BaseService {
 			} else {
 				ar = last;
 			}
-			
-			// 0 for image
-			ar.addMedia(((BigInteger)obj[3]).longValue(), (String)obj[4], 0);
+			//No media item
+			if (obj[3] != null) {
+				// 0 for image
+				ar.addMedia(((BigInteger)obj[3]).longValue(), (String)obj[4], 0);
+			}
 			//TODO if exist video add video
 			
 			if (ar != last) {
