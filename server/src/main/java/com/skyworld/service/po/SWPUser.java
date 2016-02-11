@@ -36,7 +36,7 @@ public class SWPUser {
 	@Column(name="U_TYPE", columnDefinition="NUMERIC(1)")
 	private int uType;
 
-	@Column(name="avatar_id", columnDefinition="NUMERIC(20)")
+	@Column(name="avatar_id", columnDefinition="BIGINT")
 	private long avatarId;
 	
 	

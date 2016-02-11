@@ -17,10 +17,10 @@ public class SWPArticleRecommendation {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected long id;
 	
-	@Column(name="ARTICLE_ID", columnDefinition="NUMERIC(20)")
+	@Column(name="ARTICLE_ID", columnDefinition="BIGINT")
 	protected long articleId;
 	
-	@Column(name="USER_ID", columnDefinition="NUMERIC(20)")
+	@Column(name="USER_ID", columnDefinition="BIGINT")
 	protected long userId;
 	
 	@Column(name="AR_TIME_STAMP", columnDefinition="DATETIME")

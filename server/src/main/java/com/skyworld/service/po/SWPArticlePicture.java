@@ -15,7 +15,7 @@ public class SWPArticlePicture {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected long id;
 	
-	@Column(name="ARTICLE_ID", columnDefinition="NUMERIC(20)")
+	@Column(name="ARTICLE_ID", columnDefinition="BIGINT")
 	protected long articleId;
 	
 	@Column(name="ORIGIN_PATH", columnDefinition="VARCHAR(300)")

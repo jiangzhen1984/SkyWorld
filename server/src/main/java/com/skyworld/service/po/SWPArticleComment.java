@@ -17,13 +17,13 @@ public class SWPArticleComment {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected long id;
 	
-	@Column(name="ARTICLE_ID", columnDefinition="NUMERIC(20)")
+	@Column(name="ARTICLE_ID", columnDefinition="BIGINT")
 	protected long articleId;
 	
-	@Column(name="USER_ID", columnDefinition="NUMERIC(20)")
+	@Column(name="USER_ID", columnDefinition="BIGINT")
 	protected long userId;
 	
-	@Column(name="TO_USER_ID", columnDefinition="NUMERIC(20)")
+	@Column(name="TO_USER_ID", columnDefinition="BIGINT")
 	protected long toUserId;
 	
 	@Column(name="AR_COMMENT", columnDefinition="VARCHAR(2000)")

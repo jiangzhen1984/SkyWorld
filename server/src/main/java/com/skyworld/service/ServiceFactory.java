@@ -107,7 +107,7 @@ public class ServiceFactory {
 		((APIChainService)mApiService[API_CODE_USER]).addActionMapping("logout", new APILogoutService());
 		((APIChainService)mApiService[API_CODE_USER]).addActionMapping("query", new APIQueryService());
 		((APIChainService)mApiService[API_CODE_USER]).addActionMapping("feedback", new APIFeedbackService());
-		
+		((APIChainService)mApiService[API_CODE_USER]).addActionMapping("follow", new APIFollowService());
 		
 		mApiService[API_CODE_USER_QUESTION] = mApiService[API_CODE_USER];
 		mApiService[API_CODE_USER_AVATAR] =  new APIUpdateAvatarService();

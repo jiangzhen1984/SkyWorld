@@ -18,7 +18,7 @@ public class SWPFeedback {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected long id;
 	
-	@Column(name="USER_ID", columnDefinition="NUMERIC(20)")
+	@Column(name="USER_ID", columnDefinition="BIGINT")
 	protected long userId;
 	
 	@Column(name="CUSTOMER_COMMENT", columnDefinition="VARCHAR(4000)")

@@ -1,6 +1,5 @@
 package com.skyworld.service;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -225,7 +224,7 @@ public class SWArticleService extends BaseService {
 				ar.setId(((BigInteger)obj[0]).longValue());
 				ar.setComment((String)obj[1]);
 				ar.setPublisher(ServiceFactory.getESUserService()
-						.getUser(((BigDecimal)obj[2]).longValue()));
+						.getUser(((BigInteger)obj[2]).longValue()));
 				
 				queryArticleData(session, ar, true, true, false);
 			} else {

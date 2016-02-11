@@ -15,16 +15,16 @@ public class SWPArticle {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	protected long id;
 	
-	@Column(name="USER_ID", columnDefinition="NUMERIC(20)")
+	@Column(name="USER_ID", columnDefinition="BIGINT")
 	protected long userId;
 	
 	@Column(name="AR_COMMENT", columnDefinition="VARCHAR(2000)")
 	protected String comment;
 	
-	@Column(name="AR_RECOMMENDS_COUNT", columnDefinition="NUMERIC(4)")
+	@Column(name="AR_RECOMMENDS_COUNT", columnDefinition="SMALLINT")
 	protected int recommendsCount;
 	
-	@Column(name="AR_COMMENTS_COUNT", columnDefinition="NUMERIC(4)")
+	@Column(name="AR_COMMENTS_COUNT", columnDefinition="SMALLINT")
 	protected int commentsCount;
 	
 	@Column(name="AR_GPS_LAT", columnDefinition="DOUBLE")
