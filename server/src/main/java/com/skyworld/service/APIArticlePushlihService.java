@@ -88,7 +88,7 @@ public class APIArticlePushlihService extends APIBasicJsonPartApiService {
 			Part p = its.next();
 			//TODO handle video
 			
-			if (!"image/jpeg".equalsIgnoreCase(p.getContentType())) {
+			if (!"image/".startsWith(p.getContentType())) {
 				log.error("Found non-image type part: " + p.getContentType());
 				continue;
 			}
