@@ -21,6 +21,8 @@ Protocol Version: M8
               Add Follow protocol definition
 Protocol Version: M9
               Add Query Article protocol definition 
+Protocol Version: M10
+              Add timestamp properties in article comment
 
 
 
@@ -553,10 +555,12 @@ Article Query
             [
                {
                    "content":"eee",
+                   "timestamp" : timestamp of long type,
                    "user": { "id":1, "mail":"aaaaa", "cellphone":"aaaaa" }
                },
                {
                    "content":"eee",
+                   "timestamp" : timestamp of long type,
                    "user":{"id":1,"mail":"aaaaa","cellphone":"aaaaa"}
                }
             ],
