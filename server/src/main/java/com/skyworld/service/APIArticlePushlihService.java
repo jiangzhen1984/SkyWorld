@@ -23,7 +23,7 @@ import com.skyworld.utils.ImageUtil;
 public class APIArticlePushlihService extends APIBasicJsonPartApiService {
 
 	@Override
-	protected BasicResponse service(JSONObject json, Collection<Part> parts) {
+	protected BasicResponse service(JSONObject json,  PartsWrapper partwrapper) {
 		JSONObject header = json.getJSONObject("header");
 		JSONObject body = json.getJSONObject("body");
 		
@@ -44,10 +44,17 @@ public class APIArticlePushlihService extends APIBasicJsonPartApiService {
 		Article arc = extractData(header, body);
 		
 		arc.setPublisher(user);
-		boolean ret = handlePart(arc, parts);
-		if (!ret) {
+		boolean ret;
+		try {
+			ret = handlePart(arc,  partwrapper.getParts());
+			if (!ret) {
+				return new RTCodeResponse(APICode.HANDLER_STREAM_FAILED);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 			return new RTCodeResponse(APICode.HANDLER_STREAM_FAILED);
 		}
+		
 		
 		ServiceFactory.getEArticleService().addArticle(arc);
 		return new ArticleResponse(arc);

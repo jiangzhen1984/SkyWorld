@@ -1,9 +1,5 @@
 package com.skyworld.service;
 
-import java.util.Collection;
-
-import javax.servlet.http.Part;
-
 import org.json.JSONObject;
 
 import com.skyworld.cache.CacheManager;
@@ -18,7 +14,7 @@ import com.skyworld.service.resp.RTCodeResponse;
 public class APIArticleCommentService extends APIBasicJsonPartApiService {
 
 	@Override
-	protected BasicResponse service(JSONObject json, Collection<Part> parts) {
+	protected BasicResponse service(JSONObject json,  PartsWrapper partwrapper) {
 		JSONObject header = json.getJSONObject("header");
 		JSONObject body = json.getJSONObject("body");
 		

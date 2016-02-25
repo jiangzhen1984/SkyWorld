@@ -1,14 +1,11 @@
 package com.skyworld.service;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,16 +43,10 @@ public abstract class APIBasicJsonPartApiService implements APIService {
 			writeResponse(new RTCodeResponse(APICode.ACTION_NOT_SUPPORT), req, resp);
 			return;
 		}
+		
 	
-		try {
-			writeResponse(hanldeService.service(root, req.getParts()), req, resp);
-		} catch (IOException e) {
-			log.error("get parts failed", e);
-			writeResponse(new RTCodeResponse(APICode.HANDLER_STREAM_FAILED), req, resp);
-		} catch (ServletException e) {
-			log.error("get parts failed", e);
-			writeResponse(new RTCodeResponse(APICode.HANDLER_STREAM_FAILED), req, resp);
-		}
+		writeResponse(hanldeService.service(root, new PartsWrapper(req)), req, resp);
+		
 	}
 	
 	
@@ -64,7 +55,7 @@ public abstract class APIBasicJsonPartApiService implements APIService {
 	}
 	
 	
-	protected abstract BasicResponse service(JSONObject json, Collection<Part> parts);
+	protected abstract BasicResponse service(JSONObject json, PartsWrapper partwrapper);
 
 	
 	

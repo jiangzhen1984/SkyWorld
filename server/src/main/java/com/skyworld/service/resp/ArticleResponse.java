@@ -68,6 +68,7 @@ public class ArticleResponse extends JSONBasicResponse {
 			Article.Comment co = article.getComment(i);
 			JSONObject jsonComment = new JSONObject();
 			jsonComment.put("content", co.comment);
+			jsonComment.put("timestamp", co.time);
 			
 			JSONObject jsonCommentUser = new JSONObject();
 			JSONFormat.populateUserData(jsonCommentUser, co.commentUser);

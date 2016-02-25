@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.skyworld.service.dsf.User;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
 

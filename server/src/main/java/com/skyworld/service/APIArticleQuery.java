@@ -1,11 +1,8 @@
 package com.skyworld.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.Part;
 
 import org.json.JSONObject;
 
@@ -21,7 +18,7 @@ import com.skyworld.service.resp.RTCodeResponse;
 public class APIArticleQuery extends APIBasicJsonPartApiService {
 
 	@Override
-	protected BasicResponse service(JSONObject json, Collection<Part> parts) {
+	protected BasicResponse service(JSONObject json,  PartsWrapper partwrapper) {
 		JSONObject header = json.getJSONObject("header");
 		JSONObject body = json.getJSONObject("body");
 		if (!header.has("token") || !body.has("timestamp_start") || !body.has("timestamp_end")) {
