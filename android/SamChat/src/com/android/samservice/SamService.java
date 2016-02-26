@@ -56,6 +56,8 @@ public class SamService{
     public static String sam_download_path;
     public static String AVATAR_FOLDER = "/avfolder";
     public static String AVATAR="/avatar";
+    public static String FG_PIC_FOLDER = "/fgfolder";
+    public static String FG_PIC="/fgpic";
     public static final String TOKEN_FILE="token";
     public static final String UP_FILE="up";
 
@@ -182,9 +184,84 @@ public class SamService{
 	public static final int RET_UPLOAD_AVATAR_SERVER_PARAM_NOT_SUPPORT = -3;
 	public static final int RET_UPLOAD_AVATAR_SERVER_TOKEN_FORMAT_ERROR = -4;
 	public static final int RET_UPLOAD_AVATAR_SERVER_TOKEN_INVALID = -5;
-	public static final int RET_UPLOAD_AVATAR_SERVER_NO_SUCH_USER = -601;
+	public static final int RET_UPLOAD_AVATAR_SERVER_UPLOAD_FAILED = -801;
+	public static final int RET_UPLOAD_AVATAR_SERVER_TYPE_NOT_SUPPORT = -802;
+	public static final int RET_UPLOAD_AVATAR_SERVER_OVER_SIZE = -803;
+
+    public static final int MSG_SEND_COMMENTS = 8;
+	//send feedback comments
+    	public static final int R_SEND_COMMENTS_OK=0;
+    	public static final int R_SEND_COMMENTS_ERROR=1;
+    	public static final int R_SEND_COMMENTS_FAILED=2;
+
+	public static final int R_SEND_COMMENTS_ERROR_TOKEN_FILE_EXCEPTION = 0;
+	public static final int R_SEND_COMMENTS_ERROR_TOKEN_FILE_NULL = 1;
+	public static final int R_SEND_COMMENTS_ERROR_HTTP_EXCEPTION = 2;
+	public static final int R_SEND_COMMENTS_ERROR_TIMEOUT = 3;
+
+	public static final int RET_SEND_COMMENTS_SERVER_OK = 0;
+	public static final int RET_SEND_COMMENTS_SERVER_HTTP_FAILED = -1;//parse http failed
+	public static final int RET_SEND_COMMENTS_SERVER_ACTION_NOT_SUPPORT = -2;
+	public static final int RET_SEND_COMMENTS_SERVER_TOKEN_INVALID = -5;
+
+    public static final int MSG_UPLOAD_FG = 9;
+	//upload to friend group
+    	public static final int R_UPLOAD_FG_OK=0;
+    	public static final int R_UPLOAD_FG_ERROR=1;
+    	public static final int R_UPLOAD_FG_FAILED=2;
+
+	public static final int R_UPLOAD_FG_ERROR_TOKEN_FILE_EXCEPTION = 0;
+	public static final int R_UPLOAD_FG_ERROR_TOKEN_FILE_NULL = 1;
+	public static final int R_UPLOAD_FG_ERROR_HTTP_EXCEPTION = 2;
+	public static final int R_UPLOAD_FG_ERROR_TIMEOUT = 3;
+
+	public static final int RET_UPLOAD_FG_SERVER_OK = 0;
+	public static final int RET_UPLOAD_FG_SERVER_HTTP_FAILED = -1;//parse http failed
+	public static final int RET_UPLOAD_FG_SERVER_ACTION_NOT_SUPPORT = -2;
+	
+	public static final int RET_UPLOAD_FG_SERVER_PARAM_NOT_SUPPORT = -3;
+	public static final int RET_UPLOAD_FG_SERVER_TOKEN_FORMAT_ERROR = -4;
+	public static final int RET_UPLOAD_FG_SERVER_TOKEN_INVALID = -5;
+	public static final int RET_UPLOAD_FG_SERVER_HANDLE_STREAM_FAILED = -6;
+
+    public static final int MSG_QUERY_FG = 10;
+	//query to friend group
+    	public static final int R_QUERY_FG_OK=0;
+    	public static final int R_QUERY_FG_ERROR=1;
+    	public static final int R_QUERY_FG_FAILED=2;
+
+	public static final int R_QUERY_FG_ERROR_TOKEN_FILE_EXCEPTION = 0;
+	public static final int R_QUERY_FG_ERROR_TOKEN_FILE_NULL = 1;
+	public static final int R_QUERY_FG_ERROR_HTTP_EXCEPTION = 2;
+	public static final int R_QUERY_FG_ERROR_TIMEOUT = 3;
+
+	public static final int RET_QUERY_FG_SERVER_OK = 0;
+	public static final int RET_QUERY_FG_SERVER_HTTP_FAILED = -1;//parse http failed
+	public static final int RET_QUERY_FG_SERVER_ACTION_NOT_SUPPORT = -2;
+	public static final int RET_QUERY_FG_SERVER_PARAM_NOT_SUPPORT = -3;
+	public static final int RET_QUERY_FG_SERVER_TOKEN_FORMAT_ERROR = -4;
+	public static final int RET_QUERY_FG_SERVER_TOKEN_INVALID = -5;
+	public static final int RET_QUERY_FG_SERVER_HANDLE_STREAM_FAILED = -6;
 
 
+    public static final int MSG_COMMENT_FG = 11;
+	//query to friend group
+    	public static final int R_COMMENT_FG_OK=0;
+    	public static final int R_COMMENT_FG_ERROR=1;
+    	public static final int R_COMMENT_FG_FAILED=2;
+
+	public static final int R_COMMENT_FG_ERROR_TOKEN_FILE_EXCEPTION = 0;
+	public static final int R_COMMENT_FG_ERROR_TOKEN_FILE_NULL = 1;
+	public static final int R_COMMENT_FG_ERROR_HTTP_EXCEPTION = 2;
+	public static final int R_COMMENT_FG_ERROR_TIMEOUT = 3;
+
+	public static final int RET_COMMENT_FG_SERVER_OK = 0;
+	public static final int RET_COMMENT_FG_SERVER_HTTP_FAILED = -1;//parse http failed
+	public static final int RET_COMMENT_FG_SERVER_ACTION_NOT_SUPPORT = -2;
+	public static final int RET_COMMENT_FG_SERVER_PARAM_NOT_SUPPORT = -3;
+	public static final int RET_COMMENT_FG_SERVER_TOKEN_FORMAT_ERROR = -4;
+	public static final int RET_COMMENT_FG_SERVER_TOKEN_INVALID = -5;
+	public static final int RET_COMMENT_FG_SERVER_HANDLE_STREAM_FAILED = -6;
 	
 
 	public static final int MSG_PUSH_MSG_GOTANSWER = 0;
@@ -334,6 +411,10 @@ public class SamService{
 		mSamServiceHandler.removeMessages(MSG_ANSWER_QUESTION);
 		mSamServiceHandler.removeMessages(MSG_QUERY_USERINFO);
 		mSamServiceHandler.removeMessages(MSG_UPLOAD_AVATAR);
+		mSamServiceHandler.removeMessages(MSG_SEND_COMMENTS);
+		mSamServiceHandler.removeMessages(MSG_UPLOAD_FG);
+		mSamServiceHandler.removeMessages(MSG_QUERY_FG);
+		mSamServiceHandler.removeMessages(MSG_COMMENT_FG);
 
 		mHandlerThread.getLooper().quit();
 
@@ -424,12 +505,15 @@ public class SamService{
 						if(samobj.isSendq()){
 							Message msg1 = hndl.obtainMessage(cbobj.cbMsg, R_SEND_QUESTION_ERROR, R_SEND_QUESTION_ERROR_TIMEOUT,samobj);
 							hndl.sendMessage(msg1);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isSendq");
 						}else if(samobj.isCancelq()){
 							Message msg2 = hndl.obtainMessage(cbobj.cbMsg, R_CANCEL_QUESTION_ERROR, R_CANCEL_QUESTION_ERROR_TIMEOUT,samobj);
 							hndl.sendMessage(msg2);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isCancelq");
 						}else if(samobj.isUpgrade()){
 							Message msg3 = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_ERROR, R_UPGRADE_ERROR_TIMEOUT,null);
 							hndl.sendMessage(msg3);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isUpgrade");
 						}else if(samobj.isSenda()){
 							SendAnswer sda = ((SendaCoreObj)samobj).sda;
 							sda.setstatus(SendAnswer.SEND_FAILED);
@@ -440,11 +524,25 @@ public class SamService{
 							bundle.putSerializable("SendAnswer",sda);
 							intent.putExtras(bundle);
 							intent.putExtra("NoSuchQuestion", true);
-							SamLog.e(TAG,"Send Answer FAILED:timeout!");
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isSenda");
 						}else if(samobj.isQueryui()){
 							cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_TIMEOUT);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isQueryui");
 						}else if(samobj.isUploadAvatar()){
 							cbobj.smcb.onError(R_UPLOAD_AVATAR_ERROR_TIMEOUT);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isUploadAvatar");
+						}else if(samobj.isSendComments()){
+							cbobj.smcb.onError(R_SEND_COMMENTS_ERROR_TIMEOUT);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isSendComments");
+						}else if(samobj.isUploadFG()){
+							cbobj.smcb.onError(R_UPLOAD_FG_ERROR_TIMEOUT);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isUploadFG");
+						}else if(samobj.isQueryFG()){
+							cbobj.smcb.onError(R_QUERY_FG_ERROR_TIMEOUT);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isQueryFG");
+						}else if(samobj.isCommentFG()){
+							cbobj.smcb.onError(R_COMMENT_FG_ERROR_TIMEOUT);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isCommentFG");
 						}
 					}
 
@@ -502,6 +600,22 @@ public class SamService{
 			do_upload_avatar((SamCoreObj)msg.obj);
 			break;
 
+		case MSG_SEND_COMMENTS:
+			do_send_comments((SamCoreObj)msg.obj);
+			break;
+
+		case MSG_UPLOAD_FG:
+			do_upload_fg((SamCoreObj)msg.obj);
+			break;
+
+		case MSG_QUERY_FG:
+			do_query_fg((SamCoreObj)msg.obj);
+			break;
+
+		case MSG_COMMENT_FG:
+			do_comment_fg((SamCoreObj)msg.obj);
+			break;
+
 		case MSG_AUTOLOGIN_CALLBACK:
 		{
 			if(msg.arg1 == SignService.R_AUTO_SIGN_IN_OK){
@@ -534,6 +648,14 @@ public class SamService{
 					}
 				}else if(samobj.isUploadAvatar()){
 					upload_avatar(((UploadAvatarCoreObj)samobj).filePath, cbobj.smcb);
+				}else if(samobj.isSendComments()){
+					send_comments(((SendCommentsCoreObj)samobj).comments, cbobj.smcb);
+				}else if(samobj.isUploadFG()){
+					uploadFG(((UploadFGCoreObj)samobj).photoes, ((UploadFGCoreObj)samobj).comments, cbobj.smcb);
+				}else if(samobj.isQueryFG()){
+					queryFG(((QueryFGCoreObj)samobj).fetch_count, cbobj.smcb);
+				}else if(samobj.isCommentFG()){
+					commentFG(((CommentFGCoreObj)samobj).article_id,((CommentFGCoreObj)samobj).comment, cbobj.smcb);
 				}
 			}else{
 				SamCoreObj samobj = (SamCoreObj)msg.obj;
@@ -573,6 +695,14 @@ public class SamService{
 					cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_TOKEN_FILE_NULL);
 				}else if(samobj.isUploadAvatar()){
 					cbobj.smcb.onError(R_UPLOAD_AVATAR_ERROR_TOKEN_FILE_NULL);
+				}else if(samobj.isSendComments()){
+					cbobj.smcb.onError(R_SEND_COMMENTS_ERROR_TOKEN_FILE_NULL);
+				}else if(samobj.isUploadFG()){
+					cbobj.smcb.onError(R_UPLOAD_FG_ERROR_TOKEN_FILE_NULL);
+				}else if(samobj.isQueryFG()){
+					cbobj.smcb.onError(R_QUERY_FG_ERROR_TOKEN_FILE_NULL);
+				}else if(samobj.isCommentFG()){
+					cbobj.smcb.onError(R_COMMENT_FG_ERROR_TOKEN_FILE_NULL);
 				}
 				
 			}
@@ -891,7 +1021,399 @@ public class SamService{
 		startTimeOut(samobj);
 	}
 
+	public void send_comments(String comments, SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj  samobj = new SendCommentsCoreObj(obj,comments);
+		Message msg = mSamServiceHandler.obtainMessage(MSG_SEND_COMMENTS,samobj);
+		mSamServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+	}
+
+	public void uploadFG(List<String>photoes,String comments, SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj samobj = new UploadFGCoreObj(obj,photoes,comments);
+		Message msg = mSamServiceHandler.obtainMessage(MSG_UPLOAD_FG,samobj);
+		mSamServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+	}
+
+	public void queryFG(int fetch_count,SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj samobj = new QueryFGCoreObj(obj,fetch_count);
+		Message msg = mSamServiceHandler.obtainMessage(MSG_QUERY_FG,samobj);
+		mSamServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+	}
+
+	public void commentFG(long article_id,String comment,SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj samobj = new CommentFGCoreObj(obj,article_id,comment);
+		Message msg = mSamServiceHandler.obtainMessage(MSG_COMMENT_FG,samobj);
+		mSamServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+	}
+
 	
+
+	private String getShortPicName(String url_thumb) {
+		int index  = url_thumb.lastIndexOf("article_");
+		if(index != -1) {
+			return url_thumb.substring(index);
+		} else {
+			return null;
+		}
+	}
+
+	private void downloadthumbnail_pic(HttpCommClient hcc,String url_thumb,long fg_id,int sequence){
+		byte[] data=null;
+		String shortImg=null;
+		boolean downSucceed=false;
+		StringBuffer oldAvatar=new StringBuffer();
+		if(url_thumb!=null && (shortImg = getShortPicName(url_thumb))!=null 
+			&& (!dao.isThumbPicExistedInDB(fg_id,shortImg)||!dao.isThumbPicExistedInFS(shortImg))){
+			data = hcc.getImage(url_thumb);
+			if(data!=null){
+				downSucceed = saveAvatar(SamService.sam_cache_path+SamService.FG_PIC_FOLDER, shortImg, data);
+			}
+		}
+
+		if(downSucceed){
+			SamLog.e(TAG,"download thumb pic succeed and update into db:"+shortImg);
+			dao.update_PictureRecord_db_thumbnail(fg_id, shortImg,sequence);
+		}
+
+		if(dao.isThumbPicExistedInDB(fg_id,shortImg)){
+			SamLog.e(TAG,shortImg+" is in db");
+		}else{
+			SamLog.e(TAG,shortImg+" is not in db");
+		}
+
+		if(dao.isThumbPicExistedInFS(shortImg)){
+			SamLog.e(TAG,shortImg+" is in FS");
+		}else{
+			SamLog.e(TAG,shortImg+" is not in FS");
+		}
+	}
+
+	private void do_comment_fg(SamCoreObj samobj){
+		CBObj cbobj = samobj.refCBObj;
+		CommentFGCoreObj cfobj = (CommentFGCoreObj)samobj;
+
+		String token = get_current_token();
+
+		if(token == null){
+			SamLog.e(TAG, "token is null, should never run to here");
+			cbobj.smcb.onError(R_COMMENT_FG_ERROR_TOKEN_FILE_NULL);
+			return;
+		}
+
+		HttpCommClient hcc = new HttpCommClient();
+		if(hcc.commentFG(cfobj.article_id,cfobj.comment, token)){
+			if(hcc.ret == RET_COMMENT_FG_SERVER_OK ){
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onSuccess(null);
+			}else if(hcc.ret == RET_COMMENT_FG_SERVER_TOKEN_INVALID){
+				SamLog.e(TAG,"comment fg TOKEN INVALIDE!");
+				/*auto sign in*/
+				SignService.getInstance().attemptAutoSignIn(mSamServiceHandler, MSG_AUTOLOGIN_CALLBACK,samobj);
+			}else{
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
+			}
+		}else{
+			boolean continue_run = true;
+			cancelTimeOut(samobj);
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+
+			cbobj.smcb.onError(R_QUERY_FG_ERROR_HTTP_EXCEPTION);
+		}
+		
+
+	}
+
+	private void do_query_fg(SamCoreObj samobj){
+		CBObj cbobj = samobj.refCBObj;
+		QueryFGCoreObj qfobj = (QueryFGCoreObj)samobj;
+
+		String token = get_current_token();
+
+		if(token == null){
+			SamLog.e(TAG, "token is null, should never run to here");
+			cbobj.smcb.onError(R_QUERY_FG_ERROR_TOKEN_FILE_NULL);
+			return;
+		}
+
+		HttpCommClient hcc = new HttpCommClient();
+		if(hcc.queryFG(token)){
+			if(hcc.ret == RET_QUERY_FG_SERVER_OK ){
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				String owner_phonenumber = get_current_user().getphonenumber();
+
+				List<FGRecord> rdList = dao.query_FGRecord_db(owner_phonenumber);
+				//if(rdList.size() == hcc.ainfoList.size()){
+				//	cbobj.smcb.onSuccess(hcc.ainfoList);
+				//	return;
+				//}else{
+					SamLog.e(TAG,"ainfoList size:"+hcc.ainfoList.size());
+					for(int i=0;i<hcc.ainfoList.size();i++){
+						SamLog.e(TAG,"ainfoList:"+i);
+						ArticleInfo ainfo = hcc.ainfoList.get(i);
+						FGRecord rd  = null;
+						RecommanderRecord recommandrd = null;
+						CommenterRecord commenterrd=null;
+						PictureRecord picturerd=null;
+						
+						if((rd = dao.query_FGRecord_db(ainfo.article_id))==null){
+							rd = new FGRecord(ainfo.timestamp,ainfo.article_id,ainfo.status,ainfo.comment,ainfo.publisher.getphonenumber(),owner_phonenumber);
+							rd.setid(dao.add_FGRecord_db(rd));
+
+						}
+
+						for(int j=0;j<ainfo.recommander.size();j++){
+							if((recommandrd = dao.query_RecommanderRecord_db(ainfo.recommander.get(j).getphonenumber(),ainfo.article_id,0))==null){
+								recommandrd = new RecommanderRecord(ainfo.recommander.get(j).getphonenumber(),ainfo.article_id,0);
+								recommandrd.setid(dao.add_RecommanderRecord_db(recommandrd));
+							}
+						}
+
+						SamLog.e(TAG,"ainfo:"+ainfo.article_id+" commenter:"+ainfo.commenter.size());
+						for(int j=0;j<ainfo.commenter.size();j++){
+							if((commenterrd = dao.query_CommenterRecord_db(ainfo.commenter.get(j).getphonenumber(),ainfo.article_id,j))==null){
+								commenterrd = new CommenterRecord(ainfo.commenter.get(j).getphonenumber(),ainfo.comments.get(j),ainfo.article_id,j);
+								commenterrd.setid(dao.add_CommenterRecord_db(commenterrd));
+							}
+						}
+
+						for(int j=0;j<ainfo.pics.size();j++){
+							if((picturerd = dao.query_PictureRecord_db(ainfo.article_id,ainfo.pics.get(j)))==null){
+								picturerd = new PictureRecord(ainfo.article_id,ainfo.pics.get(j),ainfo.pics.get(j));
+								picturerd.setsequence(j);
+								picturerd.setid(dao.add_PictureRecord_db(picturerd));
+							}
+
+							SamLog.e(TAG,"url_thumbnail:"+picturerd.geturl_thumbnail());
+
+							downloadthumbnail_pic(hcc,ainfo.pics.get(j),ainfo.article_id,picturerd.getsequence());
+						}
+
+						
+					}
+					SamLog.e(TAG,"ainfoList loop end");
+					cbobj.smcb.onSuccess(hcc.ainfoList);
+					return;
+				
+			}else if(hcc.ret == RET_QUERY_FG_SERVER_TOKEN_INVALID){
+				SamLog.e(TAG,"query fg TOKEN INVALIDE!");
+				/*auto sign in*/
+				SignService.getInstance().attemptAutoSignIn(mSamServiceHandler, MSG_AUTOLOGIN_CALLBACK,samobj);
+			}else{
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
+			}
+		}else{
+			boolean continue_run = true;
+			cancelTimeOut(samobj);
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+
+			cbobj.smcb.onError(R_QUERY_FG_ERROR_HTTP_EXCEPTION);
+		}
+
+	}
+
+	private void do_upload_fg(SamCoreObj samobj){
+		CBObj cbobj = samobj.refCBObj;
+		UploadFGCoreObj ufobj = (UploadFGCoreObj)samobj;
+
+		String token = get_current_token();
+
+		if(token == null){
+			SamLog.e(TAG, "token is null, should never run to here");
+			cbobj.smcb.onError(R_UPLOAD_FG_ERROR_TOKEN_FILE_NULL);
+			return;
+		}
+
+		HttpCommClient hcc = new HttpCommClient();
+
+		if(hcc.uploadFG(ufobj.photoes,ufobj.comments,token)){
+			if(hcc.ret == RET_UPLOAD_FG_SERVER_OK){
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onSuccess(null);
+			}else if(hcc.ret == RET_UPLOAD_FG_SERVER_TOKEN_INVALID){
+				SamLog.e(TAG,"upload fg TOKEN INVALIDE!");
+				/*auto sign in*/
+				SignService.getInstance().attemptAutoSignIn(mSamServiceHandler, MSG_AUTOLOGIN_CALLBACK,samobj);
+			}else{
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
+			}
+		}else{
+			boolean continue_run = true;
+			cancelTimeOut(samobj);
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+
+			cbobj.smcb.onError(R_UPLOAD_FG_ERROR_HTTP_EXCEPTION);
+		}
+
+		
+	}
+
+	private void do_send_comments(SamCoreObj samobj){
+		CBObj cbobj = samobj.refCBObj;
+		SendCommentsCoreObj scobj = (SendCommentsCoreObj)samobj;
+
+		String token = get_current_token();
+
+		if(token == null){
+			SamLog.e(TAG, "token is null, should never run to here");
+			cbobj.smcb.onError(R_SEND_COMMENTS_ERROR_TOKEN_FILE_NULL);
+			return;
+		}
+
+		HttpCommClient hcc = new HttpCommClient();
+		if(hcc.sendcomments(scobj.comments,token)){
+			if(hcc.ret == RET_SEND_COMMENTS_SERVER_OK){
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				
+				SamLog.e(TAG,"send comments ok");
+				cbobj.smcb.onSuccess(null);
+				
+			}else if(hcc.ret == RET_SEND_COMMENTS_SERVER_TOKEN_INVALID){
+				SamLog.e(TAG,"send comments TOKEN INVALIDE!");
+				/*auto sign in*/
+				SignService.getInstance().attemptAutoSignIn(mSamServiceHandler, MSG_AUTOLOGIN_CALLBACK,samobj);
+			}else{
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
+			}
+		}else{
+			boolean continue_run = true;
+			cancelTimeOut(samobj);
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+
+			cbobj.smcb.onError(R_SEND_COMMENTS_ERROR_HTTP_EXCEPTION);
+		}
+
+	}
 
 	private void do_upload_avatar(SamCoreObj samobj){
 		CBObj cbobj = samobj.refCBObj;

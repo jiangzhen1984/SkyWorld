@@ -44,7 +44,7 @@ public class SettingActivity extends Activity {
 		mNew_msg_reminder_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				
+				launchNewMsgSettingActivity();
 			}
 		});
 		
@@ -52,7 +52,7 @@ public class SettingActivity extends Activity {
 		mPrivacy_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				
+				launchPrivacyActivity();
 			}
 		});
 		
@@ -60,7 +60,7 @@ public class SettingActivity extends Activity {
 		mFeedback_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				
+				launchFeedBackActivity();
 			}
 		});
 		
@@ -74,8 +74,30 @@ public class SettingActivity extends Activity {
 		startActivity(newIntent);
 
 	}
+
+	private void launchNewMsgSettingActivity(){
+		Intent newIntent = new Intent(this,NewMsgReminderActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+
+	}
 	
-	
+	private void launchPrivacyActivity(){
+		Intent newIntent = new Intent(this,PrivacyActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+
+	}
+
+	private void launchFeedBackActivity(){
+		Intent newIntent = new Intent(this,FeedBackActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+
+	}
 
 }
 

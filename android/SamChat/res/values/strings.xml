@@ -157,4 +157,23 @@
     <string name="old_passwd">input password</string>
     <string name="new_passwd">input new password</string>
     <string name="confrim_passwd">input new password again</string>
+    
+    <string name="enable_new_msg_reminder">enable new msg reminder</string>
+    
+    <string name="voice">voice</string>
+    <string name="vibrate">vibrate</string>
+    
+    <string name="blacklist_in_contact">blacklist</string>
+    
+    <string name="send_feedback_succeed">feedback send successfully</string>
+    <string name="send_feedback_succeed_statement">Thanks for your feedback, we will check seriouly and do more progress for our platform</string>
+    <string name="send_feedback_failed">feedback send successfully</string>
+    <string name="send_feedback_failed_statement">feedback send successfully,please make sure the network is available</string>
+    
+    <string name="sam_friend_group">Friend Group</string>
+    <string name="cancel_fg_reminder">Are you sure to cancel this edit?</string> 
+    <string name="comments_hint">What is your comments。。。</string> 
+    <string name="failed_to_friend_group_information">failed to refresh friend group information。。。</string>
+    
+    <string name="loading">loading。。。</string> 
 </resources>

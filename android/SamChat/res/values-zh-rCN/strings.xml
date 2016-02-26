@@ -164,4 +164,22 @@
     <string name="new_passwd">输入新的密码</string>
     <string name="confrim_passwd">再次输入新的密码</string>
     
+    <string name="enable_new_msg_reminder">接收新消息通知</string>
+    <string name="voice">声音</string>
+    <string name="vibrate">震动</string>
+    
+    <string name="blacklist_in_contact">通讯录黑名单</string>
+    
+    <string name="send_feedback_succeed">发送反馈信息成功</string>
+    <string name="send_feedback_succeed_statement">谢谢您的反馈信息，我们将认真阅读并作出改善</string>
+    <string name="send_feedback_failed">发送反馈信息失败</string>
+    <string name="send_feedback_failed_statement">发送反馈信息失败,请确保网络连接正确</string>
+    
+    <string name="sam_friend_group">朋友圈</string>
+    <string name="cancel_fg_reminder">确定取消此次编辑吗?</string> 
+    <string name="comments_hint">现在想说些什么。。。</string> 
+    <string name="failed_to_friend_group_information">刷新朋友圈失败。。。</string> 
+    
+    <string name="loading">加载中。。。</string> 
+
 </resources>

@@ -894,7 +894,381 @@ public class DBManager
 
 		return record;
 	}
+
+	public long addFGRecord(FGRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_FG;
+		/*
+		id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber |owner_phonenumber
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("timestamp",record.timestamp);
+		cv.put("fg_id",record.fg_id);
+		cv.put("status",record.status);
+		cv.put("comment",record.comment);
+		cv.put("publisher_phonenumber",record.publisher_phonenumber);
+		cv.put("owner_phonenumber",record.owner_phonenumber);
+		
+		return db.insert(table,null,cv);
+	}
+
+	public List<FGRecord> queryFGRecord(String publisher_phonenumber,String owner_phonenumber){
+		String table = DatabaseHelper.TABLE_NAME_FG ;
+
+		/*
+		id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
+		*/
+
+		FGRecord record = null;
+
+		Cursor c = db.query(table,null,"publisher_phonenumber=? and owner_phonenumber=?",new String[]{publisher_phonenumber,owner_phonenumber},null,null,null);
+		List<FGRecord> RecordArray = new ArrayList<FGRecord>();
+		while(c.moveToNext()){
+			record = new FGRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.timestamp= c.getLong(c.getColumnIndex("timestamp"));
+			record.fg_id= c.getLong(c.getColumnIndex("fg_id"));
+			record.status= c.getInt(c.getColumnIndex("status"));
+			record.comment= c.getString(c.getColumnIndex("comment"));
+			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
+			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+			RecordArray.add(record);
+		}
+
+		c.close();
+
+		return RecordArray;
+	}
+
+	public List<FGRecord> queryFGRecord(String owner_phonenumber){
+		String table = DatabaseHelper.TABLE_NAME_FG ;
+
+		/*
+		id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
+		*/
+
+		FGRecord record = null;
+
+		Cursor c = db.query(table,null,"owner_phonenumber=?",new String[]{owner_phonenumber},null,null,"timestamp desc");
+		List<FGRecord> RecordArray = new ArrayList<FGRecord>();
+		while(c.moveToNext()){
+			record = new FGRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.timestamp= c.getLong(c.getColumnIndex("timestamp"));
+			record.fg_id= c.getLong(c.getColumnIndex("fg_id"));
+			record.status= c.getInt(c.getColumnIndex("status"));
+			record.comment= c.getString(c.getColumnIndex("comment"));
+			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
+			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+			RecordArray.add(record);
+		}
+
+		c.close();
+
+		return RecordArray;
+	}
+
+	public FGRecord queryFGRecord(long fg_id){
+		String table = DatabaseHelper.TABLE_NAME_FG ;
+
+		/*
+		id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
+		*/
+
+		FGRecord record = null;
+
+		Cursor c = db.query(table,null,"fg_id=?",new String[]{""+fg_id},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query FG");
+			throw new RuntimeException("Fatal Error for query FG!");
+		}
+
+		while(c.moveToNext()){
+			record = new FGRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.timestamp= c.getLong(c.getColumnIndex("timestamp"));
+			record.fg_id= c.getLong(c.getColumnIndex("fg_id"));
+			record.status= c.getInt(c.getColumnIndex("status"));
+			record.comment= c.getString(c.getColumnIndex("comment"));
+			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
+			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+		}
+
+		c.close();
+
+		return record;
+	}
+
 	
+	public long addRecommanderRecord(RecommanderRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_RECOMMANDER;
+		/*
+		id(primary) |recommander_phonenumber | fg_id |timestamp
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("recommander_phonenumber",record.recommander_phonenumber);
+		cv.put("fg_id",record.fg_id);
+		cv.put("timestamp",record.timestamp);
+		
+		return db.insert(table,null,cv);
+	}
+
+	public RecommanderRecord queryRecommanderRecord(String recommander_phonenumber,long fg_id,long timestamp){
+		String table = DatabaseHelper.TABLE_NAME_RECOMMANDER ;
+
+		/*
+		id(primary) |recommander_phonenumber | fg_id |timestamp
+		*/
+
+		RecommanderRecord record = null;
+
+		Cursor c = db.query(table,null,"recommander_phonenumber=? and fg_id=? and timestamp=?",new String[]{recommander_phonenumber,""+fg_id,""+timestamp},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query RecommanderRecord");
+			throw new RuntimeException("Fatal Error for query RecommanderRecord!");
+		}
+
+		while(c.moveToNext()){
+			record = new RecommanderRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.recommander_phonenumber= c.getString(c.getColumnIndex("recommander_phonenumber"));
+			record.fg_id = c.getLong(c.getColumnIndex("fg_id"));
+			record.timestamp = c.getLong(c.getColumnIndex("timestamp"));
+		}
+
+		c.close();
+
+		return record;
+	}
+
+
+	public long addCommenterRecord(CommenterRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_COMMENTER;
+		/*
+		id(primary) |commenter_phonenumber | content | fg_id |timestamp
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("commenter_phonenumber",record.commenter_phonenumber);
+		cv.put("content",record.content);
+		cv.put("fg_id",record.fg_id);
+		cv.put("timestamp",record.timestamp);
+		
+		return db.insert(table,null,cv);
+	}
+
+	public CommenterRecord queryCommenterRecord(String commenter_phonenumber,long fg_id,long timestamp){
+		String table = DatabaseHelper.TABLE_NAME_COMMENTER;
+		/*
+		id(primary) |commenter_phonenumber | content | fg_id |timestamp
+		*/
+		CommenterRecord record = null;
+
+		Cursor c = db.query(table,null,"commenter_phonenumber=? and fg_id=? and timestamp=?",new String[]{commenter_phonenumber,""+fg_id,""+timestamp},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query CommenterRecord");
+			throw new RuntimeException("Fatal Error for query CommenterRecord!");
+		}
+
+		while(c.moveToNext()){
+			record = new CommenterRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.commenter_phonenumber= c.getString(c.getColumnIndex("commenter_phonenumber"));
+			record.content = c.getString(c.getColumnIndex("content"));
+			record.fg_id = c.getLong(c.getColumnIndex("fg_id"));
+			record.timestamp = c.getLong(c.getColumnIndex("timestamp"));
+		}
+
+		c.close();
+
+		return record;
+	}
+
+	public List<CommenterRecord> queryCommenterRecord(long fg_id){
+		String table = DatabaseHelper.TABLE_NAME_COMMENTER;
+		/*
+		id(primary) |commenter_phonenumber | content | fg_id |timestamp
+		*/
+
+		CommenterRecord record = null;
+
+		Cursor c = db.query(table,null,"fg_id=?",new String[]{""+fg_id},null,null,null);
+		List<CommenterRecord> RecordArray = new ArrayList<CommenterRecord>();
+		while(c.moveToNext()){
+			record = new CommenterRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.commenter_phonenumber= c.getString(c.getColumnIndex("commenter_phonenumber"));
+			record.content = c.getString(c.getColumnIndex("content"));
+			record.fg_id = c.getLong(c.getColumnIndex("fg_id"));
+			record.timestamp = c.getLong(c.getColumnIndex("timestamp"));
+			RecordArray.add(record);
+		}
+
+		c.close();
+
+		return RecordArray;
+	}
+
+	public long addPictureRecord(PictureRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_PICTURE;
+		/*
+		id(primary) |fg_id | thumbnail_pic | original_pic | url_thumbnail | url_original |sequence
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("fg_id",record.fg_id);
+		cv.put("thumbnail_pic",record.thumbnail_pic);
+		cv.put("original_pic",record.original_pic);
+		cv.put("url_thumbnail",record.url_thumbnail);
+		cv.put("url_original",record.url_original);
+		cv.put("sequence",record.sequence);
+		
+		return db.insert(table,null,cv);
+	}
+
+	
+	public long updatePictureRecord(long id, PictureRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_PICTURE;
+		/*
+		id(primary) |fg_id | thumbnail_pic | original_pic | url_thumbnail | url_original |sequence
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("fg_id",record.fg_id);
+		cv.put("thumbnail_pic",record.thumbnail_pic);
+		cv.put("original_pic",record.original_pic);
+		cv.put("url_thumbnail",record.url_thumbnail);
+		cv.put("url_original",record.url_original);
+		cv.put("sequence",record.sequence);
+		
+		String whereClause = "id=?";
+		String [] whereArgs = {""+id+""};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	
+
+	public long updatePictureRecord_original(long fg_id, String original_pic,int sequence)
+	{
+		String table = DatabaseHelper.TABLE_NAME_PICTURE;
+		/*
+		id(primary) |fg_id | thumbnail_pic | original_pic | url_thumbnail | url_original |sequence
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("original_pic",original_pic);
+		
+		String whereClause = "fg_id=? and sequence=? ";
+		String [] whereArgs = {""+fg_id+"",""+sequence};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	public long updatePictureRecord_thumbnail(long fg_id, String thumbnail_pic,int sequence)
+	{
+		String table = DatabaseHelper.TABLE_NAME_PICTURE;
+		/*
+		id(primary) |fg_id | thumbnail_pic | original_pic | url_thumbnail | url_original |sequence
+		*/
+		ContentValues cv = new ContentValues();
+		cv.put("thumbnail_pic",thumbnail_pic);
+		
+		String whereClause = "fg_id=? and sequence=? ";
+		String [] whereArgs = {""+fg_id+"",""+sequence};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	public List<PictureRecord> queryPictureRecord(long fg_id){
+		String table = DatabaseHelper.TABLE_NAME_PICTURE;
+		/*
+		id(primary) |fg_id | thumbnail_pic | original_pic | url_thumbnail | url_original |sequence
+		*/
+		PictureRecord record = null;
+
+		Cursor c = db.query(table,null,"fg_id=? ",new String[]{""+fg_id},null,null,null);
+
+		List<PictureRecord> RecordArray = new ArrayList<PictureRecord>();
+		while(c.moveToNext()){
+			record = new PictureRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.fg_id = c.getLong(c.getColumnIndex("fg_id"));
+			record.thumbnail_pic = c.getString(c.getColumnIndex("thumbnail_pic"));
+			record.original_pic = c.getString(c.getColumnIndex("original_pic"));
+			record.url_thumbnail = c.getString(c.getColumnIndex("url_thumbnail"));
+			record.url_original = c.getString(c.getColumnIndex("url_original"));
+			record.sequence = c.getInt(c.getColumnIndex("sequence")); 
+			RecordArray.add(record);
+		}
+
+		c.close();
+
+		return RecordArray;
+	}
+
+	public PictureRecord queryPictureRecord(long fg_id,String url_thumbnail){
+		String table = DatabaseHelper.TABLE_NAME_PICTURE;
+		/*
+		id(primary) |fg_id | thumbnail_pic | original_pic | url_thumbnail | url_original |sequence
+		*/
+		PictureRecord record = null;
+
+		Cursor c = db.query(table,null,"fg_id=? and url_thumbnail=?",new String[]{""+fg_id,url_thumbnail},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query PictureRecord");
+			throw new RuntimeException("Fatal Error for query PictureRecord!");
+		}
+
+		while(c.moveToNext()){
+			record = new PictureRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.fg_id = c.getLong(c.getColumnIndex("fg_id"));
+			record.thumbnail_pic = c.getString(c.getColumnIndex("thumbnail_pic"));
+			record.original_pic = c.getString(c.getColumnIndex("original_pic"));
+			record.url_thumbnail = c.getString(c.getColumnIndex("url_thumbnail"));
+			record.url_original = c.getString(c.getColumnIndex("url_original"));
+			record.sequence = c.getInt(c.getColumnIndex("sequence")); 
+		}
+
+		c.close();
+
+		return record;
+	}
+
+	public PictureRecord queryPictureRecord_thumbnail_pic(long fg_id,String thumbnail_pic){
+		String table = DatabaseHelper.TABLE_NAME_PICTURE;
+		/*
+		id(primary) |fg_id | thumbnail_pic | original_pic | url_thumbnail | url_original |sequence
+		*/
+		PictureRecord record = null;
+
+		Cursor c = db.query(table,null,"fg_id=? and thumbnail_pic=?",new String[]{""+fg_id,thumbnail_pic},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query PictureRecord thumbnail_pic");
+			throw new RuntimeException("Fatal Error for query PictureRecord thumbnail_pic!");
+		}
+
+		while(c.moveToNext()){
+			record = new PictureRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.fg_id = c.getLong(c.getColumnIndex("fg_id"));
+			record.thumbnail_pic = c.getString(c.getColumnIndex("thumbnail_pic"));
+			record.original_pic = c.getString(c.getColumnIndex("original_pic"));
+			record.url_thumbnail = c.getString(c.getColumnIndex("url_thumbnail"));
+			record.url_original = c.getString(c.getColumnIndex("url_original"));
+			record.sequence = c.getInt(c.getColumnIndex("sequence")); 
+		}
+
+		c.close();
+
+		return record;
+	}
 
     /**
      * close database

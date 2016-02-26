@@ -175,6 +175,7 @@ public class SamContact_Fragment extends EaseContactListFragment{
 		if(blackListSyncListener == null){
 			blackListSyncListener = new BlackListSyncListener();
         		EaseMobHelper.getInstance().addSyncBlackListListener(blackListSyncListener);
+			blackList = EMContactManager.getInstance().getBlackListUsernames();
 		}
 		if(contactSyncListener == null){
 			contactSyncListener = new ContactSyncListener();

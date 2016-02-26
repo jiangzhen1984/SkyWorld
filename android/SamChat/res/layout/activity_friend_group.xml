@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.android.samchat.SoftInputMonitorLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#FFFFFF">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/top_bar_normal_bg">
+
+        <ImageView
+    	    android:id="@+id/back"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft = "5dp"
+        	android:contentDescription="@null"
+        	android:layout_centerVertical="true"
+        	android:src="@drawable/em_mm_title_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/sam_friend_group"
+            android:textColor="@color/bottom_text_color_normal"
+            android:textSize="18sp" />
+        
+        <ImageView
+    	    android:id="@+id/take_picture"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft = "5dp"
+        	android:contentDescription="@null"
+        	android:layout_centerVertical="true"
+        	android:layout_alignParentRight="true"
+        	android:src="@drawable/ofm_camera_icon"/>
+        
+    </RelativeLayout>
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        
+         <com.android.samchat.AutoSwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_height="match_parent" 
+            android:layout_width="match_parent">
+             
+		    <ListView
+		        android:id="@+id/friend_share_list"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:background="@android:color/transparent"
+		        android:cacheColorHint="#00000000"
+		        android:scrollbars="none"
+		        android:descendantFocusability="afterDescendants"
+		        android:divider="#D4D4D4"
+		        android:dividerHeight="1px"
+		        android:fastScrollAlwaysVisible="false"
+		        android:fastScrollEnabled="false" />
+		 </com.android.samchat.AutoSwipeRefreshLayout>
+
+    </FrameLayout>
+    
+    <LinearLayout
+        	android:id="@+id/comment_input_layout" 
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+   		 	android:layout_marginTop="5dp"
+   		 	android:layout_marginLeft="10dp"
+   		 	android:layout_marginBottom="5dp"
+   		 	android:layout_marginRight="10dp"
+   		 	android:orientation="horizontal" >
+   		 	
+    	    <EditText
+            	android:id="@+id/comment_input"
+        		android:layout_width="0dp"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:layout_marginTop="5dp"
+        		android:layout_marginBottom="2dp"
+        		android:layout_marginLeft="3dp"
+				android:layout_gravity="center_vertical"
+        		android:textSize="18sp"
+        		android:singleLine="false"
+        		android:maxLines="4"
+        		android:hint="@null"
+        		android:background="@drawable/bg_answer_edit"/>
+    	    
+    	    <LinearLayout
+    	      	android:id="@+id/comment_action_layout" 
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_marginLeft="5dp">
+    	    <TextView
+        	 android:id="@+id/comment_action"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="5dp"
+   		 	 android:layout_marginLeft="5dp"
+   		 	 android:layout_marginBottom="5dp"
+   		 	 android:layout_marginRight="5dp"
+             android:textSize="15sp"
+             android:gravity="center"
+             android:layout_gravity="center"
+             android:text="@string/answer"
+             android:textStyle="bold"/>
+    	    </LinearLayout>   
+   		 	
+    	</LinearLayout> 
+
+</com.android.samchat.SoftInputMonitorLinearLayout>
+

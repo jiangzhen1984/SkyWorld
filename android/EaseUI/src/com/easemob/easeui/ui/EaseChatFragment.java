@@ -476,10 +476,10 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
             if (username.equals(toChatUsername)) {
                 messageList.refreshSelectLast();
                 // 声音和震动提示有新消息
-                EaseUI.getInstance().getNotifier().viberateAndPlayTone(message);
+                //EaseUI.getInstance().getNotifier().viberateAndPlayTone(message);
             } else {
                 // 如果消息不是和当前聊天ID的消息
-                EaseUI.getInstance().getNotifier().onNewMsg(message);
+                //EaseUI.getInstance().getNotifier().onNewMsg(message);
             }
 
             break;

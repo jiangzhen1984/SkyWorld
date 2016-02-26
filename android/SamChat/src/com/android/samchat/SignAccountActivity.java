@@ -1,9 +1,10 @@
 package com.android.samchat;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.android.samservice.*;
-import com.android.samservice.info.LoginUser;
+import com.android.samservice.info.*;
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
@@ -35,11 +36,14 @@ public class SignAccountActivity extends Activity {
 	public static final int MSG_SIGNUP_CALLBACK = 1;
 	public static final int MSG_SIGNUP_TIMEOUT= 2;
 	public static final int  MSG_EASEMOB_NAME_GOT_TIMEOUT = 3;
+	public static final int MSG_CHECK_UP_UNIQUE=4;
 
 	public static final int SAM_SIGNUP_TIMEOUT=20000;
+	public static final int CHECK_UP_UNIQUE_TIMEOUT=2000;
 	
 	private boolean available_username=false;
 	private boolean available_password=false;
+	private boolean unique_up=false;
 	private String username=null;
 	private String password=null;
 	private String cellphone=null;
@@ -207,9 +211,81 @@ public class SignAccountActivity extends Activity {
 	    	    		}
 				launchMainActivity();
 				break;
+
+		    case MSG_CHECK_UP_UNIQUE:
+				SamLog.e(TAG,"MSG_CHECK_UP_UNIQUE happened...");
+				checkUN(username);
+				break;
 	        }
 	    }
 	 };
+
+	void update_unique_up(boolean unique){
+		unique_up = unique;
+		if(unique){
+			mUsed.setTextColor(Color.rgb(0xBB, 0xBB, 0xBB));
+		}else{
+			mUsed.setTextColor(Color.rgb(0xFF, 0x00, 0x00));
+		}
+
+		updateBtnSignup();
+	}
+
+	private void checkUN(String username){
+		String testname = username;
+		if(testname == null || testname.equals("") ||testname.length()<SamService.MIN_USERNAME_LENGTH){
+			return;
+		}
+
+		SamLog.e(TAG,"start query_user_info_from_server...");
+		SamService.getInstance().query_user_info_from_server(testname,new SMCallBack(){
+			@Override
+			public void onSuccess(final Object obj){
+				runOnUiThread(new Runnable() {
+					public void run() {
+						List<ContactUser> list = (List<ContactUser>)obj;
+						if(list!=null && list.size()>0){
+							update_unique_up(false);
+						}else{
+							update_unique_up(true);
+						}
+					}
+				});
+			} 
+
+			@Override
+			public void onFailed(int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						update_unique_up(true);
+					}
+				});
+			}
+
+			@Override
+			public void onError(int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						update_unique_up(true);
+					}
+				});
+			}
+
+		});
+	}
+
+
+	private void cancelCheck() {
+		SamLog.e(TAG,"cancelCheck...");
+		mHandler.removeMessages(MSG_CHECK_UP_UNIQUE);
+	}
+
+	private void startCheck() {
+		Message msg = mHandler.obtainMessage(MSG_CHECK_UP_UNIQUE);
+		cancelCheck();
+		mHandler.sendMessageDelayed(msg, CHECK_UP_UNIQUE_TIMEOUT);
+		SamLog.e(TAG,"startCheck...");
+	}
 
 	private void cancelTimeOut() {
 		mHandler.removeMessages(MSG_SIGNUP_TIMEOUT);
@@ -314,7 +390,7 @@ public class SignAccountActivity extends Activity {
 	
 	private void updateBtnSignup()
 	{
-		boolean clickable = available_username & available_password;
+		boolean clickable = available_username & available_password & unique_up;
 		if(clickable){
 			mBtnSignup.setTextColor(Color.rgb(255, 255, 255));
 			mBtnSignup.setBackgroundColor(Color.rgb(0, 0x5F, 0xBF));
@@ -350,8 +426,13 @@ public class SignAccountActivity extends Activity {
 			}else{
 				available_username = false;
 			}
+
+			if(available_username){
+				cancelCheck();
+				startCheck();
+			}
 		    	
-			updateBtnSignup();
+			//updateBtnSignup();
 		}     
 	};
 	

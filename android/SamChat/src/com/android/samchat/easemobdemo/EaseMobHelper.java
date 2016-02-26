@@ -144,10 +144,15 @@ public class EaseMobHelper {
 		setEaseUIProviders();
 		demoModel = new EaseMobModel(context);
 		EaseMobPreference.init(context);
+		easeUI.setSettingsProvider(new SamSettingsProvider());
+		
 		setGlobalListeners();
 		broadcastManager = LocalBroadcastManager.getInstance(appContext);
 		
 		initDbDao();
+
+		
+		
 	}
 
 	 protected void setEaseUIProviders() {
@@ -248,6 +253,31 @@ public class EaseMobHelper {
 	}
 
 
+	public class SamSettingsProvider implements EaseSettingsProvider{
+
+        @Override
+        public boolean isMsgNotifyAllowed(EMMessage message) {
+            // TODO Auto-generated method stub
+            return demoModel.isMsgNotificationEnable();
+        }
+
+        @Override
+        public boolean isMsgSoundAllowed(EMMessage message) {
+            return demoModel.isMsgNotificationSoundEnable();
+        }
+
+        @Override
+        public boolean isMsgVibrateAllowed(EMMessage message) {
+            return demoModel.isMsgNotificationVibrateEnable();
+        }
+
+        @Override
+        public boolean isSpeakerOpened() {
+            return true;
+        }
+
+        
+    }
 	
     
      public class MyContactListener implements EMContactListener {
@@ -459,7 +489,7 @@ public class EaseMobHelper {
             contactList = demoModel.getContactList();
         }
         
-        SamLog.e(TAG,"contactList:" + contactList.size());
+       // SamLog.e(TAG,"contactList:" + contactList.size());
         
         return contactList;
     }

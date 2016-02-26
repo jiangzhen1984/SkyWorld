@@ -58,6 +58,26 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	*/
 	public static final String TABLE_NAME_AVATAR = "AvatarTable";
 
+	/*
+	id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
+	*/
+	public static final String TABLE_NAME_FG = "FGTable";
+
+	/*
+	id(primary) |recommander_phonenumber | fg_id |timestamp
+	*/
+	public static final String TABLE_NAME_RECOMMANDER = "RecommanderTable";
+
+	/*
+	id(primary) |commenter_phonenumber | content | fg_id |timestamp
+	*/
+	public static final String TABLE_NAME_COMMENTER = "CommenterTable";
+
+	/*
+	id(primary) |thumbnail_pic | original_pic
+	*/
+	public static final String TABLE_NAME_PICTURE = "PicTable";
+
     // 构造函数，调用父类SQLiteOpenHelper的构造函数
     public DatabaseHelper(Context context, String name, CursorFactory factory,
             int version, DatabaseErrorHandler errorHandler)
@@ -239,6 +259,71 @@ public class DatabaseHelper extends SQLiteOpenHelper
         	db.execSQL(sBuffer.toString());
 	}
 
+	
+	private void createFGTable(SQLiteDatabase db){
+	/*
+	id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
+	*/
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("CREATE TABLE [" + TABLE_NAME_FG+ "] (");
+		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+        	sBuffer.append("[timestamp] INTEGER, ");
+		sBuffer.append("[fg_id] INTEGER,");
+		sBuffer.append("[status] INTEGER,");
+		sBuffer.append("[comment] TEXT,");
+		sBuffer.append("[publisher_phonenumber] TEXT ,");
+		sBuffer.append("[owner_phonenumber] TEXT )");
+		// 执行创建表的SQL语句
+        	db.execSQL(sBuffer.toString());
+	}
+
+	private void createRecommanderTable(SQLiteDatabase db){
+	/*
+	id(primary) |recommander_phonenumber | fg_id |timestamp
+	*/
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("CREATE TABLE [" + TABLE_NAME_RECOMMANDER+ "] (");
+		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+        	sBuffer.append("[recommander_phonenumber] TEXT ,");
+		sBuffer.append("[fg_id] INTEGER,");
+		sBuffer.append("[timestamp] INTEGER )");
+		// 执行创建表的SQL语句
+        	db.execSQL(sBuffer.toString());
+	}
+
+	
+	private void createCommenterTable(SQLiteDatabase db){
+	/*
+	id(primary) |commenter_phonenumber | content | fg_id |timestamp
+	*/
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("CREATE TABLE [" + TABLE_NAME_COMMENTER+ "] (");
+		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+        	sBuffer.append("[commenter_phonenumber] TEXT ,");
+		sBuffer.append("[content] TEXT,");
+		sBuffer.append("[fg_id] INTEGER,");
+		sBuffer.append("[timestamp] INTEGER )");
+		// 执行创建表的SQL语句
+        	db.execSQL(sBuffer.toString());
+	}
+
+	
+	private void createPictureTable(SQLiteDatabase db){
+	/*
+	id(primary) |fg_id | thumbnail_pic | original_pic | url_thumbnail | url_original |sequence
+	*/
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("CREATE TABLE [" + TABLE_NAME_PICTURE+ "] (");
+		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+		sBuffer.append("[fg_id] INTEGER ,");
+        	sBuffer.append("[thumbnail_pic] TEXT ,");
+		sBuffer.append("[original_pic] TEXT ,");
+		sBuffer.append("[url_thumbnail] TEXT ,");
+		sBuffer.append("[url_original] TEXT ,");
+		sBuffer.append("[sequence] INTEGER )");
+		// 执行创建表的SQL语句
+        	db.execSQL(sBuffer.toString());
+	}
 
     // 继承SQLiteOpenHelper类,必须要覆写的三个方法：onCreate(),onUpgrade(),onOpen()
     @Override
@@ -254,6 +339,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
     	createInviteMsgTable(db);
     	createUserFriendTable(db);
     	createAvatarTable(db);
+		
+	createFGTable(db);
+	createRecommanderTable(db);
+	createCommenterTable(db);
+	createPictureTable(db);
     }
 
     @Override
@@ -268,6 +358,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACT_INVITE_RECORD);
 	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_USER_FRIEND);
 	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_AVATAR);
+
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_FG);
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RECOMMANDER);
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_COMMENTER);
+	db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_PICTURE);
 	onCreate(db);
     }
 

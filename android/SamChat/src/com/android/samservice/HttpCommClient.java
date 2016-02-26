@@ -48,6 +48,7 @@ public class HttpCommClient {
 	public static final String URL_QUESTION = "http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI";
 	public static final String PUSH_URL = "http://121.42.207.185/SkyWorld/push";
 	public static final String URL_AVATAR = "http://121.42.207.185/SkyWorld/api/1.0/UserAvatarAPI";
+	public static final String URL_ATICLE = "http://121.42.207.185/SkyWorld/api/1.0/ArticleApi";
 	public static final int CONNECTION_TIMEOUT = 20000;
 	public static final int HTTP_TIMEOUT = 10000;
 
@@ -62,6 +63,12 @@ public class HttpCommClient {
 	public LoginUser userinfo;
 	public HttpPushInfo hpinfo;
 	public List<ContactUser> uiArray;
+
+	public ArticleInfo ainfo;
+
+	public List<ArticleInfo> ainfoList;
+
+	
 	
 	
 	HttpCommClient(){
@@ -72,6 +79,10 @@ public class HttpCommClient {
 		userinfo = new LoginUser();
 		hpinfo = new HttpPushInfo();
 		uiArray = new ArrayList<ContactUser>();
+		ainfo = new ArticleInfo();
+
+		ainfoList = new ArrayList<ArticleInfo>();
+		
 
 		pushhttpclient = null;
 		pushLock = new Object();
@@ -121,7 +132,7 @@ public class HttpCommClient {
 			if (statusCode == HttpStatus.SC_OK) {  
 				String rev = EntityUtils.toString(response.getEntity());
 				
-				SamLog.e(TAG,"rev:"+rev);
+				//SamLog.e(TAG,"rev111:"+rev);
 				obj = new JSONObject(rev);
 
 				JSONObject header;   
@@ -1084,7 +1095,12 @@ public boolean uploadavatar(String filePath, String token){
 			os.write(message2.getBytes());
 			os.flush();
 
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){   
+				return false; 
+			}
+
 			is = conn.getInputStream();
+			
 			StringBuilder sb = new StringBuilder();
 			char buff = 512;
 			int len;
@@ -1103,11 +1119,7 @@ public boolean uploadavatar(String filePath, String token){
 			JSONObject obj = new JSONObject(rev);
 			ret = obj.getInt("ret");
 
-			if(ret == SamService.RET_UPLOAD_AVATAR_SERVER_OK){
-				return true;
-			}else{
-				return false;
-			}
+			return true;
 		} catch (Exception e) {
 				e.printStackTrace();
 				return false;
@@ -1176,6 +1188,654 @@ public boolean uploadavatar(String filePath, String token){
  
 	}
 
+
+
+	public boolean sendcomments(String comments, String token){
+		/*Construct sign up json data*/
+		try{
+			JSONObject sendc_header = new JSONObject();
+			sendc_header.putOpt("action", "feedback");
+			sendc_header.putOpt("token", token);
+			
+			
+			JSONObject sendc_body = new JSONObject();
+			sendc_body.putOpt("comment", comments);
+
+			
+			JSONObject sendc_data = new JSONObject();
+			sendc_data.put("header", sendc_header);
+			sendc_data.put("body", sendc_body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",sendc_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL + "?" + param;
+			
+			SamLog.e(TAG,url+"test:"+sendc_data.toString());
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());          
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				SamLog.e(TAG,"ret:"+ret);
+
+				return true;
+			}else{
+				return false;
+			}
+		}catch (JSONException e) {  
+			// TODO Auto-generated catch block  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
+		
+	}
+
+	public boolean uploadFG(List<String>photoes,String comment,String token){
+		String CrLf = "\r\n";
+
+		HttpURLConnection conn = null;
+		OutputStream os = null;
+		InputStream is = null;
+
+		try {
+			JSONObject uf_header = new JSONObject();
+			uf_header.putOpt("action", "article-publish");
+			uf_header.putOpt("token", token);
+
+			JSONObject uf_body = new JSONObject();
+			if(comment!=null && comment.length()>0){
+				uf_body.putOpt("comment", comment);
+			}else{
+				uf_body.putOpt("comment", "");
+			}
+			
+			JSONObject uf_data = new JSONObject();
+			uf_data.put("header", uf_header);
+			uf_data.put("body", uf_body);
+			
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",uf_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url_aticle = URL_ATICLE + "?" + param;
+
+			
+			java.net.URL url = new java.net.URL(url_aticle);
+			conn = (HttpURLConnection)url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+
+			int i=0;
+			InputStream imgIs=null;
+			ArrayList<byte[]> imgDatalist = new ArrayList<byte[]>();
+			ArrayList<String> msg_head_list = new ArrayList<String>();
+			byte[] imgData=null;
+			String msg_header ="";
+			
+			if(photoes!=null && photoes.size()>0){
+				for(i=0;i<photoes.size();i++){
+					imgIs = new FileInputStream(new File(photoes.get(i))); 
+					imgData = new byte[imgIs.available()];
+					imgIs.read(imgData);
+					imgIs.close();
+					imgDatalist.add(imgData);
+
+					msg_header="";
+					msg_header +=CrLf +"-----------------------------4664151417711" + CrLf;
+						           
+					msg_header += "Content-Disposition: form-data; name=\"file"+i+"\"; filename=\""+photoes.get(i).trim()+"\""
+									+ CrLf;
+					msg_header += "Content-Type: image/jpeg" + CrLf;
+					
+					msg_header += CrLf;
+					msg_head_list.add(msg_header);
+					//SamLog.e(TAG,msg_header);
+				}
+			}
+
+			SamLog.e(TAG,"photo num:"+photoes.size()+"i:"+i);
+
+			String message1 = "";
+			message1 += "Accept:"
+					+ " text/html,application/xml,"
+					+ "application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"
+					+ CrLf;
+			message1 += "Connection:" + " Keep-Alive" + CrLf;
+			message1 += "User-Agent:"
+					+ " Mozilla/5.0 (X11; U; Linux "
+					+ "i686; en-US; rv:1.8.1.6) Gecko/20061201 Firefox/2.0.0.6 (Ubuntu-feisty)"
+					+ CrLf;
+
+			
+				
+			//message1 += "-----------------------------4664151417711" + CrLf;
+			//message1 += "Content-Disposition: form-data; name=\"photo\"; filename=\""+filePath.trim()+"\""
+			//		+ CrLf;
+			//message1 += "Content-Type: image/jpeg" + CrLf;
+			//message1 += CrLf;
+				
+			// the image is sent between the messages in the multipart
+			// message.
+
+			String message2 = "";
+			message2 += CrLf
+					+ "-----------------------------4664151417711--" + CrLf;
+
+			conn.setRequestProperty("Content-Type",
+					"multipart/form-data; boundary=---------------------------4664151417711");
+
+			
+			// might not need to specify the content-length when sending
+			// chunked
+			// data.
+
+			int imgLength=0;
+			for(int j=0;j<i;j++){
+				imgLength = imgLength + msg_head_list.get(j).length() + imgDatalist.get(j).length;
+			}
+
+			if(i==0){
+				imgLength = message1.length() + message2.length();
+			}else{
+				imgLength = message1.length() + imgLength + message2.length();
+			}
+			
+			conn.setRequestProperty(
+					"Content-Length",
+					String.valueOf(imgLength));
+
+			//SamLog.e(TAG,"m1:"+message1.length() +" m2:"+message2.length() + " imgLength:"+imgLength );
+
+			os = conn.getOutputStream();
+			
+
+			os.write(message1.getBytes());
+
+			SamLog.e(TAG,"photo num1:"+photoes.size()+"i:"+i);
+
+			if(i==0){
+				os.write(message2.getBytes());
+			}else{
+				int index = 0;
+				int size = 1024;
+				for(int j=0;j<i;j++){
+					// FIXME
+					index = 0;
+					size = 1024;
+					SamLog.e(TAG,"header:"+msg_head_list.get(j));
+					os.write(msg_head_list.get(j).getBytes());
+					do {
+						if ((index + size) > imgDatalist.get(j).length) {
+							size = imgDatalist.get(j).length - index;
+						}
+						SamLog.e(TAG,"j:"+j+"index:"+index);
+						os.write(imgDatalist.get(j), index, size);
+						index += size;
+					} while (index < imgDatalist.get(j).length);
+					
+				}
+				os.write(message2.getBytes());
+				
+			}
+			
+			os.flush();
+
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){ 
+				SamLog.e(TAG,"HttpStatus:"+conn.getResponseCode());
+				return false; 
+			}
+
+			SamLog.e(TAG,"before getInputStream");
+
+			is = conn.getInputStream();
+			
+			StringBuilder sb = new StringBuilder();
+			char buff = 512;
+			int len;
+			byte[] data = new byte[buff];
+			do {
+				len = is.read(data);
+
+				if (len > 0) {
+					sb.append(new String(data, 0, len));
+				}
+			} while (len > 0);
+
+			String rev = sb.toString();
+			SamLog.e(TAG,"rev:"+rev);
+
+			JSONObject obj = new JSONObject(rev);
+			ret = obj.getInt("ret");
+
+			if(ret != SamService.RET_UPLOAD_FG_SERVER_OK){
+				return true;
+			}
+				
+			JSONObject article = obj.getJSONObject("article");
+			ainfo.timestamp = article.getLong("timestamp");
+			ainfo.article_id = article.getLong("id");
+
+			JSONArray jsonArrayX = article.getJSONArray("recommends");
+			for (i = 0; i < jsonArrayX.length(); i++) {
+				JSONObject jo = (JSONObject) jsonArrayX.get(i);
+				ContactUser ui = new ContactUser();
+				ui.setunique_id(jo.getLong("id"));
+				ui.setphonenumber(jo.getString("cellphone"));
+				ainfo.recommander.add(ui);
+			}
+
+			ainfo.status = article.getInt("status");
+			ainfo.comment = article.getString("comment");
+
+			jsonArrayX = article.getJSONArray("comments");
+			for (i = 0; i < jsonArrayX.length(); i++) {
+				JSONObject jo = (JSONObject) jsonArrayX.get(i);
+				String content = jo.getString("content");
+				ainfo.comments.add(content);
+				
+				ContactUser ui = new ContactUser();
+				JSONObject user = jo.getJSONObject("user");
+				ui.setunique_id(user.getLong("id"));
+				ui.setphonenumber(user.getString("cellphone"));
+				ainfo.commenter.add(ui);
+			}
+
+			JSONObject pub = article.getJSONObject("publisher");
+			ainfo.publisher.setphonenumber(pub.getString("cellphone"));
+			ainfo.publisher.setunique_id(pub.getLong("id"));
+
+			jsonArrayX = article.getJSONArray("pics");
+			for (i = 0; i < jsonArrayX.length(); i++) {
+				JSONObject jo = (JSONObject) jsonArrayX.get(i);
+				String pic_url = jo.getString("url");
+				ainfo.pics.add(pic_url);
+			}
+
+			return true;
+		} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+		} finally {
+			try {
+				if(os!=null) os.close();
+			} catch (Exception e) {
+			}
+
+			try {
+				if(is!=null) is.close();
+			} catch (Exception e) {
+			}
+
+			try {
+				if(conn!=null) conn.disconnect();
+			} catch (Exception e) {
+			}
+
+			
+		}
+	}
+
+	public boolean queryFG(String token){
+		String CrLf = "\r\n";
+
+		HttpURLConnection conn = null;
+		OutputStream os = null;
+		InputStream is = null;
+		try{
+			JSONObject querya_header = new JSONObject();
+			querya_header.putOpt("action", "article-query");
+			querya_header.putOpt("token", token);
+			
+			
+			JSONObject querya_body = new JSONObject();
+			
+			querya_body.putOpt("timestamp_start",""+(System.currentTimeMillis()));
+			querya_body.putOpt("timestamp_end", ""+(System.currentTimeMillis()-2*24*60*60*1000));
+			
+			JSONObject querya_data = new JSONObject();
+			querya_data.put("header", querya_header);
+			querya_data.put("body", querya_body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",querya_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url_aticle = URL_ATICLE + "?" + param;
+
+			
+			java.net.URL url = new java.net.URL(url_aticle);
+			conn = (HttpURLConnection)url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+			
+			byte[] imgData = new byte[10];
+
+			String message1 = "";
+			message1 += "Accept:"
+					+ " text/html,application/xml,"
+					+ "application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"
+					+ CrLf;
+			message1 += "Connection:" + " Keep-Alive" + CrLf;
+			message1 += "User-Agent:"
+					+ " Mozilla/5.0 (X11; U; Linux "
+					+ "i686; en-US; rv:1.8.1.6) Gecko/20061201 Firefox/2.0.0.6 (Ubuntu-feisty)"
+					+ CrLf;
+				
+			message1 += "-----------------------------4664151417711" + CrLf;
+			message1 += "Content-Disposition: form-data; name=\"photo\"; filename=\""+"test.txt"+"\""
+					+ CrLf;
+			message1 += "Content-Type: image/jpeg" + CrLf;
+			message1 += CrLf;
+				
+			// the image is sent between the messages in the multipart
+			// message.
+
+			String message2 = "";
+			message2 += CrLf
+					+ "-----------------------------4664151417711--" + CrLf;
+
+			conn.setRequestProperty("Content-Type",
+					"multipart/form-data; boundary=---------------------------4664151417711");
+
+			
+			// might not need to specify the content-length when sending
+			// chunked
+			// data.
+			conn.setRequestProperty(
+					"Content-Length",
+					String.valueOf((message1.length() + message2.length() + imgData.length)));
+
+			SamLog.e(TAG,"m1:"+message1.length() +" m2:"+message2.length() + " imgLength:"+imgData.length );
+
+			os = conn.getOutputStream();
+
+			os.write(message1.getBytes());
+
+			// FIXME
+			int index = 0;
+			int size = 1024;
+			do {
+				if ((index + size) > imgData.length) {
+					size = imgData.length - index;
+				}
+				os.write(imgData, index, size);
+				index += size;
+			} while (index < imgData.length);
+
+			os.write(message2.getBytes());
+			os.flush();
+
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){   
+				return false; 
+			}
+
+			is = conn.getInputStream();
+			
+			StringBuilder sb = new StringBuilder();
+			char buff = 512;
+			int len;
+			byte[] data = new byte[buff];
+			do {
+				len = is.read(data);
+
+				if (len > 0) {
+					sb.append(new String(data, 0, len));
+				}
+			} while (len > 0);
+
+			String rev = sb.toString();
+			SamLog.e(TAG,"rev:"+rev);
+
+			JSONObject obj = new JSONObject(rev);
+			ret = obj.getInt("ret");
+			if(ret!=SamService.RET_QUERY_FG_SERVER_OK){
+				return true;
+			}
+
+			int article_counts = obj.getInt("articles_count");
+			SamLog.e(TAG,"article_counts:"+article_counts);
+			JSONArray jsonArrayX = obj.getJSONArray("articles");
+			SamLog.e(TAG,"jsonArrayX.length():"+jsonArrayX.length());
+			for (int x = 0; x < jsonArrayX.length();x++) {
+				ArticleInfo ainfo = new ArticleInfo();
+				JSONObject article = (JSONObject) jsonArrayX.get(x);
+				ainfo.timestamp = article.getLong("timestamp");
+				ainfo.article_id = article.getLong("id");
+
+				JSONArray jsonArrayR = article.getJSONArray("recommends");
+				for (int i = 0; i < jsonArrayR.length(); i++) {
+					JSONObject jo = (JSONObject) jsonArrayR.get(i);
+					ContactUser ui = new ContactUser();
+					ui.setunique_id(jo.getLong("id"));
+					ui.setphonenumber(jo.getString("cellphone"));
+					ainfo.recommander.add(ui);
+				}
+
+				ainfo.status = article.getInt("status");
+				ainfo.comment = article.getString("comment");
+
+				JSONArray jsonArrayC = article.getJSONArray("comments");
+				for (int i = 0; i < jsonArrayC.length(); i++) {
+					JSONObject jo = (JSONObject) jsonArrayC.get(i);
+					String content = jo.getString("content");
+					ainfo.comments.add(content);
+				
+					ContactUser ui = new ContactUser();
+					JSONObject user = jo.getJSONObject("user");
+					ui.setunique_id(user.getLong("id"));
+					ui.setphonenumber(user.getString("cellphone"));
+					ainfo.commenter.add(ui);
+				}
+
+				JSONObject pub = article.getJSONObject("publisher");
+				ainfo.publisher.setunique_id(pub.getLong("id"));
+				ainfo.publisher.setphonenumber(pub.getString("cellphone"));
+
+				JSONArray jsonArrayP = article.getJSONArray("pics");
+				for (int i = 0; i < jsonArrayP.length(); i++) {
+					JSONObject jo = (JSONObject) jsonArrayP.get(i);
+					String pic_url = jo.getString("url");
+					ainfo.pics.add(pic_url);
+				}
+
+				ainfoList.add(ainfo);
+
+			}
+
+			return true;
+		} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+		} finally {
+			try {
+				if(os!=null) os.close();
+			} catch (Exception e) {
+			}
+
+			try {
+				if(is!=null) is.close();
+			} catch (Exception e) {
+			}
+
+			try {
+				if(conn!=null) conn.disconnect();
+			} catch (Exception e) {
+			}
+		}
+		
+	}
+/*
+	public boolean queryFG(String token){
+		try{
+			JSONObject querya_header = new JSONObject();
+			querya_header.putOpt("action", "article-query");
+			querya_header.putOpt("token", token);
+			
+			
+			JSONObject querya_body = new JSONObject();
+			querya_body.putOpt("timestamp_end", ""+System.currentTimeMillis());
+			querya_body.putOpt("timestamp_start",""+(System.currentTimeMillis()-2*60*60*1000));
+			
+			JSONObject querya_data = new JSONObject();
+			querya_data.put("header", querya_header);
+			querya_data.put("body", querya_body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",querya_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL_ATICLE + "?" + param;
+			
+			SamLog.e(TAG,url+"test:"+querya_data.toString());
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());          
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				SamLog.e(TAG,"ret:"+ret);
+
+				if(ret == SamService.RET_QUERY_FG_SERVER_HANDLE_STREAM_FAILED){
+					SamLog.e(TAG,"run in test flow");
+					ArticleInfo ainfo = new ArticleInfo();
+					ainfo.timestamp = 1456133341530l;
+					ainfo.article_id = 1001;
+					ainfo.status = 0;
+					ainfo.comment = "it is a test ...";
+					ainfo.comments.add("userA comment ***************************************** ");
+					ainfo.comments.add("userB comment *** ");
+					ainfo.comments.add("userC comment *** ");
+					ContactUser ui = new ContactUser();
+					ui.setphonenumber("13911791236");
+					ainfo.commenter.add(ui);
+
+					ContactUser ui2 = new ContactUser();
+					ui2.setphonenumber("13911791236");
+					ainfo.commenter.add(ui2);
+
+					ainfo.publisher.setphonenumber("13911791236");
+
+					ainfo.pics.add("http://121.42.207.185/article/2016/2/22/article_2_1456133341530_1.png");
+					ainfo.pics.add("http://121.42.207.185/article/2016/2/22/article_2_1456134332745_1.png");
+					
+					ainfoList.add(ainfo);
+
+					return true;
+				}
+
+				if(ret!=SamService.RET_QUERY_FG_SERVER_OK){
+					return true;
+				}
+
+				int article_counts = obj.getInt("articles_count");
+				JSONArray jsonArrayX = obj.getJSONArray("articles");
+				for (int i = 0; i < jsonArrayX.length(); i++) {
+					ArticleInfo ainfo = new ArticleInfo();
+					JSONObject article = (JSONObject) jsonArrayX.get(i);
+					ainfo.timestamp = article.getLong("timestamp");
+					ainfo.article_id = article.getLong("id");
+
+					JSONArray jsonArrayR = article.getJSONArray("recommends");
+					for (i = 0; i < jsonArrayR.length(); i++) {
+						JSONObject jo = (JSONObject) jsonArrayR.get(i);
+						ContactUser ui = new ContactUser();
+						ui.setunique_id(jo.getLong("id"));
+						ui.setphonenumber(jo.getString("cellphone"));
+						ainfo.recommander.add(ui);
+					}
+
+					ainfo.status = article.getInt("status");
+					ainfo.comment = article.getString("comment");
+
+					JSONArray jsonArrayC = article.getJSONArray("comments");
+					for (i = 0; i < jsonArrayC.length(); i++) {
+						JSONObject jo = (JSONObject) jsonArrayC.get(i);
+						String content = jo.getString("content");
+						ainfo.comments.add(content);
+				
+						ContactUser ui = new ContactUser();
+						JSONObject user = jo.getJSONObject("user");
+						ui.setunique_id(user.getLong("id"));
+						ui.setphonenumber(user.getString("cellphone"));
+						ainfo.commenter.add(ui);
+					}
+
+					JSONObject pub = article.getJSONObject("publisher");
+					ainfo.publisher.setunique_id(pub.getLong("id"));
+					ainfo.publisher.setphonenumber(pub.getString("cellphone"));
+
+					JSONArray jsonArrayP = article.getJSONArray("pics");
+					for (i = 0; i < jsonArrayP.length(); i++) {
+						JSONObject jo = (JSONObject) jsonArrayP.get(i);
+						String pic_url = jo.getString("url");
+						ainfo.pics.add(pic_url);
+					}
+
+					ainfoList.add(ainfo);
+
+				}
+
+				return true;
+			}else{
+				return false;
+			}
+		}catch (JSONException e) {  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
+		
+	}
+*/
 	/*
 	private String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException
 	{
@@ -1196,5 +1856,187 @@ public boolean uploadavatar(String filePath, String token){
 
     return result.toString();
 	}*/
+
+
+	public boolean commentFG(long article_id,String comment, String token){
+		String CrLf = "\r\n";
+
+		HttpURLConnection conn = null;
+		OutputStream os = null;
+		InputStream is = null;
+		try{
+			JSONObject commetfg_header = new JSONObject();
+			commetfg_header.putOpt("action", "article-comment");
+			commetfg_header.putOpt("token", token);
+			
+			
+			JSONObject commetfg_body = new JSONObject();
+			
+			commetfg_body.putOpt("article_id",""+article_id);
+			commetfg_body.putOpt("comment", comment);
+			
+			JSONObject commetfg_data = new JSONObject();
+			commetfg_data.put("header", commetfg_header);
+			commetfg_data.put("body", commetfg_body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",commetfg_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url_aticle = URL_ATICLE + "?" + param;
+
+			
+			java.net.URL url = new java.net.URL(url_aticle);
+			conn = (HttpURLConnection)url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+			
+			byte[] imgData = new byte[10];
+
+			String message1 = "";
+			message1 += "Accept:"
+					+ " text/html,application/xml,"
+					+ "application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"
+					+ CrLf;
+			message1 += "Connection:" + " Keep-Alive" + CrLf;
+			message1 += "User-Agent:"
+					+ " Mozilla/5.0 (X11; U; Linux "
+					+ "i686; en-US; rv:1.8.1.6) Gecko/20061201 Firefox/2.0.0.6 (Ubuntu-feisty)"
+					+ CrLf;
+				
+			message1 += "-----------------------------4664151417711" + CrLf;
+			message1 += "Content-Disposition: form-data; name=\"photo\"; filename=\""+"test.txt"+"\""
+					+ CrLf;
+			message1 += "Content-Type: image/jpeg" + CrLf;
+			message1 += CrLf;
+				
+			// the image is sent between the messages in the multipart
+			// message.
+
+			String message2 = "";
+			message2 += CrLf
+					+ "-----------------------------4664151417711--" + CrLf;
+
+			conn.setRequestProperty("Content-Type",
+					"multipart/form-data; boundary=---------------------------4664151417711");
+
+			
+			// might not need to specify the content-length when sending
+			// chunked
+			// data.
+			conn.setRequestProperty(
+					"Content-Length",
+					String.valueOf((message1.length() + message2.length() + imgData.length)));
+
+			SamLog.e(TAG,"m1:"+message1.length() +" m2:"+message2.length() + " imgLength:"+imgData.length );
+
+			os = conn.getOutputStream();
+
+			os.write(message1.getBytes());
+
+			// FIXME
+			int index = 0;
+			int size = 1024;
+			do {
+				if ((index + size) > imgData.length) {
+					size = imgData.length - index;
+				}
+				os.write(imgData, index, size);
+				index += size;
+			} while (index < imgData.length);
+
+			os.write(message2.getBytes());
+			os.flush();
+
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){   
+				return false; 
+			}
+
+			is = conn.getInputStream();
+			
+			StringBuilder sb = new StringBuilder();
+			char buff = 512;
+			int len;
+			byte[] data = new byte[buff];
+			do {
+				len = is.read(data);
+
+				if (len > 0) {
+					sb.append(new String(data, 0, len));
+				}
+			} while (len > 0);
+
+			String rev = sb.toString();
+			SamLog.e(TAG,"rev:"+rev);
+
+			JSONObject obj = new JSONObject(rev);
+			ret = obj.getInt("ret");
+			if(ret!=SamService.RET_COMMENT_FG_SERVER_OK){
+				return true;
+			}
+
+			JSONObject article = obj.getJSONObject("article");
+			ainfo.timestamp = article.getLong("timestamp");
+			ainfo.article_id = article.getLong("id");
+
+			JSONArray jsonArrayX = article.getJSONArray("recommends");
+			for (int i = 0; i < jsonArrayX.length(); i++) {
+				JSONObject jo = (JSONObject) jsonArrayX.get(i);
+				ContactUser ui = new ContactUser();
+				ui.setunique_id(jo.getLong("id"));
+				ui.setphonenumber(jo.getString("cellphone"));
+				ainfo.recommander.add(ui);
+			}
+
+			ainfo.status = article.getInt("status");
+			ainfo.comment = article.getString("comment");
+
+			jsonArrayX = article.getJSONArray("comments");
+			for (int i = 0; i < jsonArrayX.length(); i++) {
+				JSONObject jo = (JSONObject) jsonArrayX.get(i);
+				String content = jo.getString("content");
+				ainfo.comments.add(content);
+				
+				ContactUser ui = new ContactUser();
+				JSONObject user = jo.getJSONObject("user");
+				ui.setunique_id(user.getLong("id"));
+				ui.setphonenumber(user.getString("cellphone"));
+				ainfo.commenter.add(ui);
+			}
+
+			JSONObject pub = article.getJSONObject("publisher");
+			ainfo.publisher.setphonenumber(pub.getString("cellphone"));
+			ainfo.publisher.setunique_id(pub.getLong("id"));
+
+			jsonArrayX = article.getJSONArray("pics");
+			for (int i = 0; i < jsonArrayX.length(); i++) {
+				JSONObject jo = (JSONObject) jsonArrayX.get(i);
+				String pic_url = jo.getString("url");
+				ainfo.pics.add(pic_url);
+			}
+
+			return true;
+		} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+		} finally {
+			try {
+				if(os!=null) os.close();
+			} catch (Exception e) {
+			}
+
+			try {
+				if(is!=null) is.close();
+			} catch (Exception e) {
+			}
+
+			try {
+				if(conn!=null) conn.disconnect();
+			} catch (Exception e) {
+			}
+		}
+		
+	}
 	
 }

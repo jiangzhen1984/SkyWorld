@@ -209,6 +209,52 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"
             />
          
+         <activity 
+            android:name="com.android.samchat.NewMsgReminderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            />
+         
+         <activity 
+            android:name="com.android.samchat.PrivacyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            />
+         
+         <activity 
+            android:name="com.android.samchat.BlackListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            />
+         
+         <activity 
+            android:name="com.android.samchat.FeedBackActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            />
+         
+         <activity 
+            android:name="com.android.samchat.SamFriendGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="adjustResize"
+            />
+         
+          <activity 
+            android:name="com.android.samchat.FGCommentsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            />
+          
+          <activity
+            android:name="com.android.samchat.ViewPagerScrollActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+         
+         
+         
+         
          
          
 

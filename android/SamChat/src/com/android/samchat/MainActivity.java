@@ -23,6 +23,7 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.easeui.EaseConstant;
+import com.easemob.easeui.controller.EaseUI;
 import com.easemob.easeui.domain.EaseUser;
 import com.easemob.easeui.ui.EaseContactListFragment;
 import com.easemob.easeui.ui.EaseContactListFragment.EaseContactListItemClickListener;
@@ -219,6 +220,9 @@ public class MainActivity extends FragmentActivity implements
 		SamService.getInstance().onActivityLaunched(fragment_samservice,fragment_samchats);
 	}
 
+
+	
+
 	@Override
 	public void onEvent(EMNotifierEvent event) {
 	SamLog.e(TAG,"onEvent!!!");
@@ -227,7 +231,7 @@ public class MainActivity extends FragmentActivity implements
 		{
 			EMMessage message = (EMMessage) event.getData();
 
-			//DemoHelper.getInstance().getNotifier().onNewMsg(message);
+			EaseUI.getInstance().getNotifier().onNewMsg(message);
 
 			refreshUIWithMessage();
 			break;
@@ -557,4 +561,7 @@ public class MainActivity extends FragmentActivity implements
 		SamService.getInstance().stopSamService();
 		this.finish();
 	}
+
+
+	
 }

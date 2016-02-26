@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/common_bg"
+    android:orientation="vertical" >
+
+   
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/top_bar_normal_bg">
+
+        <ImageView
+    	    android:id="@+id/back"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft = "5dp"
+        	android:contentDescription="@null"
+        	android:layout_centerVertical="true"
+        	android:src="@drawable/em_mm_title_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/blacklist_in_contact"
+            android:textColor="@color/bottom_text_color_normal"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/text_rectangle_circle_coner_bg"
+        android:focusable="true" 
+		android:focusableInTouchMode="true" >
+    	<EditText
+            android:id="@+id/comments"
+        	android:layout_width="match_parent"
+        	android:layout_height="160dp"
+        	android:layout_marginTop="4dp"
+        	android:layout_marginBottom="4dp"
+        	android:layout_marginLeft="4dp"
+			android:layout_gravity="center_vertical"
+        	android:textSize="18sp"
+			android:inputType="textMultiLine"      
+    		android:singleLine="false"
+    		android:gravity="left|top"
+        	android:maxLines="8"
+        	android:background="@null"/>
+    </LinearLayout>
+	
+    <LinearLayout
+    	android:id="@+id/send_layout" 
+    	android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    	android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#BFBFBF">
+    	<TextView
+        	 android:id="@+id/button_send"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="5dp"
+   		 	 android:layout_marginLeft="5dp"
+   		 	 android:layout_marginBottom="5dp"
+   		 	 android:layout_marginRight="5dp"
+         	 android:textColor="#999999"
+             android:textSize="15sp"
+             android:gravity="center"
+             android:layout_gravity="center"
+             android:text="@string/send"
+             android:textStyle="bold"/>
+    	</LinearLayout> 
+    
+</LinearLayout>
+
+

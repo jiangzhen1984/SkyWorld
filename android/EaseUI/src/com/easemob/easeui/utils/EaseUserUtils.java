@@ -35,6 +35,26 @@ public class EaseUserUtils {
         
         return null;
     }
+
+	public static Bitmap getLoacalBitmap(String filename) {
+		File file = null;
+		FileInputStream fos = null;
+		try {
+		 	file = new File(filename);
+
+			if(!file.exists()){
+				return null;
+			}
+			
+			fos= new FileInputStream(filename);
+
+			return BitmapFactory.decodeStream(fos);         
+
+           } catch (Exception e) {
+              e.printStackTrace();
+              return null;
+         }
+    }
     
     /**
      * 设置用户头像

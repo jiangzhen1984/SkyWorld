@@ -396,5 +396,111 @@ public class SamDBDao{
 		return false;
 	}
 
+	public long add_FGRecord_db(FGRecord rd){
+		synchronized(dbLock){
+				return dbHandle.addFGRecord(rd);
+		}
+	}
+
+	public List<FGRecord> query_FGRecord_db(String owner_phonenumber){
+		synchronized(dbLock){
+				return dbHandle.queryFGRecord(owner_phonenumber);
+		}
+	}
+
+	public FGRecord query_FGRecord_db(long fg_id){
+		synchronized(dbLock){
+				return dbHandle.queryFGRecord(fg_id);
+		}
+	}
+
+	public RecommanderRecord query_RecommanderRecord_db(String recommander_phonenumber,long fg_id,long timestamp){
+		synchronized(dbLock){
+				return dbHandle.queryRecommanderRecord(recommander_phonenumber, fg_id, 0);
+		}
+	}
+
+	public long add_RecommanderRecord_db(RecommanderRecord record){
+		synchronized(dbLock){
+				return dbHandle.addRecommanderRecord(record);
+		}
+	}
+
+	public CommenterRecord query_CommenterRecord_db(String commenter_phonenumber,long fg_id,long timestamp){
+		synchronized(dbLock){
+				return dbHandle.queryCommenterRecord(commenter_phonenumber,fg_id,timestamp);
+		}
+	}
+
+	public List<CommenterRecord> query_CommenterRecord_db(long fg_id){
+		synchronized(dbLock){
+				return dbHandle.queryCommenterRecord(fg_id);
+		}
+	}
+
+	public long add_CommenterRecord_db(CommenterRecord record){
+		synchronized(dbLock){
+				return dbHandle.addCommenterRecord(record);
+		}
+	}
+
+	public PictureRecord query_PictureRecord_db(long fg_id,String url_thumbnail){
+		synchronized(dbLock){
+				return dbHandle.queryPictureRecord(fg_id,url_thumbnail);
+		}
+	}
+
+	public List<PictureRecord> query_PictureRecord_db(long fg_id){
+		synchronized(dbLock){
+				return dbHandle.queryPictureRecord(fg_id);
+		}
+	}
+
+	
+
+	public PictureRecord query_PictureRecord_db_thumbnail_pic(long fg_id, String thumbnail_pic){
+		synchronized(dbLock){
+				return dbHandle.queryPictureRecord_thumbnail_pic(fg_id,thumbnail_pic);
+		}
+	}
+
+	public long add_PictureRecord_db(PictureRecord record){
+		synchronized(dbLock){
+				return dbHandle.addPictureRecord(record);
+		}
+	}
+
+
+	public long update_PictureRecord_db_thumbnail(long fg_id, String thumbnail_pic,int sequence){
+		synchronized(dbLock){
+			return dbHandle.updatePictureRecord_thumbnail(fg_id, thumbnail_pic,sequence);
+		}
+	}
+
+	public boolean isThumbPicExistedInDB(long fg_id,String shortImg){
+		PictureRecord rd = query_PictureRecord_db_thumbnail_pic(fg_id,shortImg);
+		if(rd!=null && rd.getthumbnail_pic()!=null && rd.getthumbnail_pic().equals(shortImg)){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+
+	public boolean isThumbPicExistedInFS(String shortImg){
+		//delete avatar file
+		File filePath = new File(SamService.sam_cache_path+SamService.FG_PIC_FOLDER);
+
+		if(filePath.exists()){
+			File file = new File(SamService.sam_cache_path+SamService.FG_PIC_FOLDER+"/"+shortImg);
+			if(file.exists()){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
 
 }

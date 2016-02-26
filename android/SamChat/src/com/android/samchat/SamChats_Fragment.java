@@ -50,6 +50,9 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 	private TextView mAnswer_action;
 	private TextView mSamQAtxt;
 
+	private LinearLayout mSamFriendGroup_layout;
+	private RelativeLayout mSamFriendGroup_relativelayout;
+
 	private QuestionInfo question;
 
 	
@@ -64,6 +67,9 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 			mSamQA_layout = (LinearLayout)rootView.findViewById(R.id.samQA_layout);
 			mSamQA_relativelayout = (RelativeLayout)rootView.findViewById(R.id.samQA_relativelayout);
 			mSamQAtxt = (TextView)rootView.findViewById(R.id.samQAtxt);
+
+			mSamFriendGroup_layout =  (LinearLayout)rootView.findViewById(R.id.samFriendGroup_layout);
+			mSamFriendGroup_relativelayout= (RelativeLayout)rootView.findViewById(R.id.samFriendGroup_relativelayout);
 			
 			unread_question_bage = new BadgeView(getActivity().getBaseContext(), mSamQA_relativelayout);
 			unread_question_bage.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
@@ -74,6 +80,13 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 		    		public void onClick(View arg0) {
 		    			hideBage();
 		    			launchQAActivity();
+				}
+		    });
+
+			mSamFriendGroup_layout.setOnClickListener(new OnClickListener(){
+		    		@Override
+		    		public void onClick(View arg0) {
+		    			launchFGActivity();
 				}
 		    });
 
@@ -207,6 +220,15 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 		SamLog.e(TAG,"launchQAActivity!");
 		need_show = false;
 		startActivityForResult(newIntent,1);
+	}
+
+	private void launchFGActivity()
+	{
+		Intent newIntent = new Intent(getActivity(),SamFriendGroupActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		SamLog.e(TAG,"launchFGActivity!");
+		startActivity(newIntent);
 	}
 
 	@Override

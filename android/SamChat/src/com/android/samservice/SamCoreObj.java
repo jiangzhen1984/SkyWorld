@@ -31,6 +31,22 @@ public class SamCoreObj{
 	public boolean isUploadAvatar(){
 		return (this instanceof UploadAvatarCoreObj);
 	}
+
+	public boolean isSendComments(){
+		return (this instanceof SendCommentsCoreObj);
+	}
+
+	public boolean isUploadFG(){
+		return (this instanceof UploadFGCoreObj);
+	}
+
+	public boolean isQueryFG(){
+		return (this instanceof QueryFGCoreObj);
+	}
+
+	public boolean isCommentFG(){
+		return (this instanceof CommentFGCoreObj);
+	}
 }
 
 

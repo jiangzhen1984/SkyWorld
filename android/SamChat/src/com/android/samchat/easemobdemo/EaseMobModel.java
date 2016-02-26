@@ -64,5 +64,31 @@ public class EaseMobModel {
     public boolean isBacklistSynced(){
         return EaseMobPreference.getInstance().isBacklistSynced();
     }
+
+	public boolean isMsgNotificationEnable(){
+		return EaseMobPreference.getInstance().getSettingMsgNotification();
+	}
+
+	public void setMsgNotification(boolean enable){
+		EaseMobPreference.getInstance().setSettingMsgNotification(enable);
+	}
+
+	public boolean isMsgNotificationSoundEnable(){
+		return  EaseMobPreference.getInstance().getSettingMsgSound();
+	}
+
+	public void setMsgNotificationSound(boolean enable){
+		EaseMobPreference.getInstance().setSettingMsgSound(enable);
+	}
+
+	public boolean isMsgNotificationVibrateEnable(){
+		return EaseMobPreference.getInstance().getSettingMsgVibrate();
+	}
+
+	public void setMsgNotificationVibrate(boolean enable){
+		 EaseMobPreference.getInstance().setSettingMsgVibrate(enable);
+	}
+
+	
     
 }

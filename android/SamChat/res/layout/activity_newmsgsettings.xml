@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFFFFF"
+    android:scrollbars="none">
+
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/common_bg"
+    android:orientation="vertical" >
+
+   
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/top_bar_normal_bg">
+
+        <ImageView
+    	    android:id="@+id/back"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft = "5dp"
+        	android:contentDescription="@null"
+        	android:layout_centerVertical="true"
+        	android:src="@drawable/em_mm_title_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/new_msg_reminder"
+            android:textColor="@color/bottom_text_color_normal"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout 
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="#BFBFBF"
+   		android:orientation="vertical" >
+        
+        <LinearLayout
+            android:id="@+id/enable_new_msg_reminder_layout" 
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+   			android:orientation="horizontal" 
+   			android:background="#FFFFFF">
+        
+        <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:layout_marginLeft="15dp"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:text="@string/enable_new_msg_reminder"
+             android:textSize="18sp"/>
+        
+        <ImageView
+    	    android:id="@+id/enable_new_msg_img"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+        	android:contentDescription="@null"/>
+    	</LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/new_msg_reminder_voice_layout" 
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="1dp"
+   			android:orientation="horizontal" 
+   			android:background="#FFFFFF">
+        
+        <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:layout_marginLeft="15dp"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:text="@string/voice"
+             android:textSize="18sp"/>
+        
+        <ImageView
+    	    android:id="@+id/new_msg_reminder_voice_img"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+        	android:contentDescription="@null"/>
+    	</LinearLayout>
+    	
+        
+        <LinearLayout
+            android:id="@+id/new_msg_reminder_vibrate_layout" 
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="1dp"
+   			android:orientation="horizontal" 
+   			android:background="#FFFFFF">
+        
+        <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:layout_marginLeft="15dp"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:text="@string/vibrate"
+             android:textSize="18sp"/>
+        
+        <ImageView
+    	    android:id="@+id/new_msg_reminder_vibrate_img"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+        	android:contentDescription="@null"/>
+    	</LinearLayout>
+   
+	</LinearLayout>
+	
+    
+    
+</LinearLayout>
+</ScrollView>
