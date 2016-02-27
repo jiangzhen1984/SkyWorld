@@ -3,6 +3,7 @@ package com.skyworld.easemob;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -11,12 +12,13 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import com.skyworld.easemob.EaseMobDeamon.Configuration;
 import com.skyworld.utils.HttpClientSSLBuilder;
@@ -69,14 +71,11 @@ public class EasemobContactsQuery implements Runnable {
 		
 		
 		
-		HttpPost post = new HttpPost(config.url + config.org + "/" + config.app
+		HttpGet get = new HttpGet(config.url + config.org + "/" + config.app
 				+ "/users/"+user.userName+"/contacts/users");
 
-		JSONObject data = new JSONObject();
-		HttpEntity entity = new StringEntity(data.toString(), "utf8");
-		post.setEntity(entity);
-		post.addHeader("content-type", "application/json");
-		post.addHeader("Authorization", " Bearer " + config.token.getValue());
+		get.addHeader("content-type", "application/json");
+		get.addHeader("Authorization", " Bearer " + config.token.getValue());
 
 		HttpClientContext context = HttpClientContext.create();
 		context.setCookieStore(new BasicCookieStore());
@@ -87,11 +86,12 @@ public class EasemobContactsQuery implements Runnable {
 		try {
 			HttpClient httpclient = HttpClientSSLBuilder.buildHttpClient();
 			response = (CloseableHttpResponse) httpclient
-					.execute(post, context);
+					.execute(get, context);
 			int httpCode = response.getStatusLine().getStatusCode();
 			switch (httpCode) {
 			case 200:
 				log.info("handle EasemobContactsQuery 200");
+				contacts = new ArrayList<EasemobUser>();
 				handle200(response, contacts);
 				break;
 			case 401:
@@ -141,14 +141,27 @@ public class EasemobContactsQuery implements Runnable {
 		try {
 			in = responseEntity.getContent();
 
-			out = new ByteArrayOutputStream();
-			byte[] buf = new byte[200];
-			int n = -1;
-			while ((n = in.read(buf)) != -1) {
-				out.write(buf, 0, n);
+			JSONTokener tokenr = new JSONTokener(in);
+////			out = new ByteArrayOutputStream();
+////			byte[] buf = new byte[200];
+////			int n = -1;
+////			while ((n = in.read(buf)) != -1) {
+////				out.write(buf, 0, n);
+////			}
+//			//TODO save to database
+//			log.info(new String(out.toByteArray()));
+			
+			JSONObject request = (JSONObject) tokenr.nextValue();
+			if (request.has("data")) {
+				JSONArray array = request.getJSONArray("data");
+				int len = array.length();
+				for (int i =0; i < len ; i ++) {
+					EasemobUser u = new EasemobUser();
+					u.userName = array.getString(i);
+					contacts.add(u);
+				}
 			}
-			//TODO save to database
-			log.info(new String(out.toByteArray()));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

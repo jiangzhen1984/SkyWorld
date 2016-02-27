@@ -86,6 +86,10 @@ public class APIArticlePushlihService extends APIBasicJsonPartApiService {
 		int index = 1;
 		while (its.hasNext()) {
 			Part p = its.next();
+			
+			if (p == null || p.getContentType() == null) {
+				continue;
+			}
 			//TODO handle video
 			
 			if (!"image/".startsWith(p.getContentType())) {
