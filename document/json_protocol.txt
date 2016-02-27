@@ -23,6 +23,8 @@ Protocol Version: M9
               Add Query Article protocol definition 
 Protocol Version: M10
               Add timestamp properties in article comment
+Protocol Version: M11
+              Add qt properties in article query
 
 
 
@@ -532,6 +534,7 @@ Article Query
         "timestamp_end"  :  1455174572266,  //millisecons end
         "timestamp_start":  1455178172266   //millisecons start
         "fetch_count"    :  count // optional  default is 15
+        "qt"             :  [0/1] // 0 : for native 1 : for easemob contacts
     }
 }
 
