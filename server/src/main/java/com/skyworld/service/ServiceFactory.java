@@ -1,6 +1,7 @@
 package com.skyworld.service;
 
 import com.skyworld.easemob.EaseMobDeamon;
+import com.skyworld.easemob.EaseMobService;
 
 public class ServiceFactory {
 	
@@ -28,7 +29,7 @@ public class ServiceFactory {
 	}
 	
 	
-	public static EaseMobDeamon getEaseMobService() {
+	public static EaseMobService getEaseMobService() {
 		if (mEaseMobDeamon == null) {
 			mEaseMobDeamon = new EaseMobDeamon();
 		}

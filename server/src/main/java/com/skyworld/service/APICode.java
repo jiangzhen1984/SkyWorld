@@ -62,6 +62,9 @@ public class APICode {
 	public static final int FOLLOW_ERROR_USER_NOT_EXIST = -1001;
 	public static final int FOLLOW_ERROR_UN_SUPPORT_FLAG = -1002;
 	
+	
+	public static final int ARTICLE_QUERY_ERROR_TYPE_NOT_SUPPORT = -1101;
+	
 }
 
 

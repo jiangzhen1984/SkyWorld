@@ -29,7 +29,7 @@ public class ListArticleResponse extends JSONBasicResponse {
 	@Override
 	public JSONObject getResponseJSON() {
 		JSONArray arrs = new JSONArray();
-		int size = articles.size();
+		int size = articles == null ? 0 : articles.size();
 		for (int idx = 0; idx < size ; idx++) {
 			Article article = articles.get(idx);
 			JSONObject jsonArticle = new JSONObject();
@@ -91,7 +91,7 @@ public class ListArticleResponse extends JSONBasicResponse {
 		JSONObject root = new JSONObject();
 		root.put("ret", APICode.SUCCESS);
 		root.put("articles", arrs);
-		root.put("articles_count", articles.size());
+		root.put("articles_count", size);
 		return root;
 	}
 

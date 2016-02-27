@@ -1,6 +1,7 @@
 package com.skyworld.easemob;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
 import org.apache.commons.logging.Log;
@@ -8,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.skyworld.cache.Token;
 
-public class EaseMobDeamon {
+public class EaseMobDeamon implements EaseMobService {
 	
 	protected Log log = LogFactory.getLog(this.getClass());
 	
@@ -65,6 +66,61 @@ public class EaseMobDeamon {
 		}
 	}
 	
+	
+	
+	@Override
+	public List<EasemobUser> queryContacts(EasemobUser user) {
+		EasemobContactsQueryCallback callback = new EasemobContactsQueryCallback();
+		mPool.execute(new EasemobContactsQuery(config, user,callback));
+		
+		synchronized (callback) {
+			try {
+				callback.wait();
+			} catch (InterruptedException e) {
+				log.error(e);
+			}
+		}
+		if (callback.getResult() == 0) {
+			return callback.getContacts();
+		} else {
+			return null;
+		}
+		
+	}
+
+	
+	
+
+
+	@Override
+	public void queryContacts(EasemobUser user,
+			final EasemobQueryContactsCallback callback) {
+		mPool.execute(new EasemobContactsQuery(config, user, new EasemobContactsQuery.Callback () {
+
+			@Override
+			public void onError(int code) {
+				if (callback != null) {
+					callback.onError(code);
+				}
+				
+			}
+
+			@Override
+			public void onCompleted(List<EasemobUser> contacts) {
+				if (callback != null) {
+					callback.onCompleted(contacts);
+				}
+				
+			}
+			
+		}));
+		
+	}
+
+
+
+
+
 	class Configuration {
 		String url;
 		String org;
@@ -121,6 +177,43 @@ public class EaseMobDeamon {
 		@Override
 		public Object getValue() {
 			return val;
+		}
+		
+	}
+	
+	
+	
+	class EasemobContactsQueryCallback implements EasemobContactsQuery.Callback {
+
+		private List<EasemobUser> contacts;
+		private int result = 0;
+		
+		
+		
+		public EasemobContactsQueryCallback() {
+			super();
+		}
+
+		@Override
+		public void onError(int code) {
+			result = code;
+			
+		}
+
+		@Override
+		public void onCompleted(List<EasemobUser> contacts) {
+			this.contacts = contacts;
+			synchronized (this) {
+				notify();
+			}
+		}
+		
+		public List<EasemobUser> getContacts() {
+			return  this.contacts;
+		}
+		
+		public int getResult() {
+			return result;
 		}
 		
 	}
