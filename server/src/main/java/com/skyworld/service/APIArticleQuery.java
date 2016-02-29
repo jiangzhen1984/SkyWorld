@@ -60,28 +60,33 @@ public class APIArticleQuery extends APIBasicJsonPartApiService {
 			EasemobUser easemobUser = new EasemobUser();
 			easemobUser.userName = user.getCellPhone();
 			List<EasemobUser> contactsList= ServiceFactory.getEaseMobService().queryContacts(easemobUser);
-			if (contactsList == null || contactsList.size()<= 0) {
-				return new ListArticleResponse(null);
-			}
-			int size = contactsList.size();
 			
-			String[] phones = new String[size];
-			String[] mails = new String[size];
-			for (EasemobUser eu : contactsList) {
-				--size;
-				phones[size] = eu.userName;
-				mails[size] = eu.userName;
-				
+			int size = contactsList == null ? 0 : contactsList.size();
+			
+			if (size > 0) {
+				String[] phones = new String[size];
+				String[] mails = new String[size];
+				for (EasemobUser eu : contactsList) {
+					--size;
+					phones[size] = eu.userName;
+					mails[size] = eu.userName;
+					
+				}
+				List<User> us = ServiceFactory.getESUserService().selectUserList(phones, mails);
+				int count = us.size();
+				ids = new ArrayList<Long>(count + 1);
+				ids.add(user.getId());
+				for(int i = 0; i < count; i++) {
+					ids.add(us.get(i).getId());
+				}
+			} else {
+				ids = new ArrayList<Long>(1);
+				ids.add(user.getId());
 			}
 			
-			List<User> us = ServiceFactory.getESUserService().selectUserList(phones, mails);
 			
-			int count = us.size();
-			ids = new ArrayList<Long>(count + 1);
-			ids.add(user.getId());
-			for(int i = 0; i < count; i++) {
-				ids.add(us.get(i).getId());
-			}
+			
+			
 			
 		} else {
 			if (!user.isRelationQueryFlag()) {
