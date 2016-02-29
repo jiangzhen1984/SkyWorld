@@ -1,5 +1,6 @@
 package com.skyworld.service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -187,7 +188,7 @@ public class SWArticleService extends BaseService {
 		}
 		int num = userIds.size();
 		StringBuffer queryBuffer = new StringBuffer();
-		queryBuffer.append(" select a.id as aid, a.AR_COMMENT, a.USER_ID , ap.id as apid, ap.ORIGIN_PATH as opp ");
+		queryBuffer.append(" select a.id as aid, a.AR_COMMENT, a.USER_ID , ap.id as apid, ap.ORIGIN_PATH as opp, a.timeStamp ");
 		queryBuffer.append(" from SW_Article a left join SW_ARTICLE_MEDIA ap ");
 		queryBuffer.append("  on ap.ARTICLE_ID = a.id ");
 		
@@ -220,7 +221,7 @@ public class SWArticleService extends BaseService {
 			Object[] obj = it.next();
 			Article ar = null;
 			if (last == null || last.getId() != ((BigInteger)obj[0]).longValue()) {
-				ar = new Article();
+				ar = new Article(new Date(((BigDecimal)obj[5]).longValue()));
 				ar.setId(((BigInteger)obj[0]).longValue());
 				ar.setComment((String)obj[1]);
 				ar.setPublisher(ServiceFactory.getESUserService()

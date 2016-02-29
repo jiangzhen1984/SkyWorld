@@ -42,6 +42,14 @@ public class Article {
 		recommendations = new ArrayList<Recommendation>();
 		time = Calendar.getInstance().getTime();
 	}
+	
+	public Article(Date time) {
+		super();
+		pics = new ArrayList<Pic>();
+		comments = new ArrayList<Comment>();
+		recommendations = new ArrayList<Recommendation>();
+		this.time = time;
+	}
 
 
 	public int getPicsCount() {
