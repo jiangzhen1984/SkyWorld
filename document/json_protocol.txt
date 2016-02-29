@@ -479,7 +479,7 @@ Comment协议：
 }
 
 返回结果：
-成功返回 {"ret":0,"article":{"timestamp":1455095205297,"id":4,"recommends":[],"status":0,"comment":"eeeee","comments":[{"content":"eee","user":{"id":5,"mail":"17","cellphone":"17"}}],"publisher":{"id":4,"mail":"12345","cellphone":"12345"}, "pics":[{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098490900_1.png"},{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098492736_2.png"}]}}
+成功返回 {"ret":0,"article":{"timestamp":1455095205297,"id":4,"recommends":[],"status":0,"comment":"eeeee","comments":[{"content":"eee", "timestamp" : 1455095205297, "user":{"id":5,"mail":"17","cellphone":"17"}}],"publisher":{"id":4,"mail":"12345","cellphone":"12345"}, "pics":[{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098490900_1.png"},{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098492736_2.png"}]}}
 
 解析失败返回：  {ret: -1}
 action参数不支持返回：  {ret: -2}  
