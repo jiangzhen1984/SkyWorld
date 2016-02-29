@@ -17,16 +17,16 @@ public class APIQueryService extends APIBasicJsonApiService {
 	private static final int OPT_QUERY_USER = 1;
 	
 	private static final int OPT_QUERY_USER_LIST = 2;
+	
+	private static final int OPT_QUERY_USER_EXIST = 3;
 
 	@Override
 	protected BasicResponse service(JSONObject json) {
 		JSONObject header = json.getJSONObject("header");
 		JSONObject body = json.getJSONObject("body");
 		
-
-		if (!header.has("token")) {
-			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
-		}
+		boolean tokenExist = header.has("token");
+		
 
 		String tokenId = header.getString("token");
 		if (tokenId == null || tokenId.trim().isEmpty()) {
@@ -42,9 +42,17 @@ public class APIQueryService extends APIBasicJsonApiService {
 		JSONObject param = body.getJSONObject("param");
 		switch (opt) {
 		case OPT_QUERY_USER:
+			if (!tokenExist) {
+				return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
+			}
 			return queryUser(param);
 		case OPT_QUERY_USER_LIST:
+			if (!tokenExist) {
+				return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
+			}
 			return queryUserList(param);
+		case OPT_QUERY_USER_EXIST:
+			return queryUser(param);
 		default:
 			return new RTCodeResponse(APICode.QUERY_ERROR_OPT_NOT_SUPPORT);
 		}

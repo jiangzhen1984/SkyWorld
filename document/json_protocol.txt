@@ -25,6 +25,8 @@ Protocol Version: M10
               Add timestamp properties in article comment
 Protocol Version: M11
               Add qt properties in article query
+Protocol Version: M12
+              Add user query type for permit without token param
 
 
 
@@ -189,7 +191,8 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upg
 {
     "header":
     {
-       "action" : "query"
+       "action" : "query",
+       "token": "token"
     },
     "body":
     {
@@ -205,6 +208,7 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upg
     "header":
     {
        "action" : "query"
+       "token": "token",
     },
     "body":
     {
@@ -215,6 +219,22 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upg
        }
     }
 }
+
+{
+    "header":
+    {
+       "action" : "query"
+    },
+    "body":
+    {
+       "opt":3,   3: User  Query without token
+       "param":
+       {
+         "username":"139"
+       }
+    }
+}
+
 
 成功返回: 
 {
