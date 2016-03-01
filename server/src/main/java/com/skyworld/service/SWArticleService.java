@@ -188,7 +188,7 @@ public class SWArticleService extends BaseService {
 		}
 		int num = userIds.size();
 		StringBuffer queryBuffer = new StringBuffer();
-		queryBuffer.append(" select a.id as aid, a.AR_COMMENT, a.USER_ID , ap.id as apid, ap.ORIGIN_PATH as opp, a.timeStamp ");
+		queryBuffer.append(" select a.id as aid, a.AR_COMMENT, a.USER_ID , ap.id as apid, ap.ORIGIN_PATH as opp, a.AR_TIME_STAMP ");
 		queryBuffer.append(" from SW_Article a left join SW_ARTICLE_MEDIA ap ");
 		queryBuffer.append("  on ap.ARTICLE_ID = a.id ");
 		
