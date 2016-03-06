@@ -8,6 +8,14 @@ public class SamCoreObj{
 	public CBObj refCBObj;
 	public int request_status;
 
+	public boolean isSignin(){
+		return (this instanceof SignInCoreObj);
+	}
+	
+	public boolean isSignup(){
+		return (this instanceof SignUpCoreObj);
+	}
+
 	public boolean isSendq(){
 		return (this instanceof SendqCoreObj);
 	}

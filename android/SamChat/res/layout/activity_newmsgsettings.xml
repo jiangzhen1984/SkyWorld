@@ -3,43 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#FFFFFF"
+    android:background="@color/default_bg"
     android:scrollbars="none">
 
 <LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/common_bg"
     android:orientation="vertical" >
 
    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg">
+        android:background="@color/common_bg_green">
 
         <ImageView
     	    android:id="@+id/back"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:layout_marginLeft = "5dp"
+        	android:layout_marginLeft = "@dimen/title_left_margin"
         	android:contentDescription="@null"
         	android:layout_centerVertical="true"
-        	android:src="@drawable/em_mm_title_back"/>
+        	android:src="@drawable/back"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/back"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
             android:text="@string/new_msg_reminder"
-            android:textColor="@color/bottom_text_color_normal"
+            android:textColor="@color/common_white"
             android:textSize="18sp" />
     </RelativeLayout>
 
     <LinearLayout 
     	android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:background="#BFBFBF"
    		android:orientation="vertical" >
         
         <LinearLayout

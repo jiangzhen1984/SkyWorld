@@ -34,6 +34,7 @@ public class SignService{
 
     public static final int SIGN_IN_TIMEOUT = 5000;
     public static final int SIGN_UP_TIMEOUT = 15000;
+    public static final int SIGN_TIMEOUT=20000;
     
     /*handle message id*/
     public static final int MSG_AUTO_SIGN_IN=0;
@@ -45,6 +46,8 @@ public class SignService{
     public static final int MSG_SIGN_IN_TIMEOUT=21;
 
     public static final int MSG_SIGN_OUT=30;
+
+    public static final int MSG_SIGN_TIMEOUT=40;
     
     
     /*Auto Sign in*/
@@ -96,6 +99,9 @@ public class SignService{
     private static SignService mSignService;
     private HandlerThread mHandlerThread=null;
     private ServiceHandler mServiceHandler=null;
+
+    private HandlerThread mTimeOutHandlerThread=null;
+    private ServiceTimeOutHandler mTimeOutServiceHandler=null;
     
     public static synchronized SignService getInstance(){
     	if(mSignService == null){
@@ -113,10 +119,16 @@ public class SignService{
     	mHandlerThread.start();
     	
     	mServiceHandler = new ServiceHandler(mHandlerThread.getLooper());
+
+	mTimeOutHandlerThread = new HandlerThread("SignTimeOutService");
+    	mTimeOutHandlerThread.start();
+    	
+    	mTimeOutServiceHandler = new ServiceTimeOutHandler(mTimeOutHandlerThread.getLooper());
     }
     
     public void stopSignService(){
     	mHandlerThread.getLooper().quit();
+	mTimeOutHandlerThread.getLooper().quit();
     	mSignService = null;
     }
 
@@ -378,21 +390,27 @@ public class SignService{
 		}
 	}
 	
-    private void do_sign_in(CBObj cbobj){
-	if(cbobj==null || cbobj.cbHandler==null ){
-		SamLog.e(TAG, "bad msg in sign in,drop it...");
-		return;
-	}
-	
-	Handler hndl = cbobj.cbHandler.get();
-	if(hndl == null){
-		SamLog.e(TAG, "cbhandler has been destroy in sign in, drop cbMsg ...");
-		return;
-	}
+    private void do_sign_in(SamCoreObj samobj){
+	CBObj cbobj = samobj.refCBObj;
+	SignInCoreObj siobj = (SignInCoreObj)samobj;
+
 	HttpCommClient hcc = new HttpCommClient();
 
-	if(signin_with_un_pa(cbobj.sinfo,hcc)){
+	SignInfo sinfo = new SignInfo(siobj.username,siobj.password);
+
+	if(signin_with_un_pa(sinfo,hcc)){
                 if(hcc.ret == RET_SI_FROM_SERVER_OK){
+			boolean continue_run = true;
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+			
 			boolean need_update = false;
 			/*store login user into db*/
 			LoginUser user = hcc.userinfo;
@@ -430,25 +448,43 @@ public class SignService{
 			user.id = SamService.getInstance().getDao().add_update_LoginUser_db(user);
 			SamService.getInstance().set_current_user(user);
 
-			/*********************/
-					
-			cbobj.sinfo.token = hcc.token_id;
+			sinfo.token = hcc.token_id;
 			SamLog.e(TAG,"hcc token id:"+hcc.token_id);
 			SamService.getInstance().store_current_token(hcc.token_id);
 
 			if(need_update){
 				downloadAvatar(hcc);
 			}
+
+			cbobj.smcb.onSuccess(sinfo);
 			
-			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_IN_OK, hcc.ret,cbobj.sinfo);
-			hndl.sendMessage(msg);
                 }else{
-			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_IN_FAILED, hcc.ret);
-			hndl.sendMessage(msg);
+			boolean continue_run = true;
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+
+			cbobj.smcb.onFailed(hcc.ret);
                 }
 	}else{
-		Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_IN_ERROR, -1);
-		hndl.sendMessage(msg);
+		boolean continue_run = true;
+		synchronized(samobj){
+			if(samobj.request_status == SamCoreObj.STATUS_INIT){
+				samobj.request_status = SamCoreObj.STATUS_DONE;
+			}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+				continue_run = false;
+			}
+		}
+
+		if(!continue_run) return;
+		
+		cbobj.smcb.onError(R_SIGN_IN_ERROR);
   	}
   }
 
@@ -476,23 +512,28 @@ public class SignService{
 	
     }
 	
-	private void do_sign_up(CBObj cbobj){
-		if(cbobj==null || cbobj.cbHandler==null ){
-			SamLog.e(TAG, "bad msg in sign in,drop it...");
-			return;
-		}
-		
-		Handler hndl = cbobj.cbHandler.get();
-		if(hndl == null){
-			SamLog.e(TAG, "cbhandler has been destroy in sign in, drop cbMsg ...");
-			return;
-		}
-		
+	private void do_sign_up(SamCoreObj samobj){
+		CBObj cbobj = samobj.refCBObj;
+		SignUpCoreObj suobj = (SignUpCoreObj)samobj;
+
+		SignInfo sinfo = new SignInfo(suobj.username,suobj.password,suobj.cellphone);
+
 		HttpCommClient hcc = new HttpCommClient();
 
-		if(signup_with_un_pa(cbobj.sinfo,hcc)){
+		if(signup_with_un_pa(sinfo,hcc)){
 
 			if(hcc.ret == RET_SU_FROM_SERVER_OK){
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+				
 				/*store login user into db*/
 				LoginUser user = hcc.userinfo;
 				user.logintime = System.currentTimeMillis();
@@ -503,20 +544,37 @@ public class SignService{
 				SamService.getInstance().set_current_user(user);
 
 				/*********************/
-				cbobj.sinfo.token = hcc.token_id;
+				sinfo.token = hcc.token_id;
 				SamService.getInstance().store_current_token(hcc.token_id);
-				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_UP_OK, hcc.ret,cbobj.sinfo);
-				//hndl.obtainMessage(what, arg1, arg2, obj)
-				hndl.sendMessage(msg);
+				cbobj.smcb.onSuccess(sinfo);
 			}else{
-				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_UP_FAILED, hcc.ret);
-				hndl.sendMessage(msg);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
 			}
 		}else{
-			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_UP_ERROR, -1);
-			hndl.sendMessage(msg);
-			return;
-    	}
+			boolean continue_run = true;
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+		
+			cbobj.smcb.onError(R_SIGN_UP_ERROR);
+    		}
     }
 
 
@@ -569,7 +627,54 @@ public class SignService{
 		reset();
 
 	} 
-    
+
+	private void cancelTimeOut(SamCoreObj samobj) {
+		mTimeOutServiceHandler.removeMessages(MSG_SIGN_TIMEOUT,samobj);
+	}
+
+	private void startTimeOut(SamCoreObj samobj) {
+		Message msg = mTimeOutServiceHandler.obtainMessage(MSG_SIGN_TIMEOUT,samobj);
+		mTimeOutServiceHandler.sendMessageDelayed(msg, SIGN_TIMEOUT);
+	}
+
+	 private final class ServiceTimeOutHandler extends Handler{
+		public ServiceTimeOutHandler(Looper looper)
+		{
+		   super(looper);
+		}
+
+		@Override
+		public void handleMessage(Message msg){
+			SamCoreObj samobj = (SamCoreObj)msg.obj;
+			CBObj cbobj = samobj.refCBObj;
+			boolean continue_run = true;
+			Handler hndl = null;
+
+			switch(msg.what){
+				case MSG_SIGN_TIMEOUT:
+					synchronized(samobj){
+						if(samobj.request_status == SamCoreObj.STATUS_INIT){
+							samobj.request_status = SamCoreObj.STATUS_TIMEOUT;
+						}else if(samobj.request_status == SamCoreObj.STATUS_DONE){
+							continue_run = false;
+						}
+					}
+
+					if(continue_run){
+						if(samobj.isSignin()){
+							cbobj.smcb.onError(R_SIGN_IN_TIMEOUT);
+							SamLog.e(TAG, "SignServiceTimeOut Happened for msg isSignin");
+						}else if(samobj.isSignup()){
+							cbobj.smcb.onError(R_SIGN_UP_TIMEOUT);
+							SamLog.e(TAG, "SignServiceTimeOut Happened for msg isSignup");
+						}
+					}
+
+					
+					break;
+			}
+		}
+	}
     
     private final class ServiceHandler extends Handler{
     	public ServiceHandler(Looper looper)
@@ -578,36 +683,22 @@ public class SignService{
 		}
     	
     	@Override
-		public void handleMessage(Message msg){
-    		Message callbackMessage;
-    		CBObj cbobj = (CBObj)msg.obj;
-    		
-    		if(cbobj==null || cbobj.cbHandler==null){
-    			SamLog.e(TAG, "bad msg,drop it...");
-    			return;
-    		}
-    		
-    		Handler hndl = cbobj.cbHandler.get();
-    		if(hndl == null){
-    			SamLog.e(TAG, "cbhandler has been destroy, drop cbMsg ...");
-    			return;
-    		}
-    		
+	public void handleMessage(Message msg){
     		switch(msg.what){
     			case MSG_AUTO_SIGN_IN:
     			/*start auto sign in job*/
-    				do_auto_sign_in(cbobj);
+    				do_auto_sign_in((CBObj)msg.obj);
     				break;
     			case MSG_SIGN_UP:
     			/*start sign up*/
-				do_sign_up(cbobj);
+				do_sign_up((SamCoreObj)msg.obj);
     				break;
     			case MSG_SIGN_IN:
     			/*start sign in job*/
-    				do_sign_in(cbobj);
+    				do_sign_in((SamCoreObj)msg.obj);
     				break;
 			case MSG_SIGN_OUT:
-				do_sign_out(cbobj);
+				do_sign_out((CBObj)msg.obj);
 				break;
     		}
     		
@@ -749,22 +840,21 @@ public class SignService{
 		return true;
 	}
 	
-	
-	
-	public void SignUp(Handler cbHandler,int cbMsg,String uname, String pwd,String cellphone)
+	public void SignUp(String uname, String pwd,String cellphone,SMCallBack SMcb)
 	{
-		/*request sign up*/
-		CBObj obj = new CBObj(cbHandler,cbMsg,uname,pwd,cellphone);
-		Message msg = mServiceHandler.obtainMessage(MSG_SIGN_UP, obj);
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj  samobj = new SignUpCoreObj(obj,uname,pwd,cellphone);
+		Message msg = mServiceHandler.obtainMessage(MSG_SIGN_UP, samobj);
 		mServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
 	}
 	
-	public void SignIn(Handler cbHandler,Activity cbActivity,int cbMsg,String un, String pwd)
-	{
-		/*request sign up*/
-		CBObj obj = new CBObj(cbHandler,cbMsg,un,pwd);
-		Message msg = mServiceHandler.obtainMessage(MSG_SIGN_IN, obj);
+	public void SignIn(String un, String pwd, SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj  samobj = new SignInCoreObj(obj,un,pwd);
+		Message msg = mServiceHandler.obtainMessage(MSG_SIGN_IN, samobj);
 		mServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
 	}
 
 	public void SignOut(Handler cbHandler, int cbMsg){

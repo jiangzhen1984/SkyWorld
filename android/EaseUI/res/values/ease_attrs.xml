@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    
+    
     <declare-styleable name="EaseChatMessageList">
         <attr name="msgListMyBubbleBackground" format="reference"/>
         <attr name="msgListOtherBubbleBackground" format="reference"/>
@@ -48,6 +50,13 @@
             <enum name="open" value="0"/>
             <enum name="close" value="1"/>
         </attr>
+    </declare-styleable>
+    
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
     </declare-styleable>
     
 </resources>

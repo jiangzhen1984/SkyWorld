@@ -1,45 +1,34 @@
 package com.android.samchat;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.Inflater;
 
 import com.android.samchat.R;
 import com.android.samchat.easemobdemo.EaseMobHelper;
+import com.android.samchat.slidemenu.SlidingMenu;
 import com.android.samservice.*;
 import com.android.samservice.info.LoginUser;
 import com.easemob.EMCallBack;
+import com.easemob.EMConnectionListener;
+import com.easemob.EMError;
 import com.easemob.EMEventListener;
 import com.easemob.EMNotifierEvent;
-import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMContactListener;
-import com.easemob.chat.EMContactManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.controller.EaseUI;
 import com.easemob.easeui.domain.EaseUser;
-import com.easemob.easeui.ui.EaseContactListFragment;
 import com.easemob.easeui.ui.EaseContactListFragment.EaseContactListItemClickListener;
-import com.easemob.easeui.ui.EaseConversationListFragment;
 import com.easemob.easeui.ui.EaseConversationListFragment.EaseConversationListItemClickListener;
-import com.easemob.exceptions.EaseMobException;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
-import android.R.integer;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -50,77 +39,116 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.Menu;
-import android.view.ViewConfiguration;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 
-public class MainActivity extends FragmentActivity implements
-		OnPageChangeListener, OnTabChangeListener, EMEventListener{
+public class MainActivity extends IndicatorFragmentActivity implements
+		OnPageChangeListener, EMEventListener{
 
-	static private final String TAG="SamChat_Main";
+	static public final String TAG="SamChat_Main";
 	static public final String ACTIVITY_NAME = "com.android.samchat.MainActivity";
+	
+	static final String EXIT_APP_CONFIRM = "com.android.samchat.exitapp";
+	static final String LOGOUT_CONFIRM = "com.android.samchat.logout";
+	
 	private boolean isExit = false; 
 	
 	
 	private final int ACTIVITY_TIMEOUT=2000;
 	private final int MSG_EXIT_ACTIVITY_TIMEOUT = 1;
+	public static final int MSG_LOGOUT_CALLBACK = 2;
 	
 	
 	public static final int TAB_ID_SAMSERVICES=0;
 	public static final int TAB_ID_SAMCHATS=1;
-	public static final int TAB_ID_SAMME=2;
-	public static final int TAB_ID_SAMCONTACT=3;
+	public static final int TAB_ID_SAMPUBLIC=2;
+	public static final int TAB_ID_VENDOR=3;
 	
-	private FragmentTabHost mTabHost;
+	
+	//private FragmentTabHost mTabHost;
 	private LayoutInflater layoutInflater;
-	private Class fragmentArray[] = { SamService_Fragment.class, SamChats_Fragment.class,
-			SamMe_Fragment.class, SamContact_Fragment.class };
+	private Class fragmentArray[] = {	
+			SamService_Fragment.class, 
+			SamChats_Fragment.class,
+			SamPublic_Fragment.class, 
+			SamVendor_Fragment.class };
 		
-	private int imageViewArray[] = { R.drawable.sam_services, R.drawable.sam_chats,
-			R.drawable.sam_me, R.drawable.sam_public };
-	
-	private int textViewArray[] = {R.string.sam_services,
-			                   R.string.sam_chats,
-		                       R.string.sam_me,
-	                           R.string.sam_contact};
-	
-	private List<Fragment> list = new ArrayList<Fragment>();
-	private ViewPager vp;
-	private static int currentTabPostition = 0;
+	private int imageViewArray[] = {	
+			R.drawable.sam_services, 
+			R.drawable.sam_chats,
+			R.drawable.sam_public,
+			R.drawable.sam_me};
 
+	private int imageViewArraySelected[] = {	
+			R.drawable.sam_services_selected, 
+			R.drawable.sam_chats_selected,
+			R.drawable.sam_public_selected,
+			R.drawable.sam_me_selected};
+	
+	private int textViewArray[] = {
+			R.string.sam_services,
+			R.string.sam_chats,
+			R.string.sam_public,
+			R.string.sam_vendor};
+	
 	private SamService_Fragment fragment_samservice;
 	private SamChats_Fragment fragment_samchats;
-	private SamMe_Fragment fragment_samme;
-	private SamContact_Fragment fragment_samcontact;
-
-	private BroadcastReceiver broadcastReceiver;
-	private LocalBroadcastManager broadcastManager;
+	private SamPublic_Fragment fragment_sampublic;
+	private SamVendor_Fragment fragment_vendor;
+	
 
 	private ConnectivityManager mConnectivityManager; 
    	private NetworkInfo netInfo; 
+
+
+	private TextView mSlideContact;
+	private TextView mSetting;
+	private TextView mLogout;
+	private TextView mExitApp;
+	private TextView mMe;
+
+	private ImageView mOption_button;
+
+	private SamProcessDialog mDialog;
 	
-	public static int getCurrentTab(){
-		return currentTabPostition;
-	}
+
+	@Override
+	protected int supplyTabs(List<TabInfo> tabs) {
+		TabInfo tabinfo = new TabInfo(TAB_ID_SAMSERVICES, getString(textViewArray[0]),
+			imageViewArray[0],imageViewArraySelected[0],fragmentArray[0]);
+		tabinfo.fragment = new SamService_Fragment();
+		tabs.add(tabinfo);
+
+		tabinfo = new TabInfo(TAB_ID_SAMCHATS, getString(textViewArray[1]),
+					imageViewArray[1],imageViewArraySelected[1],fragmentArray[1]);
+		tabinfo.fragment = new SamChats_Fragment();
+		tabs.add(tabinfo);
+
+		tabinfo = new TabInfo(TAB_ID_SAMPUBLIC, getString(textViewArray[2]),
+					imageViewArray[2],imageViewArraySelected[2],fragmentArray[2]);
+		tabinfo.fragment = new SamPublic_Fragment();
+		tabs.add(tabinfo);
+		
+		tabinfo = new TabInfo(TAB_ID_VENDOR, getString(textViewArray[3]),
+					imageViewArray[3],imageViewArraySelected[3],fragmentArray[3]);
+		tabinfo.fragment = new SamVendor_Fragment();
+		tabs.add(tabinfo);
+
+		return TAB_ID_SAMSERVICES;
+    }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		currentTabPostition = 0;
 		
 		Intent intent = new Intent();
 		intent.setAction(SamService.FINISH_ALL_SIGN_ACTVITY);
@@ -131,56 +159,198 @@ public class MainActivity extends FragmentActivity implements
 		hide_show_filter.addAction(SamChats_Fragment.SHOW_SAMCHATS_REDPOINT);
 		registerReceiver(HideShowSamChatRDPReceiver, hide_show_filter);
 		
-		setContentView(R.layout.main_tab_layout);
-
-		initView();
 		initPage();
 
-		//setOverflowShowingAlways();
+		mDialog = new SamProcessDialog();
+
+		// configure the SlidingMenu
+        	final SlidingMenu menu = new SlidingMenu(this);
+        	menu.setMode(SlidingMenu.RIGHT);
+        	//menu.setShadowWidthRes(R.dimen.shadow_width);
+        	//menu.setShadowDrawable(R.drawable.shadow);
+        	menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        	menu.setFadeDegree(0.35f);
+        	menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        	menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        	menu.setMenu(R.layout.slidemenu);
+		mSlideContact = (TextView)menu.findViewById(R.id.contact);
+		mSlideContact.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				menu.toggle();
+				launchContactActivity();
+			}
+		});
+
+		mSetting = (TextView)menu.findViewById(R.id.settings);
+		mSetting.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				menu.toggle();
+				launchSettingActivity();
+			}
+		});
+
+		mMe = (TextView)menu.findViewById(R.id.me);
+		mMe.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				menu.toggle();
+				launchMeActivity();
+			}
+		});
+
+		mLogout = (TextView)menu.findViewById(R.id.logout);
+		mLogout.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View arg0) {
+					launchDialogActivityNeedConfirmForLogout(getString(R.string.reminder),getString(R.string.logout_reminder));
+				}
+			});
+
+		mExitApp = (TextView)menu.findViewById(R.id.exitapp);
+		mExitApp.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View arg0) {
+					launchDialogActivityNeedConfirmForExitApp(getString(R.string.reminder),getString(R.string.exitapp_reminder));
+				}
+			});
+
+		mOption_button = (ImageView)findViewById(R.id.option_button);
+		mOption_button.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				menu.toggle();
+			}
+		});
+		
 		EMGroupManager.getInstance().loadAllGroups();
 		EMChatManager.getInstance().loadAllConversations();
 
-	}
-
-	private void updateBadgeForSamContactNewFriend(){
-		fragment_samcontact.addInviteMsgNum();
-		if(fragment_samcontact.mHandler!=null){
-			Message msg = fragment_samcontact.mHandler.obtainMessage(SamContact_Fragment.MSG_UPDATE_BAGE_NEW_FRIEND,null);
-			 fragment_samcontact.mHandler.sendMessage(msg);
-			 SamLog.e(TAG,"updateBadgeForSamContactNewFriend");
-		}
+		EMChatManager.getInstance().addConnectionListener(connectionListener);
 
 	}
 
-	/**
-	 * 控件初始化
-	 */
-	private void initView() {
-		vp = (ViewPager) findViewById(R.id.pager);
-		vp.setOnPageChangeListener(this);
-		layoutInflater = LayoutInflater.from(this);
-		mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-		mTabHost.setup(this, getSupportFragmentManager(), R.id.pager);
-		mTabHost.setOnTabChangedListener(this);
 
-		int count = textViewArray.length;
-
-		for (int i = 0; i < count; i++) {
-			TabSpec tabSpec = mTabHost.newTabSpec(getString(textViewArray[i]))
-					.setIndicator(getTabItemView(i));
-			mTabHost.addTab(tabSpec, fragmentArray[i], null);
-			mTabHost.setTag(i);
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
+		if(requestCode == 1){
+			if(resultCode == 1){ //OK
+				SamLog.e(TAG,"exit app...");
+				exitProgram();
+			}else{
+				SamLog.e(TAG,"cancel exit app...");
+			}
+		}else if(requestCode == 2){
+			if(resultCode == 1){ //OK
+				SamLog.e(TAG,"logout...");
+				logoutAccount();
+			}else{
+				SamLog.e(TAG,"cancel logout...");
+			}
 		}
+	}
+
+	private void logoutAccount(){
+		if(mDialog!=null){
+    			mDialog.launchProcessDialog(this,getString(R.string.question_publish_now));
+    		}
+
+		EaseMobHelper.getInstance().logout(true,new EMCallBack() {
+                    
+                    @Override
+                    public void onSuccess() {
+                    	MainActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+					SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
+					LoginUser user = SamService.getInstance().get_current_user();
+					user.seteasemob_status(LoginUser.INACTIVE);
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);			
+                            }
+                        });
+                    }
+                    
+                    @Override
+                    public void onProgress(int progress, String status) {}
+                    
+                    @Override
+                    public void onError(int code, String message) {
+                    	MainActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+					SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
+					LoginUser user = SamService.getInstance().get_current_user();
+					user.seteasemob_status(LoginUser.INACTIVE);
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);			
+                            }
+                        });
+                    }
+                });
 		
-		mTabHost.getTabWidget().setDividerDrawable(null);
+		
 	}
+
+	private void launchSignInActivity()
+	{
+		Intent newIntent = new Intent(this,SignInActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+	}
+
+	private void exitProgram(){
+		exitProgrames();
+	}
+
+	private void launchContactActivity(){
+		Intent newIntent = new Intent(this,ContactActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+	}
+
+	private void launchSettingActivity(){
+		Intent newIntent = new Intent(this,SettingActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP;;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+
+	}
+
+	private void launchMeActivity(){
+		Intent newIntent = new Intent(this,MeActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+	}
+
+	private void launchDialogActivityNeedConfirmForExitApp(String title,String msg){
+		Intent newIntent = new Intent(EXIT_APP_CONFIRM);		
+		//int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK;// | Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		//newIntent.setFlags(intentFlags);
+		newIntent.putExtra("title", title);
+		newIntent.putExtra("message", msg);
+		this.startActivityForResult(newIntent, 1);
+	}
+
+	private void launchDialogActivityNeedConfirmForLogout(String title,String msg){
+		Intent newIntent = new Intent(LOGOUT_CONFIRM);		
+		//int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK;// | Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		//newIntent.setFlags(intentFlags);
+		newIntent.putExtra("title", title);
+		newIntent.putExtra("message", msg);
+		this.startActivityForResult(newIntent, 2);
+	}
+
+	
+
+	
 
 	/**
 	 * 初始化Fragment
 	 */
 	private void initPage() {
-		fragment_samservice = new SamService_Fragment();
-		fragment_samchats = new SamChats_Fragment();
+		fragment_samservice = (SamService_Fragment)getFragment(TAB_ID_SAMSERVICES);//new SamService_Fragment();
+		fragment_samchats = (SamChats_Fragment)getFragment(TAB_ID_SAMCHATS);//new SamChats_Fragment();
 		fragment_samchats.setConversationListItemClickListener(new EaseConversationListItemClickListener() {
 			@Override
 			public void onListItemClicked(EMConversation conversation) {
@@ -194,29 +364,16 @@ public class MainActivity extends FragmentActivity implements
 			}
 		});
 		
-		fragment_samme = new SamMe_Fragment();
+		//fragment_samme = (SamMe_Fragment)getFragment(TAB_ID_SAMME);//new SamMe_Fragment();
 		
-		fragment_samcontact= new SamContact_Fragment();
-		fragment_samcontact.setContactsMap(getContacts());
-		fragment_samcontact.setContactListItemClickListener(new EaseContactListItemClickListener() {
-			@Override
-			public void onListItemClicked(EaseUser user) {
-               		 startActivity(new Intent(MainActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, user.getUsername()));
-			}
-        	});
+		//fragment_samcontact= (SamContact_Fragment)getFragment(TAB_ID_SAMPUBLIC);//new SamContact_Fragment();
+		
 
-		registerBroadcastReceiver();
+		//registerBroadcastReceiver();
 		registerNetworkStatusReceiver();
 		EMChatManager.getInstance().registerEventListener(this,
 				new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage ,EMNotifierEvent.Event.EventOfflineMessage, EMNotifierEvent.Event.EventConversationListChanged});
 		
-		list.add(fragment_samservice);
-		list.add(fragment_samchats);
-		list.add(fragment_samme);
-		list.add(fragment_samcontact);
-		vp.setAdapter(new MyFragmentAdapter(getSupportFragmentManager(), list));
-		vp.setOffscreenPageLimit(3);
-
 		SamService.getInstance().onActivityLaunched(fragment_samservice,fragment_samchats);
 	}
 
@@ -256,12 +413,9 @@ public class MainActivity extends FragmentActivity implements
 		SamLog.e(TAG,"refreshUIWithMessage!!!");
 		runOnUiThread(new Runnable() {
 			public void run() {
-				//updateUnreadLabel();
-				//if (currentTabPostition == 1) {
-					if (fragment_samchats != null) {
-						fragment_samchats.refresh();
-					}
-				//}
+				if (fragment_samchats != null) {
+					fragment_samchats.refresh();
+				}
 			}
 		});
 	}
@@ -297,90 +451,22 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	private void registerBroadcastReceiver() {
-		broadcastManager = LocalBroadcastManager.getInstance(this);
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(Constants.ACTION_CONTACT_CHANAGED);
-
-		broadcastReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				boolean isInvite = intent.getBooleanExtra("isInvite",false);
-				if(isInvite){
-					updateBadgeForSamContactNewFriend();
-				}else{
-					SamLog.e(TAG,"update contacts");
-					fragment_samcontact.setContactsMap(EaseMobHelper.getInstance().getContactList());
-					fragment_samcontact.refresh();
-
-					refreshUIWithMessage();
-				}
-
-			}
-		};
-		
-		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
-	}
-		
-
 	
-	private void unregisterBroadcastReceiver(){
-	    broadcastManager.unregisterReceiver(broadcastReceiver);
-	}
-
-	private Map<String, EaseUser> getContacts(){
-		Map<String, EaseUser> contacts = EaseMobHelper.getInstance().getContactList();
-		
-		return contacts;
-	}
-
-
-	private View getTabItemView(int i) {
-		TextView tab_msgNum = null;
-		ImageView tab_redSmallPoint = null;
-		View view = layoutInflater.inflate(R.layout.tab_content, null);
-		ImageView mImageView = (ImageView) view.findViewById(R.id.tab_imageview);
-		TextView mTextView = (TextView) view.findViewById(R.id.tab_textview);
-		mImageView.setImageResource(imageViewArray[i]);
-		mTextView.setText(textViewArray[i]);
-		
-		switch(i){
-		    case TAB_ID_SAMSERVICES:
-		    	mTextView.setTextColor(android.graphics.Color.GREEN);
-		    	break;
-		    case TAB_ID_SAMCHATS:
-		    	//tab_redSmallPoint = (ImageView) view.findViewById(R.id.tab_redSmallPoint);
-		    	//tab_redSmallPoint.setVisibility(View.VISIBLE);
-		    	break;
-		    case TAB_ID_SAMME:
-		    	//tab_msgNum = (TextView)view.findViewById(R.id.tab_msgNum);
-		    	//tab_msgNum.setText("14");
-		    	//tab_msgNum.setVisibility(View.VISIBLE);
-		    	break;
-		    case TAB_ID_SAMCONTACT:
-		    	break;
-		}
-		
-		
-		return view;
-	}
 
 
 
-	@Override
-	public void onPageScrollStateChanged(int arg0) {
-
-	}
 
 	@Override
 	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		super.onPageScrolled(arg0,arg1,arg2);
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		if(getCurrentFocus()!=null){
 			imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
 
-	private void updateTextColor(int arg0){
+
+	/*(private void updateTextColor(int arg0){
 		int count = textViewArray.length;
 		
 		for(int i=0;i<count;i++){
@@ -402,19 +488,20 @@ public class MainActivity extends FragmentActivity implements
 		}else{
 			redv.setVisibility(View.INVISIBLE);
 		}
-	}
+	}*/
 
 	
 	
-	@Override
+	/*@Override
 	public void onPageSelected(int arg0) {
 		currentTabPostition  = arg0;
-		SamLog.e(TAG,"currentTabPostition:"+currentTabPostition);
+		SamLog.i(TAG,"currentTabPostition:"+currentTabPostition);
 		TabWidget widget = mTabHost.getTabWidget();
 		int oldFocusability = widget.getDescendantFocusability();
 		widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 		mTabHost.setCurrentTab(arg0);
 		widget.setDescendantFocusability(oldFocusability);
+		//widget.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 		updateTextColor(arg0);
 		//updateRedPoint(arg0,false);
 		//.setBackgroundResource(R.drawable.selector_tab_background);
@@ -426,54 +513,18 @@ public class MainActivity extends FragmentActivity implements
 	public void onTabChanged(String tabId) {
 		int position = mTabHost.getCurrentTab();
 		vp.setCurrentItem(position);
-	}
+	}*/
 
 	private BroadcastReceiver HideShowSamChatRDPReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(SamChats_Fragment.HIDE_SAMCHATS_REDPOINT)){
-				updateRedPoint(TAB_ID_SAMCHATS, false);
+				//updateRedPoint(TAB_ID_SAMCHATS, false);
 			}else if(intent.getAction().equals(SamChats_Fragment.SHOW_SAMCHATS_REDPOINT)){
-				updateRedPoint(TAB_ID_SAMCHATS, true);
+				//updateRedPoint(TAB_ID_SAMCHATS, true);
 			}
 	    }
 	};
-	
-	
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onMenuOpened(int featureId, Menu menu) {
-		if (featureId == Window.FEATURE_ACTION_BAR && menu != null) {
-			if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
-				try {
-					Method m = menu.getClass().getDeclaredMethod(
-							"setOptionalIconsVisible", Boolean.TYPE);
-					m.setAccessible(true);
-					m.invoke(menu, true);
-				} catch (Exception e) {
-				}
-			}
-		}
-		return super.onMenuOpened(featureId, menu);
-	}
-	
-	private void setOverflowShowingAlways() {
-		try {
-			ViewConfiguration config = ViewConfiguration.get(this);
-			Field menuKeyField = ViewConfiguration.class
-					.getDeclaredField("sHasPermanentMenuKey");
-			menuKeyField.setAccessible(true);
-			menuKeyField.setBoolean(config, false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-	
 	
 	
 	@Override
@@ -493,7 +544,7 @@ public class MainActivity extends FragmentActivity implements
 		SamLog.i(TAG,"MainActivity onDestroy!");
 		unregisterReceiver(HideShowSamChatRDPReceiver);
 		unregisterNetworkStatusReceiver();
-		unregisterBroadcastReceiver();
+		EMChatManager.getInstance().removeConnectionListener(connectionListener);
 		
 	}
 	
@@ -515,17 +566,6 @@ public class MainActivity extends FragmentActivity implements
 		 this.finish(); 
 	}
 
-	
-	/*@Override 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-		
-		
-        if (keyCode == KeyEvent.KEYCODE_BACK) { 
-            exit(); 
-            return true; 
-        } 
-        return super.onKeyDown(keyCode, event);
-    } */
        
     private void exit() { 
         if (!isExit) { 
@@ -543,17 +583,65 @@ public class MainActivity extends FragmentActivity implements
         } 
     } 
     
-    Handler mHandler = new Handler() {
-	    @Override
-	    public void handleMessage(Message msg) {
-	    	switch(msg.what){
-	    		case MSG_EXIT_ACTIVITY_TIMEOUT:
-	    			isExit = false;
-	    			break;
-	    	}
-	    	
-	    }
-    };
+	Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			
+	    		switch(msg.what){
+	    			case MSG_EXIT_ACTIVITY_TIMEOUT:
+	    				isExit = false;
+		    		break;
+					
+				case MSG_LOGOUT_CALLBACK:
+				if(msg.arg1 == SignService.R_SIGN_OUT_OK){
+					if(mDialog!=null){
+    						mDialog.dismissPrgoressDiglog();
+    					}
+					exitActivity();
+					launchSignInActivity();
+				}else if(msg.arg1 == SignService.R_SIGN_OUT_FAILED){
+					if(mDialog!=null){
+    						mDialog.dismissPrgoressDiglog();
+    					}
+					exitActivity();
+					launchSignInActivity();
+				}
+				break;
+	    		}
+		}
+	};
+
+	protected EMConnectionListener connectionListener = new EMConnectionListener() {
+		@Override
+		public void onDisconnected(final int error) {
+			MainActivity.this.runOnUiThread(new Runnable() {
+				public void run() {
+					if (error == EMError.USER_REMOVED || error == EMError.CONNECTION_CONFLICT) {
+						if(mDialog!=null){
+    							mDialog.launchProcessDialog(MainActivity.this,getString(R.string.question_publish_now));
+    						}
+
+						EaseMobHelper.getInstance().reset();
+
+						SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
+						LoginUser user = SamService.getInstance().get_current_user();
+						user.seteasemob_status(LoginUser.INACTIVE);
+						SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);	
+					} 
+				}
+			});
+			
+		}
+        
+		@Override
+		public void onConnected() {
+			MainActivity.this.runOnUiThread(new Runnable() {
+				public void run() {
+					
+				}
+			});
+		}
+	};
 
 
 	public void exitActivity(){

@@ -1,59 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/common_bg">
+    android:background="@color/default_bg">
 
-    <LinearLayout 
-        android:id="@+id/sam_service_header"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
-        android:orientation="horizontal"
-        android:background="@color/top_bar_normal_bg">
 
-        <ImageView
-            android:id="@+id/sam_icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2" 
-            android:layout_marginLeft="5dp"
-            android:contentDescription="@null"/>
-            
-        <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_weight="0.6" 
-             android:textSize="20sp"
-             android:gravity="center"
-             android:layout_gravity="center"
-             android:text="@string/sam_services"
-             android:textColor="#FFFFFF"/>
-         
-        <ImageView
-            android:id="@+id/sam_plus_icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2" 
-            android:layout_marginRight="5dp"
-            android:contentDescription="@null"/>
-    </LinearLayout>
-    
-        
     <LinearLayout
+        android:id="@+id/samservice_search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
-     <LinearLayout
-        android:id="@+id/samservice_search_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.8"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal"
-        android:background="@drawable/text_rectangle_circle_coner_bg"
+        android:background="@drawable/shadow_rectange_bg"
         android:focusable="true" 
 		android:focusableInTouchMode="true" >
         
@@ -73,6 +35,7 @@
         	android:layout_width="0dp"
         	android:layout_height="wrap_content"
         	android:layout_weight="0.8"
+        	android:layout_marginLeft="5dp"
         	android:layout_marginTop="2dp"
         	android:layout_marginBottom="2dp"
 			android:layout_gravity="center_vertical"
@@ -80,10 +43,11 @@
         	android:textSize="18sp"
         	android:singleLine="true"
         	android:maxLines="1"
+        	android:imeOptions="actionSearch"
         	android:background="@null"/>
-      
-        <ImageView
-            android:id="@+id/samservice_search_cancel"
+         
+           <ImageView
+            android:id="@+id/samservice_search_clear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
@@ -93,45 +57,39 @@
             android:contentDescription="@null"
             android:src="@drawable/cancel_icon"
             android:layout_gravity="center_vertical"/>
-        
-    </LinearLayout>
-    <TextView
-        	 android:id="@+id/question_action"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="0.2" 
-             android:textSize="18sp"
-             android:gravity="center"
-             android:layout_gravity="center"
-             android:text="发布"
-             android:textStyle="bold"/>
-     
-   </LinearLayout>
-
-	<TextView
-	    android:id="@+id/search_title"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="10dp"
-		android:textSize="20sp"
-		android:text="@string/samservice_top_serach_txt"
-		android:textStyle="bold"
- 	/>
-	
-	<View android:layout_height="2dp" 
-	      android:layout_marginTop="10dp"
-          android:background="#009ACD" 
-          android:layout_width="match_parent">
-    </View>
-    
-	<ListView
-	 	android:id="@+id/top_search_list"
-	 	android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:scrollbars="none"
-		android:divider="#009ACD" 
-		android:dividerHeight="2dp">
-	</ListView>
-
+      
+    	</LinearLayout>
+    	
+    	<TextView
+            android:id="@+id/hot_topic"
+            android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="20dp"
+        	android:textSize="18sp"
+        	android:text="@string/samservice_top_serach_txt"
+        	android:gravity="center"
+        	android:background="@color/default_bg"/>
+    	
+		<ListView
+	 		android:id="@+id/top_search_list"
+	 		android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:layout_marginTop="20dp"
+			android:scrollbars="none"
+			android:divider="@color/listview_gray_devider" 
+			android:dividerHeight="1dp">
+		</ListView>
+		
+		<TextView
+            android:id="@+id/cancel_search"
+            android:layout_width="match_parent"
+        	android:layout_height="48dp"
+        	android:textSize="18sp"
+        	android:text="@string/cancel_search"
+        	android:gravity="center"
+        	android:background="@color/orange"
+        	android:textColor="@color/common_white"/>
  	
 </LinearLayout>
+

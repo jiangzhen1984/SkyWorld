@@ -11,6 +11,7 @@ public class ArticleInfo{
 	public int status;
 	public String comment;
 	public ArrayList<String> comments;
+	public ArrayList<Long> comments_timestamp;
 
 	public ArrayList<ContactUser> recommander;
 	public ArrayList<ContactUser> commenter;
@@ -25,6 +26,7 @@ public class ArticleInfo{
 		status = 0;
 		comment = null;
 		comments = new ArrayList<String>();
+		comments_timestamp = new ArrayList<Long>();
 
 		recommander = new ArrayList<ContactUser>();
 		commenter = new ArrayList<ContactUser>();

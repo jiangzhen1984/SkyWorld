@@ -84,12 +84,12 @@
     android:layout_marginLeft="5dp"
     android:layout_marginTop="5dp">
     
-        <ImageView
+        <com.easemob.easeui.ui.CircleImageView
              android:id="@+id/userimage"
              android:layout_width="43dp"
              android:layout_height="43dp"
              android:contentDescription="@null"
-             android:src="@drawable/samqa"
+             android:src="@drawable/em_default_avatar"
              android:layout_alignParentRight="true"
              android:layout_marginRight="5dp"/>
         
@@ -115,8 +115,10 @@
              android:id="@+id/sendprocessbar"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_marginRight="3dp"
+             android:layout_marginRight="5dp"
              android:contentDescription="@null"
+             android:layout_toLeftOf="@id/date"
+             android:layout_below="@id/username"
              android:src="@drawable/personal"
              android:layout_marginTop="5dp"/>
        
@@ -124,8 +126,9 @@
 	
     <TextView
          android:id="@+id/answershow"
-         android:layout_width="wrap_content"
+         android:layout_width="match_parent"
          android:layout_height="wrap_content"
+         android:gravity="right"
 		 android:layout_marginLeft="5dp"
 		 android:layout_marginRight="5dp"
 		 android:layout_marginTop="5dp"

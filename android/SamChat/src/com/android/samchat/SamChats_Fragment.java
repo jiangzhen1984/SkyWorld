@@ -46,8 +46,6 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 	private SamProcessDialog mDialog;
 	private LinearLayout mSamQA_layout;
 	private RelativeLayout mSamQA_relativelayout;
-	private EditText mAnswer_input;
-	private TextView mAnswer_action;
 	private TextView mSamQAtxt;
 
 	private LinearLayout mSamFriendGroup_layout;
@@ -245,7 +243,7 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 
 	private boolean isTopFragment(){
 		boolean isTop = false;
-		if(MainActivity.getCurrentTab() == MainActivity.TAB_ID_SAMCHATS){
+		if(((MainActivity)getActivity()).getCurrentTab() == MainActivity.TAB_ID_SAMCHATS){
 			isTop = true;
 		}
 		return isTop; 

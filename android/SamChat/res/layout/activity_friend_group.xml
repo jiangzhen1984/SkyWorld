@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg">
+        android:background="@color/common_bg_green">
 
         <ImageView
     	    android:id="@+id/back"
@@ -18,7 +18,7 @@
         	android:layout_marginLeft = "5dp"
         	android:contentDescription="@null"
         	android:layout_centerVertical="true"
-        	android:src="@drawable/em_mm_title_back"/>
+        	android:src="@drawable/back"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,8 +30,8 @@
         
         <ImageView
     	    android:id="@+id/take_picture"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
+        	android:layout_width="40dp"
+        	android:layout_height="40dp"
         	android:layout_marginLeft = "5dp"
         	android:contentDescription="@null"
         	android:layout_centerVertical="true"

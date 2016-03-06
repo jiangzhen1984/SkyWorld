@@ -46,20 +46,25 @@ public class GroupsActivity extends Activity {
 	
 	
 	Handler handler = new Handler(){
-	    public void handleMessage(android.os.Message msg) {
-	        swipeRefreshLayout.setRefreshing(false);
-	        switch (msg.what) {
-            case 0:
-                refresh();
-                break;
-            case 1:
-                Toast.makeText(GroupsActivity.this, R.string.Failed_to_get_group_chat_information, Toast.LENGTH_LONG).show();
-                break;
+		public void handleMessage(android.os.Message msg) {
+			if(GroupsActivity.this == null ||GroupsActivity.this.isFinishing() ){
+				return;
+			}
 
-            default:
-                break;
-            }
-	    };
+			swipeRefreshLayout.setRefreshing(false);
+
+			switch (msg.what) {
+				case 0:
+					refresh();
+				break;
+				case 1:
+					Toast.makeText(GroupsActivity.this, R.string.Failed_to_get_group_chat_information, Toast.LENGTH_LONG).show();
+				break;
+
+				default:
+				break;
+			}
+		};
 	};
 
 		

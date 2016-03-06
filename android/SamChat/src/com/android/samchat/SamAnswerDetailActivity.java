@@ -2,14 +2,17 @@ package com.android.samchat;
 
 import com.android.samservice.SMCallBack;
 import com.android.samservice.SamService;
+import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.ReceivedAnswer;
 import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.domain.EaseUser;
+import com.easemob.easeui.utils.EaseUserUtils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,15 +27,18 @@ public class SamAnswerDetailActivity extends Activity {
 	private ImageView mBack;
 	private TextView mServicer_name;
 	private ImageView mServicer_img;
-	private ListView mSam_answer_detail_list;
+	//private ListView mSam_answer_detail_list;
 	private TextView mTemp_talk;
 	private TextView mAdd_friend;
+	private TextView mQuestion;
+	private TextView mAnswer;
 
 
 	private SamProcessDialog mDialog;
 
+	private String question;
 	private ReceivedAnswer answer;
-	private SamAnswerDetailListAdapter mAdapter;
+	//private SamAnswerDetailListAdapter mAdapter;
 
 	private ContactUser syservicer; 
 
@@ -63,7 +69,7 @@ public class SamAnswerDetailActivity extends Activity {
 			}
 		    	
 		});
-		mSam_answer_detail_list = (ListView) findViewById(R.id.sam_answer_detail_list);
+		//mSam_answer_detail_list = (ListView) findViewById(R.id.sam_answer_detail_list);
 
 		mTemp_talk = (TextView) findViewById(R.id.temp_talk);
 		mAdd_friend = (TextView) findViewById(R.id.add_friend);
@@ -85,22 +91,49 @@ public class SamAnswerDetailActivity extends Activity {
 		    	
 		});
 
+		mQuestion =  (TextView) findViewById(R.id.question);
+		mAnswer =  (TextView) findViewById(R.id.answer);
 		
 		initFromIntent(getIntent());
 
-		mContext = getBaseContext();
-		mAdapter = new SamAnswerDetailListAdapter(mContext);
-		mSam_answer_detail_list.setAdapter(mAdapter);
+		
 
-		mAdapter.setReceivedAnswer(answer);
-		mAdapter.setCount(1);
-		mAdapter.notifyDataSetChanged();
+		boolean avatarExisted=false;
+		ContactUser cuser = syservicer;
+		if(cuser!=null){
+			AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+			if(rd!=null && rd.getavatarname()!=null){
+				Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
+										   40,
+										   40);
+				if(bp!=null){
+					mServicer_img.setImageBitmap(bp);
+					avatarExisted = true;
+				}
+			}
+		}
+
+		if(!avatarExisted){
+			mServicer_img.setImageResource(R.drawable.em_default_avatar);
+		}
+
+		mQuestion.setText(question);
+		mAnswer.setText(answer.getanswer());
+
+		mContext = getBaseContext();
+		//mAdapter = new SamAnswerDetailListAdapter(mContext);
+		//mSam_answer_detail_list.setAdapter(mAdapter);
+
+		//mAdapter.setReceivedAnswer(answer);
+		//mAdapter.setCount(1);
+		//mAdapter.notifyDataSetChanged();
 		
 	}
 
 	private void initFromIntent(Intent intent) {
 		if (intent != null) {
 			answer = (ReceivedAnswer)intent.getSerializableExtra("ReceivedAnswer");
+			question = (String)intent.getSerializableExtra("CurrentQuestion");
 			syservicer = SamService.getInstance().getDao().query_ContactUser_db(answer.getcontactuserid());
 			if(syservicer!=null){
 				mServicer_name.setText(syservicer.getusername());

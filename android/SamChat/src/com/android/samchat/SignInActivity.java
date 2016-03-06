@@ -2,6 +2,7 @@ package com.android.samchat;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import com.android.samservice.*;
 import com.android.samservice.info.LoginUser;
@@ -31,6 +32,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SignInActivity extends Activity {
 	
@@ -42,7 +44,7 @@ public class SignInActivity extends Activity {
 	public static final int MSG_SIGNIN_CALLBACK = 1;
 	public static final int MSG_SIGNIN_TIMEOUT = 2;	
 	public static final int  MSG_EASEMOB_NAME_GOT_TIMEOUT = 3;
-	private boolean timeout_happened = false;
+	//private boolean timeout_happened = false;
 
 		
 	private boolean available_username=false;
@@ -50,15 +52,19 @@ public class SignInActivity extends Activity {
 	private String username=null;
 	private String password=null;
 	
-	private RelativeLayout mWeiXin_sign_layout; 
-	private RelativeLayout mSignup_layout;
 	private EditText mUsername;
 	private EditText mPassword;
-	private Button mBtnSignin;
-	private TextView mForgetpwd;
+
+	private TextView mError_pop;
+
 	private LinearLayout mLayout_signin;
+	private TextView mSignin;
+
+	private TextView mSignup;
+	private TextView mForgetpwd;
 	
-	SamProcessDialog mDialog;
+	
+	private SamProcessDialog mDialog;
 
 	EMCallBack EMcb = new EMCallBack() {//»Øµ÷
 		@Override
@@ -94,9 +100,20 @@ public class SignInActivity extends Activity {
 			if(mDialog!=null){
 				mDialog.dismissPrgoressDiglog();
 			}
-			launchMainActivity();
+			//launchMainActivity();
+			setErrorPop(getString(R.string.sign_in_failed_reason_others));
+			invalideAllLoginRecord();
 		}
 	};
+
+	private void invalideAllLoginRecord(){
+		LoginUser user=null;
+		List<LoginUser> array = SamService.getInstance().getDao().query_AllLoginUser_db();
+		for(int i=0;i<array.size();i++){
+			user = array.get(i);
+			SamService.getInstance().getDao().updateLoginUserAllStatus(user.getphonenumber(),LoginUser.INACTIVE);
+		}
+	}
 
 	private void cancelEaseMobNameGotTimeOut() {
 		mHandler.removeMessages(MSG_EASEMOB_NAME_GOT_TIMEOUT);
@@ -105,7 +122,7 @@ public class SignInActivity extends Activity {
 	private void startEaseMobNameGotTimeOut() {
 		Message msg = mHandler.obtainMessage(MSG_EASEMOB_NAME_GOT_TIMEOUT);
 		// Reset timeout.
-		cancelTimeOut();
+		cancelEaseMobNameGotTimeOut();
 		mHandler.sendMessageDelayed(msg, SAM_SIGNIN_TIMEOUT);
 	}
 
@@ -148,80 +165,34 @@ public class SignInActivity extends Activity {
 	    	}
 	    	
 	        switch(msg.what) {
-	            case MSG_SIGNIN_CALLBACK:
-			cancelTimeOut();
-			if(timeout_happened){
-				SamLog.i(TAG,"drop msg due to timeout happened");
-				break;
-			}
-	            	if(msg.arg1==SignService.R_SIGN_IN_OK){
-	            		SamLog.i(TAG,"sign in succeed!");
-	            		SignInfo sInfo = (SignInfo)msg.obj;
-				/*store new token and username/pwd in cache*/
-				try{
-					SamFile sfd = new SamFile();
-					sfd.writeSamFile(SamService.sam_cache_path , SamService.TOKEN_FILE,sInfo.token);
-					sfd.writeSamFile(SamService.sam_cache_path , SamService.UP_FILE,sInfo.username+","+sInfo.password);
-	            			
-				}catch(IOException e){
-					e.printStackTrace();
-				}finally{
-					login_easemob();
-					//if(mDialog!=null){
-					//	mDialog.dismissPrgoressDiglog();
-					//}
-					//launchMainActivity();
-				}
-	            	}else if(msg.arg1==SignService.R_SIGN_IN_FAILED){
-	            		SamLog.e(TAG, "sign in failed!");
-	            		if(mDialog!=null){
-	    	    			mDialog.dismissPrgoressDiglog();
-	    	    		}
-	            		if(msg.arg2 == SignService.RET_SI_FROM_SERVER_UP_ERROR){
-	            			launchDialogActivity(getString(R.string.sign_in_failed_title),getString(R.string.sign_in_failed_reason_unpd));
-	            		}else{
-					launchDialogActivity(getString(R.string.sign_in_failed_title),getString(R.string.sign_in_failed_reason_others));
-				}
-	            	}else{
-	            		if(mDialog!=null){
-	    	    			mDialog.dismissPrgoressDiglog();
-	    	    		}
-	            		SamLog.e(TAG, "sign in error!");
-				launchDialogActivity(getString(R.string.sign_in_failed_title),getString(R.string.sign_in_failed_reason_others));
-			}
-	              break;
-
-			case MSG_SIGNIN_TIMEOUT:
-				timeout_happened = true;
-				mHandler.removeCallbacksAndMessages(null);
-				if(mDialog!=null){
-	    	    			mDialog.dismissPrgoressDiglog();
-	    	    		}
-	            		launchDialogActivity(getString(R.string.sign_in_timeout_title),getString(R.string.sign_in_timeout_statement));
-				break;
-
-			case MSG_EASEMOB_NAME_GOT_TIMEOUT:
+	            case MSG_EASEMOB_NAME_GOT_TIMEOUT:
 				SamLog.ship(TAG,"MSG_EASEMOB_NAME_GOT_TIMEOUT happened...");
 				cancelEaseMobNameGotTimeOut();
 				unregisterReceiver(EaseMobNameGotReceiver);
-				if(mDialog!=null){
-	    	    			mDialog.dismissPrgoressDiglog();
-	    	    		}
-				launchMainActivity();
-				break;
+				final String userName = SamService.getInstance().get_current_user().getphonenumber();
+				final String password = SamService.getInstance().get_current_user().getpassword();
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						EMChatManager.getInstance().login(userName,password,EMcb);
+					}
+				}).start();
+			break;
 	        }
 	    }
 	 };
 
-	private void cancelTimeOut() {
-		mHandler.removeMessages(MSG_SIGNIN_TIMEOUT);
+	private void clearErrorPop(){
+		mError_pop.setText("");
+		mError_pop.setTextColor(getResources().getColor(R.color.text_right_black));
+		mError_pop.setVisibility(View.GONE);
 	}
 
-	private void startTimeOut() {
-		Message msg = mHandler.obtainMessage(MSG_SIGNIN_TIMEOUT);
-		// Reset timeout.
-		cancelTimeOut();
-		mHandler.sendMessageDelayed(msg, SAM_SIGNIN_TIMEOUT);
+	private void setErrorPop(String errStr){
+		mError_pop.setText(errStr);
+		mError_pop.setTextColor(getResources().getColor(R.color.text_error_red));
+		mError_pop.setVisibility(View.VISIBLE);
 	}
 
 	
@@ -234,54 +205,51 @@ public class SignInActivity extends Activity {
 		registerReceiver(DestoryReceiver, destroy_filter);
 	
 		setContentView(R.layout.sign_in);
-		mWeiXin_sign_layout = (RelativeLayout)findViewById(R.id.weixin_sign_layout);  
-		mSignup_layout = (RelativeLayout)findViewById(R.id.signup_layout);   
+		
 		mUsername = (EditText) findViewById(R.id.username);
 		mPassword = (EditText) findViewById(R.id.password);
-		mBtnSignin = (Button) findViewById(R.id.button_signin);
-		mForgetpwd = (TextView) findViewById(R.id.forget_pwd);
-		mLayout_signin = (LinearLayout) findViewById(R.id.layout_signin);
 
-		mBtnSignin.setEnabled(false);
-		mBtnSignin.setClickable(false);
+		mError_pop = (TextView) findViewById(R.id.error_pop);
+		clearErrorPop();
+
+		mLayout_signin = (LinearLayout) findViewById(R.id.layout_signin);
+		mSignin = (TextView) findViewById(R.id.signin);
+		mForgetpwd = (TextView) findViewById(R.id.forget_pwd);
+		mSignup = (TextView)findViewById(R.id.signup);   
+		
+
+		mSignin.setEnabled(false);
+		mSignin.setClickable(false);
 
 		mUsername.addTextChangedListener(UN_TextWatcher);
 		mPassword.addTextChangedListener(PW_TextWatcher);
 	    
 		mDialog = new SamProcessDialog();
-		/*sign in from weixin*/
-		mWeiXin_sign_layout.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View arg0) {
-				SamLog.i(TAG,"sign in from weixin");
-			}
-		});
-	    
+		    
 		/*launch sign up activity*/
-		mSignup_layout.setOnClickListener(new OnClickListener(){
+		mSignup.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				SamLog.i(TAG,"launch sign up activity");
+				clearErrorPop();				
 				launchSignUpActivity();
 			}
 		});
 
 		/*Start sign in process*/
-		mBtnSignin.setOnClickListener(new OnClickListener(){
+		mSignin.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
+				clearErrorPop();
 				if(!NetworkMonitor.isNetworkAvailable()){
 					launchDialogActivity(getString(R.string.nw_illegal_title),getString(R.string.network_status_no));
 					return;
 				}
 	    		
 				SamLog.i(TAG,"Start sign in process");
-				timeout_happened = false;
-				SignService.getInstance().SignIn(mHandler, SignInActivity.this, MSG_SIGNIN_CALLBACK,username,password);
-				startTimeOut();
-				if(mDialog!=null){
-					mDialog.launchProcessDialog(SignInActivity.this,getString(R.string.sign_in_now));
-				}
+
+				SignIn();
+
 			}
 	    });
 	    
@@ -293,6 +261,73 @@ public class SignInActivity extends Activity {
 			}
 		});
 	    
+	}
+
+	private void SignIn(){
+		if(mDialog!=null){
+    			mDialog.launchProcessDialog(SignInActivity.this,getString(R.string.sign_in_now));
+    		}
+
+		SignService.getInstance().SignIn(username,password,new SMCallBack(){
+			@Override
+			public void onSuccess(final Object obj) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						SignInfo sInfo = (SignInfo)obj;
+						/*store new token in cache*/
+						try{
+							SamFile sfd = new SamFile();
+							sfd.writeSamFile(SamService.sam_cache_path , SamService.TOKEN_FILE,sInfo.token);
+							//sfd.writeSamFile(SamService.sam_cache_path , SamService.UP_FILE,sInfo.username+","+sInfo.password);
+	            			
+						}catch(IOException e){
+							e.printStackTrace();
+						}finally{
+							login_easemob();
+						}
+					}
+				});
+			}
+
+			
+
+			@Override
+			public void onFailed(final int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+	    	    					mDialog.dismissPrgoressDiglog();
+	    	    				}
+						
+	            				if(code == SignService.RET_SI_FROM_SERVER_UP_ERROR){
+			            			setErrorPop(getString(R.string.sign_in_failed_reason_unpd));
+	            				}else{
+							setErrorPop(getString(R.string.sign_in_failed_reason_others));
+						}
+					}
+				});
+			}
+
+			@Override
+			public void onError(final int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+    							mDialog.dismissPrgoressDiglog();
+    						}
+
+						if(code ==SignService.R_SIGN_IN_TIMEOUT){
+							setErrorPop(getString(R.string.sign_in_timeout_statement));
+							Toast.makeText(getApplicationContext(), getString(R.string.sign_in_timeout_statement), Toast.LENGTH_LONG).show();
+						}else{
+							setErrorPop(getString(R.string.sign_in_failed_reason_others));
+						}
+					}
+				});
+			}
+
+		});
+
 	}
 	
 	@Override
@@ -325,17 +360,18 @@ public class SignInActivity extends Activity {
 	{		
 		boolean clickable = available_username & available_password;
 		if(clickable){
-			mBtnSignin.setTextColor(Color.rgb(255, 255, 255));
-			mBtnSignin.setBackgroundColor(Color.rgb(0, 0x5F, 0xBF));
-			mLayout_signin.setBackgroundColor(Color.rgb(0, 0x5F, 0xBF));
+			//mSignin.setTextColor(Color.rgb(255, 255, 255));
+			mSignin.setTextColor(getResources().getColor(R.color.text_valid_white));
+			
 		}else{
-			mBtnSignin.setTextColor(Color.rgb(0x99, 0x99, 0x99));
-			mBtnSignin.setBackgroundColor(Color.rgb(0xBF, 0xBF, 0xBF));
-			mLayout_signin.setBackgroundColor(Color.rgb(0xBF, 0xBF, 0xBF));
+			mSignin.setTextColor(getResources().getColor(R.color.text_invalid_gray));
+			//mSignin.setTextColor(Color.rgb(0x99, 0x99, 0x99));
 		}
 		
-		mBtnSignin.setEnabled(clickable);
-		mBtnSignin.setClickable(clickable);
+		mSignin.setEnabled(clickable);
+		mSignin.setClickable(clickable);
+
+		clearErrorPop();
 	}
 	
 	private TextWatcher UN_TextWatcher = new TextWatcher(){
@@ -358,6 +394,7 @@ public class SignInActivity extends Activity {
 		    	}
 		    	
 		    	updateBtnSignin();
+			clearErrorPop();
 		    }     
 	};
 	
@@ -381,6 +418,7 @@ public class SignInActivity extends Activity {
 		    	}
 		    	
 		    	updateBtnSignin();
+			clearErrorPop();
 		    }     
 	};
 	
@@ -403,7 +441,7 @@ public class SignInActivity extends Activity {
 		
 				
 	}
-	
+
 	private BroadcastReceiver DestoryReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {

@@ -68,7 +68,8 @@ public class SamLauncherActivity extends Activity {
 			user.seteasemob_status(LoginUser.INACTIVE);
 			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);
 			
-			launchMainActivity();
+			invalideAllLoginRecord();
+	            	launchSignInActivity();
 		}
 	};
 
@@ -173,7 +174,16 @@ public class SamLauncherActivity extends Activity {
 				SamLog.ship(TAG,"MSG_EASEMOB_NAME_GOT_TIMEOUT happened...");
 				cancelEaseMobNameGotTimeOut();
 				unregisterReceiver(EaseMobNameGotReceiver);
-				launchMainActivity();
+				
+				final String userName = SamService.getInstance().get_current_user().getphonenumber();
+				final String password = SamService.getInstance().get_current_user().getpassword();
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						EMChatManager.getInstance().login(userName,password,EMcb);
+					}
+				}).start();
 				break;
 	        }
 	    }

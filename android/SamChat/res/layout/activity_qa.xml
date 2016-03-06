@@ -3,44 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#FFFFFF">
+    android:background="@color/default_bg">
     
     <LinearLayout 
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/height_top_bar"
     android:orientation="horizontal" 
-    android:layout_marginTop="20dp"
-    android:layout_marginLeft="10dp">
+    android:background="@color/common_bg_green">
     	<ImageView
     	    android:id="@+id/back"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
+        	android:layout_marginLeft="@dimen/title_left_margin"
         	android:contentDescription="@null"
+        	android:layout_gravity="center_vertical"
         	android:src="@drawable/back"/>
     	
     	<TextView
-             android:id="@+id/username"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_marginLeft="25dp"
+             android:layout_marginLeft="20dp"
+             android:layout_gravity="center_vertical"
              android:textSize="20sp"
-             android:text="@string/sam_question_and_answer"/>
+             android:text="@string/sam_question_and_answer"
+             android:textColor="@color/common_white"/>
 
 	</LinearLayout>
 	
-    <View android:layout_height="2dp" 
-          android:background="#009ACD" 
-          android:layout_width="match_parent"
-          android:layout_marginTop="10dp">
-    </View>
+
 	
     <ListView
 	 	android:id="@+id/question_list"
 	 	android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
 		android:scrollbars="none"
-		android:divider="#009ACD" 
-		android:dividerHeight="2dp">
+		android:divider="@color/listview_gray_devider" 
+		android:dividerHeight="1dp">
 	</ListView>
 
 </LinearLayout>

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="USA">美国</string>
+    <string name="China">中国</string>
+    <string name="country_location">国家/地区</string>
     <string name="app_name">天际</string>
-    <string name="settings">设置</string>
+    <string name="settings">天际设置</string>
     <string name="sam_services">天际服务</string>
     <string name="sam_chats">天际聊天</string>
     <string name="sam_me">我</string>
+    <string name="sam_vendor">天际商号</string>
     <string name="sam_public">天际公众</string>
-    <string name="sam_contact">通讯录</string>
+    <string name="sam_contact">天际通讯录</string>
     <string name="action_search">Search</string>
     <string name="action_plus">Add</string>
     <string name="action_album">Album</string>
@@ -21,22 +25,22 @@
     <string name="ask_question">Ask help from Sam &#8230;&#8230;&#8230; </string>
     <string name="network_status_no">没有网络连接!</string>
     <string name="network_status_error">网络连接错误!</string>
-    <string name="sam_register">天际注册</string>
+    <string name="sam_register">注册天际帐户</string>
     <string name="sam_signin">天际登录</string>
     <string name="weixin_signin">微信登陆</string>
-    <string name="username">手机/用户名</string>
+    <string name="username">手机号/用户名</string>
     <string name="password">密码</string>
     <string name="signin">登录</string>
-    <string name="signup">注册</string>
+    <string name="signup">现在注册</string>
     <string name="forget_passwd">忘记密码?</string>
     <string name="cancel">取消</string>
-    <string name="phonenumber">手机号</string>
+    <string name="phonenumber">您的手机号码</string>
     <string name="send_verify_code">发送验证码</string>
     <string name="verify_code">手机验证码</string>
     <string name="next_step">下一步</string>
     <string name="agreement">已阅读并同意</string>
     <string name="sam_protocol">天际用户协议</string>
-    <string name="sam_account">天际帐号</string>
+    <string name="sam_account">天际帐号设置</string>
     <string name="username_limit">3~15位用户名</string>
     <string name="username_used">已用</string>
     <string name="password_limit">6~32位密码</string>
@@ -61,13 +65,16 @@
     <string name="sign_up_failed_title">注册失败</string>
     <string name="sign_up_failed_reason_unph">用户名或手机号码已存在!</string>
     <string name="sign_up_failed_reason_others">注册错误!请稍候再试</string>
+    <string name="sign_up_succeed_but_sign_in_failed">注册成功,但是登陆失败!请重新登陆</string>
     
+    <string name="sign_up_uname_existed">用户名已存在,请重新输入!</string>
     
+    <string name="samservice_search">天际服务搜索</string>
+    <string name="samservice_top_serach_txt">热门问题</string>
     
-    <string name="samservice_search">搜索</string>
-    <string name="samservice_top_serach_txt">最热搜索</string>
+    <string name="samservice_answer">更多答案即将到来 ......</string>
+    <string name="cancel_search">取消搜索</string>
     
-    <string name="samservice_answer">答案正在路上 ......</string>
     <string name="reminder">提醒</string>
     <string name="cancel_reminder">确定取消发布的问题吗?</string> 
     
@@ -105,8 +112,9 @@
     <string name="answer">回答</string>
     <string name="answer_question">回答问题......</string>
     
-    <string name="temp_talk">临时聊天</string>
+    <string name="temp_talk">现在就聊</string>
     <string name="add_friends">加为好友</string>
+    <string name="follow">请您关注</string>
     <string name="new_friends">新的朋友</string>
     <string name="new_friends_search_hint">手机号</string>
     
@@ -181,5 +189,8 @@
     <string name="failed_to_friend_group_information">刷新朋友圈失败。。。</string> 
     
     <string name="loading">加载中。。。</string> 
+    
+    <string name="your_question">你的问题:</string> 
+    <string name="my_answer">我的答案:</string> 
 
 </resources>

@@ -86,6 +86,9 @@ public class ContactUser implements Serializable
 
 
 	public String geteasemob_username(){
+		if(this.easemob_username == null){
+			return this.phonenumber;
+		}
 		return this.easemob_username;
 	}
 	public void seteasemob_username(String easemob_username){

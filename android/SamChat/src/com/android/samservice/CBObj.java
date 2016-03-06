@@ -18,7 +18,7 @@ public class CBObj{
 	CBObj(){
 		this.cbHandler = null;
 		this.cbMsg = 0;
-		this.sinfo = new SignInfo("","");
+		this.sinfo = new SignInfo();
 		this.qinfo = new QuestionInfo();
 		this.samobj = null;
 		this.isBroadcast = true;
@@ -28,7 +28,7 @@ public class CBObj{
 	CBObj(SMCallBack SMCB){
 		this.cbHandler = null;
 		this.cbMsg = 0;
-		this.sinfo = new SignInfo("","");
+		this.sinfo = new SignInfo();
 		this.qinfo = new QuestionInfo();
 		this.samobj = null;
 		this.isBroadcast = false;
@@ -39,7 +39,7 @@ public class CBObj{
 	CBObj(Handler cbHandler, int cbMsg){
 		this.cbHandler = new WeakReference <Handler> (cbHandler);
 		this.cbMsg = cbMsg;
-		this.sinfo = new SignInfo("","");
+		this.sinfo = new SignInfo();
 		this.qinfo = new QuestionInfo();
 		this.samobj = null;
 		this.isBroadcast = false;
@@ -50,7 +50,7 @@ public class CBObj{
 	CBObj(Handler cbHandler, int cbMsg,SamCoreObj samobj){
 		this.cbHandler = new WeakReference <Handler> (cbHandler);
 		this.cbMsg = cbMsg;
-		this.sinfo = new SignInfo("","");
+		this.sinfo = new SignInfo();
 		this.qinfo = new QuestionInfo();
 		this.samobj = samobj;
 		this.isBroadcast = false;

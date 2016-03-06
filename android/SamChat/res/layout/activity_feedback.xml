@@ -2,28 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/common_bg"
+    android:background="@color/default_bg"
     android:orientation="vertical" >
 
    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg">
+        android:background="@color/common_bg_green">
 
         <ImageView
     	    android:id="@+id/back"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:layout_marginLeft = "5dp"
+        	android:layout_marginLeft = "@dimen/title_left_margin"
         	android:contentDescription="@null"
         	android:layout_centerVertical="true"
-        	android:src="@drawable/em_mm_title_back"/>
+        	android:src="@drawable/back"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/back"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
             android:text="@string/blacklist_in_contact"
             android:textColor="@color/bottom_text_color_normal"
             android:textSize="18sp" />
@@ -35,7 +37,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/text_rectangle_circle_coner_bg"
+        android:background="@drawable/shadow_rectange_bg"
         android:focusable="true" 
 		android:focusableInTouchMode="true" >
     	<EditText

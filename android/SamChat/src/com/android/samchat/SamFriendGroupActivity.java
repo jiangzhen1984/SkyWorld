@@ -52,6 +52,8 @@ public class SamFriendGroupActivity extends Activity {
 	private final String TAG = "SamFriendGroup";
 	static public final String ACTIVITY_NAME="com.android.samchat.SamFriendGroupActivity";
 
+	private boolean isDestroyed=false;
+
 	private SoftInputMonitorLinearLayout mMainLayout;
 	private ImageView mBack;
 	private ImageView mTakePic;
@@ -74,47 +76,54 @@ public class SamFriendGroupActivity extends Activity {
 	private final int load_fg_numbers_each_pullup=3;
 	private final int first_show_num = 5;
 
-	List<FGRecord> validList;
+	List<FGRecord> validList; 
 
 	Handler handler = new Handler(){
-	    public void handleMessage(android.os.Message msg) {
-	        swipeRefreshLayout.setRefreshing(false);
-	        switch (msg.what) {
-            case 0:
-                refresh();
-                break;
-            case 1:
-                Toast.makeText(SamFriendGroupActivity.this, R.string.failed_to_friend_group_information, Toast.LENGTH_LONG).show();
-                break;
+		public void handleMessage(android.os.Message msg) {
+			if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
+				return;
+			}
+			
+			swipeRefreshLayout.setRefreshing(false);
+			switch (msg.what) {
+				case 0:
+					refresh();
+				break;
+				case 1:
+					Toast.makeText(SamFriendGroupActivity.this, R.string.failed_to_friend_group_information, Toast.LENGTH_SHORT).show();
+				break;
 
-            default:
-                break;
-            }
-	    };
+				default:
+				break;
+			}
+		};
 	};
 
 	Handler inputhandler = new Handler(){
-	    public void handleMessage(android.os.Message msg) {
-	        switch (msg.what) {
-			case 0:
-				cur_comment_item = msg.arg1;
-				mComment_layout.setVisibility(View.VISIBLE);
-				mComment_input.requestFocus();
-				InputMethodManager inputManager = (InputMethodManager) mComment_input.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);  
-				inputManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED); 
-			break;
+		public void handleMessage(android.os.Message msg) {
+			if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
+				return;
+			}
+			
+			switch (msg.what) {
+				case 0:
+					cur_comment_item = msg.arg1;
+					mComment_layout.setVisibility(View.VISIBLE);
+					mComment_input.requestFocus();
+					InputMethodManager inputManager = (InputMethodManager) mComment_input.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);  
+					inputManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED); 
+				break;
 
-			case 1:
-				SamLog.e(TAG,"indication:"+msg.arg1+" is clicked");
-				launchPageScrollActivity(msg.arg1,(ArrayList<String>)msg.obj);
-				
-			break;
+				case 1:
+					SamLog.e(TAG,"indication:"+msg.arg1+" is clicked");
+					launchPageScrollActivity(msg.arg1,(ArrayList<String>)msg.obj);
+				break;
 
-			default:
+				default:
 
-			break;
-            }
-	    };
+				break;
+			}
+	    	};
 	};
 
 	private void launchPageScrollActivity(int page_indication,ArrayList<String> pathList){
@@ -232,6 +241,8 @@ public class SamFriendGroupActivity extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.activity_friend_group);
 
+		validList = new ArrayList<FGRecord>();
+
 		mMainLayout = (SoftInputMonitorLinearLayout)findViewById(R.id.mainLayout);
 		mMainLayout.setListener(new InputWindowListener() {
 			@Override
@@ -266,6 +277,10 @@ public class SamFriendGroupActivity extends Activity {
 		mComment_action_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
+				long article_id = mAdapter.getFGRecordList().get(cur_comment_item).getfg_id();
+				SamLog.e(TAG,"article_id:"+article_id+" item:"+cur_comment_item+" commentFG:"+cur_comment);
+				commentFG(article_id, cur_comment);
+
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); 
 				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS); 
 
@@ -274,10 +289,6 @@ public class SamFriendGroupActivity extends Activity {
 				updateCommentAction();
 
 				mComment_layout.setVisibility(View.GONE);
-
-				long article_id = mAdapter.getFGRecordList().get(cur_comment_item).getfg_id();
-				SamLog.e(TAG,"article_id:"+article_id+" item:"+cur_comment_item+" commentFG:"+cur_comment);
-				commentFG(article_id, cur_comment);
 
 	   	 	}
 
@@ -361,7 +372,6 @@ public class SamFriendGroupActivity extends Activity {
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		
 	}
 
 	@Override
@@ -409,6 +419,10 @@ public class SamFriendGroupActivity extends Activity {
 		SamService.getInstance().queryFG(1000,new SMCallBack(){
 			@Override
 			public void onSuccess(Object obj) {
+				if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
+					return;
+				}
+				
 				runOnUiThread(new Runnable() {
 					public void run() {
 						SamLog.e(TAG,"queryFG succedd");
@@ -421,6 +435,10 @@ public class SamFriendGroupActivity extends Activity {
 
 			@Override
 			public void onFailed(int code) {
+				if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
+					return;
+				}
+				
 				runOnUiThread(new Runnable() {
 					public void run() {
 						SamLog.e(TAG,"queryFG failed");
@@ -431,6 +449,10 @@ public class SamFriendGroupActivity extends Activity {
 
 			@Override
 			public void onError(int code) {
+				if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
+					return;
+				}
+				
 				runOnUiThread(new Runnable() {
 					public void run() {
 						SamLog.e(TAG,"queryFG error");
@@ -446,6 +468,10 @@ public class SamFriendGroupActivity extends Activity {
 		SamService.getInstance().commentFG(article_id,comment,new SMCallBack(){
 			@Override
 			public void onSuccess(Object obj) {
+				if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
+					return;
+				}
+				
 				runOnUiThread(new Runnable() {
 					public void run() {
 						SamLog.e(TAG,"commentFG succedd");
@@ -458,6 +484,10 @@ public class SamFriendGroupActivity extends Activity {
 
 			@Override
 			public void onFailed(int code) {
+				if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
+					return;
+				}
+				
 				runOnUiThread(new Runnable() {
 					public void run() {
 						SamLog.e(TAG,"commentFG failed");
@@ -468,6 +498,10 @@ public class SamFriendGroupActivity extends Activity {
 
 			@Override
 			public void onError(int code) {
+				if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
+					return;
+				}
+				
 				runOnUiThread(new Runnable() {
 					public void run() {
 						SamLog.e(TAG,"commentFG error");

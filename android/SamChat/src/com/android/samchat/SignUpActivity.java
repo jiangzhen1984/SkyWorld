@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,8 +32,6 @@ public class SignUpActivity extends Activity {
 	
 	private boolean available_countrycode=true;
 	private boolean available_phone=false;
-	private boolean available_verifyCode=true;
-	private boolean available_checkbox=true;
 	
 	/*country code*/
 	private String mcc="86";
@@ -40,18 +39,17 @@ public class SignUpActivity extends Activity {
 	private String mpn;
 	/*verified code*/
 	private String mvc;
+
+	private ImageView mBack;
+	private TextView mCountry;
+	private ImageView mClear;
+	private LinearLayout mLayout_verify;
+	private TextView mPlus;
+	private EditText mCountryCode;
+	private EditText mPhoneNumber;
+
+	private Button mBtnVerify;
 	
-	LinearLayout mLayout_verify;
-	RelativeLayout mWeixin_sign_layout;
-	RelativeLayout mCancel_layout;
-	TextView mPlus;
-	EditText mCountryCode;
-	EditText mPhoneNumber;
-	TextView mSendVerifyCode;
-	EditText mVerifyCode;
-	Button mBtnVerify;
-	CheckBox mCheckBox;
-	TextView mReadProtocol;
 	
 	SamProcessDialog mDialog;
 	
@@ -64,47 +62,38 @@ public class SignUpActivity extends Activity {
            registerReceiver(DestoryReceiver, destroy_filter);
 	    
            setContentView(R.layout.sign_up);
-	    
+
+	    mBack = (ImageView)findViewById(R.id.back); 
+	    mCountry = (TextView)findViewById(R.id.country);
+	    mClear = (ImageView)findViewById(R.id.clear); 
 	    mLayout_verify = (LinearLayout)findViewById(R.id.layout_verify); 
-	    mWeixin_sign_layout = (RelativeLayout)findViewById(R.id.weixin_sign_layout);  
-	    mCancel_layout = (RelativeLayout)findViewById(R.id.cancel_layout);
 	    mPlus = (TextView)findViewById(R.id.plus);
 	    mCountryCode = (EditText)findViewById(R.id.countrycode);
 	    mPhoneNumber = (EditText)findViewById(R.id.phonenumber);
-	    mSendVerifyCode = (TextView)findViewById(R.id.send_verify_code);
-	    mVerifyCode = (EditText)findViewById(R.id.verify_number);
 	    mBtnVerify = (Button)findViewById(R.id.button_verify); 
-	    mCheckBox = (CheckBox)findViewById(R.id.checkbox_protocol);
-	    mReadProtocol = (TextView)findViewById(R.id.read_protocol);
+	    
 	    
 	    mPlus.setText("+");
 	    mCountryCode.setText(mcc);
+	    mCountry.setText(getString(R.string.China));
 	    
 	    mCountryCode.addTextChangedListener(CC_TextWatcher);
 	    mPhoneNumber.addTextChangedListener(PN_TextWatcher);
-	    mVerifyCode.addTextChangedListener(VC_TextWatcher);
-	    mCheckBox.setOnCheckedChangeListener(new CK_Listner());
+	    
 	    
 	    mBtnVerify.setEnabled(false);
 	    mBtnVerify.setClickable(false);
 	    
-	    mSendVerifyCode.setTextColor(Color.rgb(0x99, 0x99, 0x99));
-	    mSendVerifyCode.setEnabled(false);
-	    mSendVerifyCode.setClickable(false);
-	    
-	    /*sign in from weixin*/
-	    mWeixin_sign_layout.setOnClickListener(new OnClickListener(){
+	    mClear.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
-	    		SamLog.i(TAG,"sign in from weixin");
-	    		//SignUpActivity.this.finish();
-	    		/*launch the weixin sign activity*/
+	    		mPhoneNumber.setText("");
 	    	}
 	    	
 	    });
 	    
 	    /*cancel from sign up activity*/
-	    mCancel_layout.setOnClickListener(new OnClickListener(){
+	    mBack.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
 	    		SamLog.i(TAG,"cancel from sign up activity");
@@ -114,16 +103,7 @@ public class SignUpActivity extends Activity {
 	    	
 	    });
 	    
-	    /*request verify code*/
-	    mSendVerifyCode.setOnClickListener(new OnClickListener(){
-	    	@Override
-	    	public void onClick(View arg0) {
-	    		SamLog.i(TAG,"request verify code");
-	    		/*call third party API to request server send verify code to the phone*/
-	    	}
-	    	
-	    });
-	    
+    
 	    /*verify the phone number*/
 	    mBtnVerify.setOnClickListener(new OnClickListener(){
 	    	@Override
@@ -143,18 +123,7 @@ public class SignUpActivity extends Activity {
 	    	
 	    });
 	    
-	    /*read the SAM authentication protocol*/
-	    mReadProtocol.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG ); 
-	    mReadProtocol.getPaint().setAntiAlias(true);
-	    mReadProtocol.setOnClickListener(new OnClickListener(){
-	    	@Override
-	    	public void onClick(View arg0) {
-	    		SamLog.i(TAG,"read the SAM authentication protocol");
-	    		/*launch the protocol text */
-	    		launchProtocolURL();
-	    	}
-	    	
-	    });
+	   
 	    
 	}
 	
@@ -185,60 +154,19 @@ public class SignUpActivity extends Activity {
 		startActivity(newIntent);
 	}
 	
-	private void updateSendVerify(){
-		boolean clickable = available_countrycode & available_phone;
-		
-		if(clickable){
-			mSendVerifyCode.setTextColor(Color.rgb(0, 0, 0));
-		}else{
-			mSendVerifyCode.setTextColor(Color.rgb(0x99, 0x99, 0x99));
-		}
-		
-		mSendVerifyCode.setEnabled(clickable);
-		mSendVerifyCode.setClickable(clickable);
-	}
-	
 	private void updateBtnVerify()
 	{
-		boolean clickable = available_countrycode & available_phone
-				& available_verifyCode& available_checkbox;
+		boolean clickable = available_countrycode & available_phone ;
 		if(clickable){
-			mBtnVerify.setTextColor(Color.rgb(255, 255, 255));
-			mBtnVerify.setBackgroundColor(Color.rgb(0, 0x5F, 0xBF));
-			mLayout_verify.setBackgroundColor(Color.rgb(0, 0x5F, 0xBF));
+			mBtnVerify.setTextColor(getResources().getColor(R.color.text_valid_white));
 		}else{
-			mBtnVerify.setTextColor(Color.rgb(0x99, 0x99, 0x99));
-			mBtnVerify.setBackgroundColor(Color.rgb(0xBF, 0xBF, 0xBF));
-			mLayout_verify.setBackgroundColor(Color.rgb(0xBF, 0xBF, 0xBF));
+			mBtnVerify.setTextColor(getResources().getColor(R.color.text_invalid_gray));
 		}
 		
 		 mBtnVerify.setEnabled(clickable);
 		 mBtnVerify.setClickable(clickable);
 		
 	}
-	
-	private TextWatcher VC_TextWatcher = new TextWatcher(){
-		 @Override 
-		    public void onTextChanged(CharSequence s, int start, int before, int count) { 
-		        
-		    }
-		 
-		    public void beforeTextChanged(CharSequence s, int start, int count,int after) { 
-		       
-		    } 
-
-		    public void afterTextChanged(Editable s) { 
-		    	mvc = mVerifyCode.getText().toString();
-		    	SamLog.e("TAG","VerifyCode:"+mvc);
-		    	if(mvc!=null & !mvc.equals("")){
-		    		available_verifyCode = true;
-		    	}else{
-		    		available_verifyCode = true;
-		    	}
-		    	
-		    	updateBtnVerify();
-		    }     
-	};
 	
 	private TextWatcher PN_TextWatcher = new TextWatcher(){
 		 @Override 
@@ -262,7 +190,6 @@ public class SignUpActivity extends Activity {
 		    	}
 		    	
 		    	updateBtnVerify();
-		    	updateSendVerify();
 		    }     
 	};
 	
@@ -284,29 +211,22 @@ public class SignUpActivity extends Activity {
 		    	}else{
 		    		available_countrycode = false;
 		    	}
+
+			if(mcc.equals("86")){
+				mCountry.setText(getString(R.string.China));
+			}else if(mcc.equals("1")||mcc.equals("01")){
+				mCountry.setText(getString(R.string.USA));
+			}else{
+				mCountry.setText("");
+			}
 		    	
 		    	updateBtnVerify();
-		    	updateSendVerify();
 		    }     
 	};
 	
-	private class CK_Listner implements CompoundButton.OnCheckedChangeListener {
-		@Override  
-        public void onCheckedChanged(CompoundButton button,boolean isChecked){
-			available_checkbox = mCheckBox.isChecked();
-			updateBtnVerify();
-		}  
-		
-	}; 
+	 
 	
-	private void launchProtocolURL()
-	{
-		Intent intent = new Intent();
-        intent.setAction("android.intent.action.VIEW");
-        Uri content_url = Uri.parse("http://www.163.com");
-        intent.setData(content_url);
-        startActivity(intent);
-	}
+	
 	
 	private boolean isSignParamIllegal(){
 		

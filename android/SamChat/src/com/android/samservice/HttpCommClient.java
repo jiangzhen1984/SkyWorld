@@ -100,7 +100,7 @@ public class HttpCommClient {
 	}
 
 	public boolean HttpPushWait(String token){
-		SamLog.e(TAG,"In HttpPushWait for question ...");
+		SamLog.i(TAG,"In HttpPushWait for question ...");
 		HttpPost httppost = null;
 		HttpClient httpclient = null;
 		try {
@@ -116,24 +116,22 @@ public class HttpCommClient {
 				httpclient = pushhttpclient;  
 			}
 			
-			httppost = new HttpPost(PUSH_URL);;   
-			JSONObject obj = new JSONObject();  
-			
+			httppost = new HttpPost(PUSH_URL);
+ 
 			httppost.addHeader("Authorization", token); 
 			httppost.addHeader("Accept", "application/json"); 
 
-			SamLog.e(TAG,"before execute");
+			SamLog.i(TAG,"before execute");
 			HttpResponse response;  
 			response = httpclient.execute(httppost); 
-			SamLog.e(TAG,"after execute");
+			SamLog.i(TAG,"after execute");
 			
  
 			statusCode = response.getStatusLine().getStatusCode();  
 			if (statusCode == HttpStatus.SC_OK) {  
 				String rev = EntityUtils.toString(response.getEntity());
 				
-				//SamLog.e(TAG,"rev111:"+rev);
-				obj = new JSONObject(rev);
+				JSONObject obj = new JSONObject(rev);
 
 				JSONObject header;   
 				header = obj.getJSONObject("header");
@@ -142,7 +140,7 @@ public class HttpCommClient {
 				
 				String category = header.getString("category");
 				if(category.equals("question")){
-					SamLog.e(TAG,"it is question");
+					SamLog.i(TAG,"received question");
 					hpinfo.category = HttpPushInfo.QUESTION;
 					hpinfo.datetime = body.getLong("datetime");
 					hpinfo.quest_id = body.getString("quest_id");
@@ -160,7 +158,7 @@ public class HttpCommClient {
 					hpinfo.avatar = getImageFilename(asker);
 					
 				}else if(category.equals("answer")){
-					SamLog.e(TAG,"it is answer");
+					SamLog.i(TAG,"received answer");
 					hpinfo.category = HttpPushInfo.ANSWER;
 					JSONObject ans = body.getJSONObject("ans");
 					hpinfo.answer = ans.getString("answer");
@@ -178,19 +176,19 @@ public class HttpCommClient {
 					hpinfo.quest = quest.getString("quest");
 					
 				}else if(category.equals("easemob")){
-					SamLog.e(TAG,"it is easemob");
+					SamLog.i(TAG,"received easemob");
 					hpinfo.category = HttpPushInfo.EASEMOBINFO;
 					hpinfo.unique_id = body.getLong("id");
 					hpinfo.cellphone = body.getString("cellphone");
 					hpinfo.easemob_username = body.getString("easemob_username");
 				}else{
-					SamLog.e(TAG,"Fatal Error, not support this push cmd");
+					SamLog.e(TAG,"Warning: not support this push cmd");
 					throw (new Exception());
 				}
 				
-			} 
-
-			
+			} else{
+				SamLog.e(TAG,"HttpPushWait status code:"+statusCode);
+			}
 
 			return true;
 		} catch (ClientProtocolException e) {
@@ -203,7 +201,6 @@ public class HttpCommClient {
 			synchronized(pushLock){
 				if(isInterrupt){
 					isInterrupt = false;
-					
 				}
 			}
 			return false;
@@ -222,92 +219,13 @@ public class HttpCommClient {
 		}
 	}
 	
-	private void HttpPostData() {  
-		try {  
-		    HttpClient httpclient = new DefaultHttpClient();  
-		    String uri = "http://www.yourweb.com";  
-		    HttpPost httppost = new HttpPost(uri);   
-		    //添加http头信息   
-		    httppost.addHeader("Authorization", "your token"); //认证token   
-		    httppost.addHeader("Content-Type", "application/json");  
-		    httppost.addHeader("User-Agent", "imgfornote");  
-		    //http post的json数据格式：  {"name": "your name","parentId": "id_of_parent"}   
-		    JSONObject obj = new JSONObject();  
-		    obj.put("name", "your name");  
-		    obj.put("parentId", "your parentid");  
-		    httppost.setEntity(new StringEntity(obj.toString()));     
-		    HttpResponse response;  
-		    response = httpclient.execute(httppost);  
-		    //检验状态码，如果成功接收数据   
-		    int code = response.getStatusLine().getStatusCode();  
-		    if (code == 200) {   
-		        String rev = EntityUtils.toString(response.getEntity());//返回json格式： {"id": "27JpL~j4vsL0LX00E00005","version": "abc"}          
-		        obj = new JSONObject(rev);  
-		        String id = obj.getString("id");  
-		        String version = obj.getString("version");  
-		    }  
-		    } catch (ClientProtocolException e) {     
-		    } catch (IOException e) {     
-		    } catch (Exception e) {   
-		    }  
-		} 
-	
-	private boolean HttpGetData(String uri){
-		DefaultHttpClient client = null;
-		HttpGet requestGet = null;
-		try{
-			//Log.e(TAG,"start HttpGetData...");
-			requestGet = new HttpGet(uri);
-			client = new DefaultHttpClient();
-			HttpParams params = client.getParams();
-			if(params==null){
-				params = new BasicHttpParams();
-			}
-			HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
-			HttpConnectionParams.setSoTimeout(params, HTTP_TIMEOUT);
-			HttpResponse response = client.execute(requestGet);
-			statusCode = response.getStatusLine().getStatusCode();
-			if(statusCode == HttpStatus.SC_OK ){
-				String rev = EntityUtils.toString(response.getEntity());          
-				JSONObject obj = new JSONObject(rev); 
-				ret = obj.getInt("ret");
-				if(ret == SignService.RET_SU_FROM_SERVER_OK){
-					token_id = obj.getString("token");
-				}else{
-					SamLog.e(TAG,"ret:"+ret);
-				}
-				return true;
-			}else{
-				return false;
-			}
-		} catch (ClientProtocolException e) {
-			SamLog.e(TAG,"ClientProtocolException");
-			e.printStackTrace(); 
-			return false;
-	    } catch (IOException e) { 
-	    	SamLog.e(TAG,"IOException");
-	    	e.printStackTrace(); 
-	    	return false;
-	    } catch (Exception e) { 
-	    	SamLog.e(TAG,"Exception");
-	    	e.printStackTrace(); 
-	    	return false;
-	    } finally{
-			if(requestGet!=null) requestGet.abort();
-			if(client!=null){
-				client.getConnectionManager().shutdown();
-				client = null;
-			}
-		}
-	}
-	
 	public boolean signin(String username,String password){
 		if(username==null || password==null){
 			SamLog.e(TAG,"login param is null");
 			return false;
 		}
 		
-		String rev="1";
+		String rev=null;
 			
 		/*Construct login json data*/
 		try{
@@ -327,6 +245,7 @@ public class HttpCommClient {
 			String param = URLEncodedUtils.format(params, "UTF-8"); 
 			
 			String url = URL + "?" + param;
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -340,7 +259,7 @@ public class HttpCommClient {
 			statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode == HttpStatus.SC_OK ){
 				rev = EntityUtils.toString(response.getEntity()); 
-				SamLog.e(TAG,"rev:"+rev);
+				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
 				if(ret == SignService.RET_SU_FROM_SERVER_OK){
@@ -354,7 +273,7 @@ public class HttpCommClient {
 					userinfo.imagefile = getImageFilename(user);
 					
 				}else{
-					SamLog.e(TAG,"ret:"+ret);
+					SamLog.i(TAG,"ret:"+ret);
 				}
 				return true;
 			}else{
@@ -364,15 +283,6 @@ public class HttpCommClient {
 		
 		}catch (JSONException e) {  
 			e.printStackTrace(); 
-			/*int index = rev.indexOf("token");
-			token_id = rev.substring(index+7, index+24);
-			SamLog.e(TAG,"token:"+token_id);
-			ret = 0;
-			userinfo.username = username;
-			userinfo.phonenumber = username;
-			userinfo.password = password;
-			userinfo.usertype = 0;
-			return true;*/
 			return false;
 		} catch (ClientProtocolException e) {
 			SamLog.e(TAG,"ClientProtocolException");
@@ -404,14 +314,15 @@ public class HttpCommClient {
 			String param = URLEncodedUtils.format(params, "UTF-8"); 
 			
 			String url = URL + "?" + param;
-			SamLog.e(TAG,url);
+			SamLog.i(TAG,url);
 
-			HttpGet requestGet = new HttpGet(URL);
+			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpParams http_params = client.getParams();
 			if(http_params==null){
 				http_params = new BasicHttpParams();
 			}
+			
 			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
 			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
 			HttpResponse response = client.execute(requestGet);
@@ -420,7 +331,7 @@ public class HttpCommClient {
 				String rev = EntityUtils.toString(response.getEntity());          
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
-				SamLog.e(TAG,"ret:"+ret);
+				SamLog.i(TAG,"ret:"+ret);
 				return true;
 			}else{
 				SamLog.e(TAG,"status code:"+statusCode);
@@ -471,7 +382,7 @@ public class HttpCommClient {
 			String param = URLEncodedUtils.format(params, "UTF-8"); 
 			
 			String url = URL + "?" + param;
-			SamLog.e(TAG,url);
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -488,8 +399,7 @@ public class HttpCommClient {
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
 
-				SamLog.e(TAG,"ret:" + ret);
-				SamLog.e(TAG,"rev:" + rev);
+				SamLog.i(TAG,"rev:" + rev);
 				if(ret == SignService.RET_SU_FROM_SERVER_OK){
 					token_id = obj.getString("token");
 					JSONObject user = obj.getJSONObject("user");
@@ -498,12 +408,10 @@ public class HttpCommClient {
 					userinfo.password = password;
 					userinfo.usertype = user.getInt("type");
 					userinfo.lastupdate = user.getLong("lastupdate");
-				}else{
-					SamLog.e(TAG,"ret:"+ret);
 				}
 				return true;
 			}else{
-				SamLog.e(TAG,"sign up statuc code:"+statusCode);
+				SamLog.i(TAG,"sign up statuc code:"+statusCode);
 				return false;
 			}
 		
@@ -551,7 +459,7 @@ public class HttpCommClient {
 			
 			String url = URL_QUESTION + "?" + param;
 			
-			SamLog.e(TAG,url+"test:"+sendq_data.toString());
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -564,16 +472,18 @@ public class HttpCommClient {
 			HttpResponse response = client.execute(requestGet);
 			statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode == HttpStatus.SC_OK ){
-				String rev = EntityUtils.toString(response.getEntity());          
+				String rev = EntityUtils.toString(response.getEntity()); 
+				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
 				if(ret == SamService.RET_SEND_QUESTION_FROM_SERVER_OK){
 					question_id = obj.getString("question_id");
 				}else{
-					SamLog.e(TAG,"ret:"+ret);
+					SamLog.i(TAG,"ret:"+ret);
 				}
 				return true;
 			}else{
+				SamLog.e(TAG,"status code:"+statusCode);
 				return false;
 			}
 		}catch (JSONException e) {  
@@ -623,7 +533,7 @@ public class HttpCommClient {
 			
 			String url = URL_QUESTION + "?" + param;
 			
-			SamLog.e(TAG,url+"test:"+cancelq_data.toString());
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -637,14 +547,14 @@ public class HttpCommClient {
 			statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode == HttpStatus.SC_OK ){
 				String rev = EntityUtils.toString(response.getEntity());
-				SamLog.e(TAG,"rev:"+rev);
+				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
 				if(ret == SamService.RET_CANCEL_QUESTION_FROM_SERVER_OK){
 					//this.question_id = obj.getString("question_id");
 					this.question_id = question_id;
 				}else{
-					SamLog.e(TAG,"ret:"+ret);
+					SamLog.i(TAG,"ret:"+ret);
 				}
 				return true;
 			}else{
@@ -697,7 +607,7 @@ public class HttpCommClient {
 			
 			String url = URL + "?" + param;
 			
-			SamLog.e(TAG,url+"test:"+upgrade_data.toString());
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -711,10 +621,15 @@ public class HttpCommClient {
 			statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode == HttpStatus.SC_OK ){
 				String rev = EntityUtils.toString(response.getEntity());
-				SamLog.e(TAG,"rev:"+rev);
+				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
-				token_id = obj.getString("token");
+				if(ret == SamService.RET_UPGRADE_FROM_SERVER_OK){
+					token_id = obj.getString("token");
+				}else{
+					SamLog.i(TAG,"ret:"+ret);
+				}
+				
 				return true;
 			}else{
 				SamLog.e(TAG,"statusCode:" + statusCode);
@@ -765,7 +680,7 @@ public class HttpCommClient {
 			
 			String url = URL_QUESTION + "?" + param;
 			
-			SamLog.e(TAG,url+"test:"+upgrade_data.toString());
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -779,7 +694,7 @@ public class HttpCommClient {
 			statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode == HttpStatus.SC_OK ){
 				String rev = EntityUtils.toString(response.getEntity());
-				SamLog.e(TAG,"rev:"+rev);
+				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
 				return true;
@@ -814,10 +729,10 @@ public class HttpCommClient {
 		try{
 			JSONObject avatar = jo.getJSONObject("avatar");
 			imgFileName = avatar.getString("origin");
-			SamLog.e(TAG,"getImageFilename:"+imgFileName);
+			SamLog.i(TAG,"getImageFilename:"+imgFileName);
 			return imgFileName;
 		}catch(JSONException e){
-			SamLog.e(TAG,"no avatar for this user");	
+			SamLog.i(TAG,"no avatar for this user");	
 			return null;
 		}
 	}
@@ -848,7 +763,7 @@ public class HttpCommClient {
 			
 			String url = URL + "?" + param;
 			
-			SamLog.e(TAG,url+"test:"+queryui_data.toString());
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -862,7 +777,7 @@ public class HttpCommClient {
 			statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode == HttpStatus.SC_OK ){
 				String rev = EntityUtils.toString(response.getEntity());
-				SamLog.e(TAG,"rev:"+rev);
+				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
 				if(ret == SamService.RET_QUERY_USERINFO_SERVER_OK){
@@ -881,7 +796,7 @@ public class HttpCommClient {
 					}
 					
 				}else{
-					SamLog.e(TAG,"ret:"+ret);
+					SamLog.i(TAG,"ret:"+ret);
 				}
 				return true;
 			}else{
@@ -939,7 +854,7 @@ public class HttpCommClient {
 			
 			String url = URL + "?" + param;
 			
-			SamLog.e(TAG,url+"test:"+queryui_data.toString());
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -953,7 +868,7 @@ public class HttpCommClient {
 			statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode == HttpStatus.SC_OK ){
 				String rev = EntityUtils.toString(response.getEntity());
-				SamLog.e(TAG,"rev:"+rev);
+				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
 				if(ret == SamService.RET_QUERY_USERINFO_SERVER_OK){
@@ -972,7 +887,7 @@ public class HttpCommClient {
 					}
 					
 				}else{
-					SamLog.e(TAG,"ret:"+ret);
+					SamLog.i(TAG,"ret:"+ret);
 				}
 				return true;
 			}else{
@@ -1028,6 +943,7 @@ public boolean uploadavatar(String filePath, String token){
 			String param = URLEncodedUtils.format(params, "UTF-8"); 
 			
 			String url_chat = URL_AVATAR + "?" + param;
+			SamLog.i(TAG,url_chat);
 
 			
 			java.net.URL url = new java.net.URL(url_chat);
@@ -1114,7 +1030,7 @@ public boolean uploadavatar(String filePath, String token){
 			} while (len > 0);
 
 			String rev = sb.toString();
-			SamLog.e(TAG,"rev:"+rev);
+			SamLog.i(TAG,"rev:"+rev);
 
 			JSONObject obj = new JSONObject(rev);
 			ret = obj.getInt("ret");
@@ -1213,7 +1129,7 @@ public boolean uploadavatar(String filePath, String token){
 			
 			String url = URL + "?" + param;
 			
-			SamLog.e(TAG,url+"test:"+sendc_data.toString());
+			SamLog.i(TAG,url);
 
 			HttpGet requestGet = new HttpGet(url);
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -1226,10 +1142,10 @@ public boolean uploadavatar(String filePath, String token){
 			HttpResponse response = client.execute(requestGet);
 			statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode == HttpStatus.SC_OK ){
-				String rev = EntityUtils.toString(response.getEntity());          
+				String rev = EntityUtils.toString(response.getEntity());  
+				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
-				SamLog.e(TAG,"ret:"+ret);
 
 				return true;
 			}else{
@@ -1284,7 +1200,7 @@ public boolean uploadavatar(String filePath, String token){
 			String param = URLEncodedUtils.format(params, "UTF-8"); 
 			
 			String url_aticle = URL_ATICLE + "?" + param;
-
+			SamLog.i(TAG,url_aticle);
 			
 			java.net.URL url = new java.net.URL(url_aticle);
 			conn = (HttpURLConnection)url.openConnection();
@@ -1319,7 +1235,7 @@ public boolean uploadavatar(String filePath, String token){
 				}
 			}
 
-			SamLog.e(TAG,"photo num:"+photoes.size()+"i:"+i);
+			SamLog.i(TAG,"photo num:"+photoes.size()+"i:"+i);
 
 			String message1 = "";
 			message1 += "Accept:"
@@ -1377,7 +1293,7 @@ public boolean uploadavatar(String filePath, String token){
 
 			os.write(message1.getBytes());
 
-			SamLog.e(TAG,"photo num1:"+photoes.size()+"i:"+i);
+			SamLog.i(TAG,"photo num1:"+photoes.size()+"i:"+i);
 
 			if(i==0){
 				os.write(message2.getBytes());
@@ -1388,13 +1304,11 @@ public boolean uploadavatar(String filePath, String token){
 					// FIXME
 					index = 0;
 					size = 1024;
-					SamLog.e(TAG,"header:"+msg_head_list.get(j));
 					os.write(msg_head_list.get(j).getBytes());
 					do {
 						if ((index + size) > imgDatalist.get(j).length) {
 							size = imgDatalist.get(j).length - index;
 						}
-						SamLog.e(TAG,"j:"+j+"index:"+index);
 						os.write(imgDatalist.get(j), index, size);
 						index += size;
 					} while (index < imgDatalist.get(j).length);
@@ -1406,12 +1320,12 @@ public boolean uploadavatar(String filePath, String token){
 			
 			os.flush();
 
+			SamLog.i(TAG,"uploadFG status code:"+conn.getResponseCode());
+
 			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){ 
 				SamLog.e(TAG,"HttpStatus:"+conn.getResponseCode());
 				return false; 
 			}
-
-			SamLog.e(TAG,"before getInputStream");
 
 			is = conn.getInputStream();
 			
@@ -1428,7 +1342,7 @@ public boolean uploadavatar(String filePath, String token){
 			} while (len > 0);
 
 			String rev = sb.toString();
-			SamLog.e(TAG,"rev:"+rev);
+			SamLog.i(TAG,"rev:"+rev);
 
 			JSONObject obj = new JSONObject(rev);
 			ret = obj.getInt("ret");
@@ -1516,7 +1430,9 @@ public boolean uploadavatar(String filePath, String token){
 			JSONObject querya_body = new JSONObject();
 			
 			querya_body.putOpt("timestamp_start",""+(System.currentTimeMillis()));
-			querya_body.putOpt("timestamp_end", ""+(System.currentTimeMillis()-2*24*60*60*1000));
+			querya_body.putOpt("timestamp_end", ""+(System.currentTimeMillis()-30*24*60*60*1000L));
+
+			querya_body.putOpt("qt",0);
 			
 			JSONObject querya_data = new JSONObject();
 			querya_data.put("header", querya_header);
@@ -1528,7 +1444,7 @@ public boolean uploadavatar(String filePath, String token){
 			String param = URLEncodedUtils.format(params, "UTF-8"); 
 			
 			String url_aticle = URL_ATICLE + "?" + param;
-
+			SamLog.i(TAG,url_aticle);
 			
 			java.net.URL url = new java.net.URL(url_aticle);
 			conn = (HttpURLConnection)url.openConnection();
@@ -1572,7 +1488,7 @@ public boolean uploadavatar(String filePath, String token){
 					"Content-Length",
 					String.valueOf((message1.length() + message2.length() + imgData.length)));
 
-			SamLog.e(TAG,"m1:"+message1.length() +" m2:"+message2.length() + " imgLength:"+imgData.length );
+			//SamLog.e(TAG,"m1:"+message1.length() +" m2:"+message2.length() + " imgLength:"+imgData.length );
 
 			os = conn.getOutputStream();
 
@@ -1592,7 +1508,10 @@ public boolean uploadavatar(String filePath, String token){
 			os.write(message2.getBytes());
 			os.flush();
 
-			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){   
+			SamLog.i(TAG,"queryFG status code:"+conn.getResponseCode());
+
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){  
+				
 				return false; 
 			}
 
@@ -1611,7 +1530,7 @@ public boolean uploadavatar(String filePath, String token){
 			} while (len > 0);
 
 			String rev = sb.toString();
-			SamLog.e(TAG,"rev:"+rev);
+			SamLog.i(TAG,"rev:"+rev);
 
 			JSONObject obj = new JSONObject(rev);
 			ret = obj.getInt("ret");
@@ -1620,7 +1539,6 @@ public boolean uploadavatar(String filePath, String token){
 			}
 
 			int article_counts = obj.getInt("articles_count");
-			SamLog.e(TAG,"article_counts:"+article_counts);
 			JSONArray jsonArrayX = obj.getJSONArray("articles");
 			SamLog.e(TAG,"jsonArrayX.length():"+jsonArrayX.length());
 			for (int x = 0; x < jsonArrayX.length();x++) {
@@ -1646,6 +1564,9 @@ public boolean uploadavatar(String filePath, String token){
 					JSONObject jo = (JSONObject) jsonArrayC.get(i);
 					String content = jo.getString("content");
 					ainfo.comments.add(content);
+
+					//Long comm_timestamp = jo.getLong("timestamp");
+					//ainfo.comments_timestamp.add(comm_timestamp);
 				
 					ContactUser ui = new ContactUser();
 					JSONObject user = jo.getJSONObject("user");
@@ -1691,172 +1612,6 @@ public boolean uploadavatar(String filePath, String token){
 		}
 		
 	}
-/*
-	public boolean queryFG(String token){
-		try{
-			JSONObject querya_header = new JSONObject();
-			querya_header.putOpt("action", "article-query");
-			querya_header.putOpt("token", token);
-			
-			
-			JSONObject querya_body = new JSONObject();
-			querya_body.putOpt("timestamp_end", ""+System.currentTimeMillis());
-			querya_body.putOpt("timestamp_start",""+(System.currentTimeMillis()-2*60*60*1000));
-			
-			JSONObject querya_data = new JSONObject();
-			querya_data.put("header", querya_header);
-			querya_data.put("body", querya_body);
-			
-
-			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
-			params.add(new BasicNameValuePair("data",querya_data.toString()));
-			String param = URLEncodedUtils.format(params, "UTF-8"); 
-			
-			String url = URL_ATICLE + "?" + param;
-			
-			SamLog.e(TAG,url+"test:"+querya_data.toString());
-
-			HttpGet requestGet = new HttpGet(url);
-			DefaultHttpClient client = new DefaultHttpClient();
-			HttpParams http_params = client.getParams();
-			if(http_params==null){
-				http_params = new BasicHttpParams();
-			}
-			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
-			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
-			HttpResponse response = client.execute(requestGet);
-			statusCode = response.getStatusLine().getStatusCode();
-			if(statusCode == HttpStatus.SC_OK ){
-				String rev = EntityUtils.toString(response.getEntity());          
-				JSONObject obj = new JSONObject(rev); 
-				ret = obj.getInt("ret");
-				SamLog.e(TAG,"ret:"+ret);
-
-				if(ret == SamService.RET_QUERY_FG_SERVER_HANDLE_STREAM_FAILED){
-					SamLog.e(TAG,"run in test flow");
-					ArticleInfo ainfo = new ArticleInfo();
-					ainfo.timestamp = 1456133341530l;
-					ainfo.article_id = 1001;
-					ainfo.status = 0;
-					ainfo.comment = "it is a test ...";
-					ainfo.comments.add("userA comment ***************************************** ");
-					ainfo.comments.add("userB comment *** ");
-					ainfo.comments.add("userC comment *** ");
-					ContactUser ui = new ContactUser();
-					ui.setphonenumber("13911791236");
-					ainfo.commenter.add(ui);
-
-					ContactUser ui2 = new ContactUser();
-					ui2.setphonenumber("13911791236");
-					ainfo.commenter.add(ui2);
-
-					ainfo.publisher.setphonenumber("13911791236");
-
-					ainfo.pics.add("http://121.42.207.185/article/2016/2/22/article_2_1456133341530_1.png");
-					ainfo.pics.add("http://121.42.207.185/article/2016/2/22/article_2_1456134332745_1.png");
-					
-					ainfoList.add(ainfo);
-
-					return true;
-				}
-
-				if(ret!=SamService.RET_QUERY_FG_SERVER_OK){
-					return true;
-				}
-
-				int article_counts = obj.getInt("articles_count");
-				JSONArray jsonArrayX = obj.getJSONArray("articles");
-				for (int i = 0; i < jsonArrayX.length(); i++) {
-					ArticleInfo ainfo = new ArticleInfo();
-					JSONObject article = (JSONObject) jsonArrayX.get(i);
-					ainfo.timestamp = article.getLong("timestamp");
-					ainfo.article_id = article.getLong("id");
-
-					JSONArray jsonArrayR = article.getJSONArray("recommends");
-					for (i = 0; i < jsonArrayR.length(); i++) {
-						JSONObject jo = (JSONObject) jsonArrayR.get(i);
-						ContactUser ui = new ContactUser();
-						ui.setunique_id(jo.getLong("id"));
-						ui.setphonenumber(jo.getString("cellphone"));
-						ainfo.recommander.add(ui);
-					}
-
-					ainfo.status = article.getInt("status");
-					ainfo.comment = article.getString("comment");
-
-					JSONArray jsonArrayC = article.getJSONArray("comments");
-					for (i = 0; i < jsonArrayC.length(); i++) {
-						JSONObject jo = (JSONObject) jsonArrayC.get(i);
-						String content = jo.getString("content");
-						ainfo.comments.add(content);
-				
-						ContactUser ui = new ContactUser();
-						JSONObject user = jo.getJSONObject("user");
-						ui.setunique_id(user.getLong("id"));
-						ui.setphonenumber(user.getString("cellphone"));
-						ainfo.commenter.add(ui);
-					}
-
-					JSONObject pub = article.getJSONObject("publisher");
-					ainfo.publisher.setunique_id(pub.getLong("id"));
-					ainfo.publisher.setphonenumber(pub.getString("cellphone"));
-
-					JSONArray jsonArrayP = article.getJSONArray("pics");
-					for (i = 0; i < jsonArrayP.length(); i++) {
-						JSONObject jo = (JSONObject) jsonArrayP.get(i);
-						String pic_url = jo.getString("url");
-						ainfo.pics.add(pic_url);
-					}
-
-					ainfoList.add(ainfo);
-
-				}
-
-				return true;
-			}else{
-				return false;
-			}
-		}catch (JSONException e) {  
-			e.printStackTrace();  
-			return false;
-        	}catch (ClientProtocolException e) {
-			SamLog.e(TAG,"ClientProtocolException");
-			e.printStackTrace(); 
-			return false;
-	    	} catch (IOException e) { 
-	    		SamLog.e(TAG,"IOException");
-	    		e.printStackTrace(); 
-	    		return false;
-	    	} catch (Exception e) { 
-	    		SamLog.e(TAG,"Exception");
-	    		e.printStackTrace(); 
-	    		return false;
-	   	 } 
-
-		
-	}
-*/
-	/*
-	private String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException
-	{
-    StringBuilder result = new StringBuilder();
-    boolean first = true;
-
-    for (NameValuePair pair : params)
-    {
-        if (first)
-            first = false;
-        else
-            result.append("&");
-
-        result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
-        result.append("=");
-        result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
-    }
-
-    return result.toString();
-	}*/
-
 
 	public boolean commentFG(long article_id,String comment, String token){
 		String CrLf = "\r\n";
@@ -1885,6 +1640,7 @@ public boolean uploadavatar(String filePath, String token){
 			String param = URLEncodedUtils.format(params, "UTF-8"); 
 			
 			String url_aticle = URL_ATICLE + "?" + param;
+			SamLog.e(TAG,"url_aticle:"+url_aticle);
 
 			
 			java.net.URL url = new java.net.URL(url_aticle);
@@ -1949,6 +1705,7 @@ public boolean uploadavatar(String filePath, String token){
 			os.write(message2.getBytes());
 			os.flush();
 
+			SamLog.i(TAG,"commentFG status code:"+conn.getResponseCode());
 			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK){   
 				return false; 
 			}
@@ -1968,7 +1725,7 @@ public boolean uploadavatar(String filePath, String token){
 			} while (len > 0);
 
 			String rev = sb.toString();
-			SamLog.e(TAG,"rev:"+rev);
+			SamLog.i(TAG,"rev:"+rev);
 
 			JSONObject obj = new JSONObject(rev);
 			ret = obj.getInt("ret");
@@ -1997,6 +1754,8 @@ public boolean uploadavatar(String filePath, String token){
 				JSONObject jo = (JSONObject) jsonArrayX.get(i);
 				String content = jo.getString("content");
 				ainfo.comments.add(content);
+				Long comm_timestamp = jo.getLong("timestamp");
+				ainfo.comments_timestamp.add(comm_timestamp);
 				
 				ContactUser ui = new ContactUser();
 				JSONObject user = jo.getJSONObject("user");

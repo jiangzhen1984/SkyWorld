@@ -3,18 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#FFFFFF">
+    android:background="@color/default_bg">
     
     <LinearLayout 
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" 
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp">
+    android:layout_height="@dimen/height_top_bar"
+    android:orientation="horizontal"
+    android:background="@color/common_bg_green">
     	<ImageView
     	    android:id="@+id/back"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
+        	android:layout_marginLeft="20dp"
+        	android:layout_gravity="center_vertical"
         	android:contentDescription="@null"
         	android:src="@drawable/back"/>
     	
@@ -23,7 +24,9 @@
              android:layout_height="wrap_content"
              android:layout_marginLeft="20dp"
              android:textSize="20sp"
-             android:text="@string/new_friends"/>
+             android:text="@string/new_friends"
+             android:layout_gravity="center_vertical"
+             android:textColor="@color/common_white"/>
              
 	</LinearLayout>
 	
@@ -35,7 +38,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:orientation="horizontal"
-        android:background="@drawable/text_rectangle_circle_coner_bg"
+        android:background="@drawable/shadow_rectange_bg"
         android:focusable="true" 
 		android:focusableInTouchMode="true" >
         
@@ -82,15 +85,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        android:background="#FFCC00">
+        android:background="@color/common_bg_green">
         <TextView
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_marginLeft="10dp"
              android:layout_marginTop="10dp"
              android:layout_marginBottom="5dp"
-             android:background="#FFCC00"
              android:textSize="12sp"
+             android:textColor="@color/common_white"
              android:text="@string/new_friends"/>
         
      </LinearLayout>

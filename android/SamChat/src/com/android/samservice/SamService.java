@@ -40,7 +40,7 @@ public class SamService{
 	public static final String TAG="SamService";
 	
     public static final int MIN_MPHONE_NUMBER_LENGTH = 6;
-    public static final int MIN_USERNAME_LENGTH = 1;
+    public static final int MIN_USERNAME_LENGTH = 3;
     public static final int MAX_USERNAME_LENGTH = 15;
     public static final int MIN_PASSWORD_LENGTH = 6;
     public static final int MAX_PASSWORD_LENGTH = 32;
@@ -524,6 +524,7 @@ public class SamService{
 							bundle.putSerializable("SendAnswer",sda);
 							intent.putExtras(bundle);
 							intent.putExtra("NoSuchQuestion", true);
+							mContext.sendBroadcast(intent);
 							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isSenda");
 						}else if(samobj.isQueryui()){
 							cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_TIMEOUT);
@@ -559,8 +560,7 @@ public class SamService{
 		}
     	
     	@Override
-		public void handleMessage(Message msg){
-    		Message callbackMessage;
+	public void handleMessage(Message msg){
     		CBObj cbobj = ((SamCoreObj)msg.obj).refCBObj;
 		Handler hndl = null;
     		
@@ -690,6 +690,7 @@ public class SamService{
 					bundle.putSerializable("SendAnswer",sda);
 					intent.putExtras(bundle);
 					intent.putExtra("FatalError", false);
+					mContext.sendBroadcast(intent);
 					SamLog.e(TAG,"Send Answer FAILED: Auto Sign in!");
 				}else if(samobj.isQueryui()){
 					cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_TOKEN_FILE_NULL);
@@ -2248,11 +2249,11 @@ public class SamService{
 						SamLog.e(TAG,"WaitThread:Push servier is shutdown");
 						Message msg = mSamPushServiceHandler.obtainMessage(MSG_PUSH_MSG_PUSHSERVERSHUTDOWN, 0, 0,null);
 						mSamPushServiceHandler.sendMessage(msg);
-						SystemClock.sleep(5000);
+						SystemClock.sleep(3000);
 						continue;
 					}else{
 						SamLog.e(TAG,"WaitThread:impossible here. StatusCode:"+hcc.statusCode);
-						SystemClock.sleep(10000);
+						SystemClock.sleep(3000);
 						continue;
 					}
 

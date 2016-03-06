@@ -46,6 +46,20 @@ public class SamContact_Fragment extends EaseContactListFragment{
 
 	ContactSyncListener contactSyncListener;
 	BlackListSyncListener blackListSyncListener;
+
+	@Override
+	protected void setUpView() {
+		super.setUpView();
+		// 设置标题栏点击事件
+        	titleBar.setLeftLayoutClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getActivity().finish();
+			}
+		});
+	}
+
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -241,26 +255,30 @@ public class SamContact_Fragment extends EaseContactListFragment{
 
 
 	class ContactSyncListener implements DataSyncListener{
-        @Override
-        public void onSyncComplete(final boolean success) {
-            SamLog.e(TAG, "on contact list sync success:" + success);
-            getActivity().runOnUiThread(new Runnable() {
+		@Override
+		public void onSyncComplete(final boolean success) {
+			SamLog.i(TAG, "on contact list sync success:" + success);
 
-                        @Override
-                        public void run() {
-                            if(success){
-                                setContactsMap(EaseMobHelper.getInstance().getContactList());
-                                refresh();
-                            }else{
-                                String s1 = getResources().getString(R.string.get_failed_please_check);
-                                Toast.makeText(getActivity(), s1, Toast.LENGTH_SHORT).show();
-                                //loadingView.setVisibility(View.GONE);
-                            }
-                        }
-                        
-              });
-        }
-    }
+			Activity av = getActivity();
+			if(av == null ||av.isFinishing() ){
+				return;
+			}
+		
+			av.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(success){
+						setContactsMap(EaseMobHelper.getInstance().getContactList());
+						refresh();
+					}else{
+						String s1 = getResources().getString(R.string.get_failed_please_check);
+						Toast.makeText(getActivity(), s1, Toast.LENGTH_SHORT).show();
+						//loadingView.setVisibility(View.GONE);
+					}
+				}
+			});
+		}
+	}
 
 	class BlackListSyncListener implements DataSyncListener{
 

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="USA">USA</string>
+    <string name="China">China</string>
+    <string name="country_location">Country/Location</string>
     <string name="app_name">SamChat</string>
-    <string name="settings">Settings</string>
+    <string name="settings">Sam-Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="sam_services">Sam-services</string>
     <string name="sam_chats">Sam-chats</string>
     <string name="sam_me">Me</string>
+    <string name="sam_vendor">Sam-vendor</string>    
     <string name="sam_public">Sam-public</string>
     <string name="sam_contact">Sam-contact</string>
     <string name="action_search">Search</string>
@@ -63,13 +67,15 @@
     <string name="sign_up_failed_title">Sign up failed</string>
     <string name="sign_up_failed_reason_unph">username or phone number has been existed!</string>
     <string name="sign_up_failed_reason_others">sign up error!please try again later</string>
+    <string name="sign_up_succeed_but_sign_in_failed">sign up succeed but sign in failed!please sign in again</string>
     
-    
+    <string name="sign_up_uname_existed">username existed,input again!</string>
     
     <string name="samservice_search">search</string>
     <string name="samservice_top_serach_txt">Top Search</string>
     
-    <string name="samservice_answer">answer is on the way ......</string>
+    <string name="samservice_answer">more answer is coming ......</string>
+    <string name="cancel_search">cancel search</string>
     
     <string name="reminder">Reminder</string>
     <string name="cancel_reminder">Are you sure cancel the question?</string> 
@@ -104,8 +110,9 @@
     <string name="sam_question_and_answer">Sam QA</string>
     <string name="answer">answer</string>
     
-     <string name="temp_talk">talk temporally</string>
+     <string name="temp_talk">Talking Now</string>
      <string name="add_friends">Add Friends</string>
+     <string name="follow">Follow Me</string>
      <string name="new_friends">New Friends</string>
     <string name="new_friends_search_hint">phone number</string>
     
@@ -176,4 +183,8 @@
     <string name="failed_to_friend_group_information">failed to refresh friend group information。。。</string>
     
     <string name="loading">loading。。。</string> 
+    
+    <string name="your_question">question:</string> 
+    <string name="my_answer">answer:</string> 
+    
 </resources>

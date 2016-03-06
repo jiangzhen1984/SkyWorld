@@ -16,6 +16,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,10 +27,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SignAccountActivity extends Activity {
 	
@@ -40,7 +46,8 @@ public class SignAccountActivity extends Activity {
 
 	public static final int SAM_SIGNUP_TIMEOUT=20000;
 	public static final int CHECK_UP_UNIQUE_TIMEOUT=2000;
-	
+
+	private boolean available_checkbox=true;
 	private boolean available_username=false;
 	private boolean available_password=false;
 	private boolean unique_up=false;
@@ -48,16 +55,15 @@ public class SignAccountActivity extends Activity {
 	private String password=null;
 	private String cellphone=null;
 
-	private boolean timeout_happened = false;
-	
-	LinearLayout mLayout_verify;
-	RelativeLayout mWeixin_sign_layout;
-	RelativeLayout mCancel_layout;
-	EditText mUsername;
-	TextView mUsed;
-	EditText mPassword;
-	TextView mSafe;
-	Button mBtnSignup;
+	private ImageView mBack;
+	private LinearLayout mLayout_verify;
+	private EditText mUsername;
+	private EditText mPassword;
+	private Button mBtnSignup;
+	private TextView mError_pop;
+
+	private CheckBox mCheckBox;
+	private TextView mReadProtocol;
 	
 	SamProcessDialog mDialog;
 
@@ -97,9 +103,20 @@ public class SignAccountActivity extends Activity {
 				mDialog.dismissPrgoressDiglog();
 			}
 			
-			launchMainActivity();
+			//launchMainActivity();
+			setErrorPop(getString(R.string.sign_up_succeed_but_sign_in_failed));
+			invalideAllLoginRecord();
 		}
 	};
+
+	private void invalideAllLoginRecord(){
+		LoginUser user=null;
+		List<LoginUser> array = SamService.getInstance().getDao().query_AllLoginUser_db();
+		for(int i=0;i<array.size();i++){
+			user = array.get(i);
+			SamService.getInstance().getDao().updateLoginUserAllStatus(user.getphonenumber(),LoginUser.INACTIVE);
+		}
+	}
 
 	private void cancelEaseMobNameGotTimeOut() {
 		mHandler.removeMessages(MSG_EASEMOB_NAME_GOT_TIMEOUT);
@@ -108,7 +125,7 @@ public class SignAccountActivity extends Activity {
 	private void startEaseMobNameGotTimeOut() {
 		Message msg = mHandler.obtainMessage(MSG_EASEMOB_NAME_GOT_TIMEOUT);
 		// Reset timeout.
-		cancelTimeOut();
+		cancelEaseMobNameGotTimeOut();
 		mHandler.sendMessageDelayed(msg, SAM_SIGNUP_TIMEOUT);
 	}
 
@@ -149,67 +166,19 @@ public class SignAccountActivity extends Activity {
 	    	}
 	    	
 	        switch(msg.what) {
-	            case MSG_SIGNUP_CALLBACK:
-			cancelTimeOut();
-			if(timeout_happened){
-				SamLog.i(TAG,"drop msg due to timeout happened");
-				break;
-			}
-	            	if(msg.arg1==SignService.R_SIGN_UP_OK){
-	            		SamLog.i(TAG,"sign up succeed!");
-				SignInfo sInfo = (SignInfo)msg.obj;
-				/*store new token and username/pwd in cache*/
-				try{
-					SamFile sfd = new SamFile();
-					sfd.writeSamFile(SamService.sam_cache_path ,SamService.TOKEN_FILE,sInfo.token);
-					sfd.writeSamFile(SamService.sam_cache_path,SamService.UP_FILE,sInfo.username+","+sInfo.password);
-	            			
-				}catch(IOException e){
-					e.printStackTrace(); 
-				}finally{
-					login_easemob();
-					//if(mDialog!=null){
-					//	mDialog.dismissPrgoressDiglog();
-					//}
-					//launchMainActivity();
-				}
-	            	}else if(msg.arg1 == SignService.R_SIGN_UP_FAILED){
-				if(mDialog!=null){
-	    	    			mDialog.dismissPrgoressDiglog();
-	    	    		}
-
-				if(msg.arg2 == SignService.RET_SU_FROM_SERVER_CELL_UN_EXISTED){
-					/*username or phone number has been registered*/
-					launchDialogActivity(getString(R.string.sign_up_failed_title),getString(R.string.sign_up_failed_reason_unph));
-				}else{
-					launchDialogActivity(getString(R.string.sign_up_failed_title),getString(R.string.sign_up_failed_reason_others));
-				}
-				
-			}else if(msg.arg1==SignService.R_SIGN_UP_ERROR){
-	            		SamLog.w(TAG, "sign up error!");
-	            		if(mDialog!=null){
-	    	    			mDialog.dismissPrgoressDiglog();
-	    	    		}
-	            		launchDialogActivity(getString(R.string.sign_up_failed_title),getString(R.string.sign_up_failed_reason_others));
-	            	}
-			break;
-
-		    case MSG_SIGNUP_TIMEOUT:
-				timeout_happened = true;
-				mHandler.removeCallbacksAndMessages(null);
-				if(mDialog!=null){
-	    	    			mDialog.dismissPrgoressDiglog();
-	    	    		}
-	            		launchDialogActivity(getString(R.string.sign_up_timeout_title),getString(R.string.sign_up_timeout_statement));
-				break;
-		    case MSG_EASEMOB_NAME_GOT_TIMEOUT:
+	            case MSG_EASEMOB_NAME_GOT_TIMEOUT:
 				SamLog.ship(TAG,"MSG_EASEMOB_NAME_GOT_TIMEOUT happened...");
 				cancelEaseMobNameGotTimeOut();
 				unregisterReceiver(EaseMobNameGotReceiver);
-				if(mDialog!=null){
-	    	    			mDialog.dismissPrgoressDiglog();
-	    	    		}
-				launchMainActivity();
+				final String userName = SamService.getInstance().get_current_user().getphonenumber();
+				final String password = SamService.getInstance().get_current_user().getpassword();
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						EMChatManager.getInstance().login(userName,password,EMcb);
+					}
+				}).start();
 				break;
 
 		    case MSG_CHECK_UP_UNIQUE:
@@ -223,9 +192,9 @@ public class SignAccountActivity extends Activity {
 	void update_unique_up(boolean unique){
 		unique_up = unique;
 		if(unique){
-			mUsed.setTextColor(Color.rgb(0xBB, 0xBB, 0xBB));
+			
 		}else{
-			mUsed.setTextColor(Color.rgb(0xFF, 0x00, 0x00));
+			setErrorPop(getString(R.string.sign_up_uname_existed));
 		}
 
 		updateBtnSignup();
@@ -249,6 +218,7 @@ public class SignAccountActivity extends Activity {
 						}else{
 							update_unique_up(true);
 						}
+
 					}
 				});
 			} 
@@ -258,6 +228,7 @@ public class SignAccountActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						update_unique_up(true);
+
 					}
 				});
 			}
@@ -267,6 +238,7 @@ public class SignAccountActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						update_unique_up(true);
+
 					}
 				});
 			}
@@ -287,18 +259,18 @@ public class SignAccountActivity extends Activity {
 		SamLog.e(TAG,"startCheck...");
 	}
 
-	private void cancelTimeOut() {
-		mHandler.removeMessages(MSG_SIGNUP_TIMEOUT);
+	private void clearErrorPop(){
+		mError_pop.setText("");
+		mError_pop.setTextColor(getResources().getColor(R.color.text_right_black));
+		mError_pop.setVisibility(View.GONE);
+	}
+	
+	private void setErrorPop(String errStr){
+		mError_pop.setText(errStr);
+		mError_pop.setTextColor(getResources().getColor(R.color.text_error_red));
+		mError_pop.setVisibility(View.VISIBLE);
 	}
 
-	private void startTimeOut() {
-		Message msg = mHandler.obtainMessage(MSG_SIGNUP_TIMEOUT);
-		// Reset timeout.
-		cancelTimeOut();
-		mHandler.sendMessageDelayed(msg, SAM_SIGNUP_TIMEOUT);
-	}
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	      super.onCreate(savedInstanceState);
@@ -308,15 +280,19 @@ public class SignAccountActivity extends Activity {
 		registerReceiver(DestoryReceiver, destroy_filter);
 		
 		setContentView(R.layout.sign_account);
-	    
+
+	    mBack = (ImageView)findViewById(R.id.back); 
 	    mLayout_verify = (LinearLayout)findViewById(R.id.layout_signup); 
-	    mWeixin_sign_layout = (RelativeLayout)findViewById(R.id.weixin_sign_layout);  
-	    mCancel_layout = (RelativeLayout)findViewById(R.id.cancel_layout);
 	    mUsername = (EditText)findViewById(R.id.username);
-	    mUsed = (TextView)findViewById(R.id.used);
 	    mPassword = (EditText)findViewById(R.id.password);
-	    mSafe = (TextView)findViewById(R.id.safe); 
 	    mBtnSignup = (Button)findViewById(R.id.button_signup);
+	    mCheckBox = (CheckBox)findViewById(R.id.checkbox_protocol);
+	    mReadProtocol = (TextView)findViewById(R.id.read_protocol);
+
+	    mError_pop = (TextView)findViewById(R.id.error_pop);
+	    clearErrorPop();
+
+	    mCheckBox.setOnCheckedChangeListener(new CK_Listner());
 	    
 	    mUsername.addTextChangedListener(UN_TextWatcher);
 	    mPassword.addTextChangedListener(PW_TextWatcher);
@@ -327,23 +303,12 @@ public class SignAccountActivity extends Activity {
 	    mDialog = new SamProcessDialog();
 
            cellphone = getIntent().getStringExtra("cellphone");
-	    /*sign in from weixin*/
-	    mWeixin_sign_layout.setOnClickListener(new OnClickListener(){
-	    	@Override
-	    	public void onClick(View arg0) {
-	    		SamLog.i(TAG,"sign in from weixin");
-	    		//SignAccountActivity.this.finish();
-	    		/*launch the weixin sign activity*/
-	    	}
-	    	
-	    });
+	   
 	    
-	    /*cancel from sign up activity*/
-	    mCancel_layout.setOnClickListener(new OnClickListener(){
+	    mBack.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
-	    		SamLog.i(TAG,"cancel from sign up activity");
-	    		/*back to sign in*/
+	    		SamLog.i(TAG,"cancel from sign account activity");
 	    		SignAccountActivity.this.finish();
 	    	}
 	    	
@@ -353,20 +318,106 @@ public class SignAccountActivity extends Activity {
 	    mBtnSignup.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
+	    		clearErrorPop();
 	    		if(!NetworkMonitor.isNetworkAvailable()){
 	    			launchDialogActivity(getString(R.string.nw_illegal_title),getString(R.string.network_status_no));
 	    			return;
 	    		}
 	    		SamLog.i(TAG,"do the sign up process "+"uname:"+username+"pwd:"+password+"cellphone:"+cellphone);
-	    		if(mDialog!=null){
-	    			mDialog.launchProcessDialog(SignAccountActivity.this,getString(R.string.sign_up_now));
-	    		}
-	    		SignService.getInstance().SignUp(mHandler, MSG_SIGNUP_CALLBACK,username,password,cellphone);
-			timeout_happened=false;
-			startTimeOut();
+	  		SignUp();
 	    	}
 	    	
 	    });
+
+	    /*read the SAM authentication protocol*/
+	    mReadProtocol.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG ); 
+	    mReadProtocol.getPaint().setAntiAlias(true);
+	    mReadProtocol.setOnClickListener(new OnClickListener(){
+	    	@Override
+	    	public void onClick(View arg0) {
+	    		SamLog.i(TAG,"read the SAM authentication protocol");
+	    		/*launch the protocol text */
+	    		launchProtocolURL();
+	    	}
+	    	
+	    });
+	}
+
+	private void launchProtocolURL()
+	{
+		Intent intent = new Intent();
+		intent.setAction("android.intent.action.VIEW");
+		Uri content_url = Uri.parse("http://www.163.com");
+		intent.setData(content_url);
+		startActivity(intent);
+	}
+
+
+	private void SignUp(){
+		if(mDialog!=null){
+    			mDialog.launchProcessDialog(SignAccountActivity.this,getString(R.string.sign_up_now));
+    		}
+
+		SignService.getInstance().SignUp(username,password,cellphone,new SMCallBack(){
+			@Override
+			public void onSuccess(final Object obj) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						SignInfo sInfo = (SignInfo)obj;
+						/*store new token in cache*/
+						try{
+							SamFile sfd = new SamFile();
+							sfd.writeSamFile(SamService.sam_cache_path , SamService.TOKEN_FILE,sInfo.token);
+							//sfd.writeSamFile(SamService.sam_cache_path , SamService.UP_FILE,sInfo.username+","+sInfo.password);
+	            			
+						}catch(IOException e){
+							e.printStackTrace();
+						}finally{
+							login_easemob();
+						}
+					}
+				});
+			}
+
+			
+
+			@Override
+			public void onFailed(final int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+	    	    					mDialog.dismissPrgoressDiglog();
+	    	    				}
+						
+	            				if(code == SignService.RET_SU_FROM_SERVER_CELL_UN_EXISTED){
+			            			setErrorPop(getString(R.string.sign_up_failed_reason_unph));
+	            				}else{
+							setErrorPop(getString(R.string.sign_up_failed_reason_others));
+						}
+					}
+				});
+			}
+
+			@Override
+			public void onError(final int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+    							mDialog.dismissPrgoressDiglog();
+    						}
+
+						if(code ==SignService.R_SIGN_UP_TIMEOUT){
+							setErrorPop(getString(R.string.sign_up_timeout_statement));
+							Toast.makeText(getApplicationContext(), getString(R.string.sign_up_timeout_statement), Toast.LENGTH_LONG).show();
+						}else{
+							setErrorPop(getString(R.string.sign_up_failed_reason_others));
+						}
+					}
+				});
+			}
+
+		});
+
 	}
 	
 	@Override
@@ -390,19 +441,20 @@ public class SignAccountActivity extends Activity {
 	
 	private void updateBtnSignup()
 	{
-		boolean clickable = available_username & available_password & unique_up;
+		boolean clickable = available_username & available_password & unique_up & available_checkbox;
+
 		if(clickable){
-			mBtnSignup.setTextColor(Color.rgb(255, 255, 255));
-			mBtnSignup.setBackgroundColor(Color.rgb(0, 0x5F, 0xBF));
-			mLayout_verify.setBackgroundColor(Color.rgb(0, 0x5F, 0xBF));
+			//mSignin.setTextColor(Color.rgb(255, 255, 255));
+			mBtnSignup.setTextColor(getResources().getColor(R.color.text_valid_white));
+			
 		}else{
-			mBtnSignup.setTextColor(Color.rgb(0x99, 0x99, 0x99));
-			mBtnSignup.setBackgroundColor(Color.rgb(0xBF, 0xBF, 0xBF));
-			mLayout_verify.setBackgroundColor(Color.rgb(0xBF, 0xBF, 0xBF));
+			mBtnSignup.setTextColor(getResources().getColor(R.color.text_invalid_gray));
+			//mSignin.setTextColor(Color.rgb(0x99, 0x99, 0x99));
 		}
 		
 		mBtnSignup.setEnabled(clickable);
 		mBtnSignup.setClickable(clickable);
+		clearErrorPop();
 		
 	}
 	
@@ -433,6 +485,7 @@ public class SignAccountActivity extends Activity {
 			}
 		    	
 			//updateBtnSignup();
+			clearErrorPop();
 		}     
 	};
 	
@@ -457,7 +510,17 @@ public class SignAccountActivity extends Activity {
 				available_password = false;
 			}
 			updateBtnSignup();
+			clearErrorPop();
 		}    
+	};
+
+	private class CK_Listner implements CompoundButton.OnCheckedChangeListener {
+		@Override  
+        	public void onCheckedChanged(CompoundButton button,boolean isChecked){
+			available_checkbox = mCheckBox.isChecked();
+			updateBtnSignup();
+		}  
+		
 	};
 	
 

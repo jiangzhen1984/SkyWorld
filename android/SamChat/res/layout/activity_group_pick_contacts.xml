@@ -2,36 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eee"
+    android:background="@color/default_bg"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-       android:background="@color/top_bar_normal_bg"
+       android:background="@color/common_bg_green"
         android:gravity="center_vertical" >
 
          <LinearLayout
+            android:id="@+id/back_layout"
             android:layout_width="45dp"
             android:layout_height="match_parent"
             android:background="@drawable/ease_common_tab_bg"
             android:onClick="back" >
 
-            <ImageView
+           <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="9dp"
+                android:layout_marginLeft="@dimen/title_left_margin"
                 android:scaleType="centerInside"
-                android:src="@drawable/em_mm_title_back" />
+                android:src="@drawable/back" />
         </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/back_layout"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
             android:text="@string/Select_the_contact"
-            android:textColor="#ffffff"
+            android:textColor="@color/common_white"
             android:textSize="20sp" />
 
         <Button
@@ -55,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cacheColorHint="#00000000"
-            android:background="@android:color/transparent"
-            android:divider="#D4D4D4"
+            android:background="@color/default_bg"
+            android:divider="@color/listview_gray_devider"
             android:descendantFocusability="afterDescendants"
             android:dividerHeight="1px"
             android:fastScrollEnabled="true" />

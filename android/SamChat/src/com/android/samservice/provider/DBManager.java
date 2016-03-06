@@ -458,7 +458,7 @@ public class DBManager
 	{
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION;
 		/*
-		id(primary) |question_id | question |contact user id | status | received time | canceled time
+		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |receivercellphone
 		*/
 		ContentValues cv = new ContentValues();
 		cv.put("question_id",question.question_id);
@@ -480,7 +480,7 @@ public class DBManager
 	public ReceivedQuestion queryReceivedQuestion(String question_id){
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION ;
 		/*
-		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time
+		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |receivercellphone
 		*/
 
 		ReceivedQuestion question = null;
@@ -522,7 +522,7 @@ public class DBManager
 			start_id = count - num + 1;
 		}
 		/*
-		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time
+		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |receivercellphone
 		*/
 
 		List<ReceivedQuestion> ReceivedQuestionArray = new ArrayList<ReceivedQuestion>();
