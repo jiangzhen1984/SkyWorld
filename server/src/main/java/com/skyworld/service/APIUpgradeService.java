@@ -4,7 +4,6 @@ import org.json.JSONObject;
 
 import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.Token;
-import com.skyworld.cache.TokenFactory;
 import com.skyworld.service.dsf.Customer;
 import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
@@ -17,25 +16,18 @@ public class APIUpgradeService extends APIBasicJsonApiService {
 	@Override
 	protected BasicResponse service(JSONObject json) {
 		JSONObject header = json.getJSONObject("header");
-
-		if (!header.has("token")) {
+		Token token = checkAuth(header);
+		if (token == null) {
 			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
 		}
 
-		String tokenId = header.getString("token");
-		if (tokenId == null || tokenId.trim().isEmpty()) {
-			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
-		}
-		// FIXME check token legal
-
-		SKServicer cache = CacheManager.getIntance().getSKServicer(TokenFactory.valueOf(tokenId));
+		SKServicer cache = CacheManager.getIntance().getSKServicer(token);
 		if (cache != null) {
 			return new RTCodeResponse(APICode.USER_UPGRADE_ERROR_ALREADY);
 		}
 		
 		
-		Customer cus = CacheManager.getIntance().getCustomer(
-				TokenFactory.valueOf(tokenId));
+		Customer cus = CacheManager.getIntance().getCustomer(token);
 		if (cus == null) {
 			return new RTCodeResponse(APICode.TOKEN_INVALID);
 		}

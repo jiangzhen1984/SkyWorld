@@ -4,7 +4,6 @@ import org.json.JSONObject;
 
 import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.Token;
-import com.skyworld.cache.TokenFactory;
 import com.skyworld.push.event.MessageEvent;
 import com.skyworld.pushimpl.AnswerMessage;
 import com.skyworld.service.dsf.Answer;
@@ -26,12 +25,11 @@ public class APIAnswerService extends APIBasicJsonApiService {
 
 
 		
-		String tokenId = header.getString("token");
-		if (tokenId == null || tokenId.trim().isEmpty()) {
+		Token token = checkAuth(header);
+		if (token == null) {
 			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
 		}
 		
-		Token token = TokenFactory.valueOf(tokenId);
 		JSONObject body = json.getJSONObject("body");
 		
 		

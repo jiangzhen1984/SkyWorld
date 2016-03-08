@@ -12,6 +12,8 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.skyworld.cache.Token;
+import com.skyworld.cache.TokenFactory;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
 
@@ -50,6 +52,20 @@ public abstract class APIBasicJsonApiService implements APIService {
 	
 	public void addActionMapping(String key, APIBasicJsonApiService service) {
 		mapping.put(key, service);
+	}
+	
+	
+	
+	protected Token checkAuth(JSONObject header) {
+		if (!header.has("token")) {
+			return null;
+		}
+
+		String tokenId = header.getString("token");
+		if (tokenId == null || tokenId.trim().isEmpty()) {
+			return null;
+		}
+		return TokenFactory.valueOf(tokenId);
 	}
 	
 	

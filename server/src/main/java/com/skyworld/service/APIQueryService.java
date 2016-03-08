@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.skyworld.cache.Token;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.JSONBasicResponse;
@@ -25,13 +26,7 @@ public class APIQueryService extends APIBasicJsonApiService {
 		JSONObject header = json.getJSONObject("header");
 		JSONObject body = json.getJSONObject("body");
 		
-		boolean tokenExist = header.has("token");
-		
-
-		String tokenId = header.getString("token");
-		if (tokenId == null || tokenId.trim().isEmpty()) {
-			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
-		}
+		Token token = checkAuth(header);
 
 
 		if (!body.has("opt") || !body.has("param")) {
@@ -42,12 +37,12 @@ public class APIQueryService extends APIBasicJsonApiService {
 		JSONObject param = body.getJSONObject("param");
 		switch (opt) {
 		case OPT_QUERY_USER:
-			if (!tokenExist) {
+			if (token == null) {
 				return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
 			}
 			return queryUser(param);
 		case OPT_QUERY_USER_LIST:
-			if (!tokenExist) {
+			if (token == null) {
 				return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
 			}
 			return queryUserList(param);

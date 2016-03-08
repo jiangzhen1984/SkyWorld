@@ -26,12 +26,15 @@ public class User extends SWPUser {
 	
 	private List<User> relationUser;
 	
+	private List<User> fansUser;
+	
 	private boolean relationQueryFlag;
 
 	public User() {
 		super();
 		userType = UserType.CUSTOMER;
 		relationUser = new ArrayList<User>();
+		fansUser = new ArrayList<User>();
 	}
 	
 	public User(User u) {
@@ -55,6 +58,7 @@ public class User extends SWPUser {
 			break;
 		}
 		relationUser = new ArrayList<User>();
+		fansUser = new ArrayList<User>();
 		
 	}
 
@@ -78,6 +82,7 @@ public class User extends SWPUser {
 			break;
 		}
 		relationUser = new ArrayList<User>();
+		fansUser = new ArrayList<User>();
 	}
 
 	public Token getToken() {
@@ -158,6 +163,10 @@ public class User extends SWPUser {
 			throw new IndexOutOfBoundsException("index["+index+"] out of array");
 		}
 		return relationUser.get(index);
+	}
+	
+	public List<User> getRelationCopy() {
+		return new ArrayList<User>(relationUser);
 	}
 
 	public boolean isRelationQueryFlag() {

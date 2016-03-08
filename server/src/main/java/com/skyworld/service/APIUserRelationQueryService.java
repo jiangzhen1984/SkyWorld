@@ -1,5 +1,7 @@
 package com.skyworld.service;
 
+import java.util.List;
+
 import org.json.JSONObject;
 
 import com.skyworld.cache.CacheManager;
@@ -7,15 +9,20 @@ import com.skyworld.cache.Token;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
+import com.skyworld.service.resp.UserQueryResponse;
 
-public class APIFollowService extends APIBasicJsonApiService {
+public class APIUserRelationQueryService extends APIBasicJsonApiService {
+	
+	
+	public static final int TYPE_FANS = 1;
+	public static final int TYPE_FOLLOW = 2;
 
 	@Override
 	protected BasicResponse service(JSONObject json) {
 		JSONObject header = json.getJSONObject("header");
 		JSONObject body = json.getJSONObject("body");
 		
-		if (!body.has("user_id") || !body.has("flag") || !body.has("both")) {
+		if (!body.has("type")) {
 			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
 		}
 		
@@ -28,24 +35,25 @@ public class APIFollowService extends APIBasicJsonApiService {
 		if (user == null) {
 			return new RTCodeResponse(APICode.TOKEN_INVALID);
 		}
-		long userId2 = body.getLong("user_id");
-		User user2 = ServiceFactory.getESUserService().getUser(userId2);
-		if (user2 == null) {
-			new RTCodeResponse(APICode.FOLLOW_ERROR_USER_NOT_EXIST);
+		
+		int type = body.getInt("type");
+		List<User> relation = null;
+		switch (type) {
+		case TYPE_FANS:
+			relation = ServiceFactory.getESUserService().queryUserRelationReverse(user);
+			break;
+		case TYPE_FOLLOW:
+			ServiceFactory.getESUserService().queryUserRelation(user);
+			relation = user.getRelationCopy();
+			break;
+		default:
+			break;
 		}
 		
-		boolean both = body.getBoolean("both");
-		int flag = body.getInt("flag");
-		switch (flag) {
-		case 1:
-			ServiceFactory.getESUserService().makeRelation(user, user2,both);
-			break;
-		case 2:
-			ServiceFactory.getESUserService().removeRelation(user, user2, both);
-		default:
-			new RTCodeResponse(APICode.FOLLOW_ERROR_UN_SUPPORT_FLAG);
-		}
-		return new RTCodeResponse(APICode.SUCCESS);
+		
+		return new UserQueryResponse(relation);
 	}
+	
+	
 
 }

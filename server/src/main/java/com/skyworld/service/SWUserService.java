@@ -335,10 +335,28 @@ public class SWUserService extends BaseService {
 		List<SWPRelationship> list = query.list();
 		Iterator<SWPRelationship> it = list.iterator();
 		while(it.hasNext()) {
-			user.addFriend(getUser(it.next().getUserId1()));
+			user.addFriend(getUser(it.next().getUserId2()));
 		}
 		session.close();
 		user.setRelationQueryFlag(true);
+	}
+	
+	
+	public List<User> queryUserRelationReverse(User user) {
+		if (user == null) {
+			throw new NullPointerException("user is null");
+		}
+		Session session = openSession();
+		Query query = session.createQuery(" from SWPRelationship r  where userId2 = ?");
+		query.setLong(0, user.getId());
+		List<SWPRelationship> list = query.list();
+		List<User> fans = new ArrayList<User>(list.size());
+		Iterator<SWPRelationship> it = list.iterator();
+		while(it.hasNext()) {
+			fans.add(getUser(it.next().getUserId1()));
+		}
+		session.close();
+		return fans;
 	}
 
 
