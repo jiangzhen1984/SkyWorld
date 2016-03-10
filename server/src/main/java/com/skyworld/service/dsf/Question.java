@@ -146,7 +146,20 @@ public class Question {
 	public enum State {
 		INQUIREING,
 		CANCEL,
-		RESOVLED
+		RESOVLED;
+		
+		public static State fromInt(int val) {
+			switch (val) {
+			case 0:
+				return INQUIREING;
+			case 1:
+				return CANCEL;
+			case 2:
+				return RESOVLED;
+			default:
+				return null;
+			}
+		}
 	}
 	
 }

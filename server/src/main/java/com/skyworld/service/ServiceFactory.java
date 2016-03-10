@@ -59,6 +59,7 @@ public class ServiceFactory {
 	public static SWQuestionService getQuestionService() {
 		if (eQuestionService == null) {
 			eQuestionService = new SWQuestionService();
+			eQuestionService.setUserService(getESUserService());
 		}
 		
 		return eQuestionService;

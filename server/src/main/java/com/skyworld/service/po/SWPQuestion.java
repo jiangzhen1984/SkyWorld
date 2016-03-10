@@ -23,11 +23,8 @@ public class SWPQuestion {
 	@Column(name="QUESTION", columnDefinition="VARCHAR(2000)")
 	private String question;
 	
-	@Column(name="USER_NAME", columnDefinition="VARCHAR(40)")
-	private String userName;
-	
-	@Column(name="USER_MAIL", columnDefinition="VARCHAR(100)")
-	private String userMail;
+	@Column(name="USER_ID", columnDefinition="BIGINT")
+	protected long userId;
 	
 	@Column(name="TIME_STAMP", columnDefinition="datetime")
 	private Date timestamp;
@@ -47,8 +44,7 @@ public class SWPQuestion {
 		}
 		this.setId(u.getId());
 		this.setQuestion(u.getQuestion());
-		this.setName(u.getName());
-		this.setMail(u.getMail());
+		this.setUserId(u.getUserId());
 		this.setTimestamp(u.getTimestamp());
 		this.setState(u.getState());
 	}
@@ -62,21 +58,14 @@ public class SWPQuestion {
 	}
 
 
-	public String getName() {
-		return userName;
-	}
-
-	public void setName(String name) {
-		this.userName = name;
-	}
-
 	
-	public String getMail() {
-		return userMail;
+
+	public long getUserId() {
+		return userId;
 	}
 
-	public void setMail(String mail) {
-		this.userMail = mail;
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public String getQuestion() {
