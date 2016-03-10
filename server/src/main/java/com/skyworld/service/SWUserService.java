@@ -135,7 +135,9 @@ public class SWUserService extends BaseService {
 			user.setName((String)obj[2]);
 			user.setAddress((String)obj[4]);
 			user.setMail((String)obj[5]);
-			user.setAvatarId(((BigInteger)obj[7]).longValue());
+			if (obj[7] != null) {
+				user.setAvatarId(((BigInteger)obj[7]).longValue());
+			}
 			user.setLastUpdate(((BigDecimal)obj[8]).longValue());
 			int type = ((BigDecimal)obj[6]).intValue();
 			switch(type) {
