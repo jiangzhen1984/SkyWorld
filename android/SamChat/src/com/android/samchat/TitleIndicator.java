@@ -213,6 +213,17 @@ public class TitleIndicator extends LinearLayout implements View.OnClickListener
 		setCurrentTab(startPos);
 		invalidate();
 	}
+
+	public void showReminder(int postion,boolean shown){
+		if (postion < 0 || postion >= getTabCount()) {
+			return;
+		}
+		
+		View Tab = getChildAt(postion);
+		setReminderIcon(Tab, shown);
+
+		invalidate();
+	}
 	
 	protected void add(int index, String label, int icon, int icon_selected) {
 		View tabIndicator;
@@ -232,7 +243,7 @@ public class TitleIndicator extends LinearLayout implements View.OnClickListener
 
 		tv.setText(label);
 
-		iv.setImageResource(icon);	
+		iv.setImageResource(icon);
        
 		tabIndicator.setId(BSSEEID + (mCurrID++));
 		tabIndicator.setOnClickListener(this);
@@ -240,6 +251,7 @@ public class TitleIndicator extends LinearLayout implements View.OnClickListener
 		LinearLayout.LayoutParams lP = (LinearLayout.LayoutParams) tabIndicator.getLayoutParams();
 		lP.gravity = Gravity.CENTER_VERTICAL;
 		addView(tabIndicator);
+
 	}
 
 	public void setDisplayedPage(int index) {
@@ -270,6 +282,7 @@ public class TitleIndicator extends LinearLayout implements View.OnClickListener
 			return;
 		}
 
+
 		View oldTab = getChildAt(mSelectedTab);
 		oldTab.setSelected(false);
 		setTabTextSize(oldTab, false);
@@ -287,11 +300,22 @@ public class TitleIndicator extends LinearLayout implements View.OnClickListener
 
 	private void setTabIcon(View tab, boolean selected){
 		ImageView iv = (ImageView)tab.findViewById(R.id.tab_title_icon);
+		
 		int position = tab.getId() - BSSEEID;
 		if(selected){
-			iv.setImageResource(mTabs.get(position).getIcon_selected());	
+			iv.setImageResource(mTabs.get(position).getIcon_selected());
 		}else{
-			iv.setImageResource(mTabs.get(position).getIcon());	
+			iv.setImageResource(mTabs.get(position).getIcon());
+		}
+	}
+
+	private void setReminderIcon(View tab,boolean shown){
+		ImageView rp = (ImageView) tab.findViewById(R.id.reminder_point);
+		
+		if(shown){
+			rp.setVisibility(View.VISIBLE);
+		}else{
+			rp.setVisibility(View.INVISIBLE);
 		}
 	}
 

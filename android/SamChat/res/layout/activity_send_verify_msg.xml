@@ -3,18 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#FFFFFF">
+    android:background="@color/default_bg">
     
     <LinearLayout 
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" 
-    android:layout_marginTop="20dp"
-    android:layout_marginLeft="10dp">
+    android:layout_height="@dimen/height_top_bar"
+    android:orientation="horizontal"
+    android:background="@color/common_bg_green">
     	<ImageView
     	    android:id="@+id/back"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
+        	android:layout_marginLeft="@dimen/title_left_margin"
+        	android:layout_gravity="center_vertical"
         	android:contentDescription="@null"
         	android:src="@drawable/back"/>
     	
@@ -22,15 +23,18 @@
              android:layout_width="0dp"
              android:layout_height="wrap_content"
              android:layout_weight="1"
-             android:layout_marginLeft="20dp"
+             android:layout_marginLeft="@dimen/title_left_margin"
+        	 android:layout_gravity="center_vertical"
              android:text="@string/add_to_contacts"
-             android:textSize="20sp"/>
+             android:textSize="20sp"
+             android:textColor="@color/common_white"/>
     	
     	<LinearLayout
     	    android:id="@+id/send_msg_action_layout" 
     		android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
-    		android:layout_marginRight="10dp"
+    		android:layout_marginRight="20dp"
+    		android:layout_gravity="center_vertical"
     		android:background="#FF6600">
     	    <TextView
         	 android:id="@+id/send_msg_action"
@@ -53,18 +57,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-   		android:layout_marginLeft="10dp"
-    	android:layout_marginRight="10dp"
+   		android:layout_marginLeft="@dimen/title_left_margin"
         android:textSize="12sp"
-        android:text="@string/send_msg_statement"
-        android:textColor="#BFBFBF"/>
+        android:text="@string/send_msg_statement"/>
     
     <EditText
         android:id="@+id/send_msg_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/title_left_margin"
         android:layout_marginRight="10dp"
 		android:layout_gravity="center_vertical"
         android:textSize="18sp"

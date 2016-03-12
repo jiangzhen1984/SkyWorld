@@ -133,9 +133,10 @@
     <string name="send_msg_failed">send message failed ......</string>
     <string name="send_msg_succeed">send message successfully ......</string>
     <string name="request_add_friends">request to be friend</string>
-    <string name="accepted">accepted</string>
+    <string name="accept">accept</string>
     <string name="added">added</string>
     <string name="refused">refused</string>
+    <string name="refuse">refuse</string>
     
     <string name="groupchat">Group Chat</string>
     <string name="The_new_group_chat">New Group Chat</string>
@@ -186,5 +187,8 @@
     
     <string name="your_question">question:</string> 
     <string name="my_answer">answer:</string> 
+    
+    <string name="responsed_question">question responsed</string> 
+    <string name="unresponsed_question">question unresponsed</string> 
     
 </resources>

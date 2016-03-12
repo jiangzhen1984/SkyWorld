@@ -24,17 +24,31 @@
             android:textColor="@color/common_white"
             android:background="@color/common_bg_green"
             android:text="@string/sam_services"/>
-        
-        <ImageView
+        <RelativeLayout 
+            android:id="@+id/option_button_layout"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp">
+            
+          <ImageView
             android:id="@+id/option_button" 
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="20dp"
             android:contentDescription="@null"
             android:src="@drawable/option_button"/>
+          
+          <ImageView
+            android:id="@+id/option_button_reminder" 
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_toRightOf="@id/option_button"
+            android:layout_alignTop="@id/option_button"
+            android:contentDescription="@null"
+            android:src="@drawable/reminder_point_bg"
+            android:visibility="invisible"/>
+        </RelativeLayout>
 
     </LinearLayout>
 

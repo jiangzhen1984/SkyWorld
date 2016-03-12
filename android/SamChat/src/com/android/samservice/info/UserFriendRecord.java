@@ -3,12 +3,13 @@ package com.android.samservice.info;
 import java.io.Serializable;
 
 /*
-	id(primary) |user | friend
+	id(primary) |friend
 */
 public class UserFriendRecord implements Serializable
 {
 	public long id;
 	public String friend;
+	
 
 	public UserFriendRecord(){
 		this.id = 0;

@@ -387,11 +387,7 @@ public class NameCardActivity extends Activity {
 		super.onCreate(icicle);
 
 		setContentView(R.layout.activity_namecard);
-		actionBar = getActionBar();  
-		actionBar.setDisplayHomeAsUpEnabled(true); 
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setTitle(getString(R.string.user_info));
-		//actionBar.setIcon(R.drawable.em_mm_title_back);
+
 		mContext = getBaseContext();
 
 		mBack =  (ImageView) findViewById(R.id.back);

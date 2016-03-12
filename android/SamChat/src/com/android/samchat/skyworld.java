@@ -24,7 +24,7 @@ public class skyworld extends Application {
 	static public void EaseMobInit(){
 		EMChat.getInstance().setAutoLogin(false);
 		//EMChat.getInstance().init(this.getApplicationContext());
-		EMChat.getInstance().setDebugMode(true);
+		EMChat.getInstance().setDebugMode(false);
 		if(EaseUI.getInstance().init(appContext)){
 			EaseMobHelper.getInstance().init(appContext);
 		}

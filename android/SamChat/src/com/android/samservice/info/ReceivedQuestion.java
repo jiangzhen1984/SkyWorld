@@ -3,21 +3,21 @@ package com.android.samservice.info;
 import java.io.Serializable;
 
 /*
-		id(primary) |question_id | question |contact user id | status | received time | canceled time | 
+		id(primary) |question_id | question |contact user id | status | response| received time | canceled time | 
 	*/
 public class ReceivedQuestion implements Serializable{
 	public static final int CANCEL = 0;
 	public static final int ACTIVE = 1;
 
-	public static final int NOT_SHOWN = 0;
-	public static final int SHOWN = 1;
+	public static final int NOT_RESPONSED = 0;
+	public static final int RESPONSED = 1;
 	
 	public long id;
 	public String question_id;
 	public String question;
 	public long contactuserid;
 	public int status;
-	public int shown;
+	public int response;
 	public long receivedtime;
 	public long canceledtime;
 	public String receivercellphone;
@@ -28,7 +28,7 @@ public class ReceivedQuestion implements Serializable{
 		question = null;
 		contactuserid = 0;
 		status = CANCEL;
-		shown = NOT_SHOWN;
+		response = NOT_RESPONSED;
 		receivedtime = 0;
 		canceledtime = 0;
 		receivercellphone = null;
@@ -73,12 +73,12 @@ public class ReceivedQuestion implements Serializable{
 		this.status = status;
 	}
 
-	public int getshown(){
-		return shown;
+	public int getresponse(){
+		return response;
 	}
 
-	public void setshown(int shown){
-		this.shown = shown;
+	public void setresponse(int response){
+		this.response = response;
 	}
 
 	public long getreceivedtime(){

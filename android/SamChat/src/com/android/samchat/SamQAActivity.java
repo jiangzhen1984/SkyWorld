@@ -35,9 +35,6 @@ public class SamQAActivity extends Activity {
 	private final String TAG = "SamQAActivity";
 	static public final String ACTIVITY_NAME="com.android.samchat.SamQAActivity";
 	
-	static private int SHOW_ITEMS_EACH_FLUSH=15;
-	private int read_item_num;
-
 	private Context mContext;
 	private ImageView mBack;
 	private ListView mQuestionList;
@@ -48,8 +45,6 @@ public class SamQAActivity extends Activity {
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
-		read_item_num = SHOW_ITEMS_EACH_FLUSH;
-	
 		setContentView(R.layout.activity_qa);
 
 		mBack =  (ImageView) findViewById(R.id.back);
@@ -74,8 +69,8 @@ public class SamQAActivity extends Activity {
 				List<ReceivedQuestion> array = mAdpater.getReceivedQuestionArray();
 				ReceivedQuestion question = array.get(arg2);
 				/*update Received Question Status*/
-				question.setshown(ReceivedQuestion.SHOWN);
-				SamService.getInstance().getDao().add_update_ReceivedQuestion_db(question);
+				//question.setshown(ReceivedQuestion.SHOWN);
+				//SamService.getInstance().getDao().add_update_ReceivedQuestion_db(question);
 				
 				Intent intent = new Intent();
 				intent.setClass(SamQAActivity.this,SamQADetailActivity.class);
@@ -104,7 +99,7 @@ public class SamQAActivity extends Activity {
 		super.onResume();
 
 		/*query newest question*/
-		List<ReceivedQuestion> array = SamService.getInstance().getDao().query_RecentReceivedQuestion_db(read_item_num);
+		List<ReceivedQuestion> array = SamService.getInstance().getDao().query_RecentReceivedQuestion_db();
 		mAdpater.setReceivedQuestionArray(array);
 		mAdpater.setCount(array.size());
 		mAdpater.notifyDataSetChanged();

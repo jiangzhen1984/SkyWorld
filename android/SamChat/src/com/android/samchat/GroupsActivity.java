@@ -40,7 +40,7 @@ public class GroupsActivity extends Activity {
 	private InputMethodManager inputMethodManager;
 	public static GroupsActivity instance;
 	private View progressBar;
-	private SwipeRefreshLayout swipeRefreshLayout;
+	private AutoNormalSwipeRefreshLayout swipeRefreshLayout;
 	private ImageView mBack;
 	private GroupRemoveListener groupRemoveListener;
 	
@@ -81,7 +81,7 @@ public class GroupsActivity extends Activity {
 		groupAdapter = new GroupAdapter(this, 1, grouplist);
 		groupListView.setAdapter(groupAdapter);
 		
-		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+		swipeRefreshLayout = (AutoNormalSwipeRefreshLayout) findViewById(R.id.swipe_layout);
 		swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
 		                R.color.holo_orange_light, R.color.holo_red_light);
 		//ÏÂÀ­Ë¢ÐÂ
@@ -146,25 +146,27 @@ public class GroupsActivity extends Activity {
 
 		groupRemoveListener = new GroupRemoveListener();
 		EMGroupManager.getInstance().addGroupChangeListener(groupRemoveListener);
+
+		swipeRefreshLayout.autoRefresh(); 
 		
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		swipeRefreshLayout.autoRefresh();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		refresh();
 	}
 	
 	private void refresh(){
-	    grouplist = EMGroupManager.getInstance().getAllGroups();
-        groupAdapter = new GroupAdapter(this, 1, grouplist);
-        groupListView.setAdapter(groupAdapter);
-        groupAdapter.notifyDataSetChanged();
+		grouplist = EMGroupManager.getInstance().getAllGroups();
+		groupAdapter = new GroupAdapter(this, 1, grouplist);
+		groupListView.setAdapter(groupAdapter);
+		groupAdapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -174,55 +176,92 @@ public class GroupsActivity extends Activity {
 	}
 
 
-     private class GroupRemoveListener extends EaseGroupRemoveListener {
+	private class GroupRemoveListener extends EaseGroupRemoveListener {
 
-        @Override
-    public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
-       handler.sendEmptyMessage(0);
-        
-    }
-
-    @Override
-    public void onApplicationReceived(String groupId, String groupName, String applyer, String reason) {
-        handler.sendEmptyMessage(0);
-        
-    }
-
-    @Override
-    public void onApplicationAccept(String groupId, String groupName, String accepter) {
-       handler.sendEmptyMessage(0);
-        
-    }
-
-    @Override
-    public void onApplicationDeclined(String groupId, String groupName, String decliner, String reason) {
-       handler.sendEmptyMessage(0);
-        
-    }
-
-    @Override
-    public void onInvitationAccpted(String groupId, String inviter, String reason) {
-        handler.sendEmptyMessage(0);
-        
-    }
-
-    @Override
-    public void onInvitationDeclined(String groupId, String invitee, String reason) {
-      handler.sendEmptyMessage(0);
-        
-    }
 	@Override
-        public void onUserRemoved(final String groupId, String groupName) {
-             handler.sendEmptyMessage(0);
-        }
+	public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
+		//handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+	}
 
-        @Override
-        public void onGroupDestroy(final String groupId, String groupName) {
-            handler.sendEmptyMessage(0);
-        }
+	@Override
+	public void onApplicationReceived(String groupId, String groupName, String applyer, String reason) {
+		//handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+	}
+
+	@Override
+	public void onApplicationAccept(String groupId, String groupName, String accepter) {
+		//handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+        
+	}
+
+	@Override
+	public void onApplicationDeclined(String groupId, String groupName, String decliner, String reason) {
+		//handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+	}
+
+	@Override
+	public void onInvitationAccpted(String groupId, String inviter, String reason) {
+		//handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+	}
+
+	@Override
+	public void onInvitationDeclined(String groupId, String invitee, String reason) {
+		//handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+	}
+
+	@Override
+	public void onUserRemoved(final String groupId, String groupName) {
+             //handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+	}
+
+	@Override
+	public void onGroupDestroy(final String groupId, String groupName) {
+		//handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+	}
 
     }
 
 	
 
 }
+

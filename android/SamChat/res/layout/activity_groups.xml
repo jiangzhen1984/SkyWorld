@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
         
-         <android.support.v4.widget.SwipeRefreshLayout
+         <com.android.samchat.AutoNormalSwipeRefreshLayout
             android:id="@+id/swipe_layout"
             android:layout_height="match_parent" 
             android:layout_width="match_parent">
@@ -51,7 +51,7 @@
 		        android:dividerHeight="1px"
 		        android:fastScrollAlwaysVisible="false"
 		        android:fastScrollEnabled="false" />
-		 </android.support.v4.widget.SwipeRefreshLayout>
+		 </com.android.samchat.AutoNormalSwipeRefreshLayout>
 		 
     </FrameLayout>
 

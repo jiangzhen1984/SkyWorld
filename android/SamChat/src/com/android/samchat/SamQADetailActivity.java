@@ -131,6 +131,8 @@ public class SamQADetailActivity extends Activity {
 
 		initFromIntent(getIntent());
 
+		updateBtnQuestionAction();
+
 	}
 
 	private void answerQuestion(){
@@ -144,9 +146,9 @@ public class SamQADetailActivity extends Activity {
 		boolean clickable = question_action_enable;
 		if(clickable){
 			mQuestion_action.setTextColor(Color.rgb(255, 255, 255));
-			mQuestion_action_layout.setBackgroundColor(Color.rgb(0xFF, 0x66, 0x00));
+			mQuestion_action_layout.setBackgroundColor(Color.rgb(0x00, 0x96, 0x88));
 		}else{
-			mQuestion_action.setTextColor(Color.rgb(0xFF, 0x66, 0x00));
+			mQuestion_action.setTextColor(Color.rgb(0x00, 0x96, 0x88));
 			mQuestion_action_layout.setBackgroundColor(Color.rgb(0xBF, 0xBF, 0xBF));
 		}
 		

@@ -3,21 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#FFFFFF">
+    android:background="@color/default_bg">
     
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg">
+        android:background="@color/common_bg_green">
 
         <ImageView
     	    android:id="@+id/back"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:layout_marginLeft = "5dp"
+        	android:layout_marginLeft = "@dimen/title_left_margin"
         	android:contentDescription="@null"
         	android:layout_centerVertical="true"
-        	android:src="@drawable/em_mm_title_back"/>
+        	android:src="@drawable/back"/>
 
         
          <LinearLayout

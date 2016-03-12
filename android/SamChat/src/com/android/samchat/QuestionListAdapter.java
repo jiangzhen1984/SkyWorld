@@ -76,12 +76,10 @@ public class QuestionListAdapter extends BaseAdapter{
 			holder = new ViewHolder();
 			if(viewType == TYPE_TEXT){
 				convertView = mInflater.inflate(R.layout.question_list_item,parent,false);
-				holder.userimage_relativelayout = (RelativeLayout) convertView.findViewById(R.id.userimage_relativelayout);
-				holder.userimage = (ImageView) convertView.findViewById(R.id.userimage);
-				holder.username = (TextView)convertView.findViewById(R.id.username);
+				holder.image_relativelayout = (RelativeLayout) convertView.findViewById(R.id.image_relativelayout);
+				holder.image = (ImageView) convertView.findViewById(R.id.image);
+				holder.question_flag= (TextView)convertView.findViewById(R.id.question_flag);
 				holder.question = (TextView)convertView.findViewById(R.id.question);
-				holder.badge = new BadgeView(mContext,holder.userimage_relativelayout);
-				holder.badge.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
 			}
 			
 			convertView.setTag(holder);
@@ -92,7 +90,7 @@ public class QuestionListAdapter extends BaseAdapter{
 		switch(viewType){
 		case TYPE_TEXT:
 			ReceivedQuestion question = receivedQuestionArray.get(position);
-			if(holder.user == null){
+			/*if(holder.user == null){
 				holder.user = SamService.getInstance().getDao().query_ContactUser_db(question.getcontactuserid());
 			}
 
@@ -110,17 +108,17 @@ public class QuestionListAdapter extends BaseAdapter{
 						holder.userimage.setImageBitmap(bp);
 					}
 				}
-			}
+			}*/
 			
-			holder.username.setText(holder.user.getusername());
 			holder.question.setText(question.question);
-			if(question.shown == ReceivedQuestion.NOT_SHOWN){
-				holder.badge.setText("1");
-				holder.badge.show();
+			if(question.response== ReceivedQuestion.NOT_RESPONSED){
+				holder.image.setImageResource(R.drawable.samqa_unresp);
+				holder.question_flag.setText(mContext.getString(R.string.unresponsed_question));
+				holder.question_flag.setTextColor(mContext.getResources().getColor(R.color.orange));
 			}else{
-				if(holder.badge.isShown()){
-					holder.badge.hide();
-				}
+				holder.image.setImageResource(R.drawable.samqa);
+				holder.question_flag.setText(mContext.getString(R.string.responsed_question));
+				holder.question_flag.setTextColor(mContext.getResources().getColor(R.color.common_bg_green));
 			}
 			
 			
@@ -143,12 +141,11 @@ public class QuestionListAdapter extends BaseAdapter{
 	
 	
 	public static class ViewHolder{
-		public RelativeLayout userimage_relativelayout;
-		public ImageView userimage;
-		public TextView username;
+		public RelativeLayout image_relativelayout;
+		public ImageView image;
+		public TextView question_flag;
 		public TextView question;
-		public BadgeView badge;
-		public ContactUser user;
+		//public ContactUser user;
 	}
 	
 	

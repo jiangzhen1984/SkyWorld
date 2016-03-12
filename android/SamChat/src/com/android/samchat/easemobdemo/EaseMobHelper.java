@@ -238,12 +238,12 @@ public class EaseMobHelper {
         
     }
 
- 	private void updateInviteMsgStatus(String username){
+ 	public void updateInviteMsgStatus(String username,int status){
 		String receiver = SamService.getInstance().get_current_user().geteasemob_username();
 		List<InviteMessageRecord> msgs = inviteMessgeDao.getMessagesList(receiver,username);
 		for(InviteMessageRecord msg: msgs){
 			ContentValues values = new ContentValues();
-			values.put("status",InviteMessageStatus.AGREED.ordinal());
+			values.put("status",status);//InviteMessageStatus.AGREED.ordinal());
 			inviteMessgeDao.updateMessage(msg.getid(),values);
 		}
 	}
@@ -293,7 +293,7 @@ public class EaseMobHelper {
                     userfDao.saveContact(user);
                 }
 
-		  updateInviteMsgStatus(username);
+		   updateInviteMsgStatus(username,InviteMessageStatus.AGREED.ordinal());
                 toAddUsers.put(username, user);
             }
             localUsers.putAll(toAddUsers);
@@ -302,6 +302,7 @@ public class EaseMobHelper {
 
         @Override
         public void onContactDeleted(final List<String> usernameList) {
+            SamLog.e(TAG,"onContactDeleted");
             Map<String, EaseUser> localUsers = EaseMobHelper.getInstance().getContactList();
             for (String username : usernameList) {
                 localUsers.remove(username);
@@ -317,23 +318,36 @@ public class EaseMobHelper {
 		List<InviteMessageRecord> msgs = inviteMessgeDao.getMessagesList();
 
 		for (InviteMessageRecord inviteMessage : msgs) {
-			if (inviteMessage.getsender().equals(username)) {
-				inviteMessgeDao.deleteMessage(username);
+			if (inviteMessage.getsender().equals(username)){
+				if(inviteMessage.getstatus()==InviteMessageStatus.BEINVITEED.ordinal()){
+					if(reason.equals(inviteMessage.getreason())) {
+						return;
+					}else{
+						inviteMessgeDao.deleteMessage(username);
+					}
+				}else if(inviteMessage.getstatus()==InviteMessageStatus.AGREED.ordinal()){
+					inviteMessgeDao.deleteMessage(username);
+				}else if(inviteMessage.getstatus()==InviteMessageStatus.REFUSED.ordinal()){
+					inviteMessgeDao.deleteMessage(username);
+				}
 			}
 		}
-
-		InviteMessageRecord msg = new InviteMessageRecord();
-		msg.setreceiver(SamService.getInstance().get_current_user().geteasemob_username());
-		msg.setsender(username);
-		msg.settime(System.currentTimeMillis());
-		msg.setreason(reason);
-		msg.setstatus(InviteMessageStatus.BEINVITEED.ordinal());
-		notifyNewIviteMessage(msg);
-
+		
+		final String uname = username;
+		final String why = reason;
+		
 		//download inviter infor
 		SamService.getInstance().query_user_info_from_server(username,new SMCallBack(){
 			@Override
 			public void onSuccess(Object obj) {
+				InviteMessageRecord msg = new InviteMessageRecord();
+				msg.setreceiver(SamService.getInstance().get_current_user().geteasemob_username());
+				msg.setsender(uname);
+				msg.settime(System.currentTimeMillis());
+				msg.setreason(why);
+				msg.setstatus(InviteMessageStatus.BEINVITEED.ordinal());
+				notifyNewIviteMessage(msg);
+				
 				Intent newIntent = new Intent(Constants.ACTION_CONTACT_CHANAGED);
 				newIntent.putExtra("isInvite", true);
 				broadcastManager.sendBroadcast(newIntent);		
@@ -341,16 +355,16 @@ public class EaseMobHelper {
 
 			@Override
 			public void onFailed(int code) {
-				Intent newIntent = new Intent(Constants.ACTION_CONTACT_CHANAGED);
-				newIntent.putExtra("isInvite", true);
-				broadcastManager.sendBroadcast(newIntent);		
+				//Intent newIntent = new Intent(Constants.ACTION_CONTACT_CHANAGED);
+				//newIntent.putExtra("isInvite", true);
+				//broadcastManager.sendBroadcast(newIntent);		
 			}
 
 			@Override
 			public void onError(int code) {
-				Intent newIntent = new Intent(Constants.ACTION_CONTACT_CHANAGED);
-				newIntent.putExtra("isInvite", true);
-				broadcastManager.sendBroadcast(newIntent);		
+				//Intent newIntent = new Intent(Constants.ACTION_CONTACT_CHANAGED);
+				//newIntent.putExtra("isInvite", true);
+				//broadcastManager.sendBroadcast(newIntent);		
 			}
 
 		});
@@ -392,6 +406,10 @@ public class EaseMobHelper {
 
         //getNotifier().viberateAndPlayTone(null);
     }
+
+    public InviteMessgeDao getInviteMsgDao(){
+		return inviteMessgeDao;
+    }
     
     /**
      * 璐﹀彿鍦ㄥ埆鐨勮澶囩櫥褰�
@@ -428,8 +446,23 @@ public class EaseMobHelper {
 		}
 
 		user = getContactList().get(username);
-
-		return user;
+		if(user!=null){
+			return user;
+		}else{
+			//this user is not in my friend list
+			ContactUser cuser = SamService.getInstance().getDao().query_ContactUser_db(username);
+			if(cuser == null){
+				return null;
+			}else{
+				user = new EaseUser(cuser.geteasemob_username());
+				user.setNick(cuser.getusername());
+				AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+				if(rd!=null && rd.getavatarname()!=null){
+					user.setAvatar(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname());
+				}
+				return user;
+			}
+		}
 	}
 	
     
@@ -587,6 +620,8 @@ public class EaseMobHelper {
 	private void syncFetchContactInfoFromServer(List<String> usernames){
 		if(usernames == null || usernames.size()==0)
 			return;
+
+		SamLog.e(TAG,"syncFetchContactInfoFromServer");
 		
 		query_user_info_from_server(usernames);
 
@@ -616,6 +651,8 @@ public class EaseMobHelper {
                    if(!EMChat.getInstance().isLoggedIn()){
                        return;
                    }
+
+		      SamLog.e(TAG,"before syncFetchContactInfoFromServer");
 		      syncFetchContactInfoFromServer(usernames);
                    Map<String, EaseUser> userlist = new HashMap<String, EaseUser>();
 			for (String username : usernames) {

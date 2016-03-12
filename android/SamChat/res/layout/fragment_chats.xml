@@ -48,12 +48,43 @@
     	
         <TextView
             	android:id="@+id/samQAtxt"
-        		android:layout_width="wrap_content"
+        		android:layout_width="0dp"
         		android:layout_height="wrap_content"
+        		android:layout_weight="1"
         		android:layout_marginLeft = "5dp"
         		android:textSize="18sp"
         		android:text="@string/sam_question_and_answer"
         		android:layout_gravity="center_vertical"/>
+        
+        <RelativeLayout
+            android:id="@+id/un_read_question_num_layout"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginRight="10dp"
+        	android:layout_gravity="center_vertical"
+        	android:visibility="invisible">
+        	
+            <ImageView
+            	android:layout_width="20dp"
+        		android:layout_height="20dp"
+        		android:layout_centerInParent="true"
+        		android:gravity="center"
+            	android:contentDescription="@null"
+            	android:src="@drawable/reminder_point_bg"/>
+            <TextView
+            	android:id="@+id/un_read_question_num"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:textSize="12sp"
+        		android:layout_centerInParent="true"
+        		android:gravity="center"
+        		android:textColor="@color/common_white"/>
+       
+        </RelativeLayout> 
+        
+        
+        
+        
         
         
 

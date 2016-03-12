@@ -190,9 +190,9 @@ public class SamDBDao{
 		}
 	}
 
-	public List<ReceivedQuestion> query_RecentReceivedQuestion_db(long num){
+	public List<ReceivedQuestion> query_RecentReceivedQuestion_db(){
 		synchronized(dbLock){
-			return dbHandle.queryRecentReceivedQuestion(num,SamService.getInstance().get_current_user().getphonenumber());
+			return dbHandle.queryRecentReceivedQuestion(SamService.getInstance().get_current_user().getphonenumber());
 		}
 	}
 

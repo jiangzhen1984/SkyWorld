@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -46,6 +47,12 @@ public abstract class IndicatorFragmentActivity extends FragmentActivity impleme
 
     public TitleIndicator getIndicator() {
         return mIndicator;
+    }
+
+    public void updateIndicatorReminderIcon(int postion, boolean shown){
+        if(mIndicator!=null){
+            mIndicator.showReminder(postion, shown);
+	 }
     }
 
     public class MyAdapter extends FragmentPagerAdapter {

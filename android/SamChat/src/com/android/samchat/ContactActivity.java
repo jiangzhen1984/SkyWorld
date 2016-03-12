@@ -29,9 +29,7 @@ public class ContactActivity extends FragmentActivity
 	private final static String TAG="ContactActivity";
 	
 	private SamContact_Fragment mContactFragment;
-	private BroadcastReceiver broadcastReceiver;
-	private LocalBroadcastManager broadcastManager;
-
+	
 	@Override  
 	protected void onCreate(Bundle savedInstanceState)  
 	{  
@@ -52,15 +50,13 @@ public class ContactActivity extends FragmentActivity
 		FragmentTransaction tx = fm.beginTransaction();  
 		tx.add(R.id.id_content, (Fragment)mContactFragment,"CONTACTS");
 		tx.commit();
-		
-		registerBroadcastReceiver();
+
 	} 
 
 
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();
-		unregisterBroadcastReceiver();
 		
 	}
 	
@@ -69,47 +65,9 @@ public class ContactActivity extends FragmentActivity
 		finish();
 	}
 
-	private void registerBroadcastReceiver() {
-		broadcastManager = LocalBroadcastManager.getInstance(this);
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(Constants.ACTION_CONTACT_CHANAGED);
-
-		broadcastReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				boolean isInvite = intent.getBooleanExtra("isInvite",false);
-				if(isInvite){
-					updateBadgeForSamContactNewFriend();
-				}else{
-					SamLog.e(TAG,"update contacts");
-					mContactFragment.setContactsMap(EaseMobHelper.getInstance().getContactList());
-					mContactFragment.refresh();
-				}
-
-			}
-		};
-		
-		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
-	}
-		
-
-	
-	private void unregisterBroadcastReceiver(){
-	    broadcastManager.unregisterReceiver(broadcastReceiver);
-	}
-
 	
 
-	private void updateBadgeForSamContactNewFriend(){
-		mContactFragment.addInviteMsgNum();
-		if(mContactFragment.mHandler!=null){
-			Message msg = mContactFragment.mHandler.obtainMessage(SamContact_Fragment.MSG_UPDATE_BAGE_NEW_FRIEND,null);
-			 mContactFragment.mHandler.sendMessage(msg);
-			 SamLog.e(TAG,"updateBadgeForSamContactNewFriend");
-		}
-
-	}
-
+	
 
 	private Map<String, EaseUser> getContacts(){
 		Map<String, EaseUser> contacts = EaseMobHelper.getInstance().getContactList();

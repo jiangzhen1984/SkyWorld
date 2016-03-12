@@ -4,14 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
     
-    <ImageView
+    <com.easemob.easeui.ui.CircleImageView
        android:id="@+id/userimg"
        android:layout_width="43dp"
        android:layout_height="43dp"
+       android:layout_marginLeft="5dp"
+       android:layout_marginTop="5dp"
+       android:layout_marginBottom="5dp"       
        android:layout_gravity="center_vertical"
-       android:contentDescription="@null"
-       android:src="@drawable/samqa"
-       android:scaleType="fitXY"/>
+       android:contentDescription="@null"/>
     
     <LinearLayout 
       android:layout_width="0dp"
@@ -31,8 +32,7 @@
     	     android:id="@+id/reason"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:textSize="15sp"
-             android:text="@string/request_add_friends"/>
+             android:textSize="14sp"/>
 
 	</LinearLayout>
 	
@@ -51,8 +51,8 @@
       android:id="@+id/action_refused_layout"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginRight="25dp"
-      android:background="#FF6600"
+      android:layout_marginRight="15dp"
+      android:background="@color/common_bg_green"
       android:layout_gravity="center_vertical"
       android:focusable="false">
 	    <TextView
@@ -62,9 +62,9 @@
        	 	android:layout_marginRight="5dp"
        	 	android:layout_marginTop="5dp"
        	 	android:layout_marginBottom="5dp"
-       	 	android:textColor="#FFFFFF"
-       	 	android:textSize="15sp"
-       	 	android:text="@string/refused"/>
+       	 	android:textColor="@color/common_white"
+       	 	android:textSize="14sp"
+       	 	android:text="@string/refuse"/>
 	</LinearLayout>
 	
     <LinearLayout 
@@ -72,7 +72,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginRight="10dp"
-      android:background="#FF6600"
+      android:background="@color/common_bg_green"
       android:layout_gravity="center_vertical"
       android:focusable="false">
 	    <TextView
@@ -82,9 +82,9 @@
        	 	android:layout_marginRight="5dp"
        	 	android:layout_marginTop="5dp"
        	 	android:layout_marginBottom="5dp"
-       	 	android:textColor="#FFFFFF"
-       	 	android:textSize="15sp"
-       	 	android:text="@string/accepted"/>
+       	 	android:textColor="@color/common_white"
+       	 	android:textSize="14sp"
+       	 	android:text="@string/accept"/>
 	</LinearLayout>
 	
     

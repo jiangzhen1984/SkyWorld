@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/default_bg">
+    android:background="@color/default_bg"
+    android:orientation="vertical">
+    
+    <ImageView 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" 
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/samchat_logo"
+        android:contentDescription="@null"/>
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="0dp"
+        android:layout_weight="0.5"  
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_centerInParent="true">
+        android:layout_marginRight="20dp">
         
         <EditText
             android:id="@+id/username"
@@ -107,4 +119,4 @@
      
      </RelativeLayout>   
 	 
-</RelativeLayout>
+</LinearLayout>

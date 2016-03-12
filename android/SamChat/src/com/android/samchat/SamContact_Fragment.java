@@ -15,10 +15,12 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,21 +33,59 @@ import android.widget.Toast;
 public class SamContact_Fragment extends EaseContactListFragment{
 
 	static final String TAG = "SamContact_Fragment";
-	public static final int MSG_UPDATE_BAGE_NEW_FRIEND = 1;
 
-	private static boolean need_show = true;
 	private static int contact_invite_msg_num=0;
 
 	private View rootView;
-	private BadgeView unread_new_friend_bage;
 	private LinearLayout mNewFriend_layout;
 	private RelativeLayout mNewFriend_relativelayout;
 	//private TextView mNewFriendtxt;
+
+	private RelativeLayout mUn_read_new_friend_num_layout;
+	private TextView mUn_read_new_friend_num;
 
 	private LinearLayout mGroupchat_layout;
 
 	ContactSyncListener contactSyncListener;
 	BlackListSyncListener blackListSyncListener;
+
+	private boolean isBroadcastRegistered = false;
+	private BroadcastReceiver broadcastReceiver;
+	private LocalBroadcastManager broadcastManager;
+
+	private boolean isNewFriendLaunched = false;
+
+	private void registerBroadcastReceiver() {
+		broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Constants.ACTION_CONTACT_CHANAGED);
+
+		broadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				boolean isInvite = intent.getBooleanExtra("isInvite",false);
+				if(isInvite){
+					if(!isNewFriendLaunched){
+						contact_invite_msg_num++;
+						showBage();
+					}
+				}else{
+					SamLog.e(TAG,"update contacts");
+					setContactsMap(EaseMobHelper.getInstance().getContactList());
+					refresh();
+				}
+
+			}
+		};
+		
+		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+	}
+		
+
+	
+	private void unregisterBroadcastReceiver(){
+	    broadcastManager.unregisterReceiver(broadcastReceiver);
+	}
 
 	@Override
 	protected void setUpView() {
@@ -70,56 +110,49 @@ public class SamContact_Fragment extends EaseContactListFragment{
 			mNewFriend_relativelayout = (RelativeLayout)rootView.findViewById(R.id.newFriend_relativelayout);
 			//mNewFriendtxt = (TextView)rootView.findViewById(R.id.newFriendtxt);
 
+			mUn_read_new_friend_num_layout = (RelativeLayout)rootView.findViewById(R.id.un_read_new_friend_num_layout);
+			mUn_read_new_friend_num = (TextView)rootView.findViewById(R.id.un_read_new_friend_num);
+
 			mGroupchat_layout = (LinearLayout)rootView.findViewById(R.id.groupchat_layout);
 			
-			unread_new_friend_bage = new BadgeView(getActivity().getBaseContext(), mNewFriend_relativelayout);
-			unread_new_friend_bage.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
-			rootView.setTag(unread_new_friend_bage);
-
 			mNewFriend_layout.setOnClickListener(new OnClickListener(){
 		    		@Override
 		    		public void onClick(View arg0) {
-		    			hideBage();
+					isNewFriendLaunched = true;
+					contact_invite_msg_num = 0;
+					hideBage();
 		    			launchNewFriendActivity();
 				}
-		    });
+			});
 
 			mGroupchat_layout.setOnClickListener(new OnClickListener(){
 		    		@Override
 		    		public void onClick(View arg0) {
 		    			launchGroupsActivity();
 				}
-		    });
+			});
+
+			if(contact_invite_msg_num!=0){
+				showBage();
+			}
 			
 		}
 		return rootView;
 	}
 
 	private void hideBage(){
+		mUn_read_new_friend_num_layout.setVisibility(View.INVISIBLE);
 		
-		if(rootView!=null){
-			BadgeView badge = (BadgeView)rootView.getTag();
-			if(badge.isShown()){
-				SamLog.e(TAG,"hideBage!");
-				badge.hide();
-			}
-		}
-
 	}
 
 	private void showBage(){
-		if(rootView!=null && need_show){
-			BadgeView badge = (BadgeView)rootView.getTag();
-			SamLog.e(TAG,"showBage!");
-			badge.setText(""+contact_invite_msg_num);
-			badge.show();
-		}
-
+		if(contact_invite_msg_num == 0)
+			return;
+		
+		mUn_read_new_friend_num.setText(""+contact_invite_msg_num);
+		mUn_read_new_friend_num_layout.setVisibility(View.VISIBLE);
 	}
 
-	public void addInviteMsgNum(){
-		contact_invite_msg_num++;
-	}
 
 
 	private void launchNewFriendActivity()
@@ -128,7 +161,6 @@ public class SamContact_Fragment extends EaseContactListFragment{
 		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
 		newIntent.setFlags(intentFlags);
 		SamLog.e(TAG,"launchNewFriendActivity!");
-		need_show = false;
 		startActivityForResult(newIntent,1);
 	}
 
@@ -141,19 +173,14 @@ public class SamContact_Fragment extends EaseContactListFragment{
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
 		if(requestCode == 1){
-			if(resultCode == 1){ //OK
-				SamLog.e(TAG,"nees show true");
-				need_show = true;
-				contact_invite_msg_num = 0;
-			}else{
-				SamLog.e(TAG,"nees show false");
-			}
+			isNewFriendLaunched = false;
 		}
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		contact_invite_msg_num = MainActivity.sInviteNum;
 		SamLog.i(TAG, "onCreated");
 	}
 	
@@ -197,6 +224,11 @@ public class SamContact_Fragment extends EaseContactListFragment{
 			setContactsMap(EaseMobHelper.getInstance().getContactList());
 			SamLog.i(TAG, "connectionListener is null, so get contactlist:"+EaseMobHelper.getInstance().getContactList().size());
 		}
+
+		if(!isBroadcastRegistered){
+			registerBroadcastReceiver();
+		}
+		
 		super.onActivityCreated(savedInstanceState);
 		SamLog.i(TAG, "onActivityCreated");
 		
@@ -237,23 +269,15 @@ public class SamContact_Fragment extends EaseContactListFragment{
 			blackListSyncListener = null;
 		}
 
+		if(isBroadcastRegistered){
+			unregisterBroadcastReceiver();
+			isBroadcastRegistered = false;
+		}
+
 		
     }
 
 	
-	public Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			switch(msg.what){
-			case MSG_UPDATE_BAGE_NEW_FRIEND:
-				SamLog.e(TAG,"MSG_UPDATE_BAGE_NEW_FRIEND!");
-				showBage();
-				break;
-			}
-		}
-	};
-
-
 	class ContactSyncListener implements DataSyncListener{
 		@Override
 		public void onSyncComplete(final boolean success) {

@@ -67,7 +67,7 @@ public class SamChatFragment extends EaseChatFragment implements EaseChatFragmen
         if (chatType == Constants.CHATTYPE_GROUP) {
             EMGroup group = EMGroupManager.getInstance().getGroup(toChatUsername);
             if (group == null) {
-                Toast.makeText(getActivity(), R.string.gorup_not_found, 0).show();
+                Toast.makeText(getActivity(), R.string.gorup_not_found, Toast.LENGTH_SHORT).show();
                 return;
             }
             startActivityForResult(
@@ -75,6 +75,19 @@ public class SamChatFragment extends EaseChatFragment implements EaseChatFragmen
                     0);
         }
     }
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(chatType != Constants.CHATTYPE_GROUP){
+			return;
+		}
+		
+		if(requestCode == 0){
+			updateGroupChatName();
+		}else{
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
 
     @Override
     public void onAvatarClick(String username) {

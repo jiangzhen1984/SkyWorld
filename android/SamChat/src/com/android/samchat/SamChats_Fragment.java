@@ -32,13 +32,11 @@ import com.easemob.easeui.ui.EaseConversationListFragment;
 public class SamChats_Fragment extends EaseConversationListFragment {
 
 	static final String TAG = "SamChats_Fragment";
-	public static final String HIDE_SAMCHATS_REDPOINT = "com.android.sam.hidesrp";
-	public static final String SHOW_SAMCHATS_REDPOINT = "com.android.sam.showsrp";
 	public static final int MSG_QUESTION_RECEIVED = 1;
 	public static final int MSG_QUESTION_CANCEL = 2;
 	public static final int MSG_ANSWER_SEND_CALLBACK = 3;
 
-	private static boolean need_show = true;
+	private boolean isQAActivityLaunched = false;
 
 	private BadgeView unread_question_bage;
 	static int i = 0;
@@ -46,26 +44,35 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 	private SamProcessDialog mDialog;
 	private LinearLayout mSamQA_layout;
 	private RelativeLayout mSamQA_relativelayout;
+	private RelativeLayout mUn_read_question_num_layout;
+	private TextView mUn_read_question_num;
 	private TextView mSamQAtxt;
+	
 
 	private LinearLayout mSamFriendGroup_layout;
 	private RelativeLayout mSamFriendGroup_relativelayout;
 
 	private QuestionInfo question;
 
+	private int un_read_question_num = 0;
+
 	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		SamLog.e(TAG,"onCreateView");
 		if(rootView == null){
 			SamLog.e(TAG,"run again");
 			mDialog = new SamProcessDialog();
+		
 			rootView = inflater.inflate(R.layout.fragment_chats, container,false);
 			mSamQA_layout = (LinearLayout)rootView.findViewById(R.id.samQA_layout);
 			mSamQA_relativelayout = (RelativeLayout)rootView.findViewById(R.id.samQA_relativelayout);
 			mSamQAtxt = (TextView)rootView.findViewById(R.id.samQAtxt);
-
+			mUn_read_question_num_layout = (RelativeLayout)rootView.findViewById(R.id.un_read_question_num_layout);
+			mUn_read_question_num = (TextView)rootView.findViewById(R.id.un_read_question_num);
+			
 			mSamFriendGroup_layout =  (LinearLayout)rootView.findViewById(R.id.samFriendGroup_layout);
 			mSamFriendGroup_relativelayout= (RelativeLayout)rootView.findViewById(R.id.samFriendGroup_relativelayout);
 			
@@ -165,48 +172,37 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 
 
 	private void update_questions_newq( ){
-		if(!need_show){
+		if(isQAActivityLaunched){
 			launchQAActivity();
 		}else{
+			un_read_question_num++;
 			showBage();
 		}
+
+		((MainActivity)getActivity()).updateReminderIcon(MainActivity.TAB_ID_SAMCHATS,true);
 	
 	}
 
 	private void update_questions_cancelq( ){
-		if(!need_show){
+		if(isQAActivityLaunched){
 			launchQAActivity();
 		}
 	
 	}
 	
 	public void showBage(){
-		if(rootView!=null){
-			BadgeView badge = (BadgeView)rootView.getTag();
-			if(!badge.isShown()){
-				badge.setText("...");
-				badge.show();
-			}
+		if(rootView!=null && mUn_read_question_num_layout!=null){
+			mUn_read_question_num.setText(""+un_read_question_num);
+			mUn_read_question_num_layout.setVisibility(View.VISIBLE);
 		}
 
-		Intent intent = new Intent();
-		intent.setAction(SamChats_Fragment.SHOW_SAMCHATS_REDPOINT);
-		getActivity().sendBroadcast(intent);
 	}
 	
 	public void hideBage(){
-		
-		if(rootView!=null){
-			BadgeView badge = (BadgeView)rootView.getTag();
-			if(badge.isShown()){
-				SamLog.e(TAG,"hideBage!");
-				badge.hide();
-			}
+		if(rootView!=null && mUn_read_question_num_layout!=null){
+			mUn_read_question_num_layout.setVisibility(View.INVISIBLE);
 		}
 
-		Intent intent = new Intent();
-		intent.setAction(SamChats_Fragment.HIDE_SAMCHATS_REDPOINT);
-		getActivity().sendBroadcast(intent);
 	}
 
 
@@ -215,8 +211,10 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 		Intent newIntent = new Intent(getActivity(),SamQAActivity.class);
 		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
 		newIntent.setFlags(intentFlags);
-		SamLog.e(TAG,"launchQAActivity!");
-		need_show = false;
+		SamLog.i(TAG,"launchQAActivity!");
+		isQAActivityLaunched = true;
+		un_read_question_num = 0;
+		hideBage();
 		startActivityForResult(newIntent,1);
 	}
 
@@ -232,12 +230,7 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
 		if(requestCode == 1){
-			if(resultCode == 1){ //OK
-				SamLog.e(TAG,"nees show true");
-				need_show = true;
-			}else{
-				SamLog.e(TAG,"nees show false");
-			}
+			isQAActivityLaunched = false;
 		}
 	}
 

@@ -83,6 +83,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/em_button_normal_shape"
+        android:visibility="gone"
         >
         <TextView 
             android:layout_marginLeft="5dp"
@@ -114,6 +115,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/em_button_normal_shape"
+        android:visibility="gone"
         >
         <TextView 
             android:layout_marginLeft="5dp"

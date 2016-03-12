@@ -5,14 +5,17 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.ClipboardManager;
@@ -113,6 +116,48 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
     private boolean isMessageListInited;
     protected MyItemClickListener extendMenuItemClickListener;
 
+    private boolean isBroadcastRegistered = false;
+    private BroadcastReceiver broadcastReceiver;
+    private LocalBroadcastManager broadcastManager;
+
+
+    private void registerBroadcastReceiver() {
+		broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(EaseConstant.GROUP_MEMBER_INFO_UPDATE);
+
+		broadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				String groupId = intent.getStringExtra("groupId");
+				if(groupId == null){
+					return;
+				}
+
+				if(chatType == EaseConstant.CHATTYPE_GROUP && groupId.equals(toChatUsername)){
+					 if(isMessageListInited){
+            					messageList.refresh();
+					 }
+				}
+			}
+		};
+		
+		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+	}
+
+	private void unregisterBroadcastReceiver(){
+	    broadcastManager.unregisterReceiver(broadcastReceiver);
+	}
+
+	public void updateGroupChatName(){
+		if (chatType == EaseConstant.CHATTYPE_GROUP) {
+			EMGroup group = EMGroupManager.getInstance().getGroup(toChatUsername);
+			if (group != null)
+				titleBar.setTitle(group.getGroupName());
+		}
+	}
+	
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.ease_fragment_chat, container, false);
@@ -128,6 +173,10 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
 
         super.onActivityCreated(savedInstanceState);
+
+        if(!isBroadcastRegistered){
+	     registerBroadcastReceiver();
+        }
     }
 
     /**
@@ -448,6 +497,11 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
         
         if(chatRoomChangeListener != null){
             EMChatManager.getInstance().removeChatRoomChangeListener(chatRoomChangeListener);
+        }
+
+        if(isBroadcastRegistered){
+            unregisterBroadcastReceiver();
+            isBroadcastRegistered = false;
         }
     }
 

@@ -136,9 +136,10 @@
     <string name="send_msg_failed">发送消息失败......</string>
     <string name="send_msg_succeed">发送消息成功 ......</string>
     <string name="request_add_friends">对方请求加为好友</string>
-    <string name="accepted">接受</string>
+    <string name="accept">接受</string>
     <string name="added">已添加</string>
-    <string name="refused">拒绝</string>
+    <string name="refused">已拒绝</string>
+    <string name="refuse">拒绝</string>
     
     <string name="groupchat">群聊</string>
     <string name="The_new_group_chat">新建群组</string>
@@ -192,5 +193,8 @@
     
     <string name="your_question">你的问题:</string> 
     <string name="my_answer">我的答案:</string> 
+    
+    <string name="responsed_question">已回复问题</string> 
+    <string name="unresponsed_question">未回复问题</string> 
 
 </resources>

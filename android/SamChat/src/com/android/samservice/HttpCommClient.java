@@ -866,6 +866,7 @@ public class HttpCommClient {
 			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
 			HttpResponse response = client.execute(requestGet);
 			statusCode = response.getStatusLine().getStatusCode();
+			SamLog.e(TAG,"statusCode:"+statusCode);
 			if(statusCode == HttpStatus.SC_OK ){
 				String rev = EntityUtils.toString(response.getEntity());
 				SamLog.i(TAG,"rev:"+rev);

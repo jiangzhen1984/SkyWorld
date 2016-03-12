@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/com.easemob.chatuidemo">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@color/common_bg_green"
         android:gravity="center_vertical" >
 
         <LinearLayout
+            android:id="@+id/back_layout"
             android:layout_width="45dp"
             android:layout_height="match_parent"
             android:background="@drawable/ease_common_tab_bg"
@@ -20,17 +21,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="9dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/em_mm_title_back" />
+                android:layout_marginLeft="@dimen/title_left_margin"
+                android:src="@drawable/back" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#ffffff"
+            android:layout_toRightOf="@id/back_layout"
+            android:layout_marginLeft="@dimen/title_left_margin"
+            android:layout_centerVertical="true"
+            android:textColor="@color/common_white"
             android:textSize="20sp" />
 
         <ProgressBar
@@ -45,7 +47,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f2f0eb" >
+        android:background="@color/default_bg" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -243,7 +245,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dip"
                 android:layout_marginTop="6dp"
-                android:background="@drawable/em_btn_bottom_selector" >
+                android:background="@drawable/em_btn_bottom_selector" 
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -287,7 +290,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"/>
             </RelativeLayout>
 
             <TextView

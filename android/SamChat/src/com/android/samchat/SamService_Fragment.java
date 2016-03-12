@@ -48,8 +48,9 @@ public class SamService_Fragment extends Fragment {
 	
 	public static final String CANCEL_QUESTION_CONFIRM = "com.android.samchat.cancel_question";
 
-	private final int REQUST_CODE_CONFIRM_CANCEL_QUESTION = 1;
-	private final int REQUST_CODE_BACK_FROM_SAMANSWERDETAILACTIVITY = 2;
+	/*SamServiceFragement confirm*/
+	public static final int REQUST_CODE_CONFIRM_CANCEL_QUESTION = 11;
+	public static final int REQUST_CODE_BACK_FROM_SAMANSWERDETAILACTIVITY = 12;
 	
 	private ListView mTopSearchList;
 	private Context mContext;
@@ -369,18 +370,17 @@ public class SamService_Fragment extends Fragment {
 
 	private void launchDialogActivityNeedConfirm(String title,String msg){
 		Intent newIntent = new Intent(CANCEL_QUESTION_CONFIRM);		
-		//int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK;// | Intent.FLAG_ACTIVITY_CLEAR_TOP;
 		//newIntent.setFlags(intentFlags);
 		newIntent.putExtra("title", title);
 		newIntent.putExtra("message", msg);
-		this.startActivityForResult(newIntent, REQUST_CODE_CONFIRM_CANCEL_QUESTION);
+		startActivityForResult(newIntent, REQUST_CODE_CONFIRM_CANCEL_QUESTION);
 	}
 
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
 		if(requestCode == REQUST_CODE_CONFIRM_CANCEL_QUESTION){
-			//SamLog.e(TAG,"result code:"+ resultCode);
+			SamLog.e(TAG,"result code:"+ resultCode);
 			if(resultCode == 1){ //OK
 				SamLog.e(TAG,"onActivityResult = 0");
 				cancel_question_confirm_ok();

@@ -88,7 +88,7 @@ public class NewGroupActivity extends Activity {
 						    EMGroupManager.getInstance().createPublicGroup(groupName, desc, members, true,200);
 						}else{
 							//创建不公开群
-						    EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, memberCheckbox.isChecked(),200);
+						    EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, true/*memberCheckbox.isChecked()*/,200);
 						}
 						runOnUiThread(new Runnable() {
 							public void run() {

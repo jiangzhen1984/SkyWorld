@@ -178,6 +178,7 @@
     <string name="Add_group_members_fail">Add group members fail:</string>
     <string name="Is_unblock">Unblocking group</string>
     <string name="remove_group_of">Remove group of shielding failure, please check the network or try again later</string>
+    <string name="owner_cannot_block_message">owner can not block the group message</string>
     <string name="group_is_blocked">Blocking the group..</string>
     <string name="group_of_shielding">Group of shielding failure, please check the network or try again later</string>
     <string name="sure_to_empty_this">Clear all messages?</string>

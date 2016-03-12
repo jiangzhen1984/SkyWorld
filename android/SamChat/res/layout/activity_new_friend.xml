@@ -105,8 +105,8 @@
 	 	android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:scrollbars="none"
-		android:divider="#009ACD" 
-		android:dividerHeight="2dp">
+		android:divider="@color/listview_gray_devider" 
+		android:dividerHeight="1dp">
 	</ListView>
    
 

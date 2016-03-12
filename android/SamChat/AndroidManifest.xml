@@ -159,7 +159,7 @@
         
         <activity
             android:name="com.android.samchat.NameCardActivity"
-            android:theme="@style/AppBaseTheme"  
+            android:theme="@android:style/Theme.Light.NoTitleBar" 
             android:screenOrientation="portrait">
             <intent-filter>
               
@@ -271,7 +271,13 @@
             android:name="com.android.samchat.ViewPagerScrollActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar">
-        </activity>
+          </activity>
+        
+          <activity
+            android:name="com.android.samchat.EditActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+          </activity>
          
          
          

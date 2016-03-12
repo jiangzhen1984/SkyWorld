@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	*/
 	public static final String TABLE_NAME_RECEIVED_ANSWER = "ReceivedAnswerTable";
 	/*
-	id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |receivercellphone
+	id(primary) |question_id | question |contact user id | status | response |received time | canceled time |receivercellphone
 	*/
 
 	public static final String TABLE_NAME_RECEIVED_QUESTION = "ReceivedQuestionTable";
@@ -181,7 +181,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 	private void createReceivedQuestionTableForServicer(SQLiteDatabase db){
 	/*
-		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |receivercellphone
+		id(primary) |question_id | question |contact user id | status | response |received time | canceled time |receivercellphone
 	*/
 		StringBuffer sBuffer = new StringBuffer();
 		sBuffer.append("CREATE TABLE [" + TABLE_NAME_RECEIVED_QUESTION + "] (");
@@ -190,7 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		sBuffer.append("[question] TEXT,");
         	sBuffer.append("[contactuserid] INTEGER,");
 		sBuffer.append("[status] INTEGER, ");
-		sBuffer.append("[shown] INTEGER,");
+		sBuffer.append("[response] INTEGER,");
 		sBuffer.append("[receivedtime] INTEGER,");
 		sBuffer.append("[canceledtime] INTEGER,");
 		sBuffer.append("[receivercellphone] TEXT)");

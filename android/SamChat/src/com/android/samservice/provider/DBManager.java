@@ -438,14 +438,14 @@ public class DBManager
 	{
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION;
 		/*
-		id(primary) |question_id | question |contact user id | status | shown | received time | canceled time |receivercellphone
+		id(primary) |question_id | question |contact user id | status | response | received time | canceled time |receivercellphone
 		*/
 		ContentValues cv = new ContentValues();
 		cv.put("question_id",question.question_id);
 		cv.put("question",question.question);
 		cv.put("contactuserid",question.contactuserid);
 		cv.put("status",question.status );
-		cv.put("shown",question.shown );
+		cv.put("response",question.response );
 		cv.put("receivedtime",question.receivedtime );
 		cv.put("canceledtime",question.canceledtime );
 		cv.put("receivercellphone",question.receivercellphone );
@@ -458,14 +458,14 @@ public class DBManager
 	{
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION;
 		/*
-		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |receivercellphone
+		id(primary) |question_id | question |contact user id | status | response |received time | canceled time |receivercellphone
 		*/
 		ContentValues cv = new ContentValues();
 		cv.put("question_id",question.question_id);
 		cv.put("question",question.question);
 		cv.put("contactuserid",question.contactuserid);
 		cv.put("status",question.status );
-		cv.put("shown",question.shown );
+		cv.put("response",question.response );
 		cv.put("receivedtime",question.receivedtime );
 		cv.put("canceledtime",question.canceledtime );
 		cv.put("receivercellphone",question.receivercellphone );
@@ -480,7 +480,7 @@ public class DBManager
 	public ReceivedQuestion queryReceivedQuestion(String question_id){
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION ;
 		/*
-		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |receivercellphone
+		id(primary) |question_id | question |contact user id | status | response |received time | canceled time |receivercellphone
 		*/
 
 		ReceivedQuestion question = null;
@@ -493,7 +493,7 @@ public class DBManager
  			question.question = c.getString(c.getColumnIndex("question"));
 			question.contactuserid= c.getLong(c.getColumnIndex("contactuserid"));
 			question.status = c.getInt(c.getColumnIndex("status"));
-			question.shown = c.getInt(c.getColumnIndex("shown"));
+			question.response = c.getInt(c.getColumnIndex("response"));
 			question.receivedtime  = c.getLong(c.getColumnIndex("receivedtime"));
 			question.canceledtime =  c.getLong(c.getColumnIndex("canceledtime"));
 			question.receivercellphone = c.getString(c.getColumnIndex("receivercellphone"));
@@ -512,23 +512,17 @@ public class DBManager
 		return count;
 	}
 
-	public List<ReceivedQuestion> queryRecentReceivedQuestion(long num,String phonenumber){
+	public List<ReceivedQuestion> queryRecentReceivedQuestion(String phonenumber){
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION ;
-		long start_id = 1;
-		long count = fetchPlacesCount(table);
-		if(count <= num){
-			start_id = 1;
-		}else{
-			start_id = count - num + 1;
-		}
+		
 		/*
-		id(primary) |question_id | question |contact user id | status | shown |received time | canceled time |receivercellphone
+		id(primary) |question_id | question |contact user id | status | response |received time | canceled time |receivercellphone
 		*/
 
 		List<ReceivedQuestion> ReceivedQuestionArray = new ArrayList<ReceivedQuestion>();
 		ReceivedQuestion question = null;
 
-		Cursor c = db.query(table,null,"id>=? and receivercellphone=?",new String[]{""+start_id+"",phonenumber},null,null,null);
+		Cursor c = db.query(table,null,"receivercellphone=? and status=?",new String[]{phonenumber,""+ReceivedQuestion.ACTIVE},null,null,null);
 		while(c.moveToNext()){
 			question = new ReceivedQuestion();
 			question.id = c.getLong(c.getColumnIndex("id"));
@@ -536,7 +530,7 @@ public class DBManager
  			question.question = c.getString(c.getColumnIndex("question"));
 			question.contactuserid= c.getLong(c.getColumnIndex("contactuserid"));
 			question.status = c.getInt(c.getColumnIndex("status"));
-			question.shown = c.getInt(c.getColumnIndex("shown"));
+			question.response = c.getInt(c.getColumnIndex("response"));
 			question.receivedtime  = c.getLong(c.getColumnIndex("receivedtime"));
 			question.canceledtime =  c.getLong(c.getColumnIndex("canceledtime"));
 			question.receivercellphone = c.getString(c.getColumnIndex("receivercellphone"));
@@ -784,7 +778,7 @@ public class DBManager
 		String table = DatabaseHelper.TABLE_NAME_USER_FRIEND ;
 
 		/*
-			id(primary) |friend
+			id(primary) | friend
 		*/
 
 		List<UserFriendRecord> recordArray = new ArrayList<UserFriendRecord>();
@@ -808,7 +802,7 @@ public class DBManager
 		String table = DatabaseHelper.TABLE_NAME_USER_FRIEND ;
 
 		/*
-			id(primary) |friend
+			id(primary) | user | friend
 		*/
 
 		UserFriendRecord record = null;

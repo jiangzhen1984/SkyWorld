@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#FFFFFF"
+    android:background="@color/default_bg"
     android:scrollbars="none">
   <LinearLayout
         android:layout_width="match_parent"
@@ -12,13 +12,14 @@
       
     <RelativeLayout 
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="10dp"
-      android:layout_marginLeft="10dp">
+      android:layout_height="@dimen/height_top_bar"
+      android:background="@color/common_bg_green">
     	<ImageView
     	    android:id="@+id/back"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
+        	android:layout_marginLeft="@dimen/title_left_margin"
+        	android:layout_centerVertical="true"
         	android:contentDescription="@null"
         	android:src="@drawable/back"/>
     	
@@ -26,10 +27,11 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_toRightOf="@id/back"
-             android:layout_alignBottom="@id/back"
-             android:layout_marginLeft="20dp"
+             android:layout_centerVertical="true"
+             android:layout_marginLeft="@dimen/title_left_margin"
              android:textSize="20sp"
-             android:text="@string/user_info"/>
+             android:text="@string/user_info"
+             android:textColor="@color/common_white"/>
              
 	</RelativeLayout>
 	
@@ -49,7 +51,7 @@
             android:layout_marginLeft ="10dp"
             android:layout_centerVertical="true"
             android:contentDescription="@null"
-            android:src="@drawable/samqa"/>
+            android:src="@drawable/em_default_avatar"/>
          
          <TextView
             android:id="@+id/username"
@@ -154,7 +156,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:background="#00acff">
+        android:background="@color/common_bg_green">
     
         <TextView
              android:layout_width="match_parent"
@@ -164,7 +166,7 @@
              android:textSize="18sp"
              android:gravity="center"
              android:layout_gravity="center"
-             android:textStyle="bold"
+             android:textColor="@color/common_white"
              android:text="@string/add_to_contacts"/>
 	</LinearLayout>
 	
@@ -176,7 +178,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:background="#00acff">
+        android:background="@color/common_bg_green">
     
         <TextView
              android:layout_width="match_parent"
@@ -186,7 +188,7 @@
              android:textSize="18sp"
              android:gravity="center"
              android:layout_gravity="center"
-             android:textStyle="bold"
+             android:textColor="@color/common_white"
              android:text="@string/send_msg"/>
 	</LinearLayout>
    

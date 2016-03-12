@@ -25,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.samservice.SMCallBack;
+import com.android.samservice.SamService;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
@@ -71,17 +73,17 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 	    
-	    // 获取传过来的groupid
-        groupId = getIntent().getStringExtra("groupId");
-        group = EMGroupManager.getInstance().getGroup(groupId);
+		// 获取传过来的groupid
+		groupId = getIntent().getStringExtra("groupId");
+		group = EMGroupManager.getInstance().getGroup(groupId);
 
-        // we are not supposed to show the group if we don't find the group
-        if(group == null){
-            finish();
-            return;
-        }
+		// we are not supposed to show the group if we don't find the group
+		if(group == null){
+			finish();
+			return;
+		}
         
 		setContentView(R.layout.activity_group_details);
 		instance = this;
@@ -195,7 +197,7 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 
 			case REQUEST_CODE_EDIT_GROUPNAME: //修改群名称
 				final String returnData = data.getStringExtra("data");
-				if(!TextUtils.isEmpty(returnData)){
+				if(!TextUtils.isEmpty(returnData) && !returnData.equals(group.getGroupName())){
 					progressDialog.setMessage(st5);
 					progressDialog.show();
 					
@@ -265,6 +267,10 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
         List<String> members = new ArrayList<String>();
         members.addAll(group.getMembers());
         adapter.addAll(members);
+
+
+	 /*get members user info from server*/
+	 
         
         adapter.notifyDataSetChanged();
 	}
@@ -405,7 +411,11 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.rl_switch_block_groupmsg: // 屏蔽或取消屏蔽群组
-			toggleBlockGroup();
+			if (EMChatManager.getInstance().getCurrentUser().equals(group.getOwner())) {
+				Toast.makeText(getApplicationContext(), R.string.owner_cannot_block_message, Toast.LENGTH_SHORT).show();	
+			}else{
+				toggleBlockGroup();
+			}
 			break;
 
 		case R.id.clear_all_history: // 清空聊天记录
@@ -427,7 +437,7 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.rl_change_group_name:
-			//startActivityForResult(new Intent(this, EditActivity.class).putExtra("data", group.getGroupName()), REQUEST_CODE_EDIT_GROUPNAME);
+			startActivityForResult(new Intent(this, EditActivity.class).putExtra("data", group.getGroupName()), REQUEST_CODE_EDIT_GROUPNAME);
 			break;
 
 		default:
@@ -717,8 +727,61 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 					final EMGroup returnGroup = EMGroupManager.getInstance().getGroupFromServer(groupId);
 					// 更新本地数据
 					EMGroupManager.getInstance().createOrUpdateLocalGroup(returnGroup);
+					//update member info db
+					List<String> members = returnGroup.getMembers();
+					List<String> needMembers = new ArrayList<String>();
+					
+					for(String member: members){
+						if(SamService.getInstance().getDao().query_ContactUser_db(member) == null){
+							needMembers.add(member);
+						}
+					}
 
-					runOnUiThread(new Runnable() {
+					if(needMembers.size()>0){
+						SamService.getInstance().query_user_info_from_server(needMembers, new SMCallBack(){
+						@Override
+						public void onSuccess(final Object obj){
+							runOnUiThread(new Runnable() {
+								public void run() {
+									((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "(" + group.getAffiliationsCount()
+										+ ")");
+									loadingPB.setVisibility(View.INVISIBLE);
+									refreshMembers();
+									if (EMChatManager.getInstance().getCurrentUser().equals(group.getOwner())) {
+										// 显示解散按钮
+										exitBtn.setVisibility(View.GONE);
+										deleteBtn.setVisibility(View.VISIBLE);
+									} else {
+										// 显示退出按钮
+										exitBtn.setVisibility(View.VISIBLE);
+										deleteBtn.setVisibility(View.GONE);
+									}
+
+									// update block
+									EMLog.d(TAG, "group msg is blocked:" + group.getMsgBlocked());
+									if (group.isMsgBlocked()) {
+										switchButton.openSwitch();
+									} else {
+							   		 	switchButton.closeSwitch();
+									}
+								}
+							});
+
+						} 
+
+						@Override
+						public void onFailed(int code) {
+							onSuccess(null);
+						}
+
+						@Override
+						public void onError(int code) {
+							onSuccess(null);
+						}
+
+						});
+					}else{
+						runOnUiThread(new Runnable() {
 						public void run() {
 							((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "(" + group.getAffiliationsCount()
 									+ ")");
@@ -744,6 +807,7 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 						}
 					});
 
+					}
 				} catch (Exception e) {
 					runOnUiThread(new Runnable() {
 						public void run() {

@@ -8,8 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-       android:background="@color/common_bg_green"
-        android:gravity="center_vertical" >
+        android:background="@color/common_bg_green">
 
          <LinearLayout
             android:id="@+id/back_layout"
@@ -23,7 +22,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/title_left_margin"
-                android:scaleType="centerInside"
                 android:src="@drawable/back" />
         </LinearLayout>
 
@@ -32,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/back_layout"
             android:layout_marginLeft="20dp"
-            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:text="@string/Select_the_contact"
             android:textColor="@color/common_white"
             android:textSize="20sp" />

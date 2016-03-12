@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samservice.*;
 import com.android.samservice.info.*;
 import com.android.samservice.info.InviteMessageRecord.InviteMessageStatus;
@@ -40,6 +43,8 @@ public class NewFriendListAdapter extends BaseAdapter{
 
 	private List<InviteMessageRecord> contactInviteRecordArray;
 
+	private LocalBroadcastManager broadcastManager;
+
 	public void setContactInviteRecordArray(List<InviteMessageRecord> contactInviteRecordArray){
 		this.contactInviteRecordArray = contactInviteRecordArray;
 	}
@@ -51,6 +56,7 @@ public class NewFriendListAdapter extends BaseAdapter{
 	public NewFriendListAdapter(Context context){
 		this.mContext = context;
 		this.mInflater = LayoutInflater.from(mContext);
+		this.broadcastManager = LocalBroadcastManager.getInstance(mContext);
 	}
 	
 	public void setCount(int count){
@@ -96,6 +102,8 @@ public class NewFriendListAdapter extends BaseAdapter{
 						try{
 							EMChatManager.getInstance().refuseInvitation(sender_easemob);
 							SamLog.e(TAG,"refused "+sender_easemob + " invite");
+							EaseMobHelper.getInstance().updateInviteMsgStatus(sender_easemob,InviteMessageStatus.REFUSED.ordinal());
+							broadcastManager.sendBroadcast(new Intent(Constants.ACTION_CONTACT_CHANAGED));
 						}catch(EaseMobException e){
 							e.printStackTrace(); 
 						}
@@ -155,10 +163,16 @@ public class NewFriendListAdapter extends BaseAdapter{
 					if(record.getstatus() == InviteMessageStatus.AGREED.ordinal()){
 						holder.action_accept_layout.setVisibility(View.GONE);
 						holder.action_refused_layout.setVisibility(View.GONE);
+						holder.added_already.setText(mContext.getString(R.string.added));
+						holder.added_already.setVisibility(View.VISIBLE);
+					}else if(record.getstatus() == InviteMessageStatus.REFUSED.ordinal()){
+						holder.action_accept_layout.setVisibility(View.GONE);
+						holder.action_refused_layout.setVisibility(View.GONE);
+						holder.added_already.setText(mContext.getString(R.string.refused));
 						holder.added_already.setVisibility(View.VISIBLE);
 					}else if(record.getstatus() == InviteMessageStatus.BEINVITEED.ordinal()){
 						holder.action_accept_layout.setVisibility(View.VISIBLE);
-						holder.action_refused_layout.setVisibility(View.GONE);
+						holder.action_refused_layout.setVisibility(View.VISIBLE);
 						holder.added_already.setVisibility(View.GONE);
 					}
 				}

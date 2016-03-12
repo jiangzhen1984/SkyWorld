@@ -95,16 +95,13 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 				convertView = mInflater.inflate(R.layout.question_detail_list_item,parent,false);
 				holder.date = (TextView) convertView.findViewById(R.id.date);
 				holder.userimage = (ImageView)convertView.findViewById(R.id.userimage);
-				holder.username = (TextView)convertView.findViewById(R.id.username);
 				holder.question = (TextView)convertView.findViewById(R.id.question);
 			}else if(viewType == TYPE_ANSWER){
 				convertView = mInflater.inflate(R.layout.answer_detail_list_item_right,parent,false);
 				holder.date = (TextView) convertView.findViewById(R.id.date);
 				holder.userimage =  (ImageView)convertView.findViewById(R.id.userimage);
-				holder.username = (TextView)convertView.findViewById(R.id.username);
 				holder.answer =  (TextView)convertView.findViewById(R.id.answershow);
 				holder.processimage = (ImageView)convertView.findViewById(R.id.sendprocessbar);
-				holder.myname = SamService.getInstance().get_current_user().getusername();
 			}
 			
 			convertView.setTag(holder);
@@ -130,8 +127,8 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 					if(rd!=null && rd.getavatarname()!=null){
 						SamLog.e(TAG,"rd is existed:"+holder.userimage.getHeight()+":"+holder.userimage.getWidth());
 						Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
-												   43,
-												   43);
+												   45,
+												   45);
 						if(bp!=null){
 							SamLog.e(TAG,"bp is existed");
 							holder.userimage.setImageBitmap(bp);
@@ -141,7 +138,6 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 
 				
 				holder.question.setText(question.question);
-				holder.username.setText(user.getusername());
 			
 				break;
 			case TYPE_ANSWER:
@@ -156,8 +152,8 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 				if(rd!=null && rd.getavatarname()!=null){
 					SamLog.e(TAG,"rd is existed:"+holder.userimage.getHeight()+":"+holder.userimage.getWidth());
 					Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
-											   43,
-											   43);
+											   45,
+											   45);
 					if(bp!=null){
 						SamLog.e(TAG,"bp is existed");
 						holder.userimage.setImageBitmap(bp);
@@ -167,7 +163,6 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 
 				
 				holder.answer.setText(answer.answer);
-				holder.username.setText(holder.myname);
 
 				int status = answer.getstatus();
 				if(status ==SendAnswer.SEND_ING){
@@ -181,6 +176,8 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 				}else if(status == SendAnswer.SEND_SUCCEED){
 					holder.processimage.clearAnimation(); 
 					holder.processimage.setVisibility(View.INVISIBLE);
+					getReceivedQuestion().setresponse(ReceivedQuestion.RESPONSED);
+					SamService.getInstance().getDao().add_update_ReceivedQuestion_db(getReceivedQuestion());
 				}else{
 					SamLog.e(TAG,"Send Answer status: send_others,shoudl never run here");
 					holder.processimage.clearAnimation(); 
@@ -210,11 +207,9 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 	public static class ViewHolder{
 		public TextView date;
 		public ImageView userimage;
-		public TextView username;
 		public TextView question;
 		public TextView answer;
 		public ImageView processimage;
-		public String myname;
 		
 	}
 	

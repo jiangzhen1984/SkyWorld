@@ -141,7 +141,6 @@ public class SearchListAdapter extends BaseAdapter{
 				holder.userimage = (ImageView) convertView.findViewById(R.id.userimage);
 				holder.username = (TextView)convertView.findViewById(R.id.username);
 				holder.answer = (TextView)convertView.findViewById(R.id.answer);
-				holder.readBage = new BadgeView(mContext, holder.userimage);
 			}else{
 				convertView = mInflater.inflate(R.layout.flag_list_item,parent,false);
 				holder.flag = (TextView)convertView.findViewById(R.id.flag);
@@ -174,8 +173,8 @@ public class SearchListAdapter extends BaseAdapter{
 					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
 					if(rd!=null && rd.getavatarname()!=null){
 						Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
-												   40,
-												   40);
+												   45,
+												   45);
 						if(bp!=null){
 							holder.userimage.setImageBitmap(bp);
 							avatarExisted = true;
@@ -190,13 +189,7 @@ public class SearchListAdapter extends BaseAdapter{
 			//}
 			
 			holder.answer.setText(info.answer);
-			if(!getRead(position)){
-				holder.readBage.setText("...");
-				holder.readBage.show();
-			}else{
-				SamLog.e(TAG,"We call hide!!!!");
-				holder.readBage.hide();
-			}
+			
 		break;
 		case TYPE_FLAG:
 			holder.flag.setText(mContext.getResources().getString(R.string.samservice_answer));
@@ -224,7 +217,6 @@ public class SearchListAdapter extends BaseAdapter{
 		public ImageView userimage;
 		public TextView username;
 		public TextView answer;
-		public BadgeView readBage;
 		public ContactUser user;
 		public TextView flag;
 		

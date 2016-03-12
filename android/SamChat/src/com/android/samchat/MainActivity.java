@@ -7,6 +7,7 @@ import java.util.Map;
 import com.android.samchat.R;
 import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samchat.slidemenu.SlidingMenu;
+import com.android.samchat.slidemenu.SlidingMenu.OnOpenedListener;
 import com.android.samservice.*;
 import com.android.samservice.info.LoginUser;
 import com.easemob.EMCallBack;
@@ -16,13 +17,16 @@ import com.easemob.EMEventListener;
 import com.easemob.EMNotifierEvent;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chat.EMMessage;
+import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.controller.EaseUI;
 import com.easemob.easeui.domain.EaseUser;
 import com.easemob.easeui.ui.EaseContactListFragment.EaseContactListItemClickListener;
 import com.easemob.easeui.ui.EaseConversationListFragment.EaseConversationListItemClickListener;
+import com.easemob.easeui.ui.EaseGroupRemoveListener;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -44,6 +48,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
@@ -59,6 +64,15 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	
 	static final String EXIT_APP_CONFIRM = "com.android.samchat.exitapp";
 	static final String LOGOUT_CONFIRM = "com.android.samchat.logout";
+
+
+	/*Slide menu confirm*/
+	public static final int CONFIRM_ID_EXITAPP = 301;
+	public static final int CONFIRM_ID_LOGOUT = 302;
+
+	public static final int CONFIRM_ID_CONTACT_ACTIVITY_EXITED=303;
+
+	public static int sInviteNum = 0;
 	
 	private boolean isExit = false; 
 	
@@ -111,14 +125,42 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 
 	private TextView mSlideContact;
+	private TextView mContact_reminder;
+	
 	private TextView mSetting;
 	private TextView mLogout;
 	private TextView mExitApp;
 	private TextView mMe;
 
 	private ImageView mOption_button;
+	private RelativeLayout mOption_button_layout;
+	private ImageView mOption_button_reminder;
 
 	private SamProcessDialog mDialog;
+
+	private SlidingMenu menu;
+
+	private LocalBroadcastManager broadcastManager;
+
+	private BroadcastReceiver	broadcastReceiver;
+
+	private boolean isContactActivityLaunched = false;
+
+	public static int getInviteNum(){
+		return sInviteNum;
+	}
+
+
+
+	public void updateReminderIcon( final int id , final boolean show){
+		if(show)	{
+			if(getCurrentTab() != id){
+				updateIndicatorReminderIcon(id,show);
+			}
+		}else{
+			updateIndicatorReminderIcon(id,show);
+		}
+	}
 	
 
 	@Override
@@ -154,17 +196,12 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		intent.setAction(SamService.FINISH_ALL_SIGN_ACTVITY);
 		sendBroadcast(intent);
 
-		IntentFilter hide_show_filter = new IntentFilter();
-		hide_show_filter.addAction(SamChats_Fragment.HIDE_SAMCHATS_REDPOINT);
-		hide_show_filter.addAction(SamChats_Fragment.SHOW_SAMCHATS_REDPOINT);
-		registerReceiver(HideShowSamChatRDPReceiver, hide_show_filter);
-		
 		initPage();
 
 		mDialog = new SamProcessDialog();
 
 		// configure the SlidingMenu
-        	final SlidingMenu menu = new SlidingMenu(this);
+        	menu = new SlidingMenu(this);
         	menu.setMode(SlidingMenu.RIGHT);
         	//menu.setShadowWidthRes(R.dimen.shadow_width);
         	//menu.setShadowDrawable(R.drawable.shadow);
@@ -173,11 +210,22 @@ public class MainActivity extends IndicatorFragmentActivity implements
         	menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         	menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         	menu.setMenu(R.layout.slidemenu);
+
+		menu.setOnOpenedListener(new OnOpenedListener(){
+			@Override
+			public void onOpened() {
+				updateOptionButtonReminder(false);
+			}
+		});
+
+		mContact_reminder = (TextView)menu.findViewById(R.id.contact_reminder);
 		mSlideContact = (TextView)menu.findViewById(R.id.contact);
 		mSlideContact.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				menu.toggle();
+				isContactActivityLaunched = true;
+				updateContactReminder(false);
 				launchContactActivity();
 			}
 		});
@@ -217,7 +265,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			});
 
 		mOption_button = (ImageView)findViewById(R.id.option_button);
-		mOption_button.setOnClickListener(new OnClickListener(){
+		mOption_button_reminder = (ImageView)findViewById(R.id.option_button_reminder);
+		mOption_button_layout = (RelativeLayout) findViewById(R.id.option_button_layout);
+		mOption_button_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				menu.toggle();
@@ -228,26 +278,35 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		EMChatManager.getInstance().loadAllConversations();
 
 		EMChatManager.getInstance().addConnectionListener(connectionListener);
+		registerBroadcastReceiver();
+		GroupContactInfoDownLoadListener listener = new GroupContactInfoDownLoadListener();
+		EMGroupManager.getInstance().addGroupChangeListener(listener);
 
 	}
 
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
-		if(requestCode == 1){
+		SamLog.e(TAG,"main onActivityResult:"+requestCode);
+		if(requestCode == CONFIRM_ID_EXITAPP){
 			if(resultCode == 1){ //OK
 				SamLog.e(TAG,"exit app...");
 				exitProgram();
 			}else{
 				SamLog.e(TAG,"cancel exit app...");
 			}
-		}else if(requestCode == 2){
+		}else if(requestCode == CONFIRM_ID_LOGOUT){
 			if(resultCode == 1){ //OK
 				SamLog.e(TAG,"logout...");
 				logoutAccount();
 			}else{
 				SamLog.e(TAG,"cancel logout...");
 			}
+		}else if(requestCode == CONFIRM_ID_CONTACT_ACTIVITY_EXITED){
+			isContactActivityLaunched = false;
+			sInviteNum = 0;
+		}else{
+			super.onActivityResult(requestCode, resultCode, data);
 		}
 	}
 
@@ -305,7 +364,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		Intent newIntent = new Intent(this,ContactActivity.class);
 		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
 		newIntent.setFlags(intentFlags);
-		startActivity(newIntent);
+		startActivityForResult(newIntent, CONFIRM_ID_CONTACT_ACTIVITY_EXITED);
 	}
 
 	private void launchSettingActivity(){
@@ -329,7 +388,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		//newIntent.setFlags(intentFlags);
 		newIntent.putExtra("title", title);
 		newIntent.putExtra("message", msg);
-		this.startActivityForResult(newIntent, 1);
+		this.startActivityForResult(newIntent, CONFIRM_ID_EXITAPP);
 	}
 
 	private void launchDialogActivityNeedConfirmForLogout(String title,String msg){
@@ -338,7 +397,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		//newIntent.setFlags(intentFlags);
 		newIntent.putExtra("title", title);
 		newIntent.putExtra("message", msg);
-		this.startActivityForResult(newIntent, 2);
+		this.startActivityForResult(newIntent, CONFIRM_ID_LOGOUT);
 	}
 
 	
@@ -378,7 +437,54 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	}
 
 
+	private void sendGroupMemberInfoUpdateBroadcast(final String groupId){
+		Intent newIntent = new Intent(Constants.GROUP_MEMBER_INFO_UPDATE);
+		newIntent.putExtra("groupId",groupId);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(newIntent);
+	}
 	
+	private void updateGroupInfo(final String groupId){
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					final EMGroup returnGroup = EMGroupManager.getInstance().getGroupFromServer(groupId);
+					// 更新本地数据
+					EMGroupManager.getInstance().createOrUpdateLocalGroup(returnGroup);
+					//update member info db
+					List<String> members = returnGroup.getMembers();
+					List<String> needMembers = new ArrayList<String>();
+					
+					for(String member: members){
+						if(SamService.getInstance().getDao().query_ContactUser_db(member) == null){
+							needMembers.add(member);
+						}
+					}
+
+					if(needMembers.size()>0){
+						SamService.getInstance().query_user_info_from_server(needMembers, new SMCallBack(){
+						@Override
+						public void onSuccess(final Object obj){
+							sendGroupMemberInfoUpdateBroadcast(groupId);
+						} 
+
+						@Override
+						public void onFailed(int code) {
+
+						}
+
+						@Override
+						public void onError(int code) {
+
+						}
+
+						});
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 
 	@Override
 	public void onEvent(EMNotifierEvent event) {
@@ -391,6 +497,14 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			EaseUI.getInstance().getNotifier().onNewMsg(message);
 
 			refreshUIWithMessage();
+
+			String groupId = null;
+            		// 群组消息
+			if (message.getChatType() == ChatType.GroupChat) {
+				groupId = message.getTo();
+				updateGroupInfo(groupId);
+			}
+			
 			break;
 		}
 
@@ -465,6 +579,12 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		}
 	}
 
+	@Override
+	public void onPageSelected(int position) {
+		super.onPageSelected(position);
+		updateReminderIcon(position,false);
+	}
+
 
 	/*(private void updateTextColor(int arg0){
 		int count = textViewArray.length;
@@ -515,16 +635,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		vp.setCurrentItem(position);
 	}*/
 
-	private BroadcastReceiver HideShowSamChatRDPReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if(intent.getAction().equals(SamChats_Fragment.HIDE_SAMCHATS_REDPOINT)){
-				//updateRedPoint(TAB_ID_SAMCHATS, false);
-			}else if(intent.getAction().equals(SamChats_Fragment.SHOW_SAMCHATS_REDPOINT)){
-				//updateRedPoint(TAB_ID_SAMCHATS, true);
-			}
-	    }
-	};
+
 	
 	
 	@Override
@@ -542,14 +653,19 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	protected void onDestroy(){
 		super.onDestroy();
 		SamLog.i(TAG,"MainActivity onDestroy!");
-		unregisterReceiver(HideShowSamChatRDPReceiver);
 		unregisterNetworkStatusReceiver();
+		unregisterBroadcastReceiver();
 		EMChatManager.getInstance().removeConnectionListener(connectionListener);
 		
 	}
 	
 	@Override
 	public void onBackPressed(){
+		if(menu.isMenuShowing()){
+			menu.toggle();
+			return;
+		}
+		
 		Intent i= new Intent(Intent.ACTION_MAIN);
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		i.addCategory(Intent.CATEGORY_HOME);
@@ -649,6 +765,153 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		SamService.getInstance().stopSamService();
 		this.finish();
 	}
+
+
+	private void updateOptionButtonReminder(boolean show){
+		if(show){
+			mOption_button_reminder.setVisibility(View.VISIBLE);
+		}else{
+			mOption_button_reminder.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	private void updateContactReminder(boolean show){
+		if(show){
+			mContact_reminder.setVisibility(View.VISIBLE);
+		}else{
+			mContact_reminder.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	private void registerBroadcastReceiver() {
+		broadcastManager = LocalBroadcastManager.getInstance(this);
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Constants.ACTION_CONTACT_CHANAGED);
+
+		broadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				boolean isInvite = intent.getBooleanExtra("isInvite",false);
+				if(isInvite){
+					if(!menu.isMenuShowing() && !isContactActivityLaunched){
+						updateOptionButtonReminder(true);
+					}
+
+					if(!isContactActivityLaunched){
+						updateContactReminder(true);
+						sInviteNum ++;
+					}
+				}
+
+			}
+		};
+		
+		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+	}
+		
+
+	
+	private void unregisterBroadcastReceiver(){
+	    broadcastManager.unregisterReceiver(broadcastReceiver);
+	}
+
+	private EMGroup downloadGroupInfo(String groupId){
+		EMGroup group = null;
+		try{
+			group= EMGroupManager.getInstance().getGroupFromServer(groupId);
+			group =EMGroupManager.getInstance().createOrUpdateLocalGroup(group);
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+
+		return group;
+	}
+
+	private class GroupContactInfoDownLoadListener extends EaseGroupRemoveListener {
+		@Override
+		public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
+			SamLog.i(TAG,"onInvitationReceived groundId:"+groupId
+						+" groupName:"+groupName+" inviter:"+inviter+" reason:"+reason);
+
+			EMGroup group = downloadGroupInfo(groupId);
+
+			if(group == null){
+				return;
+			}
+			
+			List<String> members = group.getMembers();
+			SamLog.i(TAG,"members size:"+members.size());
+			List<String> needMembers = new ArrayList<String>();
+			for(String member: members){
+				if(SamService.getInstance().getDao().query_ContactUser_db(member) == null){
+					needMembers.add(member);
+				}
+			}
+
+			if(needMembers.size()>0){
+				SamService.getInstance().query_user_info_from_server(needMembers, new SMCallBack(){
+					@Override
+					public void onSuccess(final Object obj){
+
+					} 
+
+					@Override
+					public void onFailed(int code) {
+
+					}
+
+					@Override
+					public void onError(int code) {
+
+					}
+
+				});
+			}
+			
+			
+			
+		}
+
+		@Override
+		public void onApplicationReceived(String groupId, String groupName, String applyer, String reason) {
+			SamLog.i(TAG,"onApplicationReceived");
+		}
+
+		@Override
+		public void onApplicationAccept(String groupId, String groupName, String accepter) {
+        		SamLog.i(TAG,"onApplicationAccept");
+		}
+
+		@Override
+		public void onApplicationDeclined(String groupId, String groupName, String decliner, String reason) {
+			SamLog.i(TAG,"onApplicationDeclined");
+		}
+
+		@Override
+		public void onInvitationAccpted(String groupId, String inviter, String reason) {
+        		SamLog.i(TAG,"onInvitationAccpted");
+		}
+
+		@Override
+		public void onInvitationDeclined(String groupId, String invitee, String reason) {
+			SamLog.i(TAG,"onInvitationDeclined");
+        	}
+
+		@Override
+		public void onUserRemoved(final String groupId, String groupName) {
+			SamLog.i(TAG,"onUserRemoved");
+		}
+
+		@Override
+		public void onGroupDestroy(final String groupId, String groupName) {
+			SamLog.i(TAG,"onGroupDestroy");
+		}
+
+	}
+
+	
+
 
 
 	

@@ -821,7 +821,7 @@ public class SamService{
 						rq.setquestion(phinfoq.quest);
 						rq.setcontactuserid(user.getid());
 						rq.setstatus(ReceivedQuestion.ACTIVE);
-						rq.setshown(ReceivedQuestion.NOT_SHOWN);
+						rq.setresponse(ReceivedQuestion.NOT_RESPONSED);
 						rq.setreceivedtime(phinfoq.datetime);
 						rq.setreceivercellphone(get_current_user().getphonenumber());
 						msgid = SamChats_Fragment.MSG_QUESTION_RECEIVED;
