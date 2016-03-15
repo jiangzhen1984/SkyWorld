@@ -1,6 +1,7 @@
 package com.skyworld.service.po;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ public class SWPArticleComment {
 	@Column(name="AR_COMMENT", columnDefinition="VARCHAR(2000)")
 	protected String comment;
 	
-	@Column(name="AR_TIME_STAMP", columnDefinition="DATETIME")
+	@Column(name="AR_TIME_STAMP", columnDefinition="TIMESTAMP")
 	protected Date timeStamp;
 	
 
@@ -65,12 +66,12 @@ public class SWPArticleComment {
 		this.comment = comment;
 	}
 
-	public Date getTimeStamp() {
-		return timeStamp;
+	public long getTimeStamp() {
+		return timeStamp.getTime();
 	}
 
-	public void setTimeStamp(Date timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = new Date(timeStamp);
 	}
 
 	public long getToUserId() {

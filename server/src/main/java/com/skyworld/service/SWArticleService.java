@@ -79,7 +79,7 @@ public class SWArticleService extends BaseService {
 		SWPArticleComment co = new SWPArticleComment();
 		co.setArticleId(arId);
 		co.setComment(comment);
-		co.setTimeStamp(new Date(System.currentTimeMillis()));
+		co.setTimeStamp( System.currentTimeMillis());
 		co.setUserId(userId);
 		co.setToUserId(toUserId);
 		session.save(co);
@@ -268,7 +268,7 @@ public class SWArticleService extends BaseService {
 				SWPArticleComment c = it.next();
 				article.addComment(c.getId(), ServiceFactory.getESUserService()
 						.getUser(c.getUserId()), c.getComment(), c.getToUserId() <= 0 ? null :ServiceFactory
-						.getESUserService().getUser(c.getToUserId()), c.getTimeStamp().getTime());
+						.getESUserService().getUser(c.getToUserId()), c.getTimeStamp());
 			}
 		}
 		
