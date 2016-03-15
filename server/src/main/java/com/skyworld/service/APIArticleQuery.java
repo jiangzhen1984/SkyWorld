@@ -25,7 +25,7 @@ public class APIArticleQuery extends APIBasicJsonPartApiService {
 	protected BasicResponse service(JSONObject json,  PartsWrapper partwrapper) {
 		JSONObject header = json.getJSONObject("header");
 		JSONObject body = json.getJSONObject("body");
-		if (!header.has("token") || !body.has("timestamp_start") || !body.has("timestamp_end") || !body.has("qt")) {
+		if (!header.has("token") || !body.has("timestamp_start")  || !body.has("qt")) {
 			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
 		}
 		
@@ -49,7 +49,10 @@ public class APIArticleQuery extends APIBasicJsonPartApiService {
 		
 		
 		Date start = new Date(body.getLong("timestamp_start"));
-		Date end = new Date(body.getLong("timestamp_end"));
+		Date end = null;
+		if (body.has("timestamp_end")) {
+			end = new Date(body.getLong("timestamp_end"));
+		}
 		int fetchCount = 15;
 		if (body.has("fetch_count")) {
 			fetchCount = body.getInt("fetch_count");

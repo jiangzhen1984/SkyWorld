@@ -174,10 +174,7 @@ public class SWArticleService extends BaseService {
 	public List<Article> queryArticle(List<Long> userIds) {
 		Calendar c = Calendar.getInstance();
 		java.util.Date start = c.getTime();
-		
-		c.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY) - 2 );
-		java.util.Date end = c.getTime();
-		return queryArticle(userIds, start, end, 15);
+		return queryArticle(userIds, start, null, 15);
 	}
 	
 	
@@ -198,7 +195,12 @@ public class SWArticleService extends BaseService {
 			queryBuffer.append(" OR a.USER_ID = ? ");
 		}
 		queryBuffer.append(" ) ");
-		queryBuffer.append(" and (a.AR_TIME_STAMP <= ? and a.AR_TIME_STAMP >= ?) ");
+		queryBuffer.append(" and (");
+		queryBuffer.append(" a.AR_TIME_STAMP <= ? ");
+		if (end != null) {
+			queryBuffer.append(" and a.AR_TIME_STAMP >= ? ");
+		}
+		queryBuffer.append(" ) ");
 		queryBuffer.append(" order by a.AR_TIME_STAMP desc ");
 		
 		Session session = openSession();
@@ -209,8 +211,9 @@ public class SWArticleService extends BaseService {
 		}
 		
 		query.setLong(num, start.getTime());
-		query.setLong(num + 1, end.getTime());
-		
+		if (end != null) {
+			query.setLong(num + 1, end.getTime());
+		}
 		
 		List<Object[]> cache = (List<Object[]>)query.list();
 		List<Article> list = new ArrayList<Article>(cache.size());

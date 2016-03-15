@@ -2,6 +2,7 @@ package com.skyworld.service;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -195,6 +196,10 @@ public class SWArticleServiceTestCase extends TestCase {
 		
 		userIds.add(Long.valueOf(u.getId()));
 		list = service.queryArticle(userIds);
+		assertTrue(list.size() == 10);
+		
+		
+		list = service.queryArticle(userIds, new Date(System.currentTimeMillis()), null, 15);
 		assertTrue(list.size() == 10);
 	}
 	
