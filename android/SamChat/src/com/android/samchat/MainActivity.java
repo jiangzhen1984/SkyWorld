@@ -1,14 +1,20 @@
 package com.android.samchat;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 import com.android.samchat.R;
 import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samchat.slidemenu.SlidingMenu;
 import com.android.samchat.slidemenu.SlidingMenu.OnOpenedListener;
 import com.android.samservice.*;
+import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.LoginUser;
 import com.easemob.EMCallBack;
 import com.easemob.EMConnectionListener;
@@ -27,16 +33,22 @@ import com.easemob.easeui.domain.EaseUser;
 import com.easemob.easeui.ui.EaseContactListFragment.EaseContactListItemClickListener;
 import com.easemob.easeui.ui.EaseConversationListFragment.EaseConversationListItemClickListener;
 import com.easemob.easeui.ui.EaseGroupRemoveListener;
+import com.easemob.easeui.utils.EaseUserUtils;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -48,6 +60,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
@@ -71,6 +84,10 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	public static final int CONFIRM_ID_LOGOUT = 302;
 
 	public static final int CONFIRM_ID_CONTACT_ACTIVITY_EXITED=303;
+
+	public static final int CONFIRM_ID_AVATAR_SELECTED=304;
+	public static final int CONFIRM_ID_CROP_FINISHED=305;
+	
 
 	public static int sInviteNum = 0;
 	
@@ -100,13 +117,13 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			R.drawable.sam_services, 
 			R.drawable.sam_chats,
 			R.drawable.sam_public,
-			R.drawable.sam_me};
+			R.drawable.sam_vendor};
 
 	private int imageViewArraySelected[] = {	
 			R.drawable.sam_services_selected, 
 			R.drawable.sam_chats_selected,
 			R.drawable.sam_public_selected,
-			R.drawable.sam_me_selected};
+			R.drawable.sam_vendor_selected};
 	
 	private int textViewArray[] = {
 			R.string.sam_services,
@@ -124,15 +141,20 @@ public class MainActivity extends IndicatorFragmentActivity implements
    	private NetworkInfo netInfo; 
 
 
-	private TextView mSlideContact;
 	private TextView mContact_reminder;
+
+	private LinearLayout mContact_layout;
+	private LinearLayout mSettings_layout;
+	private LinearLayout mLogout_layout;
+	private LinearLayout mExitapp_layout;
+
+	private RelativeLayout mMine_layout;
+	private ImageView mAvatar;
+	private TextView mUsername;
 	
-	private TextView mSetting;
-	private TextView mLogout;
-	private TextView mExitApp;
 	private TextView mMe;
 
-	private ImageView mOption_button;
+	//private ImageView mOption_button;
 	private RelativeLayout mOption_button_layout;
 	private ImageView mOption_button_reminder;
 
@@ -145,6 +167,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private BroadcastReceiver	broadcastReceiver;
 
 	private boolean isContactActivityLaunched = false;
+
+
+	private Uri cropImageUri;
 
 	public static int getInviteNum(){
 		return sInviteNum;
@@ -186,7 +211,22 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		tabs.add(tabinfo);
 
 		return TAB_ID_SAMSERVICES;
-    }
+	}
+
+	private void launchAvatarActivity(){
+		Intent intent = new Intent(MainActivity.this, MultiImageSelectorActivity.class);
+		// whether show camera
+		intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA, true);
+		// max select image amount
+		intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 1);
+		// select mode (MultiImageSelectorActivity.MODE_SINGLE OR MultiImageSelectorActivity.MODE_MULTI)
+		intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE, MultiImageSelectorActivity.MODE_MULTI);
+		// default select images (support array list)
+		//intent.putStringArrayListExtra(MultiImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, defaultDataArray);
+		startActivityForResult(intent, CONFIRM_ID_AVATAR_SELECTED);
+	}
+
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -218,9 +258,35 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		});
 
+		mMine_layout = (RelativeLayout)menu.findViewById(R.id.mine_layout);
+		mAvatar = (ImageView)menu.findViewById(R.id.avatar);
+		mUsername = (TextView)menu.findViewById(R.id.username);
+
+		LoginUser cuser = SamService.getInstance().get_current_user();
+
+		String phonenumber = cuser.getphonenumber();
+		AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(phonenumber);
+		if(rd!=null && rd.getavatarname()!=null){
+			Bitmap bp = null;
+			bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(),60,60);
+
+			if(bp!=null){
+				mAvatar.setImageBitmap(bp);
+			}
+		}
+
+		mUsername.setText(cuser.getusername());
+
+		mMine_layout.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				launchAvatarActivity();
+			}
+		});
+
 		mContact_reminder = (TextView)menu.findViewById(R.id.contact_reminder);
-		mSlideContact = (TextView)menu.findViewById(R.id.contact);
-		mSlideContact.setOnClickListener(new OnClickListener(){
+		mContact_layout = (LinearLayout)menu.findViewById(R.id.contact_layout);
+		mContact_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				menu.toggle();
@@ -230,8 +296,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		});
 
-		mSetting = (TextView)menu.findViewById(R.id.settings);
-		mSetting.setOnClickListener(new OnClickListener(){
+		mSettings_layout = (LinearLayout)menu.findViewById(R.id.settings_layout);
+		mSettings_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				menu.toggle();
@@ -248,23 +314,24 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		});
 
-		mLogout = (TextView)menu.findViewById(R.id.logout);
-		mLogout.setOnClickListener(new OnClickListener(){
+		mLogout_layout = (LinearLayout)menu.findViewById(R.id.logout_layout);
+		mLogout_layout.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View arg0) {
 					launchDialogActivityNeedConfirmForLogout(getString(R.string.reminder),getString(R.string.logout_reminder));
 				}
 			});
 
-		mExitApp = (TextView)menu.findViewById(R.id.exitapp);
-		mExitApp.setOnClickListener(new OnClickListener(){
+		
+		mExitapp_layout = (LinearLayout)menu.findViewById(R.id.exitapp_layout);
+		mExitapp_layout.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View arg0) {
 					launchDialogActivityNeedConfirmForExitApp(getString(R.string.reminder),getString(R.string.exitapp_reminder));
 				}
 			});
 
-		mOption_button = (ImageView)findViewById(R.id.option_button);
+		//mOption_button = (ImageView)findViewById(R.id.option_button);
 		mOption_button_reminder = (ImageView)findViewById(R.id.option_button_reminder);
 		mOption_button_layout = (RelativeLayout) findViewById(R.id.option_button_layout);
 		mOption_button_layout.setOnClickListener(new OnClickListener(){
@@ -282,6 +349,68 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		GroupContactInfoDownLoadListener listener = new GroupContactInfoDownLoadListener();
 		EMGroupManager.getInstance().addGroupChangeListener(listener);
 
+	}
+
+
+
+	private void startCropIntent(String path) throws IOException {
+		String cropImage = SamService.sam_cache_path + SamService.AVATAR_FOLDER 
+			+ "/origin_" + SamService.getInstance().get_current_user().geteasemob_username();
+		SamLog.e(TAG,"crop image path:"+cropImage);
+
+		File cropFilePath = new File(SamService.sam_cache_path+SamService.AVATAR_FOLDER);
+
+       	if(!cropFilePath.exists()){
+           		cropFilePath.mkdirs();
+       	}
+
+        	File cropFile = new File(cropImage);
+
+	 	if(!cropFile.exists()){
+ 			cropFile.createNewFile();
+		}
+
+		cropImageUri = Uri.fromFile(cropFile);
+
+		File file = new File(path);
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		Uri uri = Uri.fromFile(file);// parse(pathUri);13         
+		intent.setDataAndType(uri, "image/*");
+		intent.putExtra("crop", "true");
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		intent.putExtra("outputX", 600);
+		intent.putExtra("outputY", 600);
+		// 设置为true直接返回bitmap
+		intent.putExtra("return-data", false);
+		// 上面设为false的时候将MediaStore.EXTRA_OUTPUT关联一个Uri
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, cropImageUri);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+		startActivityForResult(intent, CONFIRM_ID_CROP_FINISHED);
+	}
+
+
+
+    private Bitmap decodeUriAsBitmap(Uri uri) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return bitmap;
+    }
+
+	private byte[] compress(Bitmap image,String outPath, float pixelW, float pixelH){
+		ImageFactory zip = new ImageFactory();
+		try{
+			return zip.compressAndGenImage(image, outPath, 20);
+			//return zip.ratioAndGenThumb(image,outPath,pixelW,pixelH);
+		}catch(Exception e){
+			return null;
+			
+		}
 	}
 
 
@@ -305,9 +434,104 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		}else if(requestCode == CONFIRM_ID_CONTACT_ACTIVITY_EXITED){
 			isContactActivityLaunched = false;
 			sInviteNum = 0;
+		}else if(requestCode == CONFIRM_ID_AVATAR_SELECTED){
+			if(resultCode == Activity.RESULT_OK){
+				if( data.hasExtra(MultiImageSelectorActivity.EXTRA_RESULT)) {
+					List<String> resultList = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+					if(resultList.get(0)!=null){
+						try{
+							startCropIntent(resultList.get(0));
+						}catch(IOException e){
+							e.printStackTrace();
+							Toast.makeText(this, R.string.start_crop_window_failed, Toast.LENGTH_SHORT).show();
+							cropImageUri = null;
+						}
+					}
+				}
+			}
+		}else if(requestCode == CONFIRM_ID_CROP_FINISHED){
+			if(resultCode == Activity.RESULT_OK){
+				SamLog.e(TAG,"crop image successfully");
+				Bitmap bp = decodeUriAsBitmap(cropImageUri);
+				byte [] bytes;
+				if(bp!=null){
+					if((bytes = compress(bp, SamService.sam_cache_path + SamService.AVATAR_FOLDER 
+								+ "/origin_" + SamService.getInstance().get_current_user().geteasemob_username(),
+							60, 60))!=null){
+						if (bytes.length != 0) {
+							bp =  BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+						}
+
+						mAvatar.setImageBitmap(bp);
+						uploadAvatar(SamService.sam_cache_path + SamService.AVATAR_FOLDER 
+									+ "/origin_" + SamService.getInstance().get_current_user().geteasemob_username());
+					}
+
+					/*bp = compress(bp, SamService.sam_cache_path + SamService.AVATAR_FOLDER 
+								+ "/origin_" + SamService.getInstance().get_current_user().geteasemob_username(),
+							50, 50);
+					if(bp!=null){
+						mAvatar.setImageBitmap(bp);
+						uploadAvatar(SamService.sam_cache_path + SamService.AVATAR_FOLDER 
+									+ "/origin_" + SamService.getInstance().get_current_user().geteasemob_username());
+					}*/
+				}
+				
+			}
 		}else{
 			super.onActivityResult(requestCode, resultCode, data);
 		}
+	}
+
+
+	private void uploadAvatar(String filePath){
+		if(mDialog!=null){
+    			mDialog.launchProcessDialog(this,getString(R.string.uploading_avatar));
+    		}
+		
+		SamService.getInstance().upload_avatar(filePath, new SMCallBack(){
+			@Override
+			public void onSuccess(Object obj) {
+				StringBuffer oldAvatar = new StringBuffer();
+				SamService.getInstance().getDao().add_update_AvatarRecord_db(
+					SamService.getInstance().get_current_user().getphonenumber(),
+					SamService.getInstance().get_current_user().getusername(),
+					"origin_" + SamService.getInstance().get_current_user().geteasemob_username(),
+					oldAvatar
+				);
+
+				SamLog.e(TAG,"oldAvatar:"+oldAvatar);
+
+				if(oldAvatar.length()!=0 && !oldAvatar.equals("origin_" + SamService.getInstance().get_current_user().geteasemob_username())){
+					SamService.getInstance().deleteOldAvatar(oldAvatar.toString());
+				}
+			
+				if(mDialog!=null){
+    					mDialog.dismissPrgoressDiglog();
+    				}
+				SamLog.e(TAG,"upload avatar succeed");
+
+				
+			}
+
+			@Override
+			public void onFailed(int code) {
+				if(mDialog!=null){
+    					mDialog.dismissPrgoressDiglog();
+    				}
+				SamLog.e(TAG,"upload avatar failed");
+			}
+
+			@Override
+			public void onError(int code) {
+				if(mDialog!=null){
+    					mDialog.dismissPrgoressDiglog();
+    				}
+				SamLog.e(TAG,"upload avatar error");
+			}
+
+		});
+
 	}
 
 	private void logoutAccount(){
@@ -673,13 +897,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	}
 
 	public void exitProgrames(){
-    		/*Intent startMain = new Intent(Intent.ACTION_MAIN);
-		startMain.addCategory(Intent.CATEGORY_HOME);
-		startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(startMain);
-		android.os.Process.killProcess(android.os.Process.myPid());*/
-
-		 this.finish(); 
+		SamService.getInstance().stopSamService();
+		this.finish(); 
 	}
 
        

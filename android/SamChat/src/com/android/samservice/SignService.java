@@ -401,6 +401,7 @@ public class SignService{
 	if(signin_with_un_pa(sinfo,hcc)){
                 if(hcc.ret == RET_SI_FROM_SERVER_OK){
 			boolean continue_run = true;
+			cancelTimeOut(samobj);
 			synchronized(samobj){
 				if(samobj.request_status == SamCoreObj.STATUS_INIT){
 					samobj.request_status = SamCoreObj.STATUS_DONE;
@@ -410,6 +411,7 @@ public class SignService{
 			}
 
 			if(!continue_run) return;
+			
 			
 			boolean need_update = false;
 			/*store login user into db*/
@@ -460,6 +462,7 @@ public class SignService{
 			
                 }else{
 			boolean continue_run = true;
+			cancelTimeOut(samobj);
 			synchronized(samobj){
 				if(samobj.request_status == SamCoreObj.STATUS_INIT){
 					samobj.request_status = SamCoreObj.STATUS_DONE;
@@ -469,11 +472,13 @@ public class SignService{
 			}
 
 			if(!continue_run) return;
+			
 
 			cbobj.smcb.onFailed(hcc.ret);
                 }
 	}else{
 		boolean continue_run = true;
+		cancelTimeOut(samobj);
 		synchronized(samobj){
 			if(samobj.request_status == SamCoreObj.STATUS_INIT){
 				samobj.request_status = SamCoreObj.STATUS_DONE;
@@ -483,6 +488,7 @@ public class SignService{
 		}
 
 		if(!continue_run) return;
+		
 		
 		cbobj.smcb.onError(R_SIGN_IN_ERROR);
   	}
@@ -524,6 +530,7 @@ public class SignService{
 
 			if(hcc.ret == RET_SU_FROM_SERVER_OK){
 				boolean continue_run = true;
+				cancelTimeOut(samobj);
 				synchronized(samobj){
 					if(samobj.request_status == SamCoreObj.STATUS_INIT){
 						samobj.request_status = SamCoreObj.STATUS_DONE;
@@ -533,6 +540,7 @@ public class SignService{
 				}
 
 				if(!continue_run) return;
+				
 				
 				/*store login user into db*/
 				LoginUser user = hcc.userinfo;
@@ -549,6 +557,7 @@ public class SignService{
 				cbobj.smcb.onSuccess(sinfo);
 			}else{
 				boolean continue_run = true;
+				cancelTimeOut(samobj);
 				synchronized(samobj){
 					if(samobj.request_status == SamCoreObj.STATUS_INIT){
 						samobj.request_status = SamCoreObj.STATUS_DONE;
@@ -558,11 +567,13 @@ public class SignService{
 				}
 
 				if(!continue_run) return;
+				
 
 				cbobj.smcb.onFailed(hcc.ret);
 			}
 		}else{
 			boolean continue_run = true;
+			cancelTimeOut(samobj);
 			synchronized(samobj){
 				if(samobj.request_status == SamCoreObj.STATUS_INIT){
 					samobj.request_status = SamCoreObj.STATUS_DONE;
@@ -572,6 +583,7 @@ public class SignService{
 			}
 
 			if(!continue_run) return;
+			
 		
 			cbobj.smcb.onError(R_SIGN_UP_ERROR);
     		}

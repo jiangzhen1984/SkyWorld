@@ -40,6 +40,7 @@
     <string name="next_step">下一步</string>
     <string name="agreement">已阅读并同意</string>
     <string name="sam_protocol">天际用户协议</string>
+    <string name="sam_vendor_protocol">天际商家协议</string>
     <string name="sam_account">天际帐号设置</string>
     <string name="username_limit">3~15位用户名</string>
     <string name="username_used">已用</string>
@@ -197,4 +198,17 @@
     <string name="responsed_question">已回复问题</string> 
     <string name="unresponsed_question">未回复问题</string> 
 
+    <string name="welcome_to_be">欢迎您成为</string> 
+    <string name="to_be_samvendor">\"天际商家\"</string>
+	<string name="input_vendor_info">请输入下列信息</string>   
+	
+	<string name="bussiness_line">业务类型</string> 
+    <string name="bussiness_location">业务地区</string> 
+    <string name="bussiness_introduction">业务简介</string> 
+	
+    <string name="vendor_info_input">天际商家信息填写</string> 
+    <string name="my_business">我的业务</string>
+    <string name="location">业务地区</string>
+    <string name="mainpage">公众主页</string>
+     <string name="modify">修改</string>
 </resources>

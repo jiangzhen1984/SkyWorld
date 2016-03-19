@@ -2,7 +2,7 @@ package com.android.samservice.info;
 
 import java.io.Serializable;
 /*
-	id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber |
+	id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
 */
 public class FGRecord implements Serializable
 {

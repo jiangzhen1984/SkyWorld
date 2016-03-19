@@ -934,6 +934,7 @@ public class DBManager
 		return RecordArray;
 	}
 
+
 	public List<FGRecord> queryFGRecord(String owner_phonenumber){
 		String table = DatabaseHelper.TABLE_NAME_FG ;
 
@@ -962,7 +963,7 @@ public class DBManager
 		return RecordArray;
 	}
 
-	public FGRecord queryFGRecord(long fg_id){
+	public FGRecord queryFGRecord(long fg_id,String owner_phonenumber){
 		String table = DatabaseHelper.TABLE_NAME_FG ;
 
 		/*
@@ -971,7 +972,7 @@ public class DBManager
 
 		FGRecord record = null;
 
-		Cursor c = db.query(table,null,"fg_id=?",new String[]{""+fg_id},null,null,null);
+		Cursor c = db.query(table,null,"fg_id=? and owner_phonenumber=?",new String[]{""+fg_id , owner_phonenumber},null,null,null);
 
 		if(c.getCount()>1){
 			SamLog.e(TAG, "Fatal Error for query FG");
@@ -1090,7 +1091,7 @@ public class DBManager
 
 		CommenterRecord record = null;
 
-		Cursor c = db.query(table,null,"fg_id=?",new String[]{""+fg_id},null,null,null);
+		Cursor c = db.query(table,null,"fg_id=?",new String[]{""+fg_id},null,null,"timestamp desc");
 		List<CommenterRecord> RecordArray = new ArrayList<CommenterRecord>();
 		while(c.moveToNext()){
 			record = new CommenterRecord();

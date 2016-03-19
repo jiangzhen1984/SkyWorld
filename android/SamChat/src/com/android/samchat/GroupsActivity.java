@@ -78,8 +78,8 @@ public class GroupsActivity extends Activity {
 		grouplist = EMGroupManager.getInstance().getAllGroups();
 		groupListView = (ListView) findViewById(R.id.list);
 		//show group list
-		groupAdapter = new GroupAdapter(this, 1, grouplist);
-		groupListView.setAdapter(groupAdapter);
+		//groupAdapter = new GroupAdapter(this, 1, grouplist);
+		//groupListView.setAdapter(groupAdapter);
 		
 		swipeRefreshLayout = (AutoNormalSwipeRefreshLayout) findViewById(R.id.swipe_layout);
 		swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,

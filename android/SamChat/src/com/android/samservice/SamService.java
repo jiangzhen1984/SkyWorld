@@ -16,6 +16,7 @@ import com.android.samchat.SamMe_Fragment;
 import com.android.samchat.SamContact_Fragment;
 import com.android.samchat.SamQADetailActivity;
 import com.android.samchat.SamService_Fragment;
+import com.android.samchat.SamVendorInfo;
 import com.android.samchat.skyworld;
 import com.android.samservice.info.*;
 import com.android.samservice.provider.*;
@@ -451,6 +452,7 @@ public class SamService{
 
 	public void startWaitThread(){
 		if(mWaitThread == null){
+			SamLog.e(TAG,"start SamWait Thread");
 			mWaitThread = new WaitThread("SamWait");
 			mWaitThread.start();
 		}
@@ -511,9 +513,10 @@ public class SamService{
 							hndl.sendMessage(msg2);
 							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isCancelq");
 						}else if(samobj.isUpgrade()){
-							Message msg3 = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_ERROR, R_UPGRADE_ERROR_TIMEOUT,null);
-							hndl.sendMessage(msg3);
+							//Message msg3 = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_ERROR, R_UPGRADE_ERROR_TIMEOUT,null);
+							//hndl.sendMessage(msg3);
 							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isUpgrade");
+							cbobj.smcb.onError(R_UPGRADE_ERROR_TIMEOUT);
 						}else if(samobj.isSenda()){
 							SendAnswer sda = ((SendaCoreObj)samobj).sda;
 							sda.setstatus(SendAnswer.SEND_FAILED);
@@ -637,7 +640,8 @@ public class SamService{
 				}else if(samobj.isCancelq()){
 					cancel_question(cbobj.cbHandler.get(),cbobj.cbMsg);
 				}else if(samobj.isUpgrade()){
-					upgrade(cbobj.cbHandler.get(),cbobj.cbMsg);
+					//upgrade(cbobj.cbHandler.get(),cbobj.cbMsg);
+					upgrade(((UpgradeCoreObj)samobj).vInfo,  cbobj.smcb);
 				}else if(samobj.isSenda()){
 					reanswer_question(((SendaCoreObj)samobj).sda);
 				}else if(samobj.isQueryui()){
@@ -653,7 +657,7 @@ public class SamService{
 				}else if(samobj.isUploadFG()){
 					uploadFG(((UploadFGCoreObj)samobj).photoes, ((UploadFGCoreObj)samobj).comments, cbobj.smcb);
 				}else if(samobj.isQueryFG()){
-					queryFG(((QueryFGCoreObj)samobj).fetch_count, cbobj.smcb);
+					queryFG(((QueryFGCoreObj)samobj).start_timestamp,((QueryFGCoreObj)samobj).fetch_count, cbobj.smcb);
 				}else if(samobj.isCommentFG()){
 					commentFG(((CommentFGCoreObj)samobj).article_id,((CommentFGCoreObj)samobj).comment, cbobj.smcb);
 				}
@@ -678,8 +682,9 @@ public class SamService{
 					Message msg2 = hndl.obtainMessage(cbobj.cbMsg, R_CANCEL_QUESTION_ERROR, R_CANCEL_QUESTION_ERROR_TOKEN_FILE_NULL,samobj);
 					hndl.sendMessage(msg2);
 				}else if(samobj.isUpgrade()){
-					Message msg3 = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_ERROR, R_UPGRADE_ERROR_TOKEN_FILE_NULL,null);
-					hndl.sendMessage(msg3);
+					//Message msg3 = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_ERROR, R_UPGRADE_ERROR_TOKEN_FILE_NULL,null);
+					//hndl.sendMessage(msg3);
+					cbobj.smcb.onError(R_UPGRADE_ERROR_TOKEN_FILE_NULL);
 				}else if(samobj.isSenda()){
 					SendAnswer sda = ((SendaCoreObj)samobj).sda;
 					sda.setstatus(SendAnswer.SEND_FAILED);
@@ -934,7 +939,7 @@ public class SamService{
 		startTimeOut(samobj);
 	}
 
-	public void upgrade(Handler callback,int cbMsg){
+	/*public void upgrade(Handler callback,int cbMsg){
 		CBObj obj = new CBObj(callback,cbMsg);
 		SamCoreObj  samobj =  new UpgradeCoreObj(obj);
 
@@ -943,7 +948,19 @@ public class SamService{
 
 		startTimeOut(samobj);
 		
+	}*/
+
+	public void upgrade(SamVendorInfo vInfo,SMCallBack SMcb ){
+
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj samobj = new UpgradeCoreObj(obj,vInfo);
+		Message msg = mSamServiceHandler.obtainMessage(MSG_UPGRADE_TO_SERVICER,samobj);
+		mSamServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+		
 	}
+
+	
 
 	public void answer_question(String question_id, String answer){
 		CBObj obj = new CBObj();
@@ -1038,9 +1055,9 @@ public class SamService{
 		startTimeOut(samobj);
 	}
 
-	public void queryFG(int fetch_count,SMCallBack SMcb){
+	public void queryFG(long start_timestamp, int fetch_count,SMCallBack SMcb){
 		CBObj obj = new CBObj(SMcb);
-		SamCoreObj samobj = new QueryFGCoreObj(obj,fetch_count);
+		SamCoreObj samobj = new QueryFGCoreObj(obj,start_timestamp,fetch_count);
 		Message msg = mSamServiceHandler.obtainMessage(MSG_QUERY_FG,samobj);
 		mSamServiceHandler.sendMessage(msg);
 		startTimeOut(samobj);
@@ -1065,6 +1082,45 @@ public class SamService{
 		}
 	}
 
+	private boolean savePicture(String path, String fileName,byte[] data){
+		File filePath = null; 
+		File file = null;
+		FileOutputStream fos = null;
+
+		SamLog.e(TAG,"data size:" + data.length);
+
+		try{
+			filePath = new File(path);
+			if(!filePath.exists()){
+				filePath.mkdirs();
+			}
+
+			file = new File(path  +"/"+ fileName);
+
+			if(!file.exists()){
+				file.createNewFile();
+			}
+  
+			fos = new FileOutputStream(file);    
+  
+			fos.write(data); 
+
+			return true;
+  
+		}catch(Exception e){
+			return false;
+			
+		}finally{
+			try{
+				if(fos!=null) fos.close();
+			}catch(Exception e){
+
+			}
+
+		}
+
+	}
+
 	private void downloadthumbnail_pic(HttpCommClient hcc,String url_thumb,long fg_id,int sequence){
 		byte[] data=null;
 		String shortImg=null;
@@ -1074,7 +1130,7 @@ public class SamService{
 			&& (!dao.isThumbPicExistedInDB(fg_id,shortImg)||!dao.isThumbPicExistedInFS(shortImg))){
 			data = hcc.getImage(url_thumb);
 			if(data!=null){
-				downSucceed = saveAvatar(SamService.sam_cache_path+SamService.FG_PIC_FOLDER, shortImg, data);
+				downSucceed = savePicture(SamService.sam_cache_path+SamService.FG_PIC_FOLDER, shortImg, data);
 			}
 		}
 
@@ -1083,17 +1139,17 @@ public class SamService{
 			dao.update_PictureRecord_db_thumbnail(fg_id, shortImg,sequence);
 		}
 
-		if(dao.isThumbPicExistedInDB(fg_id,shortImg)){
+		/*if(dao.isThumbPicExistedInDB(fg_id,shortImg)){
 			SamLog.e(TAG,shortImg+" is in db");
 		}else{
 			SamLog.e(TAG,shortImg+" is not in db");
-		}
+		}*/
 
-		if(dao.isThumbPicExistedInFS(shortImg)){
+		/*if(dao.isThumbPicExistedInFS(shortImg)){
 			SamLog.e(TAG,shortImg+" is in FS");
 		}else{
 			SamLog.e(TAG,shortImg+" is not in FS");
-		}
+		}*/
 	}
 
 	private void do_comment_fg(SamCoreObj samobj){
@@ -1175,7 +1231,7 @@ public class SamService{
 		}
 
 		HttpCommClient hcc = new HttpCommClient();
-		if(hcc.queryFG(token)){
+		if(hcc.queryFG(token,qfobj.start_timestamp,qfobj.fetch_count)){
 			if(hcc.ret == RET_QUERY_FG_SERVER_OK ){
 				cancelTimeOut(samobj);
 				boolean continue_run = true;
@@ -1192,57 +1248,49 @@ public class SamService{
 				String owner_phonenumber = get_current_user().getphonenumber();
 
 				List<FGRecord> rdList = dao.query_FGRecord_db(owner_phonenumber);
-				//if(rdList.size() == hcc.ainfoList.size()){
-				//	cbobj.smcb.onSuccess(hcc.ainfoList);
-				//	return;
-				//}else{
-					SamLog.e(TAG,"ainfoList size:"+hcc.ainfoList.size());
-					for(int i=0;i<hcc.ainfoList.size();i++){
-						SamLog.e(TAG,"ainfoList:"+i);
-						ArticleInfo ainfo = hcc.ainfoList.get(i);
-						FGRecord rd  = null;
-						RecommanderRecord recommandrd = null;
-						CommenterRecord commenterrd=null;
-						PictureRecord picturerd=null;
-						
-						if((rd = dao.query_FGRecord_db(ainfo.article_id))==null){
-							rd = new FGRecord(ainfo.timestamp,ainfo.article_id,ainfo.status,ainfo.comment,ainfo.publisher.getphonenumber(),owner_phonenumber);
-							rd.setid(dao.add_FGRecord_db(rd));
+				SamLog.e(TAG,"ainfoList size:"+hcc.ainfoList.size());
+				for(int i=0;i<hcc.ainfoList.size();i++){
+					ArticleInfo ainfo = hcc.ainfoList.get(i);
+					FGRecord rd  = null;
+					RecommanderRecord recommandrd = null;
+					CommenterRecord commenterrd=null;
+					PictureRecord picturerd=null;
 
-						}
-
-						for(int j=0;j<ainfo.recommander.size();j++){
-							if((recommandrd = dao.query_RecommanderRecord_db(ainfo.recommander.get(j).getphonenumber(),ainfo.article_id,0))==null){
-								recommandrd = new RecommanderRecord(ainfo.recommander.get(j).getphonenumber(),ainfo.article_id,0);
-								recommandrd.setid(dao.add_RecommanderRecord_db(recommandrd));
-							}
-						}
-
-						SamLog.e(TAG,"ainfo:"+ainfo.article_id+" commenter:"+ainfo.commenter.size());
-						for(int j=0;j<ainfo.commenter.size();j++){
-							if((commenterrd = dao.query_CommenterRecord_db(ainfo.commenter.get(j).getphonenumber(),ainfo.article_id,j))==null){
-								commenterrd = new CommenterRecord(ainfo.commenter.get(j).getphonenumber(),ainfo.comments.get(j),ainfo.article_id,j);
-								commenterrd.setid(dao.add_CommenterRecord_db(commenterrd));
-							}
-						}
-
-						for(int j=0;j<ainfo.pics.size();j++){
-							if((picturerd = dao.query_PictureRecord_db(ainfo.article_id,ainfo.pics.get(j)))==null){
-								picturerd = new PictureRecord(ainfo.article_id,ainfo.pics.get(j),ainfo.pics.get(j));
-								picturerd.setsequence(j);
-								picturerd.setid(dao.add_PictureRecord_db(picturerd));
-							}
-
-							SamLog.e(TAG,"url_thumbnail:"+picturerd.geturl_thumbnail());
-
-							downloadthumbnail_pic(hcc,ainfo.pics.get(j),ainfo.article_id,picturerd.getsequence());
-						}
-
-						
+					if((rd = dao.query_FGRecord_db(ainfo.article_id,owner_phonenumber))==null){
+						rd = new FGRecord(ainfo.timestamp,ainfo.article_id,ainfo.status,ainfo.comment,ainfo.publisher.getphonenumber(),owner_phonenumber);
+						rd.setid(dao.add_FGRecord_db(rd));
 					}
-					SamLog.e(TAG,"ainfoList loop end");
-					cbobj.smcb.onSuccess(hcc.ainfoList);
-					return;
+
+					for(int j=0;j<ainfo.recommander.size();j++){
+						if((recommandrd = dao.query_RecommanderRecord_db(ainfo.recommander.get(j).getphonenumber(),ainfo.article_id,0))==null){
+							recommandrd = new RecommanderRecord(ainfo.recommander.get(j).getphonenumber(),ainfo.article_id,0);
+							recommandrd.setid(dao.add_RecommanderRecord_db(recommandrd));
+						}
+					}
+
+					for(int j=0;j<ainfo.comments.size();j++){
+						if((commenterrd = dao.query_CommenterRecord_db(ainfo.comments.get(j).commenter.getphonenumber(),ainfo.article_id,ainfo.comments.get(j).comments_timestamp))==null){
+							commenterrd = new CommenterRecord(ainfo.comments.get(j).commenter.getphonenumber(),ainfo.comments.get(j).content,ainfo.article_id,ainfo.comments.get(j).comments_timestamp);
+							commenterrd.setid(dao.add_CommenterRecord_db(commenterrd));
+						}
+					}
+
+					for(int j=0;j<ainfo.pics.size();j++){
+						if((picturerd = dao.query_PictureRecord_db(ainfo.article_id,ainfo.pics.get(j)))==null){
+							picturerd = new PictureRecord(ainfo.article_id,ainfo.pics.get(j),ainfo.pics.get(j));
+							picturerd.setsequence(j);
+							picturerd.setid(dao.add_PictureRecord_db(picturerd));
+						}
+
+						//SamLog.e(TAG,"url_thumbnail:"+picturerd.geturl_thumbnail());
+						downloadthumbnail_pic(hcc,ainfo.pics.get(j),ainfo.article_id,picturerd.getsequence());
+					}
+
+						
+				}
+
+				cbobj.smcb.onSuccess(hcc.ainfoList);
+				return;
 				
 			}else if(hcc.ret == RET_QUERY_FG_SERVER_TOKEN_INVALID){
 				SamLog.e(TAG,"query fg TOKEN INVALIDE!");
@@ -1796,29 +1844,18 @@ public class SamService{
 
 	private void do_upgrade(SamCoreObj samobj){
 		CBObj cbobj = samobj.refCBObj;
-		
-		if(cbobj==null || cbobj.cbHandler==null ){
-			SamLog.e(TAG, "bad msg in upgrade,drop it...");
-			return;
-		}
-		
-		Handler hndl = cbobj.cbHandler.get();
-		if(hndl == null){
-			SamLog.e(TAG, "cbhandler has been destroy in upgrade, drop cbMsg ...");
-			return;
-		}
+		UpgradeCoreObj ugobj = (UpgradeCoreObj)samobj;
 
 		String token = get_current_token();
 
 		if(token == null){
 			SamLog.e(TAG, "token is null, should never run to here");
-			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_CANCEL_QUESTION_ERROR, R_CANCEL_QUESTION_ERROR_TOKEN_FILE_NULL);
-			hndl.sendMessage(msg);
+			cbobj.smcb.onError(R_UPGRADE_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
 
 		HttpCommClient hcc = new HttpCommClient();
-		if(hcc.upgrade(token)){
+		if(hcc.upgrade(token,ugobj.vInfo)){
 			if(hcc.ret == RET_UPGRADE_FROM_SERVER_OK){
 				boolean continue_run = true;
 				cancelTimeOut(samobj);
@@ -1840,14 +1877,12 @@ public class SamService{
 				user.usertype = LoginUser.MIDSERVER;
 				dao.add_update_LoginUser_db(user);
 				set_current_user(user);
-				
-
-				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_OK, 0,null);
-				hndl.sendMessage(msg);
 
 				if(mWaitThread!=null){
 					mWaitThread.InterruptWaitThread();
 				}
+
+				cbobj.smcb.onSuccess(null);
 				
 			}else{
 
@@ -1868,8 +1903,7 @@ public class SamService{
 
 					if(!continue_run) return;
 					
-					Message msg = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_FAILED, 0,null);
-					hndl.sendMessage(msg);
+					cbobj.smcb.onFailed(hcc.ret);
 				}
 			}
 
@@ -1886,8 +1920,8 @@ public class SamService{
 				}
 
 				if(!continue_run) return;
-				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_UPGRADE_ERROR, R_UPGRADE_ERROR_HTTP_EXCEPTION,null);
-				hndl.sendMessage(msg);
+				
+				cbobj.smcb.onError(R_UPGRADE_ERROR_HTTP_EXCEPTION);
 		}
 		
 	}

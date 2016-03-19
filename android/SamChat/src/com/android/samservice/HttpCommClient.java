@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.android.samchat.SamVendorInfo;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.LoginUser;
 import com.android.samservice.info.SendAnswer;
@@ -583,7 +584,7 @@ public class HttpCommClient {
 
 
 
-	public boolean upgrade(String token){
+	public boolean upgrade(String token,SamVendorInfo vInfo){
 		/*Construct sign up json data*/
 		try{
 			JSONObject upgrade_header = new JSONObject();
@@ -1370,17 +1371,23 @@ public boolean uploadavatar(String filePath, String token){
 
 			jsonArrayX = article.getJSONArray("comments");
 			for (i = 0; i < jsonArrayX.length(); i++) {
+				CommentInfo cinfo = new CommentInfo();
 				JSONObject jo = (JSONObject) jsonArrayX.get(i);
 				String content = jo.getString("content");
-				ainfo.comments.add(content);
+				cinfo.content = content;
+				
+				long comm_timestamp = jo.getLong("timestamp");
+				cinfo.comments_timestamp = comm_timestamp;
 				
 				ContactUser ui = new ContactUser();
 				JSONObject user = jo.getJSONObject("user");
 				ui.setunique_id(user.getLong("id"));
 				ui.setphonenumber(user.getString("cellphone"));
-				ainfo.commenter.add(ui);
-			}
+				cinfo.commenter = ui;
 
+				ainfo.comments.add(cinfo);
+			}
+			
 			JSONObject pub = article.getJSONObject("publisher");
 			ainfo.publisher.setphonenumber(pub.getString("cellphone"));
 			ainfo.publisher.setunique_id(pub.getLong("id"));
@@ -1416,7 +1423,7 @@ public boolean uploadavatar(String filePath, String token){
 		}
 	}
 
-	public boolean queryFG(String token){
+	public boolean queryFG(String token,long start_timestamp, int fetch_count){
 		String CrLf = "\r\n";
 
 		HttpURLConnection conn = null;
@@ -1429,9 +1436,15 @@ public boolean uploadavatar(String filePath, String token){
 			
 			
 			JSONObject querya_body = new JSONObject();
-			
-			querya_body.putOpt("timestamp_start",""+(System.currentTimeMillis()));
-			querya_body.putOpt("timestamp_end", ""+(System.currentTimeMillis()-30*24*60*60*1000L));
+
+			if(start_timestamp == 0){
+				querya_body.putOpt("timestamp_start",""+(System.currentTimeMillis()));
+			}else{
+				querya_body.putOpt("timestamp_start",""+start_timestamp);
+			}
+			querya_body.putOpt("fetch_count",""+fetch_count);
+			SamLog.e(TAG,"featch_count:"+fetch_count);
+			//querya_body.putOpt("timestamp_end", ""+(System.currentTimeMillis()-30*24*60*60*1000L));
 
 			querya_body.putOpt("qt",0);
 			
@@ -1562,18 +1575,21 @@ public boolean uploadavatar(String filePath, String token){
 
 				JSONArray jsonArrayC = article.getJSONArray("comments");
 				for (int i = 0; i < jsonArrayC.length(); i++) {
+					CommentInfo cinfo = new CommentInfo();
 					JSONObject jo = (JSONObject) jsonArrayC.get(i);
 					String content = jo.getString("content");
-					ainfo.comments.add(content);
+					cinfo.content = content;
 
-					//Long comm_timestamp = jo.getLong("timestamp");
-					//ainfo.comments_timestamp.add(comm_timestamp);
+					long comm_timestamp = jo.getLong("timestamp");
+					cinfo.comments_timestamp = comm_timestamp;
 				
 					ContactUser ui = new ContactUser();
 					JSONObject user = jo.getJSONObject("user");
 					ui.setunique_id(user.getLong("id"));
 					ui.setphonenumber(user.getString("cellphone"));
-					ainfo.commenter.add(ui);
+					cinfo.commenter = ui;
+
+					ainfo.comments.add(cinfo);
 				}
 
 				JSONObject pub = article.getJSONObject("publisher");
@@ -1752,17 +1768,21 @@ public boolean uploadavatar(String filePath, String token){
 
 			jsonArrayX = article.getJSONArray("comments");
 			for (int i = 0; i < jsonArrayX.length(); i++) {
+				CommentInfo cinfo = new CommentInfo();
 				JSONObject jo = (JSONObject) jsonArrayX.get(i);
 				String content = jo.getString("content");
-				ainfo.comments.add(content);
-				Long comm_timestamp = jo.getLong("timestamp");
-				ainfo.comments_timestamp.add(comm_timestamp);
+				cinfo.content = content;
+
+				long comm_timestamp = jo.getLong("timestamp");
+				cinfo.comments_timestamp = comm_timestamp;
 				
 				ContactUser ui = new ContactUser();
 				JSONObject user = jo.getJSONObject("user");
 				ui.setunique_id(user.getLong("id"));
 				ui.setphonenumber(user.getString("cellphone"));
-				ainfo.commenter.add(ui);
+				cinfo.commenter = ui;
+
+				ainfo.comments.add(cinfo);
 			}
 
 			JSONObject pub = article.getJSONObject("publisher");

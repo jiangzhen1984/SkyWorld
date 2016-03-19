@@ -408,9 +408,9 @@ public class SamDBDao{
 		}
 	}
 
-	public FGRecord query_FGRecord_db(long fg_id){
+	public FGRecord query_FGRecord_db(long fg_id,String owner_phonenumber){
 		synchronized(dbLock){
-				return dbHandle.queryFGRecord(fg_id);
+				return dbHandle.queryFGRecord(fg_id,owner_phonenumber);
 		}
 	}
 

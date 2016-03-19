@@ -482,11 +482,11 @@ public class SamMe_Fragment extends Fragment{
 	}
 	
 	private void upgradeToServicer(){
-		if(mDialog!=null){
+		/*if(mDialog!=null){
     			mDialog.launchProcessDialog(getActivity(),getString(R.string.process));
     		}
 
-		SamService.getInstance().upgrade( mHandler, MSG_UPGRADE_CALLBACK);
+		SamService.getInstance().upgrade( mHandler, MSG_UPGRADE_CALLBACK);*/
 
 		
 	}

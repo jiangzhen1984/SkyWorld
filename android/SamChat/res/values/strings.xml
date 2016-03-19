@@ -41,6 +41,7 @@
     <string name="next_step">Next step</string>
     <string name="agreement">has read and agree</string>
     <string name="sam_protocol">sam user protocol</string>
+    <string name="sam_vendor_protocol">sam vendor protocol</string>
     <string name="sam_account">Account</string>
     <string name="username_limit">3~15 username</string>
     <string name="username_used">used</string>
@@ -191,4 +192,15 @@
     <string name="responsed_question">question responsed</string> 
     <string name="unresponsed_question">question unresponsed</string> 
     
+    <string name="welcome_to_be">Welcom to be</string> 
+    <string name="to_be_samvendor">\"Sam Vendor\"</string>
+    <string name="input_vendor_info">please input information below</string>
+    <string name="bussiness_line">business line</string> 
+    <string name="bussiness_location">business location</string> 
+    <string name="bussiness_introduction">business brief description</string> 
+    <string name="vendor_info_input">sam vendor information input</string> 
+    <string name="my_business">my business</string>
+    <string name="location">location</string>
+    <string name="mainpage">mainpage</string>
+    <string name="modify">modify</string>
 </resources>

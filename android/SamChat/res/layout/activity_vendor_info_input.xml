@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg"
+    android:orientation="vertical" >
+
+   
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:background="@color/common_white">
+        
+        <LinearLayout
+            android:id="@+id/back_layout"
+        	android:layout_width="wrap_content"
+        	android:layout_height="match_parent" >
+        	<ImageView
+    	    	android:id="@+id/back"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_marginLeft = "@dimen/title_left_margin"
+        		android:layout_marginRight = "@dimen/title_left_margin"
+        		android:layout_gravity="center"
+        		android:contentDescription="@null"
+        		android:src="@drawable/back"/>
+            
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/back_layout"
+            android:layout_centerVertical="true"
+            android:text="@string/vendor_info_input"
+            android:textSize="18sp" />
+        
+        
+    </RelativeLayout>
+    
+    
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+		android:layout_marginLeft="20dp"
+        android:text="@string/bussiness_line"
+        android:textSize="15sp" />
+    <EditText
+        android:id="@+id/bussiness_line_input"
+  		android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		android:layout_marginTop="10dp"
+   		android:layout_marginLeft="20dp"
+   		android:layout_marginRight="20dp"
+   		android:textSize="18sp"
+   		android:singleLine="true"
+  		android:hint="@null"
+   		android:background="@drawable/bg_answer_edit"/>
+    
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+		android:layout_marginLeft="20dp"
+        android:text="@string/bussiness_location"
+        android:textSize="15sp" />
+     <EditText
+        android:id="@+id/bussiness_location_input"
+  		android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		android:layout_marginTop="10dp"
+   		android:layout_marginLeft="20dp"
+   		android:layout_marginRight="20dp"
+   		android:textSize="18sp"
+   		android:singleLine="true"
+  		android:hint="@null"
+   		android:background="@drawable/bg_answer_edit"/>
+     
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+		android:layout_marginLeft="20dp"
+        android:text="@string/bussiness_introduction"
+        android:textSize="15sp" />
+      <EditText
+        android:id="@+id/bussiness_introduction_input"
+  		android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		android:layout_marginTop="10dp"
+   		android:layout_marginLeft="20dp"
+   		android:layout_marginRight="20dp"
+   		android:textSize="18sp"
+   		android:singleLine="false"
+   		android:maxLines="4"
+  		android:hint="@null"
+   		android:background="@drawable/bg_answer_edit"/>
+      
+     <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal" 
+    	android:layout_marginTop="20dp"
+    	android:layout_marginLeft = "@dimen/title_left_margin">
+        
+        <ImageView
+    	    android:id="@+id/agree"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"       		
+        	android:contentDescription="@null"
+        	android:layout_gravity="top"/>
+        
+        <TextView
+	        android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+        	android:text="@string/agreement"
+        	android:textSize="15sp"
+        	android:layout_gravity="top"/>
+        
+         <TextView
+	        android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+        	android:text="@string/sam_vendor_protocol"
+        	android:textSize="15sp"
+        	android:layout_gravity="top"
+        	android:textColor="@color/common_bg_green"/>
+        
+      </LinearLayout>
+       
+      <TextView
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:text="@string/button_ok"
+        android:background="@color/common_bg_green"
+        android:textSize="18sp" 
+        android:gravity="center"/>
+      
+    
+</LinearLayout>

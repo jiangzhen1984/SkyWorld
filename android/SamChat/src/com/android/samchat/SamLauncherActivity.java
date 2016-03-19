@@ -237,7 +237,7 @@ public class SamLauncherActivity extends Activity {
 		timeout_happened = false;
 		SamService.getInstance(this).initSamService();
 		SignService.getInstance().attemptAutoSignIn(mHandler, MSG_AUTOLOGIN_CALLBACK);
-		startTimeOut();
+		//startTimeOut();
 	      
 	}
 	 

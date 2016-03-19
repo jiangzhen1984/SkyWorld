@@ -1,12 +1,15 @@
 package com.android.samchat;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 import com.android.samchat.AutoSwipeRefreshLayout.OnLoadListener;
 import com.android.samchat.SoftInputMonitorLinearLayout.InputWindowListener;
+import com.android.samservice.ArticleInfo;
 import com.android.samservice.SMCallBack;
 import com.android.samservice.SamDBDao;
 import com.android.samservice.SamLog;
@@ -28,6 +31,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -47,10 +51,33 @@ import android.text.TextWatcher;
 import android.content.IntentFilter;
 import android.util.Log;
 
+/*FG refresh algorithm
+API1. query with start timestamp + end time stamp + count
+API2. query with start timestamp + count
+
+
+1. pull down from head:
+    refresh from now timestamp with 10 count
+    if < 10 count, end of fg and delete local db which is before the last fg
+    else show 10 count
+2. pull up from bottom if it is in pull down refresh procedure, wait until pull down refresh finished
+3. pull up from bottom:
+    if end of fg, do nothing
+    else if refresh from oldest shown record with 10 count
+
+
+
+*/
 
 public class SamFriendGroupActivity extends Activity {
 	private final String TAG = "SamFriendGroup";
 	static public final String ACTIVITY_NAME="com.android.samchat.SamFriendGroupActivity";
+	static public final int MAXIUM_EACH_REFRESH = 1;
+	private final int MSG_PULL_DOWN_QUERY_SUCCEED = 0;
+	private final int MSG_PULL_DOWN_QUERY_FAILED = 1;
+	private final int MSG_PULL_UP_QUERY_SUCCEED = 3;
+	private final int MSG_PULL_UP_QUERY_FAILED = 4;
+	
 
 	private boolean isDestroyed=false;
 
@@ -72,11 +99,8 @@ public class SamFriendGroupActivity extends Activity {
 	private String cur_comment;
 	private int cur_comment_item;
 
-	private int show_fg_numbers=0;
-	private final int load_fg_numbers_each_pullup=3;
-	private final int first_show_num = 5;
 
-	List<FGRecord> validList; 
+	List<ArticleInfo> shownList; 
 
 	Handler handler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
@@ -84,12 +108,22 @@ public class SamFriendGroupActivity extends Activity {
 				return;
 			}
 			
-			swipeRefreshLayout.setRefreshing(false);
 			switch (msg.what) {
-				case 0:
-					refresh();
+				case MSG_PULL_DOWN_QUERY_SUCCEED:
+					swipeRefreshLayout.setRefreshing(false);
+					refresh((List<ArticleInfo>)msg.obj);
 				break;
-				case 1:
+				case MSG_PULL_DOWN_QUERY_FAILED:
+					swipeRefreshLayout.setRefreshing(false);
+					Toast.makeText(SamFriendGroupActivity.this, R.string.failed_to_friend_group_information, Toast.LENGTH_SHORT).show();
+					swipeRefreshLayout.disable_pullup_load(false);
+				break;
+				case MSG_PULL_UP_QUERY_SUCCEED:
+					swipeRefreshLayout.setLoading(false);
+					refresh((List<ArticleInfo>)msg.obj);
+				break;
+				case MSG_PULL_UP_QUERY_FAILED:
+					swipeRefreshLayout.setLoading(false);
 					Toast.makeText(SamFriendGroupActivity.this, R.string.failed_to_friend_group_information, Toast.LENGTH_SHORT).show();
 				break;
 
@@ -115,10 +149,13 @@ public class SamFriendGroupActivity extends Activity {
 				break;
 
 				case 1:
-					SamLog.e(TAG,"indication:"+msg.arg1+" is clicked");
+					//SamLog.e(TAG,"indication:"+msg.arg1+" is clicked");
 					launchPageScrollActivity(msg.arg1,(ArrayList<String>)msg.obj);
 				break;
 
+				case 2:
+					mAdapter.notifyDataSetChanged();
+				break;
 				default:
 
 				break;
@@ -139,7 +176,7 @@ public class SamFriendGroupActivity extends Activity {
 		SamDBDao dao = SamService.getInstance().getDao();
 		for(int i=0;i<rdList.size();i++){
 			FGRecord rd = rdList.get(i);
-			SamLog.e(TAG,"order by article:"+rd.getfg_id()+" timestamp:"+rd.gettimestamp());
+			//SamLog.e(TAG,"order by article:"+rd.getfg_id()+" timestamp:"+rd.gettimestamp());
 			String publisher_phonenumber = rd.getpublisher_phonenumber();
 			ContactUser user = dao.query_ContactUser_db(publisher_phonenumber);
 			if(!publisher_phonenumber.equals(SamService.getInstance().get_current_user().getphonenumber()) && user == null ){
@@ -168,28 +205,86 @@ public class SamFriendGroupActivity extends Activity {
 
 		return validList;
 	}
-	
-	private void refresh(){
-		String owner_phonenumber = SamService.getInstance().get_current_user().getphonenumber();
-		List<FGRecord> rdList = SamService.getInstance().getDao().query_FGRecord_db(owner_phonenumber);
-		validList = validate(rdList);
-		
-		
-		mAdapter.setFGRecordList(validList);
-		if(show_fg_numbers == 0){
-			show_fg_numbers = validList.size()<first_show_num?validList.size():first_show_num;
-		}else{
-			show_fg_numbers = validList.size()<show_fg_numbers?validList.size():show_fg_numbers;
+
+	private void mergeNewList(List<ArticleInfo> newList){
+		if(newList.size() == 0){
+			return;
 		}
-		int count = show_fg_numbers;
-		mAdapter.setCount(count);
-		//SamLog.e(TAG,"test count:"+count);
+
+		if(shownList.size() == 0){
+			shownList = newList;
+			return;
+		}
+
+		
+
+		boolean needSort = false;
+
+		for(int i=0;i<newList.size();i++){
+			boolean needAdded=true;
+			for(int j=0;j<shownList.size();j++){
+				if(newList.get(i).article_id == shownList.get(j).article_id){
+					needAdded = false;
+					break;
+				}
+			}
+			
+			if(needAdded){
+				shownList.add(newList.get(i));
+				needSort = true;
+			}
+		}
+
+		if(needSort){
+			Collections.sort(shownList, new Comparator<ArticleInfo>() {
+				@Override
+				public int compare(ArticleInfo lhs, ArticleInfo rhs) {
+					if(lhs.timestamp < rhs.timestamp){
+						return 1;
+					}else if(lhs.timestamp == rhs.timestamp){
+						return 0;
+					}else{
+						return -1;
+					}
+				}
+			});
+		}
+
+		//SamLog.e(TAG,"shownlist size:" + shownList.size());
+
+	}
+
+	private List<FGRecord> getFGRecordList(List<ArticleInfo> ainfoList){
+		String owner_phonenumber = SamService.getInstance().get_current_user().getphonenumber();
+		List<FGRecord> rdList = new ArrayList<FGRecord>();
+		for(ArticleInfo ainfo :ainfoList){
+			FGRecord rd = SamService.getInstance().getDao().query_FGRecord_db(ainfo.article_id, owner_phonenumber);
+			if(rd!=null){
+				rdList.add(rd);
+			}
+		}
+
+		return rdList;
+		
+	}
+	
+	private void refresh(List<ArticleInfo> ainfoList){
+		mergeNewList(ainfoList);
+
+		List<FGRecord> rdList = getFGRecordList(shownList);
+
+		//SamLog.e(TAG,"rdList size:"+rdList.size());
+
+		mAdapter.setFGRecordList(rdList);
+		mAdapter.setCount(rdList.size());
 		mAdapter.notifyDataSetChanged();
 
-		if(show_fg_numbers < validList.size()){
-			swipeRefreshLayout.disable_pullup_load(false);
-		}else{
+		//ainfoList: query article info list this time
+		if(ainfoList.size()<MAXIUM_EACH_REFRESH){
+			//last article has been got by this refresh
 			swipeRefreshLayout.disable_pullup_load(true);
+		}else{
+			swipeRefreshLayout.disable_pullup_load(false);
 		}
 		
 	}
@@ -241,7 +336,7 @@ public class SamFriendGroupActivity extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.activity_friend_group);
 
-		validList = new ArrayList<FGRecord>();
+		shownList = new ArrayList<ArticleInfo>();
 
 		mMainLayout = (SoftInputMonitorLinearLayout)findViewById(R.id.mainLayout);
 		mMainLayout.setListener(new InputWindowListener() {
@@ -278,7 +373,7 @@ public class SamFriendGroupActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				long article_id = mAdapter.getFGRecordList().get(cur_comment_item).getfg_id();
-				SamLog.e(TAG,"article_id:"+article_id+" item:"+cur_comment_item+" commentFG:"+cur_comment);
+				//SamLog.e(TAG,"article_id:"+article_id+" item:"+cur_comment_item+" commentFG:"+cur_comment);
 				commentFG(article_id, cur_comment);
 
 				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); 
@@ -298,8 +393,13 @@ public class SamFriendGroupActivity extends Activity {
 		mContext = getBaseContext();
 
 		mFriend_share_list = (ListView) findViewById(R.id.friend_share_list);
-		mAdapter = new FriendGroupAdapter(mContext,inputhandler);
+		mAdapter = new FriendGroupAdapter(mContext,mFriend_share_list,inputhandler);
 		mFriend_share_list.setAdapter(mAdapter);
+		mAdapter.InitHandlerThread(this);
+		//mAdapter.setScrollListener();
+		
+		
+		
 
 		mBack =  (ImageView) findViewById(R.id.back);
 		mBack.setOnClickListener(new OnClickListener(){
@@ -326,8 +426,9 @@ public class SamFriendGroupActivity extends Activity {
 
 			@Override
 			public void onRefresh() {
+				swipeRefreshLayout.disable_pullup_load(true);
 				swipeRefreshLayout.setRefreshing(true);
-				queryFG();
+				queryFG(0,MAXIUM_EACH_REFRESH);
 			}
 			
                     
@@ -339,25 +440,19 @@ public class SamFriendGroupActivity extends Activity {
 		swipeRefreshLayout.setOnLoadListener(new OnLoadListener() {
 			@Override
 			public void onLoad() {
-                        	//SamLog.e(TAG,"onLoad1 show:"+show_fg_numbers);
-				if(show_fg_numbers <= validList.size()){
-					int no_show = validList.size()-show_fg_numbers;
-					show_fg_numbers +=(load_fg_numbers_each_pullup<no_show?load_fg_numbers_each_pullup:no_show);
-						
-					mAdapter.setFGRecordList(validList);
-					mAdapter.setCount(validList.size()<show_fg_numbers?validList.size():show_fg_numbers);
-					mAdapter.notifyDataSetChanged();
-				}
-
-				swipeRefreshLayout.setLoading(false);
-				//SamLog.e(TAG,"onLoad2 show:"+show_fg_numbers);
-				if(show_fg_numbers < validList.size()){
-					swipeRefreshLayout.disable_pullup_load(false);
+				if(shownList.size() == 0){
+					swipeRefreshLayout.setLoading(false);
 				}else{
-					swipeRefreshLayout.disable_pullup_load(true);
+					ArticleInfo ainfo = shownList.get(shownList.size()-1);
+					long start_timestamp = ainfo.timestamp-1;
+					queryFG(start_timestamp,MAXIUM_EACH_REFRESH);
+					
 				}
+                        
                     }
         	});
+
+		swipeRefreshLayout.setOnScrollSubListener(mAdapter.getScrollListener());
 
 		swipeRefreshLayout.autoRefresh();
 	       
@@ -372,6 +467,7 @@ public class SamFriendGroupActivity extends Activity {
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
+		mAdapter.stopLoadDecoderThread();
 	}
 
 	@Override
@@ -415,20 +511,26 @@ public class SamFriendGroupActivity extends Activity {
 
 	}
 
-	private void queryFG(){
-		SamService.getInstance().queryFG(1000,new SMCallBack(){
+	private void queryFG(final long start_timestamp, int max){
+		SamService.getInstance().queryFG(start_timestamp,max,new SMCallBack(){
 			@Override
 			public void onSuccess(Object obj) {
 				if(SamFriendGroupActivity.this == null ||SamFriendGroupActivity.this.isFinishing() ){
 					return;
 				}
+
+				List<ArticleInfo> ainfoList = (List<ArticleInfo>)obj;
 				
-				runOnUiThread(new Runnable() {
-					public void run() {
-						SamLog.e(TAG,"queryFG succedd");
-						handler.sendEmptyMessage(0);
-					}
-				});
+				SamLog.e(TAG,"queryFG succedd");
+				if(start_timestamp !=0){
+					Message msg = handler.obtainMessage(MSG_PULL_UP_QUERY_SUCCEED,ainfoList);
+					handler.sendMessage(msg);
+				}else{
+					Message msg = handler.obtainMessage(MSG_PULL_DOWN_QUERY_SUCCEED,ainfoList);
+					handler.sendMessage(msg);
+				}
+				
+					
 			}
 
 			
@@ -442,7 +544,11 @@ public class SamFriendGroupActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						SamLog.e(TAG,"queryFG failed");
-						handler.sendEmptyMessage(1);
+						if(start_timestamp !=0){
+							handler.sendEmptyMessage(MSG_PULL_UP_QUERY_FAILED);
+						}else{
+							handler.sendEmptyMessage(MSG_PULL_DOWN_QUERY_FAILED);
+						}
 					}
 				});
 			}
@@ -456,13 +562,20 @@ public class SamFriendGroupActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						SamLog.e(TAG,"queryFG error");
-						handler.sendEmptyMessage(1);
+						if(start_timestamp !=0){
+							handler.sendEmptyMessage(MSG_PULL_UP_QUERY_FAILED);
+						}else{
+							handler.sendEmptyMessage(MSG_PULL_DOWN_QUERY_FAILED);
+						}
 					}
 				});
 			}
 
 		});
 	}
+
+
+	
 
 	private void commentFG(long article_id,String comment){
 		SamService.getInstance().commentFG(article_id,comment,new SMCallBack(){

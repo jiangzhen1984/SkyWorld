@@ -2,30 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@color/common_white">
     
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_top_bar"
-        android:background="#007968"
-        android:gravity="center"
-        android:textColor="@color/common_white"
-        android:textSize="18sp"
-        android:text="@string/settings"/>
+    <RelativeLayout
+        android:id="@+id/mine_layout"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:background="#007968">
+    	
+        <com.easemob.easeui.ui.CircleImageView
+            android:id="@+id/avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ease_default_avatar" />
+        
+        <TextView
+        	android:id="@+id/username"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_below="@id/avatar"
+        	android:layout_marginTop="10dp"
+        	android:layout_marginBottom="10dp"
+        	android:layout_alignRight="@id/avatar"
+        	android:textColor="@color/common_white"
+        	android:textSize="18sp"/>
+    </RelativeLayout>
     
-    <LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"
-    android:orientation="horizontal" >
+   
+    
+    <LinearLayout
+        android:id="@+id/contact_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+        
+      <ImageView
+      	 android:layout_width="28dp"
+         android:layout_height="28dp"
+         android:layout_marginRight="30dp"
+         android:contentDescription="@null"
+         android:src="@drawable/sam_contact_icon"
+         android:layout_gravity="center_vertical"/>
     
       <TextView
         android:id="@+id/contact"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_gravity="center_vertical"
         android:textSize="18sp"
         android:text="@string/sam_contact"/>
       
@@ -36,11 +66,12 @@
         android:textSize="12sp"
         android:textColor="@color/common_white"
         android:gravity="center"
+        android:layout_gravity="center_vertical"
         android:text="new"
         android:background="@drawable/reminder_point_bg"
         android:visibility="invisible"/>
     
-    </LinearLayout>>
+    </LinearLayout>
     
     <View
         android:layout_width="match_parent"
@@ -48,29 +79,67 @@
         android:background="@color/listview_gray_devider"
         android:layout_marginTop="5dp"/>
     
-    <TextView
+    <LinearLayout
+        android:id="@+id/settings_layout"  
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+        
+      <ImageView
+      	 android:layout_width="28dp"
+         android:layout_height="28dp"
+         android:layout_marginRight="30dp"
+         android:layout_gravity="center_vertical"
+         android:contentDescription="@null"
+         android:src="@drawable/sam_setting_icon"/>
+    
+      <TextView
         android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
         android:textSize="18sp"
         android:text="@string/settings"/>
     
+    </LinearLayout>
+    
+    
+    
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/listview_gray_devider"
         android:layout_marginTop="5dp"/>
     
-    <TextView
+    <LinearLayout
+        android:id="@+id/logout_layout"  
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+        
+      <ImageView
+      	 android:layout_width="28dp"
+         android:layout_height="28dp"
+         android:layout_marginRight="30dp"
+         android:layout_gravity="center_vertical"
+         android:contentDescription="@null"
+         android:src="@drawable/sam_logout_icon"/>
+    
+      <TextView
         android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
         android:textSize="18sp"
         android:text="@string/logout"/>
+    
+    </LinearLayout>
+    
+    
     
     <View
         android:layout_width="match_parent"
@@ -78,14 +147,33 @@
         android:background="@color/listview_gray_devider"
         android:layout_marginTop="5dp"/>
     
-    <TextView
+     <LinearLayout
+        android:id="@+id/exitapp_layout"  
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+        
+      <ImageView
+      	 android:layout_width="28dp"
+         android:layout_height="28dp"
+         android:layout_marginRight="30dp"
+         android:layout_gravity="center_vertical"
+         android:contentDescription="@null"
+         android:src="@drawable/sam_logout_icon"/>
+    
+      <TextView
         android:id="@+id/exitapp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
         android:textSize="18sp"
         android:text="@string/exit_app"/>
+    
+    </LinearLayout>
+    
+    
     
     <View
         android:layout_width="match_parent"

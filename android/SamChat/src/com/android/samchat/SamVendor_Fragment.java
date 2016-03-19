@@ -26,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,14 @@ import com.easemob.easeui.utils.EaseUserUtils;
 public class SamVendor_Fragment extends Fragment{
 	static final String TAG = "SamVendor_Fragment";
 
+	public static final int REQUST_CODE_CONFIRM_INPUT_NEW = 21;
+	public static final int REQUST_CODE_CONFIRM_INPUT_MODIFY = 22;
+
 	private View rootView;
+	private LinearLayout mInput_layout;
+	private LinearLayout mNew_layout;
+	private RelativeLayout mModify_layout;
+	private TextView mModify;
 		
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +58,37 @@ public class SamVendor_Fragment extends Fragment{
 		SamLog.i(TAG, "onCreateView");
 		
 		if(rootView == null){
-			rootView = inflater.inflate(R.layout.fragment_public, container,false);
+			rootView = inflater.inflate(R.layout.fragment_vendor, container,false);
+			mInput_layout = (LinearLayout)rootView.findViewById(R.id.input_layout);
+			mInput_layout.setOnClickListener(new OnClickListener(){
+		    		@Override
+		    		public void onClick(View arg0) {
+		    			launchVendorInfoInputActivity();
+		    		}
+			});
+
+			
+
+			mNew_layout = (LinearLayout)rootView.findViewById(R.id.new_layout);
+			mModify_layout = (RelativeLayout)rootView.findViewById(R.id.modify_layout);
+
+			LoginUser cuser = SamService.getInstance().get_current_user();
+			if(cuser.getUserType() == LoginUser.USER){
+				mModify_layout.setVisibility(View.GONE);
+				mNew_layout.setVisibility(View.VISIBLE);
+			}else{
+				mNew_layout.setVisibility(View.GONE);
+				mModify_layout.setVisibility(View.VISIBLE);
+			}
+
+			mModify =  (TextView)rootView.findViewById(R.id.modify);
+			mModify.setOnClickListener(new OnClickListener(){
+		    		@Override
+		    		public void onClick(View arg0) {
+		    			launchVendorInfoInputActivity("a","b","c");
+		    		}
+			});
+			
 			
 		}
 		return rootView;
@@ -118,6 +156,57 @@ public class SamVendor_Fragment extends Fragment{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
+		if(requestCode == REQUST_CODE_CONFIRM_INPUT_NEW){
+			if(resultCode == 1){ //OK
+				LoginUser cuser = SamService.getInstance().get_current_user();
+				if(cuser.getUserType() == LoginUser.USER){
+					mModify_layout.setVisibility(View.GONE);
+					mNew_layout.setVisibility(View.VISIBLE);
+				}else{
+					mNew_layout.setVisibility(View.GONE);
+					mModify_layout.setVisibility(View.VISIBLE);
+				}
+			}else{
+
+			}
+    	   
+		}else if(requestCode == REQUST_CODE_CONFIRM_INPUT_MODIFY){
+			if(resultCode == 1){ //OK
+				LoginUser cuser = SamService.getInstance().get_current_user();
+				if(cuser.getUserType() == LoginUser.USER){
+					mModify_layout.setVisibility(View.GONE);
+					mNew_layout.setVisibility(View.VISIBLE);
+				}else{
+					mNew_layout.setVisibility(View.GONE);
+					mModify_layout.setVisibility(View.VISIBLE);
+				}
+			}else{
+
+			}
+		}
+	} 
+
+	private void launchVendorInfoInputActivity(String line,String location,String introducation){
+		Intent newIntent = new Intent(getActivity(),VendorInfoInputActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		newIntent.putExtra("line", line);
+		newIntent.putExtra("location", location);
+		newIntent.putExtra("introduction", introducation);
+
+		startActivityForResult(newIntent, REQUST_CODE_CONFIRM_INPUT_MODIFY);
+	}
+
+	private void launchVendorInfoInputActivity(){
+		Intent newIntent = new Intent(getActivity(),VendorInfoInputActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+
+		startActivityForResult(newIntent, REQUST_CODE_CONFIRM_INPUT_NEW);
 	}
 	
 }

@@ -52,6 +52,8 @@ public class AutoSwipeRefreshLayout extends SwipeRefreshLayout implements OnScro
 
 	private boolean pullup_load_disable=false;
 
+	private AbsListView.OnScrollListener mSubScrollListener;
+
 	void disable_pullup_load(boolean disable){
 		pullup_load_disable = disable;
 	}
@@ -147,7 +149,7 @@ public class AutoSwipeRefreshLayout extends SwipeRefreshLayout implements OnScro
      * @return
      */
     private boolean canLoad() {
-        return isBottom() && !isLoading && isPullUp();
+        return isBottom() && !isLoading && isPullUp() && !pullup_load_disable;
     }
 
     /**
@@ -188,9 +190,9 @@ public class AutoSwipeRefreshLayout extends SwipeRefreshLayout implements OnScro
     public void setLoading(boolean loading) {
         isLoading = loading;
         if (isLoading) {
-		//if(!pullup_load_disable){
+		if(!pullup_load_disable){
 			mListView.addFooterView(mListViewFooter);
-		//}
+		}
         } else {
             mListView.removeFooterView(mListViewFooter);
             mYDown = 0;
@@ -207,7 +209,7 @@ public class AutoSwipeRefreshLayout extends SwipeRefreshLayout implements OnScro
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+		mSubScrollListener.onScrollStateChanged(view, scrollState);
     }
 
     @Override
@@ -217,6 +219,12 @@ public class AutoSwipeRefreshLayout extends SwipeRefreshLayout implements OnScro
         if (canLoad()) {
             loadData();
         }
+
+	  mSubScrollListener.onScroll(view, firstVisibleItem,visibleItemCount,totalItemCount);  
+    }
+
+    public void setOnScrollSubListener(AbsListView.OnScrollListener subScrollListener) {
+        mSubScrollListener = subScrollListener;
     }
 
     /**
