@@ -4,6 +4,13 @@ package com.skyworld.service.dsf;
 
 public class SKServicer extends User {
 
+	
+	private String location;
+	
+	private String area;
+	
+	private String serviceDesc;
+	
 
 	public SKServicer() {
 		super();
@@ -14,6 +21,33 @@ public class SKServicer extends User {
 		super(u);
 		super.setUserType(UserType.SERVICER);
 	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getServiceDesc() {
+		return serviceDesc;
+	}
+
+	public void setServiceDesc(String serviceDesc) {
+		this.serviceDesc = serviceDesc;
+	}
+	
+	
+	
 	
 
 }

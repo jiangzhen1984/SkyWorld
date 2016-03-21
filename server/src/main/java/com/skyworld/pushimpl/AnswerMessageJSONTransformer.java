@@ -34,6 +34,10 @@ public class AnswerMessageJSONTransformer extends BaseJSONTransformer<AnswerMess
 		syservicer.put("id", qm.getServicer().getId());
 		syservicer.put("cellphone", qm.getServicer().getCellPhone());
 		syservicer.put("username", qm.getServicer().getMail());
+		syservicer.put("area", qm.getServicer().getArea());
+		syservicer.put("location", qm.getServicer().getLocation());
+		syservicer.put("desc", qm.getServicer().getServiceDesc());
+		
 		JSONObject easemob = new JSONObject();
 		syservicer.put("easemob", easemob);
 		easemob.put("username", qm.getServicer().getCellPhone());

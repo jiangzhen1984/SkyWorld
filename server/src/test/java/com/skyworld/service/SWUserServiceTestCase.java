@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
 
 public class SWUserServiceTestCase extends TestCase {
@@ -162,6 +163,27 @@ public class SWUserServiceTestCase extends TestCase {
 		assertTrue(u.isInRelation(u2));
 		assertTrue(u.isInRelation(u3));
 		
+	}
+	
+	
+	@Test
+	public void testUpgradeService() {
+		User u3 = new User();
+		u3.setName("aaa134");
+		u3.setCellPhone("1111134");
+		u3.setPassword("a");
+		u3.setAvatarPath("aaaa4");
+		service.addUser(u3);
+		
+		SKServicer sks = new SKServicer(u3);
+		sks.setArea("aaa");
+		sks.setLocation("bbb");
+		service.updradeUserToSKServicer(sks);
+		assertEquals("bbb", sks.getLocation());
+		
+		SKServicer sks1 = new SKServicer(u3);
+		boolean ret = service.populateServicer(sks1);
+		assertTrue(ret);
 	}
 	
 	

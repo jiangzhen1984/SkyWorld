@@ -15,6 +15,7 @@ import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.dsf.UserType;
 import com.skyworld.service.po.SWPRelationship;
+import com.skyworld.service.po.SWPServicerDesc;
 import com.skyworld.service.po.SWPUser;
 import com.skyworld.service.po.SWPUserAvatar;
 
@@ -224,6 +225,24 @@ public class SWUserService extends BaseService {
 	}
 	
 
+	public boolean populateServicer(SKServicer servicer) {
+		if (servicer == null) {
+			return false;
+		}
+		Session session = openSession();
+		Query query = session.createQuery(" from SWPServicerDesc where servicer.id = ?");
+		query.setLong(0, servicer.getId());
+		List<SWPServicerDesc> list = (List<SWPServicerDesc>)query.list();
+		if (list.size() > 0) {
+			SWPServicerDesc desc = list.get(0);
+			servicer.setArea(desc.getArea());
+			servicer.setLocation(desc.getLocation());
+			servicer.setServiceDesc(desc.getDesc());
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	
 	public boolean updradeUserToSKServicer(SKServicer servicer) {
@@ -240,6 +259,15 @@ public class SWUserService extends BaseService {
 			cache.setLastUpdate(System.currentTimeMillis());
 			Transaction t = session.beginTransaction();
 			session.update(cache);
+			
+			
+			SWPServicerDesc swsd = new SWPServicerDesc();
+			swsd.setArea(servicer.getArea());
+			swsd.setDesc(servicer.getServiceDesc());
+			swsd.setLocation(servicer.getLocation());
+			swsd.setServicer(cache);
+			session.save(swsd);
+			
 			t.commit();
 			servicer.setLastUpdate(cache.getLastUpdate());
 		}

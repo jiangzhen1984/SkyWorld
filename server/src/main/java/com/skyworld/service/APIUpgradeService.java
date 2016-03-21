@@ -16,11 +16,19 @@ public class APIUpgradeService extends APIBasicJsonApiService {
 	@Override
 	protected BasicResponse service(JSONObject json) {
 		JSONObject header = json.getJSONObject("header");
+		JSONObject body = json.getJSONObject("body");
 		Token token = checkAuth(header);
 		if (token == null) {
 			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
 		}
+		if (!body.has("area") || !body.has("location") || !body.has("desc")) {
+			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
+		}
 
+		String area = body.getString("area");
+		String location = body.getString("location");
+		String desc = body.getString("desc");
+		
 		SKServicer cache = CacheManager.getIntance().getSKServicer(token);
 		if (cache != null) {
 			return new RTCodeResponse(APICode.USER_UPGRADE_ERROR_ALREADY);
@@ -31,13 +39,17 @@ public class APIUpgradeService extends APIBasicJsonApiService {
 		if (cus == null) {
 			return new RTCodeResponse(APICode.TOKEN_INVALID);
 		}
+		
 
 		SKServicer servicer = new SKServicer((User) cus);
+		servicer.setArea(area);
+		servicer.setLocation(location);
+		servicer.setServiceDesc(desc);
+		
 		boolean ret = ServiceFactory.getESUserService()
 				.updradeUserToSKServicer(servicer);
 		if (!ret) {
 			return new RTCodeResponse(APICode.USER_UPGRADE_ERROR_INTERNAL);
-
 		}
 
 		Token newToken = CacheManager.getIntance().saveUser(servicer);

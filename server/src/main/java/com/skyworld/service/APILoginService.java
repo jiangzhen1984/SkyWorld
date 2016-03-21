@@ -38,6 +38,7 @@ public class APILoginService extends APIBasicJsonApiService {
 			user = new Customer(user);
 		} else if (user.getUserType() == UserType.SERVICER) {
 			user = new SKServicer(user);
+			ServiceFactory.getESUserService().populateServicer((SKServicer)user);
 		}
 		Token token = CacheManager.getIntance().saveUser(user);
 		//Add pending event of Easemob message

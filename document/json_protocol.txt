@@ -31,7 +31,9 @@ Protocol Version: M13
               Add user relation query API
 Protocol Version: M14
               Add question Inquire API
-
+Protocol Version: M15
+              Update user upgrade API : add area location description
+              Update answer protocol for add properties of servicer
 
 
 =======================================Register JSON Protocol =====================================
@@ -46,9 +48,9 @@ Register
     }, 
     "body" :
     {
-        "cellphone":"1381196123",
-        "username" : "138",
-        "pwd" : "a",
+        "cellphone"   :"1381196123",
+        "username"    : "138",
+        "pwd"         : "a",
         "confirm_pwd" : "a"
     }
 }
@@ -168,6 +170,9 @@ Upgrade:
     },
     "body":
     {
+      "area"      : area of businuss convered,
+      "location"  : location of company
+      "desc"      : service description
     }
 }
 
@@ -196,7 +201,7 @@ token不存在：  {ret: -5}
 不合法的用户TOKEN :{ret : -502}
 用户已经升级过了 :{ret : -503}
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upgrade", "token": token},"body":{}}
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upgrade", "token": token},"body":{"area" : "area", "location" : " OR ", "desc" : "description"}}
 
 
 =======================================Query JSON Protocol =====================================
@@ -781,15 +786,18 @@ New Answer json:
         "syservicer":
         {
             "id":2,
+            "cellphone":"138",
+            "username" :"syservicer_mail",
+            "area"     : "area",
+            "location" : "location",
+            "desc"     : "description",
             "easemob":
             {
                 "username":"138"
             },
-            "cellphone":"138",
-            "username":"syservicer_mail"
             "avatar":
             {
-                 "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
+                 "origin" : "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
             },
             "lastupdate":1454076248624
         },
@@ -812,9 +820,9 @@ New Answer json:
     }
     "body":
     {
-        "id":2,
-        "cellphone":"138",
-        "easemob_username":"138"
+        "id"               : 2,
+        "cellphone"        : "138",
+        "easemob_username" : "138"
     }
 
 }
