@@ -34,6 +34,11 @@ Protocol Version: M14
 Protocol Version: M15
               Update user upgrade API : add area location description
               Update answer protocol for add properties of servicer
+Protocol Version: M16
+              Add country code field for user register
+              Add relation query api for user interaction
+              Update easemob register policy: user username as easemob user name instead cell phone.
+              Update user data from when return user information
 
 
 =======================================Register JSON Protocol =====================================
@@ -48,10 +53,11 @@ Register
     }, 
     "body" :
     {
-        "cellphone"   :"1381196123",
-        "username"    : "138",
-        "pwd"         : "a",
-        "confirm_pwd" : "a"
+        "cellphone"    :"1381196123",
+        "username"     : "138",
+        "country_code" : 86, //user count code,
+        "pwd"          : "a",
+        "confirm_pwd"  : "a"
     }
 }
 
@@ -62,7 +68,7 @@ Register
     "user":
     {
        "id"  : id,
-       "mail":"138",
+       "name":"138",
        "cellphone":"1381196123",
        "type":0,
        "username":"138",
@@ -70,7 +76,16 @@ Register
        {
           "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
        },
-       "lastupdate":1454076248624
+       "easemob":
+       {
+           "username":"138"
+       },
+       "lastupdate":1454076248624,
+
+       // optional if user is servicer
+       "area"   : "area",
+       "location"   : "location",
+       "desc"   : "desc"
     }
 }
 
@@ -82,7 +97,7 @@ action参数不支持返回：  {ret: -2}
 内部错误：  {ret: -103}  
 
 测试地址：
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data= { "header": {"action" : "register"}, "body" : {"cellphone":"1381196123", "username" : "138", "pwd" : "a", "confirm_pwd" : "a"}}
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data= { "header": {"action" : "register"}, "body" : {"cellphone":"1381196123", "username" : "138", "pwd" : "a", "confirm_pwd" : "a", "country_code" : 86}}
 
 
 
@@ -110,7 +125,7 @@ Login :
     "user":
     {
        "id"  : id,
-       "mail":"138",
+       "name":"138",
        "cellphone":"1381196123",
        "type":0,
        "username":"138",
@@ -118,7 +133,16 @@ Login :
        {
           "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
        },
-       "lastupdate":1454076248624
+       "easemob":
+       {
+           "username":"138"
+       },
+       "lastupdate":1454076248624,
+       // optional if user is servicer
+       "area"   : "area",
+       "location"   : "location",
+       "desc"   : "desc"
+
     }
 }
 解析失败返回：  {ret: -1}  
@@ -184,11 +208,23 @@ Upgrade:
     "user":
     {
        "id"  : id,
-       "mail":"138",
+       "name":"name",
        "cellphone":"1381196123",
-       "type":1,
+       "type":0,
        "username":"138",
-       "lastupdate":1454076248624
+       "avatar":
+       {
+          "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
+       },
+       "easemob":
+       {
+           "username":"138"
+       },
+       "lastupdate":1454076248624,
+       // optional if user is servicer
+       "area"   : "area",
+       "location"   : "location",
+       "desc"   : "desc"
     }
 }
 
@@ -260,17 +296,24 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI
      "ret"    : 0,
      "users"  :[
          {
-            "id"  : id,
-            "mail":"138",
-            "name":"138",
-            "username":"138",
-            "cellphone":"1381196123",
-            "type":0,
-            "avatar":
-            {
+             "id"  : id,
+             "name":"138",
+             "cellphone":"1381196123",
+             "type":0,
+             "username":"138",
+             "avatar":
+             {
                 "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
-            },
-            "lastupdate":1454076248624
+             },
+             "easemob":
+             {
+                 "username":"138"
+             },
+             "lastupdate":1454076248624,
+             // optional if user is servicer
+             "area"   : "area",
+             "location"   : "location",
+             "desc"   : "desc"
         }
      ]
 }
@@ -300,7 +343,12 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI
     },
     "body":
     {
-       "type"   :  [1/2]  1 : query relation which other user followed cuurent user.    2: current user followed
+       "type"   :  [1/2/3]  
+                    1 :  query relation which other user followed cuurent user.
+                    2 :  current user followed
+                    3 :  query cuurent user and another user relateion 
+       "userid2"  :  another user 2
+       "both"     :  [true/false]  true: query double direction relation, otherwise single from current user to user2
     }
 }
 
@@ -309,17 +357,24 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI
      "ret"    : 0,
      "users"  :[
          {
-            "id"  : id,
-            "mail":"138",
-            "name":"138",
-            "username":"138",
-            "cellphone":"1381196123",
-            "type":0,
-            "avatar":
-            {
+             "id"  : id,
+             "name":"138",
+             "cellphone":"1381196123",
+             "type":0,
+             "username":"138",
+             "avatar":
+             {
                 "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
-            },
-            "lastupdate":1454076248624
+             },
+             "easemob":
+             {
+                 "username":"138"
+             },
+             "lastupdate":1454076248624,
+             // optional if user is servicer
+             "area"   : "area",
+             "location"   : "location",
+             "desc"   : "desc"
         }
      ]
 }
@@ -329,8 +384,9 @@ action参数不支持返回：  {ret: -2}
 参数不满足返回：  {ret: -3}  
 token 格式不正确：  {ret: -4}  
 token不存在：  {ret: -5}  
+no any data or no relateion：  {ret: -702}  
 
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "relation", "token": "token"},"body":{"type" : [1/2]}}
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "relation", "token": "token"},"body":{"type" : [1/2/3], userid2: user2}}
 
 =======================================Question JSON Protocol =====================================
 API: /api/1.0/QuestionAPI
@@ -412,14 +468,23 @@ query sucessful:
              "asker"  : 
              {
                    "id"  : id,
-                   "mail":"138",
                    "name":"138",
-                   "username":"138",
                    "cellphone":"1381196123",
+                   "type":0,
+                   "username":"138",
                    "avatar":
                    {
-                     "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
+                      "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
                    },
+                   "lastupdate":1454076248624,
+                   "easemob":
+                   {
+                       "username":"138"
+                   },
+                   // optional if user is servicer
+                   "area"   : "area",
+                   "location"   : "location",
+                   "desc"   : "desc"
              }
         }
     ]
@@ -610,7 +675,8 @@ Recommend协议：
 }
 
 返回结果：
-成功返回：   {"ret":0,"article":{"timestamp":1455095011210,"id":3,"recommends":[{"id":3,"mail":"1","cellphone":"1"}],"status":0,"comment":"eeeee","comments":[],"publisher":{"id":2,"mail":"1234","cellphone":"1234"}, "pics":[{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098490900_1.png"},{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098492736_2.png"}]}} 
+成功返回：  
+ {"ret":0,"article":{"timestamp":1455095011210,"id":3,"recommends":[{"id":3,"mail":"1","cellphone":"1"}],"status":0,"comment":"eeeee","comments":[],"publisher":{"id":2,"mail":"1234","cellphone":"1234"}, "pics":[{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098490900_1.png"},{"url":"http://121.42.207.185/article/2016/2/10/article_1_1455098492736_2.png"}]}} 
 
 解析失败返回：  {ret: -1}
 action参数不支持返回：  {ret: -2}  
@@ -706,7 +772,7 @@ Article Query
                    "user":{"id":1,"mail":"aaaaa","cellphone":"aaaaa"}
                }
             ],
-           "publisher":{"id":1,"mail":"aaaaa","cellphone":"aaaaa"}
+           "publisher":{"id":1,"lastupdate":1458741530322,"username":"aaaaa","cellphone":"aaaaa","type":0,"country_code":0}
       },
       {
            "timestamp":1455178172282,
@@ -761,6 +827,11 @@ New question  json:
                  "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
             },
             "lastupdate":1454076248624
+
+            // optional if user is servicer
+            "area"   : "area",
+            "location"   : "location",
+            "desc"   : "desc"
         },
         "quest":"Who am I?",
         "opt": [0/1]  0: new Question  1: question was cancelled
@@ -820,9 +891,10 @@ New Answer json:
     }
     "body":
     {
-        "id"               : 2,
-        "cellphone"        : "138",
-        "easemob_username" : "138"
+            "easemob":
+            {
+                "username":"138"
+            },
     }
 
 }

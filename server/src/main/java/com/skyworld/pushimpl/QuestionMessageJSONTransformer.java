@@ -2,7 +2,7 @@ package com.skyworld.pushimpl;
 
 import org.json.JSONObject;
 
-import com.skyworld.init.GlobalConstants;
+import com.skyworld.utils.JSONFormat;
 
 
 
@@ -29,19 +29,8 @@ public class QuestionMessageJSONTransformer extends  BaseJSONTransformer<Questio
 		JSONObject asker = new JSONObject();
 		body.put("asker", asker);
 		
-		asker.put("id", qm.getQuestion().getAsker().getId());
-		asker.put("cellphone", qm.getQuestion().getAsker().getCellPhone());
-		asker.put("username", qm.getQuestion().getAsker().getMail());
-		
-		JSONObject easemob = new JSONObject();
-		asker.put("easemob", easemob);
-		easemob.put("username", qm.getQuestion().getAsker().getCellPhone());
-		
-		if (qm.getQuestion().getAsker().getAvatar() != null) {
-			JSONObject avatar = new JSONObject();
-			asker.put("avatar", avatar);
-			avatar.put("origin", GlobalConstants.AVATAR_HOST+qm.getQuestion().getAsker().getAvatarPath());
-		}
+		JSONFormat.populateUserData(asker, qm.getQuestion().getAsker());
+		JSONFormat.populateEasemobData(asker, qm.getQuestion().getAsker());
 		
 		return root;
 	}

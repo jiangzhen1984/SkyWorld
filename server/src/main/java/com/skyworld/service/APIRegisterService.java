@@ -52,6 +52,9 @@ public class APIRegisterService extends APIBasicJsonApiService {
 		user.setCellPhone(cellphone);
 		user.setMail(uname);
 		user.setPassword(pwd);
+		if (body.has("country_code")) {
+			user.setCountyCode(body.getInt("country_code"));
+		}
 		int ret = ServiceFactory.getESUserService().addUser(user);
 		if (ret == 0) {
 			Customer cus = new Customer(user);
@@ -68,7 +71,7 @@ public class APIRegisterService extends APIBasicJsonApiService {
 	private void requestRegisterEasemob(final User user) {
 
 		log.info("request to register on easemob ==>" + user);
-		ServiceFactory.getEaseMobService().register(user.getCellPhone(), user.getPassword(), new EasemobRegisterCallback() {
+		ServiceFactory.getEaseMobService().register(user.getMail(), user.getPassword(), new EasemobRegisterCallback() {
 
 			@Override
 			public void onRegistered() {

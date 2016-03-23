@@ -2,6 +2,8 @@ package com.skyworld.pushimpl;
 
 import org.json.JSONObject;
 
+import com.skyworld.utils.JSONFormat;
+
 
 
 public class EasemobMessageJSONTransformer extends BaseJSONTransformer<EasemobMessage>  {
@@ -18,10 +20,10 @@ public class EasemobMessageJSONTransformer extends BaseJSONTransformer<EasemobMe
 		
 		header.put("category", "easemob");
 		
-			
-		body.put("id",  em.getUser().getId());
-		body.put("cellphone", em.getUser().getCellPhone());
-		body.put("easemob_username", em.getUser().getCellPhone());
+		JSONFormat.populateUserData(body, em.getUser());
+		
+		JSONFormat.populateEasemobData(body, em.getUser());
+		
 		return root;
 	}
 

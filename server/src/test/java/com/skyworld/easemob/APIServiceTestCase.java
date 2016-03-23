@@ -17,6 +17,7 @@ import com.skyworld.service.APILoginService;
 import com.skyworld.service.APIRegisterService;
 import com.skyworld.service.APIService;
 import com.skyworld.service.APIUpgradeService;
+import com.skyworld.service.APIUserRelationQueryService;
 
 public class APIServiceTestCase extends TestCase {
 
@@ -41,6 +42,7 @@ public class APIServiceTestCase extends TestCase {
 		((APIChainService)service).addActionMapping("answer", new APIAnswerService());
 		((APIChainService)service).addActionMapping("feedback", new APIFeedbackService());
 		((APIChainService)service).addActionMapping("follow", new APIFollowService());
+		((APIChainService)service).addActionMapping("relation", new APIUserRelationQueryService());
 	}
 	
 	
@@ -92,6 +94,16 @@ public class APIServiceTestCase extends TestCase {
 		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
 		
 		
+		
+		//query relation
+		response.resetBuffer();
+		request.setParam("data", buildNormalQueryRelationWith3(token1, uid2));
+		service.service(request, response);
+		str = response.getFlusedBuffer();
+		respJson = parse(str);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		
+		
 		System.out.println(buildMakeRelationParamForFollowService(token1, uid2));
 		//check for make relation
 		response.resetBuffer();
@@ -100,6 +112,9 @@ public class APIServiceTestCase extends TestCase {
 		str = response.getFlusedBuffer();
 		respJson = parse(str);
 		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
+		
+
+				
 		
 	}
 	
@@ -151,7 +166,7 @@ public class APIServiceTestCase extends TestCase {
 		
 		body.put("user_id", uid2);
 		body.put("flag", 2);
-		body.put("both", false);
+		body.put("both", true);
 		return root.toString();
 	}
 	
@@ -240,7 +255,7 @@ public class APIServiceTestCase extends TestCase {
 		service.service(request, response);
 		str = response.getFlusedBuffer();
 		respJson = parse(str);
-		assertEquals(APICode.TOKEN_INVALID, respJson.getInt("ret"));
+		assertEquals(APICode.REQUEST_PARAMETER_NOT_STISFIED, respJson.getInt("ret"));
 		
 		
 		//check upgrade
@@ -376,7 +391,8 @@ public class APIServiceTestCase extends TestCase {
 		str = response.getFlusedBuffer();
 		respJson = parse(str);
 		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
-				
+		
+
 	}
 	
 	
@@ -514,6 +530,10 @@ public class APIServiceTestCase extends TestCase {
 		
 		header.put("action", "upgrade");
 		header.put("token", token);
+		body.put("area", "area");
+		body.put("location", "locaiton");
+		body.put("desc", "desc");
+		
 		return root.toString();
 	}
 	
@@ -632,4 +652,22 @@ public class APIServiceTestCase extends TestCase {
 		return root.toString();
 	}
 	
+	
+	String buildNormalQueryRelationWith3(String token, long uid2) {
+		JSONObject root = new JSONObject();
+		JSONObject header = new JSONObject();
+		JSONObject body = new JSONObject();
+		
+		root.put("header", header);
+		root.put("body", body);
+		
+		header.put("action", "relation");
+		header.put("token", token);
+		body.put("userid2", uid2);
+		body.put("type", 3);
+		
+		return root.toString();
+	}
+	
 }
+

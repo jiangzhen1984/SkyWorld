@@ -43,6 +43,9 @@ public class SWPUser {
 	@Column(name="LAST_UPDATE", columnDefinition="NUMERIC(30)")
 	private long lastUpdate;
 	
+	@Column(name="COUNTRY_CODE", columnDefinition="SMALLINT")
+	private int countyCode;
+	
 	@Transient
 	private SWPUserAvatar avatar;
 	
@@ -139,6 +142,14 @@ public class SWPUser {
 
 	public void setLastUpdate(long lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public int getCountyCode() {
+		return countyCode;
+	}
+
+	public void setCountyCode(int countyCode) {
+		this.countyCode = countyCode;
 	}
 	
 	

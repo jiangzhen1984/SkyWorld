@@ -46,6 +46,7 @@ public class User extends SWPUser {
 		this.setPassword(u.getPassword());
 		this.setAvatarId(u.getAvatarId());
 		this.setAvatar(u.getAvatar());
+		this.setCountyCode(u.getCountyCode());
 		switch(u.getuType()) {
 		case 0:
 			this.userType = UserType.CUSTOMER;
@@ -70,6 +71,7 @@ public class User extends SWPUser {
 		this.setMail(u.getMail());
 		this.setAvatarId(u.getAvatarId());
 		this.setAvatar(u.getAvatar());
+		this.setLastUpdate(u.getLastUpdate());
 		switch(u.getuType()) {
 		case 0:
 			this.userType = UserType.CUSTOMER;

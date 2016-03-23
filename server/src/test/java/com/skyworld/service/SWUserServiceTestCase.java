@@ -187,4 +187,48 @@ public class SWUserServiceTestCase extends TestCase {
 	}
 	
 	
+	
+	
+	@Test
+	public void testnQueryRelationService() {
+		
+		User u3 = new User();
+		u3.setName("aaa13");
+		u3.setCellPhone("111113");
+		u3.setPassword("a");
+		u3.setAvatarPath("aaaa");
+		service.addUser(u3);
+		
+		
+		User u1 = new User();
+		u1.setName("aaa1");
+		u1.setCellPhone("111111");
+		u1.setPassword("a");
+		u1.setAvatarPath("aaaa");
+		service.addUser(u1);
+		
+		
+		User u2 = new User();
+		u2.setName("aaa12");
+		u2.setCellPhone("111114");
+		u2.setPassword("a");
+		u2.setAvatarPath("aaaa");
+		service.addUser(u2);
+		
+		service.makeRelation(u1, u2, true);
+		service.makeRelation(u1, u3, true);
+		service.makeRelation(u2, u3, false);
+		
+		
+		boolean ret = service.queryRelation(u1, u2, true);
+		assertTrue(ret);
+		
+		ret = service.queryRelation(u1, u2, false);
+		assertTrue(ret);
+		
+		ret = service.queryRelation(u2, u3, true);
+		assertTrue(!ret);
+		
+		
+	}
 }

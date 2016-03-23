@@ -3,9 +3,11 @@ package com.skyworld.service.resp;
 import org.json.JSONObject;
 
 import com.skyworld.cache.Token;
-import com.skyworld.init.GlobalConstants;
 import com.skyworld.service.APICode;
+import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
+import com.skyworld.service.dsf.UserType;
+import com.skyworld.utils.JSONFormat;
 
 public class RegisterResponse extends JSONBasicResponse {
 	
@@ -36,17 +38,12 @@ public class RegisterResponse extends JSONBasicResponse {
 		JSONObject userResp = new JSONObject();
 		resp.put("user", userResp);
 		
-		userResp.put("name", user.getName());
-		userResp.put("cellphone", user.getCellPhone());
-		userResp.put("mail", user.getMail());
-		userResp.put("username", user.getMail());
-		userResp.put("type", user.getUserType().ordinal());
-		userResp.put("id", user.getId());
-		if (user.getAvatar() != null) {
-			JSONObject avatar = new JSONObject();
-			userResp.put("avatar", avatar);
-			avatar.put("origin", GlobalConstants.AVATAR_HOST+user.getAvatarPath());
+		
+		JSONFormat.populateUserData(userResp, user);
+		if (user.getUserType() == UserType.SERVICER) {
+			JSONFormat.populateServicerData(userResp, (SKServicer)user);
 		}
+
 		userResp.put("lastupdate", user.getLastUpdate());
 		return resp;
 	}

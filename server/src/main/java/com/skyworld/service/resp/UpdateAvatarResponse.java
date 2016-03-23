@@ -2,9 +2,9 @@ package com.skyworld.service.resp;
 
 import org.json.JSONObject;
 
-import com.skyworld.init.GlobalConstants;
 import com.skyworld.service.APICode;
 import com.skyworld.service.dsf.User;
+import com.skyworld.utils.JSONFormat;
 
 public class UpdateAvatarResponse extends JSONBasicResponse {
 	
@@ -29,18 +29,8 @@ public class UpdateAvatarResponse extends JSONBasicResponse {
 		
 		JSONObject userResp = new JSONObject();
 		resp.put("user", userResp);
-		userResp.put("id", user.getId());
-		userResp.put("name", user.getName());
-		userResp.put("cellphone", user.getCellPhone());
-		userResp.put("mail", user.getMail());
-		userResp.put("username", user.getMail());
-		userResp.put("type", user.getUserType().ordinal());
-		if (user.getAvatar() != null) {
-			JSONObject avatar = new JSONObject();
-			userResp.put("avatar", avatar);
-			avatar.put("origin",  GlobalConstants.AVATAR_HOST+user.getAvatarPath());
-		}
-		userResp.put("lastupdate", user.getLastUpdate());
+		JSONFormat.populateUserData(userResp, user);
+		JSONFormat.populateEasemobData(userResp, user);
 		return resp;
 	}
 

@@ -5,9 +5,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.skyworld.init.GlobalConstants;
 import com.skyworld.service.APICode;
 import com.skyworld.service.dsf.User;
+import com.skyworld.utils.JSONFormat;
 
 public class UserQueryResponse extends JSONBasicResponse {
 	
@@ -33,20 +33,7 @@ public class UserQueryResponse extends JSONBasicResponse {
 			for (User u : userList) {
 				JSONObject jsonUser = new JSONObject();
 				users.put(jsonUser);
-				jsonUser.put("id", u.getId());
-				jsonUser.put("name", u.getName());
-				jsonUser.put("cellphone", u.getCellPhone());
-				jsonUser.put("mail", u.getMail());
-				jsonUser.put("username", u.getMail());
-				jsonUser.put("type", u.getUserType().ordinal());
-				
-				if (u.getAvatar() != null) {
-					JSONObject avatar = new JSONObject();
-					jsonUser.put("avatar", avatar);
-					avatar.put("origin",  GlobalConstants.AVATAR_HOST+u.getAvatarPath());
-				}
-				
-				jsonUser.put("lastupdate", u.getLastUpdate());
+				JSONFormat.populateUserData(jsonUser, u);
 			}
 			resp.put("users", users);
 		}

@@ -200,6 +200,7 @@ public class SWUserService extends BaseService {
 		session.close();
 		//put to cache
 		CacheManager.getIntance().putUser(user.getId(), user);
+		user.setLastUpdate(esu.getLastUpdate());
 		return 0;
 	}
 	
@@ -298,6 +299,41 @@ public class SWUserService extends BaseService {
 		t.commit();
 		session.close();
 		return user.getAvatar();
+	}
+	
+	
+	
+	public boolean queryRelation(User user1, User user2, boolean both) {
+		if (user1 == null || user2 == null) {
+			return false;
+		}
+		boolean ret = false;
+		Session sess = openSession();
+		StringBuffer buf = new StringBuffer();
+		buf.append("select count(*) from SWPRelationship where (userId1 = ? and userId2 =?)  ");
+		if (both) {
+			buf.append("  or (userId2 = ? and userId1 =?) " );
+		}
+		Query q = sess.createQuery(buf.toString());
+		q.setLong(0, user1.getId());
+		q.setLong(1, user2.getId());
+		if (both) {
+			q.setLong(2, user1.getId());
+			q.setLong(3, user2.getId());
+		}
+		int count = q.list().size();
+		if (count == 0) {
+			ret = false;
+		} else {
+			count = ((Long)q.list().iterator().next()).intValue();
+			if (both) {
+				ret = count == 2;
+			} else {
+				ret = count == 1;
+			}
+		}
+		sess.close();
+		return ret;
 	}
 	
 	

@@ -385,8 +385,8 @@ public class APIArticleTestCase extends TestCase {
 		header.put("action", "article-query");
 		
 		body.put("timestamp_start", System.currentTimeMillis());
-		
 		body.put("timestamp_end", System.currentTimeMillis() - 3600 * 1000);
+		body.put("qt", 0);
 		return root.toString();
 	}
 	
