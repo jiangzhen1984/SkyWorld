@@ -7,19 +7,42 @@
 //
 
 #import "AppDelegate.h"
+#import "AppMacro.h"
 
 @interface AppDelegate ()
 
 @end
 
+
+
 @implementation AppDelegate
 
+- (BOOL)isUserLoginStatusOK
+{    
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *username = [userDefault stringForKey:SC_LOGINUSER_USERNAME];
+    NSInteger status = [userDefault integerForKey:SC_LOGINUSER_STATUS];
+    if((!username) || (status != SC_LOGINUSER_LOGIN)) {
+        return NO;
+    }
+    return YES;
+}
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     // Override point for customization after application launch.
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoginCtrl" bundle:[NSBundle mainBundle]];
-    id view = [storyBoard instantiateViewControllerWithIdentifier:@"LoginNavController"];
-    self.window.rootViewController = view;
+    NSLog([NSString stringWithFormat:@"%@",NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]]);
+    
+    if([self isUserLoginStatusOK]) {
+        //UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        //id view = [storyBoard instantiateViewControllerWithIdentifier:@"LoginNavController"];
+        //self.window.rootViewController = view;
+    } else {
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoginCtrl" bundle:[NSBundle mainBundle]];
+        id view = [storyBoard instantiateViewControllerWithIdentifier:@"LoginNavController"];
+        self.window.rootViewController = view;
+    }
     return YES;
 }
 

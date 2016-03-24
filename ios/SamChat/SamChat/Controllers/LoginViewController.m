@@ -10,10 +10,18 @@
 #import "SignupViewController.h"
 #import "SCSkyWorldUserAPI.h"
 #import "AFNetworking.h"
+#import "AppMacro.h"
+#import "MBProgressHUD.h"
+#import "Utils.h"
+#import "Config.h"
+#import "SCLoginUser.h"
+#import <sqlite3.h>
 
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
+
+@property (strong, nonatomic) MBProgressHUD *hud;
 
 @end
 
@@ -39,6 +47,7 @@
 {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO];
+    [_hud hide:YES];
 }
 
 - (NSString *)generateUrlString
@@ -54,6 +63,10 @@
 
 - (IBAction)login:(UIButton *)sender
 {
+    _hud = [Utils createHUD];
+    _hud.labelText = @"正在登录";
+    _hud.userInteractionEnabled = NO;
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
     [manager GET:[self generateUrlString]
@@ -63,18 +76,55 @@
          success:^(NSURLSessionDataTask *task, id responseObject){
              if([responseObject isKindOfClass:[NSDictionary class]]) {
                  NSLog(@"%@", responseObject);
-                 NSDictionary *result = responseObject;
-                 NSInteger errorCode = [(NSNumber *)result[SKYWORLD_RET] integerValue];
+                 NSDictionary *response = responseObject;
+                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                  if(errorCode) {
-                     
+                     _hud.labelText = [NSString stringWithFormat:@"错误：%@", response];
+                     [_hud hide:YES afterDelay:1];
+                     [self loginFailed];
                      return;
                  }
-                 
+                 [self loginSuccessWithResponse:response];
              }
          }
          failure:^(NSURLSessionDataTask *task, NSError *error){
+             _hud.labelText = task.response.description;
+             [_hud hide:YES afterDelay:1];
              NSLog(@"Error: %@", error);
          }];
+}
+
+- (void)loginSuccessWithResponse: (NSDictionary *)response
+{
+    NSLog(@"login success");
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:response[SKYWORLD_TOKEN] ?:@"" forKey:SKYWORLD_TOKEN];
+    NSDictionary *userDict = response[SKYWORLD_USER];
+    if(userDict) {
+        
+    }
+    [Config saveProfile:[[SCLoginUser alloc] initWithDictionary:response[SKYWORLD_USER] andStatus:SC_LOGINUSER_LOGIN]];
+    [self presentHomeView];
+}
+
+- (void)loginFailed
+{
+    NSLog(@"login failed");
+    
+}
+
+- (void)presentHomeView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    id homeViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeView"];
+    [self presentViewController:homeViewController animated:YES completion:^(void){}];
+}
+
+- (NSString *)dataFilePath
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:@"data.sqlite"];
 }
 
 #pragma mark - Navigation

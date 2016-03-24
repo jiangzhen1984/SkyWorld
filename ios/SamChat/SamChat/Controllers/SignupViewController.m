@@ -18,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.title = @"注册天际账号";
     // Do any additional setup after loading the view.
 }
 

@@ -21,6 +21,8 @@
 #define SKYWORLD_ACTION         @"action"
 #define SKYWORLD_TOKEN          @"token"
 
+#define SKYWORLD_USER           @"user"
+
 #define SKYWORLD_CELLPHONE      @"cellphone"
 #define SKYWORLD_USERNAME       @"username"
 #define SKYWORLD_PWD            @"pwd"
