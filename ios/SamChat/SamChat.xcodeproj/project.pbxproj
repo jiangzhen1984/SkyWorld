@@ -16,6 +16,12 @@
 		311BC6401CA37B19006B4707 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 311BC63E1CA37B19006B4707 /* LaunchScreen.storyboard */; };
 		311BC64B1CA37B19006B4707 /* SamChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC64A1CA37B19006B4707 /* SamChatTests.m */; };
 		311BC6561CA37B19006B4707 /* SamChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC6551CA37B19006B4707 /* SamChatUITests.m */; };
+		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
+		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
+		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
+		31F8E7171CA37F5E0049EE23 /* SCSkyWorldUserAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E7161CA37F5E0049EE23 /* SCSkyWorldUserAPI.m */; };
+		31F8E7191CA380780049EE23 /* LoginCtrl.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F8E7181CA380780049EE23 /* LoginCtrl.storyboard */; };
+		38E659F034FD9B5FD1EC1905 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2590406FC16C36D9E7064E71 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2590406FC16C36D9E7064E71 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		311BC62A1CA37B19006B4707 /* SamChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SamChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		311BC62E1CA37B19006B4707 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		311BC6301CA37B19006B4707 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -53,6 +60,18 @@
 		311BC6511CA37B19006B4707 /* SamChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		311BC6551CA37B19006B4707 /* SamChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatUITests.m; sourceTree = "<group>"; };
 		311BC6571CA37B19006B4707 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
+		31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupSettingViewController.m; sourceTree = "<group>"; };
+		31F8E70E1CA37F530049EE23 /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
+		31F8E70F1CA37F530049EE23 /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
+		31F8E7141CA37F5E0049EE23 /* SCSkyWorldAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPI.h; sourceTree = "<group>"; };
+		31F8E7151CA37F5E0049EE23 /* SCSkyWorldUserAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldUserAPI.h; sourceTree = "<group>"; };
+		31F8E7161CA37F5E0049EE23 /* SCSkyWorldUserAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSkyWorldUserAPI.m; sourceTree = "<group>"; };
+		31F8E7181CA380780049EE23 /* LoginCtrl.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginCtrl.storyboard; sourceTree = "<group>"; };
+		6B8040025EA2D601540773F1 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		E6F84DEBA6BAFDCDDEB63EE0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38E659F034FD9B5FD1EC1905 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +107,8 @@
 				311BC6491CA37B19006B4707 /* SamChatTests */,
 				311BC6541CA37B19006B4707 /* SamChatUITests */,
 				311BC62B1CA37B19006B4707 /* Products */,
+				B84EAC0774025D09681C54D4 /* Pods */,
+				6CC38090E7EA689E781EDA90 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,6 +125,8 @@
 		311BC62C1CA37B19006B4707 /* SamChat */ = {
 			isa = PBXGroup;
 			children = (
+				31F8E7131CA37F5E0049EE23 /* SkyWorld */,
+				31F8E7091CA37F530049EE23 /* Controllers */,
 				311BC6301CA37B19006B4707 /* AppDelegate.h */,
 				311BC6311CA37B19006B4707 /* AppDelegate.m */,
 				311BC6331CA37B19006B4707 /* ViewController.h */,
@@ -113,6 +137,7 @@
 				311BC6411CA37B19006B4707 /* Info.plist */,
 				311BC6391CA37B19006B4707 /* SamChat.xcdatamodeld */,
 				311BC62D1CA37B19006B4707 /* Supporting Files */,
+				31F8E7181CA380780049EE23 /* LoginCtrl.storyboard */,
 			);
 			path = SamChat;
 			sourceTree = "<group>";
@@ -143,6 +168,47 @@
 			path = SamChatUITests;
 			sourceTree = "<group>";
 		};
+		31F8E7091CA37F530049EE23 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				31F8E70A1CA37F530049EE23 /* LoginViewController.h */,
+				31F8E70B1CA37F530049EE23 /* LoginViewController.m */,
+				31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */,
+				31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */,
+				31F8E70E1CA37F530049EE23 /* SignupViewController.h */,
+				31F8E70F1CA37F530049EE23 /* SignupViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		31F8E7131CA37F5E0049EE23 /* SkyWorld */ = {
+			isa = PBXGroup;
+			children = (
+				31F8E7141CA37F5E0049EE23 /* SCSkyWorldAPI.h */,
+				31F8E7151CA37F5E0049EE23 /* SCSkyWorldUserAPI.h */,
+				31F8E7161CA37F5E0049EE23 /* SCSkyWorldUserAPI.m */,
+			);
+			name = SkyWorld;
+			path = Controllers/SkyWorld;
+			sourceTree = "<group>";
+		};
+		6CC38090E7EA689E781EDA90 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2590406FC16C36D9E7064E71 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B84EAC0774025D09681C54D4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E6F84DEBA6BAFDCDDEB63EE0 /* Pods.debug.xcconfig */,
+				6B8040025EA2D601540773F1 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -150,9 +216,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 311BC65A1CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChat" */;
 			buildPhases = (
+				7B85D2D8CA6AB690FF626639 /* Check Pods Manifest.lock */,
 				311BC6261CA37B19006B4707 /* Sources */,
 				311BC6271CA37B19006B4707 /* Frameworks */,
 				311BC6281CA37B19006B4707 /* Resources */,
+				23EFB153399C713252D10690 /* Embed Pods Frameworks */,
+				37088C38375439E48D508AF8 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -247,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				311BC6401CA37B19006B4707 /* LaunchScreen.storyboard in Resources */,
+				31F8E7191CA380780049EE23 /* LoginCtrl.storyboard in Resources */,
 				311BC63D1CA37B19006B4707 /* Assets.xcassets in Resources */,
 				311BC6381CA37B19006B4707 /* Main.storyboard in Resources */,
 			);
@@ -268,6 +338,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		23EFB153399C713252D10690 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		37088C38375439E48D508AF8 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7B85D2D8CA6AB690FF626639 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		311BC6261CA37B19006B4707 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -277,6 +395,10 @@
 				311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */,
 				311BC6321CA37B19006B4707 /* AppDelegate.m in Sources */,
 				311BC62F1CA37B19006B4707 /* main.m in Sources */,
+				31F8E7171CA37F5E0049EE23 /* SCSkyWorldUserAPI.m in Sources */,
+				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,
+				31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */,
+				31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +537,7 @@
 		};
 		311BC65B1CA37B19006B4707 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6F84DEBA6BAFDCDDEB63EE0 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SamChat/Info.plist;
@@ -426,6 +549,7 @@
 		};
 		311BC65C1CA37B19006B4707 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B8040025EA2D601540773F1 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SamChat/Info.plist;
@@ -502,6 +626,7 @@
 				311BC65C1CA37B19006B4707 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		311BC65D1CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChatTests" */ = {
 			isa = XCConfigurationList;
@@ -510,6 +635,7 @@
 				311BC65F1CA37B19006B4707 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		311BC6601CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChatUITests" */ = {
 			isa = XCConfigurationList;
@@ -518,6 +644,7 @@
 				311BC6621CA37B19006B4707 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
