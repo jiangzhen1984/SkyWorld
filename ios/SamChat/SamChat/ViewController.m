@@ -2,7 +2,7 @@
 //  ViewController.m
 //  SamChat
 //
-//  Created by HJ on 3/23/16.
+//  Created by HJ on 3/24/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 

@@ -7,68 +7,70 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		31D36EF11CA2C4BB005CEB93 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D36EF01CA2C4BB005CEB93 /* main.m */; };
-		31D36EF41CA2C4BB005CEB93 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D36EF31CA2C4BB005CEB93 /* AppDelegate.m */; };
-		31D36EF71CA2C4BB005CEB93 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D36EF61CA2C4BB005CEB93 /* ViewController.m */; };
-		31D36EFA1CA2C4BB005CEB93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D36EF81CA2C4BB005CEB93 /* Main.storyboard */; };
-		31D36EFC1CA2C4BB005CEB93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31D36EFB1CA2C4BB005CEB93 /* Assets.xcassets */; };
-		31D36EFF1CA2C4BB005CEB93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D36EFD1CA2C4BB005CEB93 /* LaunchScreen.storyboard */; };
-		31D36F0A1CA2C4BB005CEB93 /* SamChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D36F091CA2C4BB005CEB93 /* SamChatTests.m */; };
-		31D36F151CA2C4BB005CEB93 /* SamChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D36F141CA2C4BB005CEB93 /* SamChatUITests.m */; };
+		311BC62F1CA37B19006B4707 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC62E1CA37B19006B4707 /* main.m */; };
+		311BC6321CA37B19006B4707 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC6311CA37B19006B4707 /* AppDelegate.m */; };
+		311BC6351CA37B19006B4707 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC6341CA37B19006B4707 /* ViewController.m */; };
+		311BC6381CA37B19006B4707 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 311BC6361CA37B19006B4707 /* Main.storyboard */; };
+		311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 311BC6391CA37B19006B4707 /* SamChat.xcdatamodeld */; };
+		311BC63D1CA37B19006B4707 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 311BC63C1CA37B19006B4707 /* Assets.xcassets */; };
+		311BC6401CA37B19006B4707 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 311BC63E1CA37B19006B4707 /* LaunchScreen.storyboard */; };
+		311BC64B1CA37B19006B4707 /* SamChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC64A1CA37B19006B4707 /* SamChatTests.m */; };
+		311BC6561CA37B19006B4707 /* SamChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC6551CA37B19006B4707 /* SamChatUITests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		31D36F061CA2C4BB005CEB93 /* PBXContainerItemProxy */ = {
+		311BC6471CA37B19006B4707 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 31D36EE41CA2C4BB005CEB93 /* Project object */;
+			containerPortal = 311BC6221CA37B19006B4707 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 31D36EEB1CA2C4BB005CEB93;
+			remoteGlobalIDString = 311BC6291CA37B19006B4707;
 			remoteInfo = SamChat;
 		};
-		31D36F111CA2C4BB005CEB93 /* PBXContainerItemProxy */ = {
+		311BC6521CA37B19006B4707 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 31D36EE41CA2C4BB005CEB93 /* Project object */;
+			containerPortal = 311BC6221CA37B19006B4707 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 31D36EEB1CA2C4BB005CEB93;
+			remoteGlobalIDString = 311BC6291CA37B19006B4707;
 			remoteInfo = SamChat;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		31D36EEC1CA2C4BB005CEB93 /* SamChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SamChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		31D36EF01CA2C4BB005CEB93 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		31D36EF21CA2C4BB005CEB93 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		31D36EF31CA2C4BB005CEB93 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		31D36EF51CA2C4BB005CEB93 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		31D36EF61CA2C4BB005CEB93 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		31D36EF91CA2C4BB005CEB93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		31D36EFB1CA2C4BB005CEB93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		31D36EFE1CA2C4BB005CEB93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		31D36F001CA2C4BB005CEB93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		31D36F051CA2C4BB005CEB93 /* SamChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		31D36F091CA2C4BB005CEB93 /* SamChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatTests.m; sourceTree = "<group>"; };
-		31D36F0B1CA2C4BB005CEB93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		31D36F101CA2C4BB005CEB93 /* SamChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		31D36F141CA2C4BB005CEB93 /* SamChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatUITests.m; sourceTree = "<group>"; };
-		31D36F161CA2C4BB005CEB93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		311BC62A1CA37B19006B4707 /* SamChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SamChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		311BC62E1CA37B19006B4707 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		311BC6301CA37B19006B4707 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		311BC6311CA37B19006B4707 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		311BC6331CA37B19006B4707 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		311BC6341CA37B19006B4707 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		311BC6371CA37B19006B4707 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		311BC63A1CA37B19006B4707 /* SamChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SamChat.xcdatamodel; sourceTree = "<group>"; };
+		311BC63C1CA37B19006B4707 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		311BC63F1CA37B19006B4707 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		311BC6411CA37B19006B4707 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		311BC6461CA37B19006B4707 /* SamChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		311BC64A1CA37B19006B4707 /* SamChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatTests.m; sourceTree = "<group>"; };
+		311BC64C1CA37B19006B4707 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		311BC6511CA37B19006B4707 /* SamChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		311BC6551CA37B19006B4707 /* SamChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatUITests.m; sourceTree = "<group>"; };
+		311BC6571CA37B19006B4707 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		31D36EE91CA2C4BB005CEB93 /* Frameworks */ = {
+		311BC6271CA37B19006B4707 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		31D36F021CA2C4BB005CEB93 /* Frameworks */ = {
+		311BC6431CA37B19006B4707 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		31D36F0D1CA2C4BB005CEB93 /* Frameworks */ = {
+		311BC64E1CA37B19006B4707 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -78,64 +80,65 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		31D36EE31CA2C4BB005CEB93 = {
+		311BC6211CA37B19006B4707 = {
 			isa = PBXGroup;
 			children = (
-				31D36EEE1CA2C4BB005CEB93 /* SamChat */,
-				31D36F081CA2C4BB005CEB93 /* SamChatTests */,
-				31D36F131CA2C4BB005CEB93 /* SamChatUITests */,
-				31D36EED1CA2C4BB005CEB93 /* Products */,
+				311BC62C1CA37B19006B4707 /* SamChat */,
+				311BC6491CA37B19006B4707 /* SamChatTests */,
+				311BC6541CA37B19006B4707 /* SamChatUITests */,
+				311BC62B1CA37B19006B4707 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		31D36EED1CA2C4BB005CEB93 /* Products */ = {
+		311BC62B1CA37B19006B4707 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				31D36EEC1CA2C4BB005CEB93 /* SamChat.app */,
-				31D36F051CA2C4BB005CEB93 /* SamChatTests.xctest */,
-				31D36F101CA2C4BB005CEB93 /* SamChatUITests.xctest */,
+				311BC62A1CA37B19006B4707 /* SamChat.app */,
+				311BC6461CA37B19006B4707 /* SamChatTests.xctest */,
+				311BC6511CA37B19006B4707 /* SamChatUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		31D36EEE1CA2C4BB005CEB93 /* SamChat */ = {
+		311BC62C1CA37B19006B4707 /* SamChat */ = {
 			isa = PBXGroup;
 			children = (
-				31D36EF21CA2C4BB005CEB93 /* AppDelegate.h */,
-				31D36EF31CA2C4BB005CEB93 /* AppDelegate.m */,
-				31D36EF51CA2C4BB005CEB93 /* ViewController.h */,
-				31D36EF61CA2C4BB005CEB93 /* ViewController.m */,
-				31D36EF81CA2C4BB005CEB93 /* Main.storyboard */,
-				31D36EFB1CA2C4BB005CEB93 /* Assets.xcassets */,
-				31D36EFD1CA2C4BB005CEB93 /* LaunchScreen.storyboard */,
-				31D36F001CA2C4BB005CEB93 /* Info.plist */,
-				31D36EEF1CA2C4BB005CEB93 /* Supporting Files */,
+				311BC6301CA37B19006B4707 /* AppDelegate.h */,
+				311BC6311CA37B19006B4707 /* AppDelegate.m */,
+				311BC6331CA37B19006B4707 /* ViewController.h */,
+				311BC6341CA37B19006B4707 /* ViewController.m */,
+				311BC6361CA37B19006B4707 /* Main.storyboard */,
+				311BC63C1CA37B19006B4707 /* Assets.xcassets */,
+				311BC63E1CA37B19006B4707 /* LaunchScreen.storyboard */,
+				311BC6411CA37B19006B4707 /* Info.plist */,
+				311BC6391CA37B19006B4707 /* SamChat.xcdatamodeld */,
+				311BC62D1CA37B19006B4707 /* Supporting Files */,
 			);
 			path = SamChat;
 			sourceTree = "<group>";
 		};
-		31D36EEF1CA2C4BB005CEB93 /* Supporting Files */ = {
+		311BC62D1CA37B19006B4707 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				31D36EF01CA2C4BB005CEB93 /* main.m */,
+				311BC62E1CA37B19006B4707 /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		31D36F081CA2C4BB005CEB93 /* SamChatTests */ = {
+		311BC6491CA37B19006B4707 /* SamChatTests */ = {
 			isa = PBXGroup;
 			children = (
-				31D36F091CA2C4BB005CEB93 /* SamChatTests.m */,
-				31D36F0B1CA2C4BB005CEB93 /* Info.plist */,
+				311BC64A1CA37B19006B4707 /* SamChatTests.m */,
+				311BC64C1CA37B19006B4707 /* Info.plist */,
 			);
 			path = SamChatTests;
 			sourceTree = "<group>";
 		};
-		31D36F131CA2C4BB005CEB93 /* SamChatUITests */ = {
+		311BC6541CA37B19006B4707 /* SamChatUITests */ = {
 			isa = PBXGroup;
 			children = (
-				31D36F141CA2C4BB005CEB93 /* SamChatUITests.m */,
-				31D36F161CA2C4BB005CEB93 /* Info.plist */,
+				311BC6551CA37B19006B4707 /* SamChatUITests.m */,
+				311BC6571CA37B19006B4707 /* Info.plist */,
 			);
 			path = SamChatUITests;
 			sourceTree = "<group>";
@@ -143,13 +146,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		31D36EEB1CA2C4BB005CEB93 /* SamChat */ = {
+		311BC6291CA37B19006B4707 /* SamChat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 31D36F191CA2C4BB005CEB93 /* Build configuration list for PBXNativeTarget "SamChat" */;
+			buildConfigurationList = 311BC65A1CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChat" */;
 			buildPhases = (
-				31D36EE81CA2C4BB005CEB93 /* Sources */,
-				31D36EE91CA2C4BB005CEB93 /* Frameworks */,
-				31D36EEA1CA2C4BB005CEB93 /* Resources */,
+				311BC6261CA37B19006B4707 /* Sources */,
+				311BC6271CA37B19006B4707 /* Frameworks */,
+				311BC6281CA37B19006B4707 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -157,68 +160,68 @@
 			);
 			name = SamChat;
 			productName = SamChat;
-			productReference = 31D36EEC1CA2C4BB005CEB93 /* SamChat.app */;
+			productReference = 311BC62A1CA37B19006B4707 /* SamChat.app */;
 			productType = "com.apple.product-type.application";
 		};
-		31D36F041CA2C4BB005CEB93 /* SamChatTests */ = {
+		311BC6451CA37B19006B4707 /* SamChatTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 31D36F1C1CA2C4BB005CEB93 /* Build configuration list for PBXNativeTarget "SamChatTests" */;
+			buildConfigurationList = 311BC65D1CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChatTests" */;
 			buildPhases = (
-				31D36F011CA2C4BB005CEB93 /* Sources */,
-				31D36F021CA2C4BB005CEB93 /* Frameworks */,
-				31D36F031CA2C4BB005CEB93 /* Resources */,
+				311BC6421CA37B19006B4707 /* Sources */,
+				311BC6431CA37B19006B4707 /* Frameworks */,
+				311BC6441CA37B19006B4707 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				31D36F071CA2C4BB005CEB93 /* PBXTargetDependency */,
+				311BC6481CA37B19006B4707 /* PBXTargetDependency */,
 			);
 			name = SamChatTests;
 			productName = SamChatTests;
-			productReference = 31D36F051CA2C4BB005CEB93 /* SamChatTests.xctest */;
+			productReference = 311BC6461CA37B19006B4707 /* SamChatTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		31D36F0F1CA2C4BB005CEB93 /* SamChatUITests */ = {
+		311BC6501CA37B19006B4707 /* SamChatUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 31D36F1F1CA2C4BB005CEB93 /* Build configuration list for PBXNativeTarget "SamChatUITests" */;
+			buildConfigurationList = 311BC6601CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChatUITests" */;
 			buildPhases = (
-				31D36F0C1CA2C4BB005CEB93 /* Sources */,
-				31D36F0D1CA2C4BB005CEB93 /* Frameworks */,
-				31D36F0E1CA2C4BB005CEB93 /* Resources */,
+				311BC64D1CA37B19006B4707 /* Sources */,
+				311BC64E1CA37B19006B4707 /* Frameworks */,
+				311BC64F1CA37B19006B4707 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				31D36F121CA2C4BB005CEB93 /* PBXTargetDependency */,
+				311BC6531CA37B19006B4707 /* PBXTargetDependency */,
 			);
 			name = SamChatUITests;
 			productName = SamChatUITests;
-			productReference = 31D36F101CA2C4BB005CEB93 /* SamChatUITests.xctest */;
+			productReference = 311BC6511CA37B19006B4707 /* SamChatUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		31D36EE41CA2C4BB005CEB93 /* Project object */ = {
+		311BC6221CA37B19006B4707 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = SkyWorld;
 				TargetAttributes = {
-					31D36EEB1CA2C4BB005CEB93 = {
+					311BC6291CA37B19006B4707 = {
 						CreatedOnToolsVersion = 7.2.1;
 					};
-					31D36F041CA2C4BB005CEB93 = {
+					311BC6451CA37B19006B4707 = {
 						CreatedOnToolsVersion = 7.2.1;
-						TestTargetID = 31D36EEB1CA2C4BB005CEB93;
+						TestTargetID = 311BC6291CA37B19006B4707;
 					};
-					31D36F0F1CA2C4BB005CEB93 = {
+					311BC6501CA37B19006B4707 = {
 						CreatedOnToolsVersion = 7.2.1;
-						TestTargetID = 31D36EEB1CA2C4BB005CEB93;
+						TestTargetID = 311BC6291CA37B19006B4707;
 					};
 				};
 			};
-			buildConfigurationList = 31D36EE71CA2C4BB005CEB93 /* Build configuration list for PBXProject "SamChat" */;
+			buildConfigurationList = 311BC6251CA37B19006B4707 /* Build configuration list for PBXProject "SamChat" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -226,37 +229,37 @@
 				en,
 				Base,
 			);
-			mainGroup = 31D36EE31CA2C4BB005CEB93;
-			productRefGroup = 31D36EED1CA2C4BB005CEB93 /* Products */;
+			mainGroup = 311BC6211CA37B19006B4707;
+			productRefGroup = 311BC62B1CA37B19006B4707 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				31D36EEB1CA2C4BB005CEB93 /* SamChat */,
-				31D36F041CA2C4BB005CEB93 /* SamChatTests */,
-				31D36F0F1CA2C4BB005CEB93 /* SamChatUITests */,
+				311BC6291CA37B19006B4707 /* SamChat */,
+				311BC6451CA37B19006B4707 /* SamChatTests */,
+				311BC6501CA37B19006B4707 /* SamChatUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		31D36EEA1CA2C4BB005CEB93 /* Resources */ = {
+		311BC6281CA37B19006B4707 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31D36EFF1CA2C4BB005CEB93 /* LaunchScreen.storyboard in Resources */,
-				31D36EFC1CA2C4BB005CEB93 /* Assets.xcassets in Resources */,
-				31D36EFA1CA2C4BB005CEB93 /* Main.storyboard in Resources */,
+				311BC6401CA37B19006B4707 /* LaunchScreen.storyboard in Resources */,
+				311BC63D1CA37B19006B4707 /* Assets.xcassets in Resources */,
+				311BC6381CA37B19006B4707 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		31D36F031CA2C4BB005CEB93 /* Resources */ = {
+		311BC6441CA37B19006B4707 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		31D36F0E1CA2C4BB005CEB93 /* Resources */ = {
+		311BC64F1CA37B19006B4707 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -266,60 +269,61 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		31D36EE81CA2C4BB005CEB93 /* Sources */ = {
+		311BC6261CA37B19006B4707 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31D36EF71CA2C4BB005CEB93 /* ViewController.m in Sources */,
-				31D36EF41CA2C4BB005CEB93 /* AppDelegate.m in Sources */,
-				31D36EF11CA2C4BB005CEB93 /* main.m in Sources */,
+				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
+				311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */,
+				311BC6321CA37B19006B4707 /* AppDelegate.m in Sources */,
+				311BC62F1CA37B19006B4707 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		31D36F011CA2C4BB005CEB93 /* Sources */ = {
+		311BC6421CA37B19006B4707 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31D36F0A1CA2C4BB005CEB93 /* SamChatTests.m in Sources */,
+				311BC64B1CA37B19006B4707 /* SamChatTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		31D36F0C1CA2C4BB005CEB93 /* Sources */ = {
+		311BC64D1CA37B19006B4707 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31D36F151CA2C4BB005CEB93 /* SamChatUITests.m in Sources */,
+				311BC6561CA37B19006B4707 /* SamChatUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		31D36F071CA2C4BB005CEB93 /* PBXTargetDependency */ = {
+		311BC6481CA37B19006B4707 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 31D36EEB1CA2C4BB005CEB93 /* SamChat */;
-			targetProxy = 31D36F061CA2C4BB005CEB93 /* PBXContainerItemProxy */;
+			target = 311BC6291CA37B19006B4707 /* SamChat */;
+			targetProxy = 311BC6471CA37B19006B4707 /* PBXContainerItemProxy */;
 		};
-		31D36F121CA2C4BB005CEB93 /* PBXTargetDependency */ = {
+		311BC6531CA37B19006B4707 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 31D36EEB1CA2C4BB005CEB93 /* SamChat */;
-			targetProxy = 31D36F111CA2C4BB005CEB93 /* PBXContainerItemProxy */;
+			target = 311BC6291CA37B19006B4707 /* SamChat */;
+			targetProxy = 311BC6521CA37B19006B4707 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		31D36EF81CA2C4BB005CEB93 /* Main.storyboard */ = {
+		311BC6361CA37B19006B4707 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				31D36EF91CA2C4BB005CEB93 /* Base */,
+				311BC6371CA37B19006B4707 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		31D36EFD1CA2C4BB005CEB93 /* LaunchScreen.storyboard */ = {
+		311BC63E1CA37B19006B4707 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				31D36EFE1CA2C4BB005CEB93 /* Base */,
+				311BC63F1CA37B19006B4707 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -327,7 +331,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		31D36F171CA2C4BB005CEB93 /* Debug */ = {
+		311BC6581CA37B19006B4707 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -371,7 +375,7 @@
 			};
 			name = Debug;
 		};
-		31D36F181CA2C4BB005CEB93 /* Release */ = {
+		311BC6591CA37B19006B4707 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -409,7 +413,7 @@
 			};
 			name = Release;
 		};
-		31D36F1A1CA2C4BB005CEB93 /* Debug */ = {
+		311BC65B1CA37B19006B4707 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -420,7 +424,7 @@
 			};
 			name = Debug;
 		};
-		31D36F1B1CA2C4BB005CEB93 /* Release */ = {
+		311BC65C1CA37B19006B4707 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -431,7 +435,7 @@
 			};
 			name = Release;
 		};
-		31D36F1D1CA2C4BB005CEB93 /* Debug */ = {
+		311BC65E1CA37B19006B4707 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -443,7 +447,7 @@
 			};
 			name = Debug;
 		};
-		31D36F1E1CA2C4BB005CEB93 /* Release */ = {
+		311BC65F1CA37B19006B4707 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -455,7 +459,7 @@
 			};
 			name = Release;
 		};
-		31D36F201CA2C4BB005CEB93 /* Debug */ = {
+		311BC6611CA37B19006B4707 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = SamChatUITests/Info.plist;
@@ -467,7 +471,7 @@
 			};
 			name = Debug;
 		};
-		31D36F211CA2C4BB005CEB93 /* Release */ = {
+		311BC6621CA37B19006B4707 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = SamChatUITests/Info.plist;
@@ -482,40 +486,53 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		31D36EE71CA2C4BB005CEB93 /* Build configuration list for PBXProject "SamChat" */ = {
+		311BC6251CA37B19006B4707 /* Build configuration list for PBXProject "SamChat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				31D36F171CA2C4BB005CEB93 /* Debug */,
-				31D36F181CA2C4BB005CEB93 /* Release */,
+				311BC6581CA37B19006B4707 /* Debug */,
+				311BC6591CA37B19006B4707 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		31D36F191CA2C4BB005CEB93 /* Build configuration list for PBXNativeTarget "SamChat" */ = {
+		311BC65A1CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				31D36F1A1CA2C4BB005CEB93 /* Debug */,
-				31D36F1B1CA2C4BB005CEB93 /* Release */,
+				311BC65B1CA37B19006B4707 /* Debug */,
+				311BC65C1CA37B19006B4707 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		31D36F1C1CA2C4BB005CEB93 /* Build configuration list for PBXNativeTarget "SamChatTests" */ = {
+		311BC65D1CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChatTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				31D36F1D1CA2C4BB005CEB93 /* Debug */,
-				31D36F1E1CA2C4BB005CEB93 /* Release */,
+				311BC65E1CA37B19006B4707 /* Debug */,
+				311BC65F1CA37B19006B4707 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		31D36F1F1CA2C4BB005CEB93 /* Build configuration list for PBXNativeTarget "SamChatUITests" */ = {
+		311BC6601CA37B19006B4707 /* Build configuration list for PBXNativeTarget "SamChatUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				31D36F201CA2C4BB005CEB93 /* Debug */,
-				31D36F211CA2C4BB005CEB93 /* Release */,
+				311BC6611CA37B19006B4707 /* Debug */,
+				311BC6621CA37B19006B4707 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		311BC6391CA37B19006B4707 /* SamChat.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				311BC63A1CA37B19006B4707 /* SamChat.xcdatamodel */,
+			);
+			currentVersion = 311BC63A1CA37B19006B4707 /* SamChat.xcdatamodel */;
+			path = SamChat.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
-	rootObject = 31D36EE41CA2C4BB005CEB93 /* Project object */;
+	rootObject = 311BC6221CA37B19006B4707 /* Project object */;
 }
