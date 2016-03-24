@@ -18,7 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoginCtrl" bundle:[NSBundle mainBundle]];
-    id view = [storyBoard instantiateViewControllerWithIdentifier:@"LoginView"];
+    id view = [storyBoard instantiateViewControllerWithIdentifier:@"LoginNavController"];
     self.window.rootViewController = view;
     return YES;
 }
