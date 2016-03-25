@@ -42,7 +42,14 @@ public class SWUserService extends BaseService {
 		if (u == null) {
 			return null;
 		}
-		User user = new User(u);
+		User user = null;
+		//servicer
+		if (u.getuType() == 1) {
+			user = new SKServicer(u);
+			this.populateServicer((SKServicer)user);
+		} else {
+			user = new User(u);
+		}
 		user.setAvatar(queryAvatar(user, session));
 		session.close();
 		return user;
