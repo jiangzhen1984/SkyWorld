@@ -8,28 +8,24 @@
 
 #import "SCLoginUser.h"
 #import "AppMacro.h"
+#import "SCSkyWorldAPI.h"
 
 @implementation SCLoginUser
 
-- (instancetype)initWithDictionary: (NSDictionary *)dict andStatus: (NSInteger)status
+- (instancetype)initWithDictionary: (NSDictionary *)dict
 {
     self = [super init];
     if(self) {
-        _status = status;
-        _username = dict[SC_LOGINUSER_USERNAME];
-        _phonenumber = dict[SC_LOGINUSER_PHONENUMBER];
-        _password = dict[SC_LOGINUSER_PASSWORD];
-        _usertype = [dict[SC_LOGINUSER_USERTYPE] integerValue];
-        _imagefile = dict[SC_LOGINUSER_IMAGEFILE];
-        _userdescription = dict[SC_LOGINUSER_DESCRIPTION];
-        _area = dict[SC_LOGINUSER_AREA];
-        _location = dict[SC_LOGINUSER_LOCATION];
-        _logintime = [dict[SC_LOGINUSER_LOGINTIME] integerValue];
-        _logouttime = [dict[SC_LOGINUSER_LOGOUTTIME] integerValue];
-        _unique_id = [dict[SC_LOGINUSER_UNIQUE_ID] integerValue];
-        _easemob_username = dict[SC_LOGINUSER_EASEMOB_USERNAME];
-        _easemob_status = [dict[SC_LOGINUSER_EASEMOB_STATUS] integerValue];
-        _lastupdate = [dict[SC_LOGINUSER_LASTUPDATE] integerValue];
+        _username = dict[SKYWORLD_USERNAME];
+        _phonenumber = dict[SKYWORLD_CELLPHONE];
+        _usertype = [dict[SKYWORLD_TYPE] integerValue];
+        _imagefile = [dict valueForKeyPath:SKYWORLD_AVATAR_ORIGIN];
+        _userdescription = dict[SKYWORLD_DESC];
+        _area = dict[SKYWORLD_AREA];
+        _location = dict[SKYWORLD_LOCATION];
+        _unique_id = [dict[SKYWORLD_ID] integerValue];
+        _easemob_username = [dict valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
+        _lastupdate = [dict[SKYWORLD_LASTUPDATE] integerValue];
     }
     return self;
 }

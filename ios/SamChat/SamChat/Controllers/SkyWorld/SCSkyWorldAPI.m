@@ -1,26 +1,28 @@
 //
-//  SCSkyWorldUserAPI.m
+//  SCSkyWorldAPI.m
 //  SamChat
 //
-//  Created by HJ on 3/23/16.
-//  Copyright © 2016 skyworld. All rights reserved.
+//  Created by HJ on 3/24/16.
+//  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#import "SCSkyWorldUserAPI.h"
+#import "SCSkyWorldAPI.h"
 
 
+@interface SCSkyWorldAPI ()
 
-@interface SCSkyWorldUserAPI ()
-@property (strong, nonatomic) NSDictionary *data;
+@property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) NSString *type;
+
 @end
 
+@implementation SCSkyWorldAPI
 
-@implementation SCSkyWorldUserAPI
-
-- (instancetype)initWithHeader:(NSDictionary *)header andBody:(NSDictionary *)body
+- (instancetype)initAPI:(NSString *)type WithHeader:(NSDictionary *)header andBody:(NSDictionary *)body
 {
     self = [super init];
     if(self) {
+        _type = type;
         _data = @{SKYWORLD_HEADER: header, SKYWORLD_BODY: body};
     }
     return self;
@@ -44,10 +46,9 @@
                                                              error:&error];
         NSString *json = [[NSString alloc] initWithData:jsonData
                                                encoding:NSUTF8StringEncoding];
-        urlStr = [NSString stringWithFormat:@"%@%@", SKYWORLD_USERAPI_PREFIX, json];
+        urlStr = [NSString stringWithFormat:@"%@%@?data=%@", SKYWORLD_API_PREFIX, self.type,json];
     }
     return [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
-
 
 @end

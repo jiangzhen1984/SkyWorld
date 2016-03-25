@@ -16,10 +16,10 @@
 		311BC6401CA37B19006B4707 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 311BC63E1CA37B19006B4707 /* LaunchScreen.storyboard */; };
 		311BC64B1CA37B19006B4707 /* SamChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC64A1CA37B19006B4707 /* SamChatTests.m */; };
 		311BC6561CA37B19006B4707 /* SamChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC6551CA37B19006B4707 /* SamChatUITests.m */; };
+		317DE8101CA42F6F00ED39F5 /* SCSkyWorldAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 317DE80F1CA42F6F00ED39F5 /* SCSkyWorldAPI.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
-		31F8E7171CA37F5E0049EE23 /* SCSkyWorldUserAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E7161CA37F5E0049EE23 /* SCSkyWorldUserAPI.m */; };
 		31F8E7191CA380780049EE23 /* LoginCtrl.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F8E7181CA380780049EE23 /* LoginCtrl.storyboard */; };
 		31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */; };
 		31F8E71E1CA3B24F0049EE23 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */; };
@@ -65,15 +65,15 @@
 		311BC6511CA37B19006B4707 /* SamChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		311BC6551CA37B19006B4707 /* SamChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatUITests.m; sourceTree = "<group>"; };
 		311BC6571CA37B19006B4707 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		317DE80D1CA42EA300ED39F5 /* SCSkyWorldAPIMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCSkyWorldAPIMacro.h; path = Macro/SCSkyWorldAPIMacro.h; sourceTree = "<group>"; };
+		317DE80E1CA42F6F00ED39F5 /* SCSkyWorldAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPI.h; sourceTree = "<group>"; };
+		317DE80F1CA42F6F00ED39F5 /* SCSkyWorldAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSkyWorldAPI.m; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
 		31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupSettingViewController.m; sourceTree = "<group>"; };
 		31F8E70E1CA37F530049EE23 /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
 		31F8E70F1CA37F530049EE23 /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
-		31F8E7141CA37F5E0049EE23 /* SCSkyWorldAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPI.h; sourceTree = "<group>"; };
-		31F8E7151CA37F5E0049EE23 /* SCSkyWorldUserAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldUserAPI.h; sourceTree = "<group>"; };
-		31F8E7161CA37F5E0049EE23 /* SCSkyWorldUserAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSkyWorldUserAPI.m; sourceTree = "<group>"; };
 		31F8E7181CA380780049EE23 /* LoginCtrl.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginCtrl.storyboard; sourceTree = "<group>"; };
 		31F8E71A1CA3A8CF0049EE23 /* SCUITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUITabBarController.h; sourceTree = "<group>"; };
 		31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUITabBarController.m; sourceTree = "<group>"; };
@@ -205,9 +205,8 @@
 		31F8E7131CA37F5E0049EE23 /* SkyWorld */ = {
 			isa = PBXGroup;
 			children = (
-				31F8E7141CA37F5E0049EE23 /* SCSkyWorldAPI.h */,
-				31F8E7151CA37F5E0049EE23 /* SCSkyWorldUserAPI.h */,
-				31F8E7161CA37F5E0049EE23 /* SCSkyWorldUserAPI.m */,
+				317DE80E1CA42F6F00ED39F5 /* SCSkyWorldAPI.h */,
+				317DE80F1CA42F6F00ED39F5 /* SCSkyWorldAPI.m */,
 			);
 			name = SkyWorld;
 			path = Controllers/SkyWorld;
@@ -226,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				31F8E7241CA3BD580049EE23 /* AppMacro.h */,
+				317DE80D1CA42EA300ED39F5 /* SCSkyWorldAPIMacro.h */,
 			);
 			name = Macro;
 			sourceTree = "<group>";
@@ -448,8 +448,8 @@
 				311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */,
 				31F8E7281CA3D31D0049EE23 /* Utils.m in Sources */,
 				311BC6321CA37B19006B4707 /* AppDelegate.m in Sources */,
+				317DE8101CA42F6F00ED39F5 /* SCSkyWorldAPI.m in Sources */,
 				311BC62F1CA37B19006B4707 /* main.m in Sources */,
-				31F8E7171CA37F5E0049EE23 /* SCSkyWorldUserAPI.m in Sources */,
 				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,
 				31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */,
 				31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */,

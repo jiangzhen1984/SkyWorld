@@ -8,7 +8,7 @@
 
 #import "LoginViewController.h"
 #import "SignupViewController.h"
-#import "SCSkyWorldUserAPI.h"
+#import "SCSkyWorldAPI.h"
 #import "AFNetworking.h"
 #import "AppMacro.h"
 #import "MBProgressHUD.h"
@@ -55,8 +55,9 @@
     NSDictionary *header = @{SKYWORLD_ACTION: SKYWORLD_LOGIN};
     NSDictionary *body = @{SKYWORLD_USERNAME: self.username.text,
                            SKYWORLD_PWD: self.password.text};
-    SCSkyWorldUserAPI *user = [[SCSkyWorldUserAPI alloc] initWithHeader:header
-                                                                andBody:body];
+    SCSkyWorldAPI *user = [[SCSkyWorldAPI alloc] initAPI:SKYWORLD_APITYPE_USERAPI
+                                              WithHeader:header
+                                                 andBody:body];
     return [user generateUrlString];
 }
 
@@ -99,11 +100,17 @@
     NSLog(@"login success");
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:response[SKYWORLD_TOKEN] ?:@"" forKey:SKYWORLD_TOKEN];
+    [userDefaults setObject:self.password.text ?:@"" forKey:SC_LOGINUSER_PASSWORD];
+    
+    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
+    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
+    NSLog(@"time: %lld", timestamp);
+    [userDefaults setInteger:timestamp forKey:SC_LOGINUSER_LOGINTIME];
+    
+//    [userDefaults setInteger:user.easemob_status forKey:SC_LOGINUSER_EASEMOB_STATUS];
     NSDictionary *userDict = response[SKYWORLD_USER];
-    if(userDict) {
-        
-    }
-    [Config saveProfile:[[SCLoginUser alloc] initWithDictionary:response[SKYWORLD_USER] andStatus:SC_LOGINUSER_LOGIN]];
+    SCLoginUser *user = [[SCLoginUser alloc] initWithDictionary:userDict];
+    [Config saveProfile:user];
     [self presentHomeView];
 }
 

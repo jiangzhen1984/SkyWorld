@@ -7,7 +7,7 @@
 //
 
 #import "SignupSettingViewController.h"
-#import "SCSkyWorldUserAPI.h"
+#import "SCSkyWorldAPI.h"
 #import "AFNetworking.h"
 
 @interface SignupSettingViewController ()
@@ -27,8 +27,9 @@
                            SKYWORLD_USERNAME: self.username.text,
                            SKYWORLD_PWD: self.password.text,
                            SKYWORLD_CONFIRM_PWD: self.password.text};
-    SCSkyWorldUserAPI *user = [[SCSkyWorldUserAPI alloc] initWithHeader:header
-                                                                andBody:body];
+    SCSkyWorldAPI *user = [[SCSkyWorldAPI alloc] initAPI:SKYWORLD_APITYPE_USERAPI
+                                              WithHeader:header
+                                                 andBody:body];
     return [user generateUrlString];
 }
 
@@ -57,6 +58,12 @@
          }];
 }
 
+- (void)presentHomeView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    id homeViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeView"];
+    [self presentViewController:homeViewController animated:YES completion:^(void){}];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
