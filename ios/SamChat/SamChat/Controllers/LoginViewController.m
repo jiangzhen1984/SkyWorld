@@ -101,6 +101,7 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:response[SKYWORLD_TOKEN] ?:@"" forKey:SKYWORLD_TOKEN];
     [userDefaults setObject:self.password.text ?:@"" forKey:SC_LOGINUSER_PASSWORD];
+    [userDefaults setInteger:SC_LOGINUSER_LOGIN forKey:SC_LOGINUSER_STATUS];
     
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
     int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
@@ -132,6 +133,23 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:@"data.sqlite"];
+}
+
+- (IBAction)usernameDoneEditing:(id)sender
+{
+    [self.password becomeFirstResponder];
+}
+
+- (IBAction)passwordDoneEditing:(id)sender
+{
+    [sender resignFirstResponder];
+    [self login:nil];
+}
+
+- (IBAction)backgroundTap:(id)sender
+{
+    [self.username resignFirstResponder];
+    [self.password resignFirstResponder];
 }
 
 #pragma mark - Navigation
