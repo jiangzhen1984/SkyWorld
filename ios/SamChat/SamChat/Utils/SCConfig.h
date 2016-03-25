@@ -10,7 +10,7 @@
 
 @class SCLoginUser;
 
-@interface Config : NSObject
+@interface SCConfig : NSObject
 
 + (void)saveProfile:(SCLoginUser *)user;
 

@@ -6,10 +6,10 @@
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#import "Utils.h"
+#import "SCUtils.h"
 #import "MBProgressHUD.h"
 
-@implementation Utils
+@implementation SCUtils
 
 + (MBProgressHUD *)createHUD
 {
@@ -20,6 +20,18 @@
     [hud show:YES];
     hud.removeFromSuperViewOnHide = YES;
     return hud;
+}
+
++ (UIImage *)createImageWithColor: (UIColor *)color
+{
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 @end

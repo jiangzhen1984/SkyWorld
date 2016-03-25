@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
 
 @class MBProgressHUD;
 
-@interface Utils : NSObject
+@interface SCUtils : NSObject
 
 + (MBProgressHUD *)createHUD;
++ (UIImage *)createImageWithColor:(UIColor *) color;
 
 @end

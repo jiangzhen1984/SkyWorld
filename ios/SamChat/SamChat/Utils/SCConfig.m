@@ -6,11 +6,11 @@
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#import "Config.h"
+#import "SCConfig.h"
 #import "SCLoginUser.h"
 #import "AppMacro.h"
 
-@implementation Config
+@implementation SCConfig
 
 + (void)saveProfile:(SCLoginUser *)user
 {

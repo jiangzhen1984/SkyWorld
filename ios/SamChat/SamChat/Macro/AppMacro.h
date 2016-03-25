@@ -9,6 +9,12 @@
 #ifndef AppMacro_h
 #define AppMacro_h
 
+#pragma mark - Inline function
+#define SC_RGB(r,g,b)       [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:1.0]
+
+
+#define SC_MAIN_COLOR       SC_RGB(2, 168, 244)
+
 #pragma mark - Login User Information
 
 #define SC_LOGINUSER_USERNAME           @"username"

@@ -12,8 +12,8 @@
 #import "AFNetworking.h"
 #import "AppMacro.h"
 #import "MBProgressHUD.h"
-#import "Utils.h"
-#import "Config.h"
+#import "SCUtils.h"
+#import "SCConfig.h"
 #import "SCLoginUser.h"
 #import <sqlite3.h>
 
@@ -64,7 +64,7 @@
 
 - (IBAction)login:(UIButton *)sender
 {
-    _hud = [Utils createHUD];
+    _hud = [SCUtils createHUD];
     _hud.labelText = @"正在登录";
     _hud.userInteractionEnabled = NO;
     
@@ -111,7 +111,7 @@
 //    [userDefaults setInteger:user.easemob_status forKey:SC_LOGINUSER_EASEMOB_STATUS];
     NSDictionary *userDict = response[SKYWORLD_USER];
     SCLoginUser *user = [[SCLoginUser alloc] initWithDictionary:userDict];
-    [Config saveProfile:user];
+    [SCConfig saveProfile:user];
     [self presentHomeView];
 }
 
