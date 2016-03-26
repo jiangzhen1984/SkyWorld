@@ -19,6 +19,30 @@
 
 @implementation SignupSettingViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self customNavigationItem];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.username becomeFirstResponder];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)customNavigationItem
+{
+    UILabel *customLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [customLabel setTextColor:[UIColor whiteColor]];
+    [customLabel setText:@"天际账号设置"];
+    self.navigationItem.titleView = customLabel;
+}
 
 - (NSString *)generateUrlString
 {
@@ -65,15 +89,7 @@
     [self presentViewController:homeViewController animated:YES completion:^(void){}];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-}
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 /*
 #pragma mark - Navigation

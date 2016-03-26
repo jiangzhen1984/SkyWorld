@@ -18,8 +18,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"注册天际账号";
-    // Do any additional setup after loading the view.
+
+    [self customNavigationItem];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.cellphone becomeFirstResponder];
+}
+
+- (void)customNavigationItem
+{
+    UILabel *customLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    [customLabel setTextColor:[UIColor whiteColor]];
+    [customLabel setText:@"注册天际账户"];
+    //customLabel.font = [UIFont boldSystemFontOfSize:20];
+    self.navigationItem.titleView = customLabel;
 }
 
 - (void)didReceiveMemoryWarning {
