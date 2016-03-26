@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.android.samservice.Constants;
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
 import com.android.samservice.info.AvatarRecord;
@@ -32,7 +33,7 @@ public class UserFriendDao{
 			list.add(new UserFriendRecord(user.getUsername()));
 		}
 
-		SamService.getInstance().getDao().sava_UserFriendList_db(list);
+		SamService.getInstance().getDao().save_UserFriendList_db(list);
 	}
 	
 	/**
@@ -47,13 +48,19 @@ public class UserFriendDao{
 		List<UserFriendRecord> list = SamService.getInstance().getDao().query_UserFriendRecord_db();
 		for(UserFriendRecord rd: list){
 			EaseUser user = new EaseUser(rd.getfriend());
-			ContactUser cuser = SamService.getInstance().getDao().query_ContactUser_db(rd.getfriend());
+			ContactUser cuser = null;
+			if(!Constants.USERNAME_EQUAL_EASEMOB_ID){
+			 	cuser = SamService.getInstance().getDao().query_ContactUser_db(rd.getfriend());
+			}else{
+				cuser = SamService.getInstance().getDao().query_ContactUser_db_by_username(rd.getfriend());
+			}
+			
 			if(cuser!=null && cuser.getusername()!=null){
 				user.setNick(cuser.getusername());
 			}
 
-			if(cuser!=null && cuser.getphonenumber()!=null){
-				AvatarRecord ard = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+			if(cuser!=null && cuser.getusername()!=null){
+				AvatarRecord ard = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(cuser.getusername());
 				if(ard!=null && ard.getavatarname()!=null){
 					user.setAvatar(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+ard.getavatarname());
 					//SamLog.e("TEST","getAvatar:"+user.getAvatar());
@@ -71,13 +78,19 @@ public class UserFriendDao{
 		UserFriendRecord rd = SamService.getInstance().getDao().query_UserFriendRecord_db(easemob_name);
 		if(rd!=null){
 			EaseUser user = new EaseUser(rd.getfriend());
-			ContactUser cuser = SamService.getInstance().getDao().query_ContactUser_db(rd.getfriend());
+			ContactUser cuser = null;
+			if(!Constants.USERNAME_EQUAL_EASEMOB_ID){
+			 	cuser = SamService.getInstance().getDao().query_ContactUser_db(rd.getfriend());
+			}else{
+				cuser = SamService.getInstance().getDao().query_ContactUser_db_by_username(rd.getfriend());
+			}
+
 			if(cuser!=null && cuser.getusername()!=null){
 				user.setNick(cuser.getusername());
 			}
 
-			if(cuser!=null && cuser.getphonenumber()!=null){
-				AvatarRecord ard = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+			if(cuser!=null && cuser.getusername()!=null){
+				AvatarRecord ard = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(cuser.getusername());
 				if(ard!=null && ard.getavatarname()!=null){
 					user.setAvatar(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+ard.getavatarname());
 				}

@@ -15,6 +15,8 @@ import com.android.samchat.slidemenu.SlidingMenu;
 import com.android.samchat.slidemenu.SlidingMenu.OnOpenedListener;
 import com.android.samservice.*;
 import com.android.samservice.info.AvatarRecord;
+import com.android.samservice.info.ContactUser;
+import com.android.samservice.info.FollowerRecord;
 import com.android.samservice.info.LoginUser;
 import com.easemob.EMCallBack;
 import com.easemob.EMConnectionListener;
@@ -171,6 +173,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	private Uri cropImageUri;
 
+	private boolean isSyncedFollowList = false;;
+	private boolean isSyncingFollowList = false;
+
 	public static int getInviteNum(){
 		return sInviteNum;
 	}
@@ -264,8 +269,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 		LoginUser cuser = SamService.getInstance().get_current_user();
 
-		String phonenumber = cuser.getphonenumber();
-		AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(phonenumber);
+		String username = cuser.getusername();
+		AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(username);
 		if(rd!=null && rd.getavatarname()!=null){
 			Bitmap bp = null;
 			bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(),60,60);
@@ -340,6 +345,11 @@ public class MainActivity extends IndicatorFragmentActivity implements
 				menu.toggle();
 			}
 		});
+
+
+
+		//async loading follow list
+		
 		
 		EMGroupManager.getInstance().loadAllGroups();
 		EMChatManager.getInstance().loadAllConversations();
@@ -349,9 +359,73 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		GroupContactInfoDownLoadListener listener = new GroupContactInfoDownLoadListener();
 		EMGroupManager.getInstance().addGroupChangeListener(listener);
 
+		asyncFollowListFromServer();
+		
+
 	}
 
 
+
+	synchronized private void  asyncFollowListFromServer(){
+		if(isSyncingFollowList){
+			return;
+		}
+
+		isSyncingFollowList = true;
+
+		new Thread(){
+			@Override
+			public void run(){
+				queryFollowList();
+			}
+       	}.start();
+	}
+
+	private void queryFollowList(){
+		
+		SamService smSrvc = SamService.getInstance(); 
+		
+		
+		smSrvc.queryFollowList(new SMCallBack(){
+			@Override
+			public void onSuccess(final Object obj) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						isSyncedFollowList = true;
+						isSyncingFollowList = false;
+
+						EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+					}
+				});
+			}
+
+			@Override
+			public void onFailed(int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						isSyncedFollowList = false;
+						isSyncingFollowList = false;
+						SamLog.e(TAG,"follower onFailed");
+						//asyncFollowListFromServer();
+					}
+				});
+			}
+
+			@Override
+			public void onError(int code) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						isSyncedFollowList = false;
+						isSyncingFollowList = false;
+						SamLog.e(TAG,"follower onError");
+						//asyncFollowListFromServer();
+					}
+				});
+			}
+
+		});
+
+	}
 
 	private void startCropIntent(String path) throws IOException {
 		String cropImage = SamService.sam_cache_path + SamService.AVATAR_FOLDER 
@@ -545,11 +619,12 @@ public class MainActivity extends IndicatorFragmentActivity implements
                     public void onSuccess() {
                     	MainActivity.this.runOnUiThread(new Runnable() {
                             public void run() {
-					SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.INACTIVE);
-					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);			
-                            }
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);			
+                            
+					SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
+				  }
                         });
                     }
                     
@@ -560,10 +635,12 @@ public class MainActivity extends IndicatorFragmentActivity implements
                     public void onError(int code, String message) {
                     	MainActivity.this.runOnUiThread(new Runnable() {
                             public void run() {
-					SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.INACTIVE);
-					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);			
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);
+
+					SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
+								
                             }
                         });
                     }
@@ -634,6 +711,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private void initPage() {
 		fragment_samservice = (SamService_Fragment)getFragment(TAB_ID_SAMSERVICES);//new SamService_Fragment();
 		fragment_samchats = (SamChats_Fragment)getFragment(TAB_ID_SAMCHATS);//new SamChats_Fragment();
+		fragment_sampublic = (SamPublic_Fragment)getFragment(TAB_ID_SAMPUBLIC);
 		fragment_samchats.setConversationListItemClickListener(new EaseConversationListItemClickListener() {
 			@Override
 			public void onListItemClicked(EMConversation conversation) {
@@ -679,7 +757,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 					List<String> needMembers = new ArrayList<String>();
 					
 					for(String member: members){
-						if(SamService.getInstance().getDao().query_ContactUser_db(member) == null){
+						if(SamService.getInstance().getDao().query_ContactUser_db_by_username(member) == null){
 							needMembers.add(member);
 						}
 					}
@@ -757,6 +835,18 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		});
 	}
+
+	private void refreshPublicUI(final List<ContactUser> follwerList) {
+		SamLog.e(TAG,"refreshPublicUI!!!");
+		runOnUiThread(new Runnable() {
+			public void run() {
+				if (fragment_sampublic!= null) {
+					fragment_sampublic.refresh(follwerList);
+				}
+			}
+		});
+	}
+   
    
 	private BroadcastReceiver myNetReceiver = new BroadcastReceiver() { 
    		@Override 
@@ -880,7 +970,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		unregisterNetworkStatusReceiver();
 		unregisterBroadcastReceiver();
 		EMChatManager.getInstance().removeConnectionListener(connectionListener);
-		
+		EaseMobHelper.getInstance().reset();
 	}
 	
 	@Override
@@ -961,7 +1051,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 						SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
 						LoginUser user = SamService.getInstance().get_current_user();
 						user.seteasemob_status(LoginUser.INACTIVE);
-						SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);	
+						SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);	
 					} 
 				}
 			});
@@ -1063,7 +1153,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			SamLog.i(TAG,"members size:"+members.size());
 			List<String> needMembers = new ArrayList<String>();
 			for(String member: members){
-				if(SamService.getInstance().getDao().query_ContactUser_db(member) == null){
+				if(SamService.getInstance().getDao().query_ContactUser_db_by_username(member) == null){
 					needMembers.add(member);
 				}
 			}

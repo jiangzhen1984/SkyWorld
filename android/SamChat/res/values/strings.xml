@@ -114,6 +114,7 @@
      <string name="temp_talk">Talking Now</string>
      <string name="add_friends">Add Friends</string>
      <string name="follow">Follow Me</string>
+     <string name="followed">Followed Already</string>
      <string name="new_friends">New Friends</string>
     <string name="new_friends_search_hint">phone number</string>
     
@@ -203,4 +204,6 @@
     <string name="location">location</string>
     <string name="mainpage">mainpage</string>
     <string name="modify">modify</string>
+    <string name="follow_succeed">follow succeed</string>
+    <string name="follow_failed">follow failed</string>
 </resources>

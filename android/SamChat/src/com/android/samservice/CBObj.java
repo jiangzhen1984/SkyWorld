@@ -66,13 +66,13 @@ public class CBObj{
 		this.smcb = null;
 	}	
 	
-	CBObj(Handler cbHandler, int cbMsg, String un,String pwd,String cellphone){
+	/*CBObj(Handler cbHandler, int cbMsg, String un,String pwd,String cellphone){
 		this.cbHandler = new WeakReference <Handler> (cbHandler);
 		this.cbMsg = cbMsg;
 		this.sinfo = new SignInfo(un,pwd,cellphone);
 		this.isBroadcast = false;
 		this.smcb = null;
-	}
+	}*/
 
 	CBObj(Handler cbHandler, int cbMsg, String question){
 		this.cbHandler = new WeakReference <Handler> (cbHandler);

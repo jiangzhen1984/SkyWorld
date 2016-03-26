@@ -1,5 +1,7 @@
 package com.skyworld.service.dsf;
 
+import com.skyworld.service.po.SWPUser;
+
 
 
 public class SKServicer extends User {
@@ -18,6 +20,13 @@ public class SKServicer extends User {
 	}
 
 	public SKServicer(User u) {
+		super(u);
+		super.setUserType(UserType.SERVICER);
+	}
+	
+	
+
+	public SKServicer(SWPUser u) {
 		super(u);
 		super.setUserType(UserType.SERVICER);
 	}

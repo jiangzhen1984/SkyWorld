@@ -18,7 +18,7 @@ public class APIRegisterService extends APIBasicJsonApiService {
 	@Override
 	protected BasicResponse service(JSONObject json) {
 		JSONObject body = json.getJSONObject("body");
-		if (!body.has("username") || !body.has("cellphone") || !body.has("pwd")|| !body.has("confirm_pwd")) {
+		if (!body.has("username") || !body.has("cellphone") || !body.has("pwd")|| !body.has("confirm_pwd") || !body.has("country_code")) {
 			return new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED);
 		}
 		String uname = null;
@@ -52,9 +52,7 @@ public class APIRegisterService extends APIBasicJsonApiService {
 		user.setCellPhone(cellphone);
 		user.setMail(uname);
 		user.setPassword(pwd);
-		if (body.has("country_code")) {
-			user.setCountyCode(body.getInt("country_code"));
-		}
+		user.setCountyCode(body.getInt("country_code"));
 		int ret = ServiceFactory.getESUserService().addUser(user);
 		if (ret == 0) {
 			Customer cus = new Customer(user);

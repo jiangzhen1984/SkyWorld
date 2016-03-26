@@ -253,6 +253,11 @@ public class EaseMobHelper {
 	}
 
 
+	public void sendFollowerChangeBroadcast(){
+		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_FOLLOWER_CHANAGED));
+	}
+
+
 	public class SamSettingsProvider implements EaseSettingsProvider{
 
         @Override
@@ -438,7 +443,7 @@ public class EaseMobHelper {
 			LoginUser currentUser = SamService.getInstance().get_current_user();
 			user = new EaseUser(currentUser.geteasemob_username());
 			user.setNick(currentUser.getusername());
-			AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(currentUser.getphonenumber());
+			AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(currentUser.getusername());
 			if(rd!=null && rd.getavatarname()!=null){
 				user.setAvatar(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname());
 			}
@@ -450,13 +455,19 @@ public class EaseMobHelper {
 			return user;
 		}else{
 			//this user is not in my friend list
-			ContactUser cuser = SamService.getInstance().getDao().query_ContactUser_db(username);
+			ContactUser cuser = null;
+			if(!Constants.USERNAME_EQUAL_EASEMOB_ID){
+			 	cuser = SamService.getInstance().getDao().query_ContactUser_db(username);
+			}else{
+				cuser = SamService.getInstance().getDao().query_ContactUser_db_by_username(username);
+			}
+
 			if(cuser == null){
 				return null;
 			}else{
 				user = new EaseUser(cuser.geteasemob_username());
 				user.setNick(cuser.getusername());
-				AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+				AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(cuser.getusername());
 				if(rd!=null && rd.getavatarname()!=null){
 					user.setAvatar(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname());
 				}
@@ -657,13 +668,18 @@ public class EaseMobHelper {
                    Map<String, EaseUser> userlist = new HashMap<String, EaseUser>();
 			for (String username : usernames) {
 				EaseUser user = new EaseUser(username);
-				ContactUser cuser = SamService.getInstance().getDao().query_ContactUser_db(username);
+				ContactUser cuser = null;
+				if(Constants.USERNAME_EQUAL_EASEMOB_ID)
+					cuser = SamService.getInstance().getDao().query_ContactUser_db_by_username(username);
+				else
+					cuser = SamService.getInstance().getDao().query_ContactUser_db(username); 
+
 				if(cuser!=null && cuser.getusername()!=null){
 					user.setNick(cuser.getusername());
 				}
 
-				if(cuser!=null && cuser.getphonenumber()!=null){
-					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+				if(cuser!=null && cuser.getusername()!=null){
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(cuser.getusername());
 					if(rd!=null && rd.getavatarname()!=null){
 						user.setAvatar(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname());
 					}

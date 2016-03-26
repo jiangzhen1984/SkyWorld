@@ -9,7 +9,18 @@ public class SamVendorInfo{
 		this.bussiness_line = bussiness_line;
 		this.bussiness_location = bussiness_location;
 		this.bussiness_introduction = bussiness_introduction;
-		
+	}
+	
+	public String getArea(){
+		return bussiness_line;
+	}
+	
+	public String getLocation(){
+		return bussiness_location;
+	}
+	
+	public String getDesc(){
+		return bussiness_introduction;
 	}
 	
 }

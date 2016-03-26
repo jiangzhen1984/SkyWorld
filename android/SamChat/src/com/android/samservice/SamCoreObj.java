@@ -55,6 +55,14 @@ public class SamCoreObj{
 	public boolean isCommentFG(){
 		return (this instanceof CommentFGCoreObj);
 	}
+
+	public boolean isFollow(){
+		return (this instanceof FollowCoreObj);
+	}
+
+	public boolean isQueryFollower(){
+		return (this instanceof QueryFollowerCoreObj);
+	}
 }
 
 

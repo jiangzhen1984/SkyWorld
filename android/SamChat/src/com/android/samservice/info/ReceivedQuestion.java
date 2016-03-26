@@ -3,7 +3,7 @@ package com.android.samservice.info;
 import java.io.Serializable;
 
 /*
-		id(primary) |question_id | question |contact user id | status | response| received time | canceled time | 
+		id(primary) |question_id | question |contact user id | status | response| received time | canceled time | receivercellphone | receiverusername
 	*/
 public class ReceivedQuestion implements Serializable{
 	public static final int CANCEL = 0;
@@ -21,6 +21,7 @@ public class ReceivedQuestion implements Serializable{
 	public long receivedtime;
 	public long canceledtime;
 	public String receivercellphone;
+	public String receiverusername;
 
 	public void ReceivedQuestion(){
 		id = 0;
@@ -32,6 +33,7 @@ public class ReceivedQuestion implements Serializable{
 		receivedtime = 0;
 		canceledtime = 0;
 		receivercellphone = null;
+		receiverusername = null;
 	}
 
 	public long getid(){
@@ -103,6 +105,14 @@ public class ReceivedQuestion implements Serializable{
 
 	public void setreceivercellphone(String receivercellphone){
 		this.receivercellphone = receivercellphone;
+	}
+
+	public String getreceiverusername(){
+		return receiverusername;
+	}
+
+	public void setreceiverusername(String receiverusername){
+		this.receiverusername = receiverusername;
 	}
 
 	

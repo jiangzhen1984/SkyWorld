@@ -150,7 +150,8 @@ public class SignUpActivity extends Activity {
 		Intent newIntent = new Intent(this,SignAccountActivity.class);
 		int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP;
 		newIntent.setFlags(intentFlags);
-		newIntent.putExtra("cellphone", mpn);
+		newIntent.putExtra(Constants.CELLPHONE_NUMBER, mpn);
+		newIntent.putExtra(Constants.COUNTRY_CODE,mcc);
 		startActivity(newIntent);
 	}
 	
@@ -215,6 +216,7 @@ public class SignUpActivity extends Activity {
 			if(mcc.equals("86")){
 				mCountry.setText(getString(R.string.China));
 			}else if(mcc.equals("1")||mcc.equals("01")){
+				mcc = "1";
 				mCountry.setText(getString(R.string.USA));
 			}else{
 				mCountry.setText("");

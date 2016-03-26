@@ -123,7 +123,7 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 				holder.userimage.setImageResource(R.drawable.samqa);
 
 				if(user!=null){
-					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(user.getphonenumber());
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(user.getusername());
 					if(rd!=null && rd.getavatarname()!=null){
 						SamLog.e(TAG,"rd is existed:"+holder.userimage.getHeight()+":"+holder.userimage.getWidth());
 						Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
@@ -148,7 +148,7 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 				holder.userimage.setImageResource(R.drawable.samqa);
 
 				LoginUser currentuser = SamService.getInstance().get_current_user();
-				AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(currentuser.getphonenumber());
+				AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(currentuser.getusername());
 				if(rd!=null && rd.getavatarname()!=null){
 					SamLog.e(TAG,"rd is existed:"+holder.userimage.getHeight()+":"+holder.userimage.getWidth());
 					Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 

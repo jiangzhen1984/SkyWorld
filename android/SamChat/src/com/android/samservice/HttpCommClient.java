@@ -131,6 +131,7 @@ public class HttpCommClient {
 			statusCode = response.getStatusLine().getStatusCode();  
 			if (statusCode == HttpStatus.SC_OK) {  
 				String rev = EntityUtils.toString(response.getEntity());
+				SamLog.e(TAG,rev);
 				
 				JSONObject obj = new JSONObject(rev);
 
@@ -152,6 +153,7 @@ public class HttpCommClient {
 					hpinfo.unique_id = asker.getLong("id");
 					hpinfo.username = asker.getString("username");
 					hpinfo.cellphone = asker.getString("cellphone");
+					hpinfo.lastupdate = asker.getLong("lastupdate");
 					
 					JSONObject easemob = asker.getJSONObject("easemob");
 					hpinfo.easemob_username = easemob.getString("username");
@@ -168,6 +170,11 @@ public class HttpCommClient {
 					hpinfo.unique_id = syservicer.getLong("id");
 					hpinfo.cellphone = syservicer.getString("cellphone");
 					hpinfo.username = syservicer.getString("username");
+					hpinfo.area = syservicer.getString("area");
+					hpinfo.location = syservicer.getString("location");
+					hpinfo.desc = syservicer.getString("desc");
+					hpinfo.lastupdate = syservicer.getLong("lastupdate");
+					
 					JSONObject easemobA = syservicer.getJSONObject("easemob");
 					hpinfo.easemob_username = easemobA.getString("username");
 					hpinfo.avatar = getImageFilename(syservicer);
@@ -181,7 +188,8 @@ public class HttpCommClient {
 					hpinfo.category = HttpPushInfo.EASEMOBINFO;
 					hpinfo.unique_id = body.getLong("id");
 					hpinfo.cellphone = body.getString("cellphone");
-					hpinfo.easemob_username = body.getString("easemob_username");
+					JSONObject easemobA = body.getJSONObject("easemob");
+					hpinfo.easemob_username = easemobA.getString("username");
 				}else{
 					SamLog.e(TAG,"Warning: not support this push cmd");
 					throw (new Exception());
@@ -220,7 +228,7 @@ public class HttpCommClient {
 		}
 	}
 	
-	public boolean signin(String username,String password){
+	public boolean signin(String country_code,String username,String password){
 		if(username==null || password==null){
 			SamLog.e(TAG,"login param is null");
 			return false;
@@ -263,13 +271,20 @@ public class HttpCommClient {
 				SamLog.i(TAG,"rev:"+rev);
 				JSONObject obj = new JSONObject(rev); 
 				ret = obj.getInt("ret");
-				if(ret == SignService.RET_SU_FROM_SERVER_OK){
+				if(ret == SignService.RET_SI_FROM_SERVER_OK){
 					token_id = obj.getString("token");
 					JSONObject user = obj.getJSONObject("user");
+					userinfo.unique_id = user.getLong("id");
 					userinfo.username = user.getString("username");
+					userinfo.countrycode = user.getString("country_code");
 					userinfo.phonenumber = user.getString("cellphone");
 					userinfo.password = password;
 					userinfo.usertype = user.getInt("type");
+					if(userinfo.usertype == LoginUser.MIDSERVER){
+						userinfo.area = user.getString("area");
+						userinfo.location = user.getString("location");
+						userinfo.description= user.getString("desc");
+					}
 					userinfo.lastupdate = user.getLong("lastupdate");
 					userinfo.imagefile = getImageFilename(user);
 					
@@ -300,7 +315,7 @@ public class HttpCommClient {
 		}
 	}
 
-	public boolean signout(String username, String cellphone,String token){
+	public boolean signout(String token){
 		try{
 			JSONObject signout_header = new JSONObject();
 			signout_header.putOpt("action", "logout");
@@ -357,8 +372,8 @@ public class HttpCommClient {
 		
 	}
 	
-	public boolean signup(String username,String password,String confirm_pwd,String cellphone){
-		if(username==null || password==null || confirm_pwd == null||cellphone==null){
+	public boolean signup(String username,String password,String confirm_pwd,String cellphone,String country_code){
+		if(username==null || password==null || confirm_pwd == null||cellphone==null||country_code==null){
 			SamLog.e(TAG,"sign up param is null");
 			return false;
 		}
@@ -370,6 +385,7 @@ public class HttpCommClient {
 			
 			JSONObject signup_body = new JSONObject();
 			signup_body.putOpt("cellphone",cellphone);
+			signup_body.putOpt("country_code",country_code);			
 			signup_body.putOpt("username", username);
 			signup_body.putOpt("pwd", password);
 			signup_body.putOpt("confirm_pwd", confirm_pwd);
@@ -404,6 +420,7 @@ public class HttpCommClient {
 				if(ret == SignService.RET_SU_FROM_SERVER_OK){
 					token_id = obj.getString("token");
 					JSONObject user = obj.getJSONObject("user");
+					userinfo.unique_id = user.getLong("id");
 					userinfo.username = user.getString("username");
 					userinfo.phonenumber = user.getString("cellphone");
 					userinfo.password = password;
@@ -593,8 +610,9 @@ public class HttpCommClient {
 			
 			
 			JSONObject upgrade_body = new JSONObject();
-			upgrade_body.putOpt("action", "upgrade");
-			upgrade_body.putOpt("token",token);
+			upgrade_body.putOpt("area", vInfo.getArea());
+			upgrade_body.putOpt("location", vInfo.getLocation());
+			upgrade_body.putOpt("desc", vInfo.getDesc());
 
 			
 			JSONObject upgrade_data = new JSONObject();
@@ -738,15 +756,121 @@ public class HttpCommClient {
 		}
 	}
 
+	private void setAreaLocationDesc(ContactUser user,JSONObject jo ){
+		try{
+			String area = jo.getString("area");
+			String location = jo.getString("location");
+			String desc = jo.getString("desc");
+			user.setarea(area);
+			user.setlocation(location);
+			user.setdescription(desc);
+		}catch(JSONException e){
+			SamLog.i(TAG,"this user not sam vendor ");	
+			return;
+		}
+	}
+
+	public boolean queryui_withoutToken(String phonenumber){
+		try{
+			JSONObject queryui_header = new JSONObject();
+			queryui_header.putOpt("action", "query");
+
+			JSONObject jsonparam = new JSONObject();
+			jsonparam.putOpt("username", phonenumber);
+			
+			JSONObject queryui_body = new JSONObject();
+			queryui_body.putOpt("opt", 3);
+			queryui_body.put("param",jsonparam);
+
+			
+			JSONObject queryui_data = new JSONObject();
+			queryui_data.put("header", queryui_header);
+			queryui_data.put("body", queryui_body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",queryui_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL + "?" + param;
+			
+			SamLog.i(TAG,url);
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());
+				SamLog.i(TAG,"rev:"+rev);
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				if(ret == SamService.RET_QUERY_USERINFO_SERVER_OK){
+					JSONArray jsonArrayX = obj.getJSONArray("users");
+					for (int i = 0; i < jsonArrayX.length(); i++) {
+						JSONObject jo = (JSONObject) jsonArrayX.get(i);
+						ContactUser ui = new ContactUser();
+						//{"id": id, "mail":"138","username":"138","cellphone":"1381196123","type":0,"avatar":origin_,last_update}
+						ui.setunique_id(jo.getLong("id"));
+						ui.setusername(jo.getString("username"));
+						ui.setphonenumber(jo.getString("cellphone"));
+						if(!Constants.USERNAME_EQUAL_EASEMOB_ID){
+							ui.seteasemob_username(jo.getString("cellphone"));
+						}else{
+							ui.seteasemob_username(jo.getString("username"));
+						}
+						ui.setusertype(jo.getInt("type"));
+						if(ui.getusertype() == LoginUser.MIDSERVER){
+							setAreaLocationDesc(ui,jo);
+						}
+						ui.setlastupdate(jo.getLong("lastupdate"));
+						ui.setimagefile(getImageFilename(jo));
+						uiArray.add(ui);
+					}
+					
+				}else{
+					SamLog.i(TAG,"ret:"+ret);
+				}
+				return true;
+			}else{
+				return false;
+			}
+		}catch (JSONException e) {  
+			// TODO Auto-generated catch block  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
+		
+	}
+
 	
-	public boolean queryui(String phonenumber,String token){
+	public boolean queryui(String queryname,String token){
 		try{
 			JSONObject queryui_header = new JSONObject();
 			queryui_header.putOpt("action", "query");
 			queryui_header.putOpt("token",token);
 
 			JSONObject jsonparam = new JSONObject();
-			jsonparam.putOpt("username", phonenumber);
+			jsonparam.putOpt("username", queryname);
 			
 			JSONObject queryui_body = new JSONObject();
 			queryui_body.putOpt("opt", 1);
@@ -786,11 +910,19 @@ public class HttpCommClient {
 					for (int i = 0; i < jsonArrayX.length(); i++) {
 						JSONObject jo = (JSONObject) jsonArrayX.get(i);
 						ContactUser ui = new ContactUser();
-						//{"mail":"138","username":"138","cellphone":"1381196123","type":0}
+						//{"id": id, "mail":"138","username":"138","cellphone":"1381196123","type":0,"avatar":origin_,last_update}
+						ui.setunique_id(jo.getLong("id"));
 						ui.setusername(jo.getString("username"));
 						ui.setphonenumber(jo.getString("cellphone"));
-						ui.seteasemob_username(jo.getString("cellphone"));
+						if(!Constants.USERNAME_EQUAL_EASEMOB_ID){
+							ui.seteasemob_username(jo.getString("cellphone"));
+						}else{
+							ui.seteasemob_username(jo.getString("username"));
+						}
 						ui.setusertype(jo.getInt("type"));
+						if(ui.getusertype() == LoginUser.MIDSERVER){
+							setAreaLocationDesc(ui,jo);
+						}
 						ui.setlastupdate(jo.getLong("lastupdate"));
 						ui.setimagefile(getImageFilename(jo));
 						uiArray.add(ui);
@@ -878,11 +1010,19 @@ public class HttpCommClient {
 					for (int i = 0; i < jsonArrayX.length(); i++) {
 						JSONObject jo = (JSONObject) jsonArrayX.get(i);
 						ContactUser ui = new ContactUser();
-						//{"mail":"138","username":"138","cellphone":"1381196123","type":0}
+						//{"id": id, "mail":"138","username":"138","cellphone":"1381196123","type":0,"avatar":origin_,last_update}
+						ui.setunique_id(jo.getLong("id"));
 						ui.setusername(jo.getString("username"));
 						ui.setphonenumber(jo.getString("cellphone"));
-						ui.seteasemob_username(jo.getString("cellphone"));
+						if(!Constants.USERNAME_EQUAL_EASEMOB_ID){
+							ui.seteasemob_username(jo.getString("cellphone"));
+						}else{
+							ui.seteasemob_username(jo.getString("username"));
+						}
 						ui.setusertype(jo.getInt("type"));
+						if(ui.getusertype() == LoginUser.MIDSERVER){
+							setAreaLocationDesc(ui,jo);
+						}
 						ui.setlastupdate(jo.getLong("lastupdate"));
 						ui.setimagefile(getImageFilename(jo));
 						uiArray.add(ui);
@@ -1816,6 +1956,170 @@ public boolean uploadavatar(String filePath, String token){
 			} catch (Exception e) {
 			}
 		}
+		
+	}
+
+
+	public boolean follow(long user_id,int cmd, String token){
+		/*Construct sign up json data*/
+		try{
+			JSONObject follow_header = new JSONObject();
+			follow_header.putOpt("action", "follow");
+			follow_header.putOpt("token",token);
+			
+			
+			JSONObject follow_body = new JSONObject();
+			follow_body.putOpt("user_id", ""+user_id);
+			if(cmd == FollowCoreObj.FOLLOW){
+				follow_body.putOpt("flag",""+1);
+			}else{
+				follow_body.putOpt("flag",""+2);
+			}
+			follow_body.putOpt("both", false);
+			
+			JSONObject follow_data = new JSONObject();
+			follow_data.put("header", follow_header);
+			follow_data.put("body", follow_body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",follow_data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL + "?" + param;
+			
+			SamLog.i(TAG,url);
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());
+				SamLog.i(TAG,"rev:"+rev);
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				SamLog.i(TAG,"ret:"+ret);
+				
+				return true;
+			}else{
+				SamLog.e(TAG,"statusCode:" + statusCode);
+				return false;
+			}
+		}catch (JSONException e) {  
+			// TODO Auto-generated catch block  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
+		
+	}
+
+
+	public boolean queryFollower(String token){
+		/*Construct sign up json data*/
+		try{
+			JSONObject header = new JSONObject();
+			header.putOpt("action", "relation");
+			header.putOpt("token",token);
+			
+			
+			JSONObject body = new JSONObject();
+			body.putOpt("type", "2");
+			
+			JSONObject data = new JSONObject();
+			data.put("header", header);
+			data.put("body", body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL + "?" + param;
+			
+			SamLog.i(TAG,url);
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());
+				SamLog.i(TAG,"rev:"+rev);
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				SamLog.i(TAG,"ret:"+ret);
+				if(ret == SamService.RET_QUERY_FOLLOWER_SERVER_OK){
+					JSONArray jsonArrayX = obj.getJSONArray("users");
+					for (int i = 0; i < jsonArrayX.length(); i++) {
+						JSONObject jo = (JSONObject) jsonArrayX.get(i);
+						ContactUser ui = new ContactUser();
+						
+						ui.setunique_id(jo.getLong("id"));
+						ui.setphonenumber(jo.getString("cellphone"));
+						ui.setusertype(jo.getInt("type"));
+						ui.setusername(jo.getString("username"));
+						ui.setimagefile(getImageFilename(jo));
+						JSONObject easemobA = jo.getJSONObject("easemob");
+						ui.seteasemob_username(easemobA.getString("username"));
+						ui.setlastupdate(jo.getLong("lastupdate"));
+												
+						if(ui.getusertype() == LoginUser.MIDSERVER){
+							setAreaLocationDesc(ui,jo);
+						}						
+						
+						uiArray.add(ui);
+					}
+					
+				}
+				return true;
+			}else{
+				SamLog.e(TAG,"statusCode:" + statusCode);
+				return false;
+			}
+		}catch (JSONException e) {  
+			// TODO Auto-generated catch block  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
 		
 	}
 	

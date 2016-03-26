@@ -732,7 +732,7 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 					List<String> needMembers = new ArrayList<String>();
 					
 					for(String member: members){
-						if(SamService.getInstance().getDao().query_ContactUser_db(member) == null){
+						if(SamService.getInstance().getDao().query_ContactUser_db_by_username(member) == null){
 							needMembers.add(member);
 						}
 					}

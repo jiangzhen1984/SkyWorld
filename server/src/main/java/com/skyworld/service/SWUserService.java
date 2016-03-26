@@ -42,7 +42,14 @@ public class SWUserService extends BaseService {
 		if (u == null) {
 			return null;
 		}
-		User user = new User(u);
+		User user = null;
+		//servicer
+		if (u.getuType() == 1) {
+			user = new SKServicer(u);
+			this.populateServicer((SKServicer)user);
+		} else {
+			user = new User(u);
+		}
 		user.setAvatar(queryAvatar(user, session));
 		session.close();
 		return user;
@@ -102,7 +109,15 @@ public class SWUserService extends BaseService {
 		condition.append(")");
 		
 		Session session = openSession();
-		Query query = session.createSQLQuery(" select  u.id as id , CELL_PHONE , USER_PWD , NAME,ADDRESS  , MAIL,  U_TYPE, a.id as aid , LAST_UPDATE , origin_path from SW_USER as u   left join SW_USER_AVATAR as a on u.avatar_id = a.id  where  " + condition.toString() );
+		StringBuffer sqlBuf = new StringBuffer();
+		sqlBuf.append(" select  u.id as id , CELL_PHONE , USER_PWD , NAME,ADDRESS  , MAIL,  U_TYPE, a.id as aid , LAST_UPDATE , a.origin_path, ");
+		sqlBuf.append(" sd.SER_DESC, sd.area, sd.location  ");
+		sqlBuf.append(" from SW_USER as u  " );
+		sqlBuf.append(" left join SW_USER_AVATAR as a on u.avatar_id = a.id  ");
+		sqlBuf.append(" left join SW_SERVICER_DESC as sd on sd.SER_ID = a.id  ");
+		sqlBuf.append("where  " + condition.toString() );
+		
+		Query query = session.createSQLQuery(sqlBuf.toString() );
 		for (int i = 0; i < phones.length; i++) {
 			query.setString(2 * i , phones[i]);
 			query.setString(2 * i +1 , mails[i]);
@@ -115,8 +130,22 @@ public class SWUserService extends BaseService {
 		while(it.hasNext()) {
 			Object[] obj = it.next();
 			
-			User user = new User();
-			
+			User user = null;
+			int type = ((BigDecimal)obj[6]).intValue();
+			switch(type) {
+			case 0:
+				user = new User();
+				user.setUserType(UserType.CUSTOMER);
+				break;
+			case 1:
+				user = new SKServicer();
+				user.setUserType(UserType.SERVICER);
+				break;
+			case 2:
+				user = new User();
+				user.setUserType(UserType.GROUP);
+				break;
+			}
 			
 //			index 0 long id;
 //			index 1 String cellPhone;
@@ -129,6 +158,9 @@ public class SWUserService extends BaseService {
 //			index 8 long lastUpdate;
 //			index 9 long avatarId;
 //			index 10 String originPath;
+//			index 11 String servicer desc;
+//			index 12 String area;
+//			index 13 String location;
 			
 			
 			user.setId(((BigInteger)obj[0]).longValue());
@@ -140,24 +172,21 @@ public class SWUserService extends BaseService {
 				user.setAvatarId(((BigInteger)obj[7]).longValue());
 			}
 			user.setLastUpdate(((BigDecimal)obj[8]).longValue());
-			int type = ((BigDecimal)obj[6]).intValue();
-			switch(type) {
-			case 0:
-				user.setUserType(UserType.CUSTOMER);
-				break;
-			case 1:
-				user.setUserType(UserType.SERVICER);
-				break;
-			case 2:
-				user.setUserType(UserType.GROUP);
-				break;
-			}
+			
 			
 			if (user.getAvatarId() > 0) {
 				SWPUserAvatar sa = new SWPUserAvatar();
 				sa.setId(user.getAvatarId());
 				sa.setOriginPath((String)obj[9]);
 				user.setAvatar(sa);
+			}
+			
+			
+			if (user.getUserType() == UserType.SERVICER) {
+				SKServicer sks = (SKServicer)user;
+				sks.setServiceDesc((String)obj[11]);
+				sks.setArea((String)obj[12]);
+				sks.setLocation((String)obj[13]);
 			}
 			
 			list.add(user);

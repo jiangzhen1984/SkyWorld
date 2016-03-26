@@ -116,6 +116,7 @@
     <string name="temp_talk">现在就聊</string>
     <string name="add_friends">加为好友</string>
     <string name="follow">请您关注</string>
+    <string name="followed">您已关注</string>
     <string name="new_friends">新的朋友</string>
     <string name="new_friends_search_hint">手机号</string>
     
@@ -210,5 +211,7 @@
     <string name="my_business">我的业务</string>
     <string name="location">业务地区</string>
     <string name="mainpage">公众主页</string>
-     <string name="modify">修改</string>
+    <string name="modify">修改</string>
+    <string name="follow_succeed">关注成功</string>
+    <string name="follow_failed">关注失败</string>
 </resources>

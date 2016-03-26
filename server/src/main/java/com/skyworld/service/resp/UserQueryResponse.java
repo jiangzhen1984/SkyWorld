@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.skyworld.service.APICode;
+import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
+import com.skyworld.service.dsf.UserType;
 import com.skyworld.utils.JSONFormat;
 
 public class UserQueryResponse extends JSONBasicResponse {
@@ -34,6 +36,10 @@ public class UserQueryResponse extends JSONBasicResponse {
 				JSONObject jsonUser = new JSONObject();
 				users.put(jsonUser);
 				JSONFormat.populateUserData(jsonUser, u);
+				if (u.getUserType() == UserType.SERVICER) {
+					JSONFormat.populateServicerData(jsonUser, (SKServicer)u);
+				}
+				JSONFormat.populateEasemobData(jsonUser, u);
 			}
 			resp.put("users", users);
 		}

@@ -216,7 +216,7 @@ public class NameCardActivity extends Activity {
 
 	private void refreshView(){
 		Bitmap bp = null;
-		AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(userinfo.getphonenumber());
+		AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(userinfo.getusername());
 		
 		if(rd!=null && rd.getavatarname()!=null){
 			SamLog.e(TAG,"show image:"+rd.getavatarname());
@@ -233,16 +233,15 @@ public class NameCardActivity extends Activity {
 	}
 
 	private void update(){
-		if(userinfo.getphonenumber().equals(SamService.getInstance().get_current_user().getphonenumber())){
+		if(userinfo.getusername().equals(SamService.getInstance().get_current_user().getusername())){
 			userStatus = UserStatus.MYSELF.ordinal();
 			mAdd_friend_layout.setVisibility(View.GONE);
 			mSend_msg_layout.setVisibility(View.VISIBLE);
+			refreshView();
 			return;
 		}
 
 		String easemob_name = userinfo.geteasemob_username();
-		if(easemob_name == null)
-			easemob_name = userinfo.getphonenumber();
 
 		UserFriendDao dao = new UserFriendDao(skyworld.appContext);
 		if(dao.getContact(easemob_name)!=null){
@@ -320,8 +319,6 @@ public class NameCardActivity extends Activity {
 				return true;
 			case MENU_ID_MOVE_FROM_BLACKLIST:
 				String easemob_name = userinfo.geteasemob_username();
-				if(easemob_name == null)
-					easemob_name = userinfo.getphonenumber();
 				moveOutOfBlackList(easemob_name);
 				return true;
 			case MENU_ID_DELETE:
@@ -411,7 +408,7 @@ public class NameCardActivity extends Activity {
 		mAdd_friend_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				String easemob = userinfo.geteasemob_username()==null?userinfo.getphonenumber():userinfo.geteasemob_username();
+				String easemob = userinfo.geteasemob_username();
 				launchSendVerifyMsgActivity(easemob);
 			}
 		});
@@ -419,7 +416,7 @@ public class NameCardActivity extends Activity {
 		mSend_msg_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				String easemob = userinfo.geteasemob_username()==null?userinfo.getphonenumber():userinfo.geteasemob_username();
+				String easemob = userinfo.geteasemob_username();
 				startActivity(new Intent(NameCardActivity.this, ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, easemob));
 			}
 		});
@@ -581,7 +578,7 @@ public class NameCardActivity extends Activity {
 		if(requestCode == 1){
 			if(resultCode == 1){ //OK
 				SamLog.e(TAG,"delete the friend...");
-				String easemob = userinfo.geteasemob_username()==null?userinfo.getphonenumber():userinfo.geteasemob_username();
+				String easemob = userinfo.geteasemob_username();
 				deleteContact(new EaseUser(easemob));
 			}else{
 				SamLog.e(TAG,"cancel delete the friend...");
@@ -589,7 +586,7 @@ public class NameCardActivity extends Activity {
 		}else if(requestCode == 2){
 			if(resultCode == 1){ //OK
 				SamLog.e(TAG,"move into blacklist...");
-				String easemob = userinfo.geteasemob_username()==null?userinfo.getphonenumber():userinfo.geteasemob_username();
+				String easemob = userinfo.geteasemob_username();
 				moveIntoBlackList(easemob);
 			}else{
 				SamLog.e(TAG,"cancel move into blacklist...");

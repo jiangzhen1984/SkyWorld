@@ -97,7 +97,7 @@
         	  android:layout_marginLeft="20dp"
         	  android:inputType="phone"
         	  android:hint="@string/phonenumber"
-        	  android:maxLength="11"
+        	  android:maxLength="15"
         	  android:textSize="18sp"
         	  android:singleLine="true"
         	  android:maxLines="1"

@@ -8,7 +8,9 @@ import org.json.JSONObject;
 import com.skyworld.init.GlobalConstants;
 import com.skyworld.service.APICode;
 import com.skyworld.service.dsf.Article;
+import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
+import com.skyworld.service.dsf.UserType;
 import com.skyworld.utils.JSONFormat;
 
 public class ListArticleResponse extends JSONBasicResponse {
@@ -78,6 +80,10 @@ public class ListArticleResponse extends JSONBasicResponse {
 				
 				JSONObject jsonCommentUser = new JSONObject();
 				JSONFormat.populateUserData(jsonCommentUser, co.commentUser);
+				if (co.commentUser.getUserType() == UserType.SERVICER) {
+					JSONFormat.populateServicerData(jsonCommentUser, (SKServicer)co.commentUser);
+				}
+				JSONFormat.populateEasemobData(jsonCommentUser, co.commentUser);
 				jsonComment.put("user", jsonCommentUser);
 				
 				jsonComs.put(jsonComment);

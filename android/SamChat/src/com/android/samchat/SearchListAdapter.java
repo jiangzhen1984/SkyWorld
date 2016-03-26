@@ -170,7 +170,7 @@ public class SearchListAdapter extends BaseAdapter{
 				boolean avatarExisted=false;
 				ContactUser cuser = holder.user;
 				if(cuser!=null){
-					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(cuser.getusername());
 					if(rd!=null && rd.getavatarname()!=null){
 						Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
 												   45,

@@ -54,6 +54,7 @@ public class SignAccountActivity extends Activity {
 	private String username=null;
 	private String password=null;
 	private String cellphone=null;
+	private String country_code=null;
 
 	private ImageView mBack;
 	private LinearLayout mLayout_verify;
@@ -78,7 +79,7 @@ public class SignAccountActivity extends Activity {
 					EMChat.getInstance().setAutoLogin(true);
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.ACTIVE);
-					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.ACTIVE);
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.ACTIVE);
 					if(mDialog!=null){
 						mDialog.dismissPrgoressDiglog();
 					}
@@ -97,7 +98,7 @@ public class SignAccountActivity extends Activity {
 			SamLog.ship(TAG,"login easemob failed code:"+code+ " message:" + message);
 			LoginUser user = SamService.getInstance().get_current_user();
 			user.seteasemob_status(LoginUser.INACTIVE);
-			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);
+			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);
 
 			if(mDialog!=null){
 				mDialog.dismissPrgoressDiglog();
@@ -114,7 +115,7 @@ public class SignAccountActivity extends Activity {
 		List<LoginUser> array = SamService.getInstance().getDao().query_AllLoginUser_db();
 		for(int i=0;i<array.size();i++){
 			user = array.get(i);
-			SamService.getInstance().getDao().updateLoginUserAllStatus(user.getphonenumber(),LoginUser.INACTIVE);
+			SamService.getInstance().getDao().updateLoginUserAllStatus(user.getusername(),LoginUser.INACTIVE);
 		}
 	}
 
@@ -170,7 +171,9 @@ public class SignAccountActivity extends Activity {
 				SamLog.ship(TAG,"MSG_EASEMOB_NAME_GOT_TIMEOUT happened...");
 				cancelEaseMobNameGotTimeOut();
 				unregisterReceiver(EaseMobNameGotReceiver);
-				final String userName = SamService.getInstance().get_current_user().getphonenumber();
+				final String userName = Constants.USERNAME_EQUAL_EASEMOB_ID?
+										SamService.getInstance().get_current_user().getusername():
+										SamService.getInstance().get_current_user().getphonenumber();
 				final String password = SamService.getInstance().get_current_user().getpassword();
 				
 				new Thread(new Runnable() {
@@ -207,15 +210,17 @@ public class SignAccountActivity extends Activity {
 		}
 
 		SamLog.e(TAG,"start query_user_info_from_server...");
-		SamService.getInstance().query_user_info_from_server(testname,new SMCallBack(){
+		SamService.getInstance().query_user_existed_withOutToken_from_server(testname,new SMCallBack(){
 			@Override
 			public void onSuccess(final Object obj){
 				runOnUiThread(new Runnable() {
 					public void run() {
 						List<ContactUser> list = (List<ContactUser>)obj;
 						if(list!=null && list.size()>0){
+							SamLog.e(TAG,"show error");
 							update_unique_up(false);
 						}else{
+							SamLog.e(TAG,"no show error");
 							update_unique_up(true);
 						}
 
@@ -266,6 +271,7 @@ public class SignAccountActivity extends Activity {
 	}
 	
 	private void setErrorPop(String errStr){
+		SamLog.e(TAG,"setErrorPop...");
 		mError_pop.setText(errStr);
 		mError_pop.setTextColor(getResources().getColor(R.color.text_error_red));
 		mError_pop.setVisibility(View.VISIBLE);
@@ -302,8 +308,8 @@ public class SignAccountActivity extends Activity {
 	    
 	    mDialog = new SamProcessDialog();
 
-           cellphone = getIntent().getStringExtra("cellphone");
-	   
+           cellphone = getIntent().getStringExtra(Constants.CELLPHONE_NUMBER);
+           country_code = getIntent().getStringExtra(Constants.COUNTRY_CODE);	   
 	    
 	    mBack.setOnClickListener(new OnClickListener(){
 	    	@Override
@@ -358,7 +364,7 @@ public class SignAccountActivity extends Activity {
     			mDialog.launchProcessDialog(SignAccountActivity.this,getString(R.string.sign_up_now));
     		}
 
-		SignService.getInstance().SignUp(username,password,cellphone,new SMCallBack(){
+		SignService.getInstance().SignUp(username,password,cellphone,country_code,new SMCallBack(){
 			@Override
 			public void onSuccess(final Object obj) {
 				runOnUiThread(new Runnable() {
@@ -454,7 +460,7 @@ public class SignAccountActivity extends Activity {
 		
 		mBtnSignup.setEnabled(clickable);
 		mBtnSignup.setClickable(clickable);
-		clearErrorPop();
+		//clearErrorPop();
 		
 	}
 	
@@ -470,7 +476,9 @@ public class SignAccountActivity extends Activity {
 		} 
 
 		@Override
-		public void afterTextChanged(Editable s) { 
+		public void afterTextChanged(Editable s) {
+			unique_up = false;
+			updateBtnSignup();
 			username = mUsername.getText().toString();
 			SamLog.e("TAG","username:"+ username);
 			if(username!=null & !username.equals("") & username.length()>=SamService.MIN_USERNAME_LENGTH){
@@ -510,7 +518,7 @@ public class SignAccountActivity extends Activity {
 				available_password = false;
 			}
 			updateBtnSignup();
-			clearErrorPop();
+			//clearErrorPop();
 		}    
 	};
 
