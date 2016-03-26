@@ -891,6 +891,16 @@ New Answer json:
     }
     "body":
     {
+            "id":2,
+            "cellphone":"138",
+            "username" :"syservicer_mail",
+            "area"     : "area",
+            "location" : "location",
+            "desc"     : "description",
+            "avatar":
+            {
+                 "origin" : "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
+            },
             "easemob":
             {
                 "username":"138"
