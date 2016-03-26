@@ -9,12 +9,16 @@
 #import "SignupSettingViewController.h"
 #import "SCSkyWorldAPI.h"
 #import "AFNetworking.h"
+#import "MBProgressHUD.h"
+#import "SCUserProfile.h"
+#import "SCUtils.h"
 
 @interface SignupSettingViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
+@property (weak, nonatomic) IBOutlet UILabel *labelErrorTip;
 
-
+@property (strong, nonatomic) MBProgressHUD *hud;
 @end
 
 @implementation SignupSettingViewController
@@ -23,12 +27,20 @@
     [super viewDidLoad];
     
     [self customNavigationItem];
+    [self clearLabelErrorTip];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self.username becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [_hud hide:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,7 +56,14 @@
     self.navigationItem.titleView = customLabel;
 }
 
-- (NSString *)generateUrlString
+#pragma mark - process
+
+- (void)clearLabelErrorTip
+{
+    self.labelErrorTip.text = @"";
+}
+
+- (NSString *)generateSignUpUrlString
 {
     NSDictionary *header = @{SKYWORLD_ACTION: SKYWORLD_REGISTER};
     NSDictionary *body = @{SKYWORLD_CELLPHONE: self.cellphone,
@@ -59,37 +78,54 @@
 
 - (IBAction)register:(UIButton *)sender
 {
+    _hud = [SCUtils createHUD];
+    _hud.labelText = @"正在注册";
+    _hud.userInteractionEnabled = NO;
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-    [manager GET:[self generateUrlString]
+    [manager GET:[self generateSignUpUrlString]
       parameters:nil
         progress:^(NSProgress *downloadProgress){
         }
          success:^(NSURLSessionDataTask *task, id responseObject){
              if([responseObject isKindOfClass:[NSDictionary class]]) {
                  NSLog(@"%@", responseObject);
-                 NSDictionary *result = responseObject;
-                 NSInteger errorCode = [(NSNumber *)result[SKYWORLD_RET] integerValue];
+                 NSDictionary *response = responseObject;
+                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                  if(errorCode) {
-                     
+                     [self registerErrorWithErrorCode:errorCode];
                      return;
                  }
-                 
+                 [self registerSuccessWithResponse:response];
              }
          }
          failure:^(NSURLSessionDataTask *task, NSError *error){
              NSLog(@"Error: %@", error);
+             _hud.labelText = task.response.description;
+             [_hud hide:YES afterDelay:1];
          }];
 }
 
-- (void)presentHomeView
+- (void)registerSuccessWithResponse:(NSDictionary *)response
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    id homeViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeView"];
-    [self presentViewController:homeViewController animated:YES completion:^(void){}];
+    SCUserProfile *userProfile = [[SCUserProfile alloc] initWithLoginSuccessServerResponse:response];
+    userProfile.password = self.password.text;
+    [userProfile saveProfileForLoginSuccess];
+    [SCUtils presentHomeViewFromViewController:self];
 }
 
-
+- (void)registerErrorWithErrorCode:(NSInteger)errorCode
+{
+    if(errorCode == SkyWorldUsernameOrPasswordAlreadyExisted) {
+        self.labelErrorTip.text = @"用户名或密码已经存在，请重新输入";
+        [_hud hide:YES];
+    } else {
+#warning Add details
+        _hud.labelText = [NSString stringWithFormat:@"错误代码：%ld", errorCode];
+        [_hud hide:YES afterDelay:1];
+    }
+}
 
 /*
 #pragma mark - Navigation

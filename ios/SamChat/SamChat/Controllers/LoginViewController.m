@@ -13,8 +13,7 @@
 #import "AppMacro.h"
 #import "MBProgressHUD.h"
 #import "SCUtils.h"
-#import "SCConfig.h"
-#import "SCLoginUser.h"
+#import "SCUserProfile.h"
 #import <sqlite3.h>
 
 @interface LoginViewController ()
@@ -144,22 +143,10 @@
 
 - (void)loginSuccessWithResponse: (NSDictionary *)response
 {
-    NSLog(@"login success");
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:response[SKYWORLD_TOKEN] ?:@"" forKey:SC_LOGINUSER_TOKEN];
-    [userDefaults setObject:self.password.text ?:@"" forKey:SC_LOGINUSER_PASSWORD];
-    [userDefaults setInteger:SC_LOGINUSER_LOGIN forKey:SC_LOGINUSER_STATUS];
-    
-    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
-    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
-    NSLog(@"time: %lld", timestamp);
-    [userDefaults setInteger:timestamp forKey:SC_LOGINUSER_LOGINTIME];
-    
-//    [userDefaults setInteger:user.easemob_status forKey:SC_LOGINUSER_EASEMOB_STATUS];
-    NSDictionary *userDict = response[SKYWORLD_USER];
-    SCLoginUser *user = [[SCLoginUser alloc] initWithDictionary:userDict];
-    [SCConfig saveProfile:user];
-    [self presentHomeView];
+    SCUserProfile *userProfile = [[SCUserProfile alloc] initWithLoginSuccessServerResponse:response];
+    userProfile.password = self.password.text;
+    [userProfile saveProfileForLoginSuccess];
+    [SCUtils presentHomeViewFromViewController:self];
 }
 
 - (void)loginErrorWithErrorCode: (NSInteger)errorCode
@@ -172,20 +159,6 @@
         _hud.labelText = [NSString stringWithFormat:@"错误代码：%ld", errorCode];
         [_hud hide:YES afterDelay:1];
     }
-    [self loginFailed];
-}
-
-- (void)loginFailed
-{
-    NSLog(@"login failed");
-    
-}
-
-- (void)presentHomeView
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    id homeViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeView"];
-    [self presentViewController:homeViewController animated:YES completion:^(void){}];
 }
 
 - (NSString *)dataFilePath

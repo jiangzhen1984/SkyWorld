@@ -361,25 +361,31 @@
                                     <constraint firstAttribute="height" constant="1" id="Jde-oT-xnV"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="vBj-Ds-sdQ">
-                                <rect key="frame" x="164" y="311" width="266" height="30"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="vBj-Ds-sdQ">
+                                <rect key="frame" x="167" y="311" width="266" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O2P-Qg-yYp">
                                         <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
                                         <state key="normal" title="Button"/>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="已阅读并同意" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zM4-9V-nGG">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已阅读并同意" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zM4-9V-nGG">
                                         <rect key="frame" x="51" y="0.0" width="90" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRg-gc-gLg">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRg-gc-gLg">
                                         <rect key="frame" x="146" y="0.0" width="120" height="30"/>
                                         <state key="normal" title="《天际用户协议》"/>
                                     </button>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4b-6r-L9m">
+                                <rect key="frame" x="20" y="223" width="35.5" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -394,11 +400,13 @@
                             <constraint firstAttribute="leadingMargin" secondItem="n4K-5P-tNd" secondAttribute="leading" id="X0h-K0-fBw"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ojv-Sg-k9f" secondAttribute="trailing" id="aEV-n5-Ll0"/>
                             <constraint firstAttribute="leadingMargin" secondItem="u8e-Be-5by" secondAttribute="leading" id="cpS-mJ-ZRQ"/>
+                            <constraint firstItem="o4b-6r-L9m" firstAttribute="top" secondItem="u8e-Be-5by" secondAttribute="bottom" constant="14" id="fIu-cl-Ovi"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Ojv-Sg-k9f" secondAttribute="leading" id="fU1-I2-PLP"/>
                             <constraint firstItem="Ojv-Sg-k9f" firstAttribute="top" secondItem="n4K-5P-tNd" secondAttribute="bottom" constant="5" id="l1l-gT-kAg"/>
                             <constraint firstItem="u8e-Be-5by" firstAttribute="top" secondItem="n4K-5P-tNd" secondAttribute="bottom" constant="36" id="o6J-d7-glu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="r0k-RM-Lxd" secondAttribute="trailing" id="qN5-cj-sxc"/>
                             <constraint firstAttribute="leadingMargin" secondItem="r0k-RM-Lxd" secondAttribute="leading" id="t5V-Bf-aox"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="o4b-6r-L9m" secondAttribute="leading" id="uGC-jh-k3V"/>
                             <constraint firstItem="n4K-5P-tNd" firstAttribute="top" secondItem="DZf-1T-Ixd" secondAttribute="bottom" constant="75" id="ulA-XL-bJT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ia3-7D-SYx" secondAttribute="trailing" id="z2g-IE-vqL"/>
                         </constraints>
@@ -409,6 +417,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="labelErrorTip" destination="o4b-6r-L9m" id="8Bq-Tq-yNq"/>
                         <outlet property="password" destination="u8e-Be-5by" id="BuW-rV-Eka"/>
                         <outlet property="username" destination="n4K-5P-tNd" id="iyO-nI-afb"/>
                     </connections>

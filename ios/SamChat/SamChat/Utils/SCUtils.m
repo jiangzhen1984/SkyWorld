@@ -34,4 +34,11 @@
     return image;
 }
 
++ (void)presentHomeViewFromViewController:(UIViewController *)viewContoller
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    id homeViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeView"];
+    [viewContoller presentViewController:homeViewController animated:YES completion:^(void){}];
+}
+
 @end

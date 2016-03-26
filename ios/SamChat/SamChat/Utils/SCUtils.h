@@ -16,5 +16,6 @@
 
 + (MBProgressHUD *)createHUD;
 + (UIImage *)createImageWithColor:(UIColor *) color;
++ (void)presentHomeViewFromViewController:(UIViewController *)viewContoller;
 
 @end
