@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 #import "SCUserProfile.h"
 #import "SCUtils.h"
+#import "SCViewFactory.h"
 
 @interface SignupSettingViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *username;
@@ -26,7 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self customNavigationItem];
+    self.navigationItem.titleView = [SCViewFactory customNavigationItemWithTitle:@"天际账号设置"];
     [self clearLabelErrorTip];
 }
 
@@ -46,14 +47,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)customNavigationItem
-{
-    UILabel *customLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-    [customLabel setTextColor:[UIColor whiteColor]];
-    [customLabel setText:@"天际账号设置"];
-    self.navigationItem.titleView = customLabel;
 }
 
 #pragma mark - process

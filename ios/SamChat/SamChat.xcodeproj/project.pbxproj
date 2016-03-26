@@ -20,6 +20,9 @@
 		3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFE31CA5401600796D25 /* SCUINavigationController.m */; };
 		3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFEA1CA5494500796D25 /* SCSkyWorldAPI.m */; };
 		3183D0671CA67AA70088FD67 /* SCUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0661CA67AA70088FD67 /* SCUserProfile.m */; };
+		3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */; };
+		3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D06C1CA68C4A0088FD67 /* ResetPassWordViewController.m */; };
+		3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0701CA690730088FD67 /* SCViewFactory.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -76,6 +79,12 @@
 		317DE80D1CA42EA300ED39F5 /* SCSkyWorldAPIMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCSkyWorldAPIMacro.h; path = Macro/SCSkyWorldAPIMacro.h; sourceTree = "<group>"; };
 		3183D0651CA67AA70088FD67 /* SCUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCUserProfile.h; path = Models/SCUserProfile.h; sourceTree = "<group>"; };
 		3183D0661CA67AA70088FD67 /* SCUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCUserProfile.m; path = Models/SCUserProfile.m; sourceTree = "<group>"; };
+		3183D0681CA68AAF0088FD67 /* RetrievePassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetrievePassWordViewController.h; sourceTree = "<group>"; };
+		3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetrievePassWordViewController.m; sourceTree = "<group>"; };
+		3183D06B1CA68C4A0088FD67 /* ResetPassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassWordViewController.h; sourceTree = "<group>"; };
+		3183D06C1CA68C4A0088FD67 /* ResetPassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassWordViewController.m; sourceTree = "<group>"; };
+		3183D06F1CA690730088FD67 /* SCViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCViewFactory.h; path = Views/SCViewFactory.h; sourceTree = "<group>"; };
+		3183D0701CA690730088FD67 /* SCViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCViewFactory.m; path = Views/SCViewFactory.m; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -147,6 +156,7 @@
 		311BC62C1CA37B19006B4707 /* SamChat */ = {
 			isa = PBXGroup;
 			children = (
+				3183D06E1CA690150088FD67 /* Views */,
 				31F8E7251CA3D2B10049EE23 /* Utils */,
 				31F8E7231CA3BCEF0049EE23 /* Macro */,
 				31F8E71F1CA3BA790049EE23 /* Models */,
@@ -202,6 +212,15 @@
 			path = SkyWorld;
 			sourceTree = "<group>";
 		};
+		3183D06E1CA690150088FD67 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3183D06F1CA690730088FD67 /* SCViewFactory.h */,
+				3183D0701CA690730088FD67 /* SCViewFactory.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +236,10 @@
 				3178FFE31CA5401600796D25 /* SCUINavigationController.m */,
 				317596711CA54A48002D2F73 /* ServiceSearchViewController.h */,
 				317596721CA54A48002D2F73 /* ServiceSearchViewController.m */,
+				3183D0681CA68AAF0088FD67 /* RetrievePassWordViewController.h */,
+				3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */,
+				3183D06B1CA68C4A0088FD67 /* ResetPassWordViewController.h */,
+				3183D06C1CA68C4A0088FD67 /* ResetPassWordViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -455,13 +478,16 @@
 				31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */,
 				3183D0671CA67AA70088FD67 /* SCUserProfile.m in Sources */,
 				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
+				3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */,
 				311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */,
 				31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */,
 				3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */,
 				3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */,
 				311BC6321CA37B19006B4707 /* AppDelegate.m in Sources */,
 				311BC62F1CA37B19006B4707 /* main.m in Sources */,
+				3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */,
 				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,
+				3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */,
 				31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */,
 				31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */,
 			);

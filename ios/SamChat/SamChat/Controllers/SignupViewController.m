@@ -8,6 +8,7 @@
 
 #import "SignupViewController.h"
 #import "SignupSettingViewController.h"
+#import "SCViewFactory.h"
 
 @interface SignupViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *cellphone;
@@ -19,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self customNavigationItem];
+    self.navigationItem.titleView = [SCViewFactory customNavigationItemWithTitle:@"注册天际账户"];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -28,14 +29,6 @@
     [self.cellphone becomeFirstResponder];
 }
 
-- (void)customNavigationItem
-{
-    UILabel *customLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-    [customLabel setTextColor:[UIColor whiteColor]];
-    [customLabel setText:@"注册天际账户"];
-    //customLabel.font = [UIFont boldSystemFontOfSize:20];
-    self.navigationItem.titleView = customLabel;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
