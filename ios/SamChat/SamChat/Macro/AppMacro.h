@@ -10,7 +10,8 @@
 #define AppMacro_h
 
 #pragma mark - Inline function
-#define SC_RGB(r,g,b)       [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:1.0]
+#define SC_RGB(r,g,b)               [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:1.0]
+#define SC_RGBAlpha(r, g, b, a)     [UIColor colorWithRed:((r) / 255.0) green:((g) / 255.0) blue:((b) / 255.0) alpha:(a)]
 
 
 #define SC_MAIN_COLOR       SC_RGB(2, 168, 244)
@@ -35,5 +36,9 @@
 #define SC_LOGINUSER_EASEMOB_USERNAME   @"easemob_username"
 #define SC_LOGINUSER_EASEMOB_STATUS     @"easemob_status"
 #define SC_LOGINUSER_LASTUPDATE         @"lastupdate"
+#define SC_LOGINUSER_TOKEN              @"token"
+
+#define SC_MINIMUM_USERNAME_LENGTH      4
+#define SC_MINIMUM_PASSWORD_LENGTH      6
 
 #endif /* AppMacro_h */

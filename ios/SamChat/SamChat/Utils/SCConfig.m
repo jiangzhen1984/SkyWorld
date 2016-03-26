@@ -36,4 +36,10 @@
     [userDefaults synchronize];
 }
 
++ (NSString *)getUserToken
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults valueForKey:SC_LOGINUSER_TOKEN];
+}
+
 @end

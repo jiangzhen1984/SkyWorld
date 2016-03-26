@@ -35,9 +35,9 @@
     NSLog([NSString stringWithFormat:@"%@",NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]]);
     
     if([self isUserLoginStatusOK]) {
-        //UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        //id view = [storyBoard instantiateViewControllerWithIdentifier:@"LoginNavController"];
-        //self.window.rootViewController = view;
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        id view = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
+        self.window.rootViewController = view;
     } else {
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoginCtrl" bundle:[NSBundle mainBundle]];
         id view = [storyBoard instantiateViewControllerWithIdentifier:@"LoginNavController"];

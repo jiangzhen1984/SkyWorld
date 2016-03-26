@@ -15,6 +15,7 @@
 
 #define SKYWORLD_REGISTER       @"register"
 #define SKYWORLD_LOGIN          @"login"
+#define SKYWORLD_ANSWER         @"answer"
 
 #define SKYWORLD_HEADER         @"header"
 #define SKYWORLD_BODY           @"body"
@@ -43,5 +44,18 @@
 #define SKYWORLD_LOCATION       @"location"
 
 #define SKYWORLD_EASEMOB_USERNAME   @"easemob.username"
+
+#define SKYWORLD_CATEGORY       @"category"
+#define SKYWORLD_QUESTION       @"question"
+#define SKYWORLD_DATETIME       @"datetime"
+
+typedef enum {
+    SkyWorldUsernameOrPasswordError = -201,
+    SkyWorldInternalError = -103,
+    SkyWorldPasswordMismatch = -102,
+    SkyWorldUsernameOrPasswordAlreadyExisted = -101,
+    SkyWorldActionParameterUnsupported = -2,
+    SkyWorldParseFailed = -1,
+} SKYWORLD_ERROR_CODE;
 
 #endif /* SCSkyWorldAPIMacro_h */

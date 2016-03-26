@@ -13,5 +13,6 @@
 @interface SCConfig : NSObject
 
 + (void)saveProfile:(SCLoginUser *)user;
++ (NSString *)getUserToken;
 
 @end

@@ -10,7 +10,9 @@
 #import "SCSkyWorldAPIMacro.h"
 
 @interface SCSkyWorldAPI : NSObject
+
 - (instancetype)initAPI:(NSString *)type WithHeader:(NSDictionary *)header andBody:(NSDictionary *)body;
 - (NSURL *)generateUrl;
 - (NSString *)generateUrlString;
+
 @end
