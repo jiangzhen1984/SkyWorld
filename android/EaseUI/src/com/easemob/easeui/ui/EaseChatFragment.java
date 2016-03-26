@@ -176,6 +176,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
 
         if(!isBroadcastRegistered){
 	     registerBroadcastReceiver();
+	     isBroadcastRegistered=true;
         }
     }
 

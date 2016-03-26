@@ -142,11 +142,11 @@ public class NewFriendListAdapter extends BaseAdapter{
 					InviteMessageRecord record = contactInviteRecordArray.get(position);
 					holder.username.setText(record.getsender());
 					holder.userimg.setImageResource(R.drawable.em_default_avatar);
-					ContactUser cuser = SamService.getInstance().getDao().query_ContactUser_db(record.getsender());
+					ContactUser cuser = SamService.getInstance().getDao().query_ContactUser_db_by_username(record.getsender());
 					if(cuser!=null){
 						SamLog.e(TAG,"cuser is existed");
 						holder.username.setText(cuser.getusername());
-						AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(record.getsender());
+						AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(record.getsender());
 						if(rd!=null && rd.getavatarname()!=null){
 							SamLog.e(TAG,"rd is existed:"+holder.userimg.getHeight()+":"+holder.userimg.getWidth());
 							Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 

@@ -227,6 +227,7 @@ public class SamContact_Fragment extends EaseContactListFragment{
 
 		if(!isBroadcastRegistered){
 			registerBroadcastReceiver();
+			isBroadcastRegistered = true;
 		}
 		
 		super.onActivityCreated(savedInstanceState);

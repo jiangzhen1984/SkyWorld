@@ -1,9 +1,13 @@
 package com.android.samchat;
 
+import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samservice.SMCallBack;
+import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
 import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
+import com.android.samservice.info.FollowerRecord;
+import com.android.samservice.info.LoginUser;
 import com.android.samservice.info.ReceivedAnswer;
 import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.domain.EaseUser;
@@ -19,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SamAnswerDetailActivity extends Activity {
 	public static final String TAG="SamAnswerDetailActivity";
@@ -30,6 +35,7 @@ public class SamAnswerDetailActivity extends Activity {
 	//private ListView mSam_answer_detail_list;
 	private TextView mTemp_talk;
 	private TextView mAdd_friend;
+	private TextView mFollow;
 	private TextView mQuestion;
 	private TextView mAnswer;
 
@@ -41,6 +47,8 @@ public class SamAnswerDetailActivity extends Activity {
 	//private SamAnswerDetailListAdapter mAdapter;
 
 	private ContactUser syservicer; 
+
+	private boolean followed = false;
 
 	
 	@Override
@@ -73,7 +81,7 @@ public class SamAnswerDetailActivity extends Activity {
 
 		mTemp_talk = (TextView) findViewById(R.id.temp_talk);
 		mAdd_friend = (TextView) findViewById(R.id.add_friend);
-
+		mFollow =  (TextView) findViewById(R.id.follow);
 		mTemp_talk.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
@@ -86,22 +94,45 @@ public class SamAnswerDetailActivity extends Activity {
 		mAdd_friend.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				query_user_info_from_server(syservicer.getphonenumber());
+				query_user_info_from_server(syservicer.getusername());
 			}
 		    	
 		});
+
+		mFollow.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				if(!followed){
+					follow_vendor();
+				}
+			}
+		    	
+		});
+
+
+
 
 		mQuestion =  (TextView) findViewById(R.id.question);
 		mAnswer =  (TextView) findViewById(R.id.answer);
 		
 		initFromIntent(getIntent());
 
-		
+		if(syservicer!=null){
+			LoginUser currentUser = SamService.getInstance().get_current_user();
+			FollowerRecord rd = SamService.getInstance().getDao().query_FollowerRecord_db(syservicer.getunique_id(),currentUser.getunique_id());
+			if(rd!=null){
+				mFollow.setText(getString(R.string.followed));
+				followed = true;
+			}else{
+				mFollow.setText(getString(R.string.follow));
+				followed = false;
+			}
+		}
 
 		boolean avatarExisted=false;
 		ContactUser cuser = syservicer;
 		if(cuser!=null){
-			AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(cuser.getphonenumber());
+			AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(cuser.getusername());
 			if(rd!=null && rd.getavatarname()!=null){
 				Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
 										   40,
@@ -147,8 +178,73 @@ public class SamAnswerDetailActivity extends Activity {
 		finish();
 	}
 
-	private void query_user_info_from_server(String phonenumber){
-		SamService.getInstance().query_user_info_from_server(phonenumber,new SMCallBack(){
+	private void follow_vendor(){
+		long user_id = syservicer.getunique_id();
+		String username = syservicer.getusername();
+		
+		if(mDialog!=null){
+			mDialog.launchProcessDialog(this,getString(R.string.process));
+		}
+		SamLog.i(TAG,"follow vendor id:"+user_id);
+		SamService.getInstance().follow(user_id,username,new SMCallBack(){
+			@Override
+			public void onSuccess(Object obj) {
+				if(SamAnswerDetailActivity.this == null ||SamAnswerDetailActivity.this.isFinishing() ){
+					return;
+				}
+				
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+							mDialog.dismissPrgoressDiglog();
+						}
+						Toast.makeText(SamAnswerDetailActivity.this, R.string.follow_succeed, 0).show();
+						followed = true;
+						mFollow.setText(getString(R.string.followed));
+						EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+					}
+				});
+				
+				
+			}
+
+			@Override
+			public void onFailed(int code) {
+				if(SamAnswerDetailActivity.this == null ||SamAnswerDetailActivity.this.isFinishing() ){
+					return;
+				}
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+							mDialog.dismissPrgoressDiglog();
+						}
+						Toast.makeText(SamAnswerDetailActivity.this, R.string.follow_failed, 0).show();
+					}
+				});
+			}
+
+			@Override
+			public void onError(int code) {
+				if(SamAnswerDetailActivity.this == null ||SamAnswerDetailActivity.this.isFinishing() ){
+					return;
+				}
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+							mDialog.dismissPrgoressDiglog();
+						}
+						Toast.makeText(SamAnswerDetailActivity.this, R.string.follow_failed, 0).show();
+					}
+				});
+			}
+
+		});
+		
+		
+	}
+
+	private void query_user_info_from_server(String username){
+		SamService.getInstance().query_user_info_from_server(username,new SMCallBack(){
 			@Override
 			public void onSuccess(Object obj) {
 				runOnUiThread(new Runnable() {

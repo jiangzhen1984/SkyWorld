@@ -1,5 +1,8 @@
 package com.android.samchat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.android.samservice.SMCallBack;
 import com.android.samservice.SamService;
 
@@ -309,6 +312,7 @@ public class VendorInfoInputActivity extends Activity {
 						if(mDialog!=null){
     							mDialog.dismissPrgoressDiglog();
     						}
+						
 						VendorInfoInputActivity.this.setResult(1);
 						VendorInfoInputActivity.this.finish();
 

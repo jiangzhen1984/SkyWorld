@@ -90,26 +90,7 @@ public class QuestionListAdapter extends BaseAdapter{
 		switch(viewType){
 		case TYPE_TEXT:
 			ReceivedQuestion question = receivedQuestionArray.get(position);
-			/*if(holder.user == null){
-				holder.user = SamService.getInstance().getDao().query_ContactUser_db(question.getcontactuserid());
-			}
-
-			holder.userimage.setImageResource(R.drawable.samqa);
-			
-			if(holder.user!=null){
-				AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(holder.user.getphonenumber());
-				if(rd!=null && rd.getavatarname()!=null){
-					SamLog.e(TAG,"rd is existed:"+holder.userimage.getHeight()+":"+holder.userimage.getWidth());
-					Bitmap bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(), 
-												   43,
-												   43);
-					if(bp!=null){
-						SamLog.e(TAG,"bp is existed");
-						holder.userimage.setImageBitmap(bp);
-					}
-				}
-			}*/
-			
+						
 			holder.question.setText(question.question);
 			if(question.response== ReceivedQuestion.NOT_RESPONSED){
 				holder.image.setImageResource(R.drawable.samqa_unresp);

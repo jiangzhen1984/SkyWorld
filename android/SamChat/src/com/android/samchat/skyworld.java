@@ -18,7 +18,8 @@ public class skyworld extends Application {
 	@Override
 	public void onCreate() {
 		appContext = getApplicationContext();
-		
+		SamChatExceptionHandler crashHandler = SamChatExceptionHandler.getInstance();  
+		crashHandler.init(this);  		
 	}
 
 	static public void EaseMobInit(){

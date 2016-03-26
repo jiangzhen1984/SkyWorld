@@ -1,7 +1,7 @@
 package com.android.samservice.info;
 
 /*
-	id(primary) |question_id | send user id | question | status | send time | cancel time | 
+	id(primary) |question_id | send user id | question | status | send time | cancel time | sendercellphone | senderusername
 	*/
 public class SendQuestion
 {
@@ -15,6 +15,8 @@ public class SendQuestion
 	public int status;
 	public long sendtime;
 	public long canceltime;
+	public String sendercellphone;
+	public String senderusername;
 
 	public SendQuestion(long senduserid,String question_id, String question){
 		this.id = 0;
@@ -24,6 +26,8 @@ public class SendQuestion
 		this.status = ACTIVE ;
 		this.sendtime = System.currentTimeMillis();
 		this.canceltime = 0;
+		this.sendercellphone = null;
+		this.senderusername = null;
 	}
 
 	public SendQuestion(){
@@ -34,5 +38,16 @@ public class SendQuestion
 		this.status = CANCEL ;
 		this.sendtime = 0;
 		this.canceltime = 0;
+		this.sendercellphone = null;
+		this.senderusername = null;
 	}
+
+	public void setsendercellphone(String sendercellphone){
+		this.sendercellphone = sendercellphone;
+	}
+
+	public void setsenderusername(String senderusername){
+		this.senderusername = senderusername; 
+	}
+	
 }

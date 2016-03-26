@@ -73,6 +73,8 @@ public class NewFriendActivity extends Activity {
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
+		
+
 		mDialog = new SamProcessDialog();
 
 		setContentView(R.layout.activity_new_friend);
@@ -93,15 +95,15 @@ public class NewFriendActivity extends Activity {
 				if (actionId==EditorInfo.IME_ACTION_SEARCH ||(event!=null&&event.getKeyCode()== KeyEvent.KEYCODE_ENTER)) { 
 					closeInputMethod();
 
-					String phonenumber = mSearch.getText().toString().trim();
-					if(!phonenumber.equals("")){
+					String username = mSearch.getText().toString().trim();
+					if(!username.equals("")){
 						SamLog.e(TAG, "start search new friend");
 						if(mDialog!=null){
     							mDialog.launchProcessDialog(NewFriendActivity.this,getString(R.string.process));
     						}
 
 						/*query user info from server*/
-						query_user_info_from_server(phonenumber);
+						query_user_info_from_server(username);
 							
 					}
 					
@@ -129,13 +131,10 @@ public class NewFriendActivity extends Activity {
 		registerBroadcastReceiver();
 		updateNewFriendList();
 
-		
-		
-	       
 	}
 
-	private void query_user_info_from_server(String phonenumber){
-		SamService.getInstance().query_user_info_from_server(phonenumber,new SMCallBack(){
+	private void query_user_info_from_server(String username){
+		SamService.getInstance().query_user_info_from_server(username,new SMCallBack(){
 			@Override
 			public void onSuccess(Object obj) {
 				if(mDialog!=null){

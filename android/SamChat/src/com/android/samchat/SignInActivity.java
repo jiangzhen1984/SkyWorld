@@ -76,7 +76,7 @@ public class SignInActivity extends Activity {
 					//EMChatManager.getInstance().updateCurrentUserNick(SamService.getInstance().get_current_user().getusername());
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.ACTIVE);
-					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.ACTIVE);
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.ACTIVE);
 					if(mDialog!=null){
 						mDialog.dismissPrgoressDiglog();
 					}
@@ -95,7 +95,7 @@ public class SignInActivity extends Activity {
 			SamLog.ship(TAG,"login easemob failed code:"+code+ " message:" + message);
 			LoginUser user = SamService.getInstance().get_current_user();
 			user.seteasemob_status(LoginUser.INACTIVE);
-			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);
+			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);
 			
 			if(mDialog!=null){
 				mDialog.dismissPrgoressDiglog();
@@ -111,7 +111,7 @@ public class SignInActivity extends Activity {
 		List<LoginUser> array = SamService.getInstance().getDao().query_AllLoginUser_db();
 		for(int i=0;i<array.size();i++){
 			user = array.get(i);
-			SamService.getInstance().getDao().updateLoginUserAllStatus(user.getphonenumber(),LoginUser.INACTIVE);
+			SamService.getInstance().getDao().updateLoginUserAllStatus(user.getusername(),LoginUser.INACTIVE);
 		}
 	}
 
@@ -169,7 +169,9 @@ public class SignInActivity extends Activity {
 				SamLog.ship(TAG,"MSG_EASEMOB_NAME_GOT_TIMEOUT happened...");
 				cancelEaseMobNameGotTimeOut();
 				unregisterReceiver(EaseMobNameGotReceiver);
-				final String userName = SamService.getInstance().get_current_user().getphonenumber();
+				final String userName = Constants.USERNAME_EQUAL_EASEMOB_ID?
+										SamService.getInstance().get_current_user().getusername():
+										SamService.getInstance().get_current_user().getphonenumber();
 				final String password = SamService.getInstance().get_current_user().getpassword();
 				
 				new Thread(new Runnable() {
@@ -278,8 +280,6 @@ public class SignInActivity extends Activity {
 						try{
 							SamFile sfd = new SamFile();
 							sfd.writeSamFile(SamService.sam_cache_path , SamService.TOKEN_FILE,sInfo.token);
-							//sfd.writeSamFile(SamService.sam_cache_path , SamService.UP_FILE,sInfo.username+","+sInfo.password);
-	            			
 						}catch(IOException e){
 							e.printStackTrace();
 						}finally{

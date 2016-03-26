@@ -34,6 +34,8 @@ public class BlackListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_blacklist);
 
+		
+
 		mBack =  (ImageView) findViewById(R.id.back);
 		mBack.setOnClickListener(new OnClickListener(){
 			@Override

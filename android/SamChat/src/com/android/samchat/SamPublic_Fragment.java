@@ -10,7 +10,10 @@ import com.android.samchat.R;
 import com.android.samchat.easemobdemo.EaseMobHelper;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -19,6 +22,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +35,8 @@ import android.widget.Toast;
 
 import com.android.samservice.*;
 import com.android.samservice.info.AvatarRecord;
+import com.android.samservice.info.ContactUser;
+import com.android.samservice.info.FollowerRecord;
 import com.android.samservice.info.LoginUser;
 import com.easemob.EMCallBack;
 import com.easemob.EMConnectionListener;
@@ -43,7 +49,39 @@ public class SamPublic_Fragment extends Fragment{
 	static final String TAG = "SamPublic_Fragment";
 
 	private View rootView;
+	private Context mContext;
+	private ListView mSampublic_list;
+	private PublicListAdapter mAdapter;
+	private boolean isBroadcastRegistered=false;
+	private LocalBroadcastManager broadcastManager;
+	private BroadcastReceiver broadcastReceiver; 
+
+
+	public void refresh(List<ContactUser> follwerList) {
+		mAdapter.setPublicArray(follwerList);
+		mAdapter.setCount(follwerList.size());
+		mAdapter.notifyDataSetChanged();
+	}
+
+	public void refresh(){
+		LoginUser currentUser = SamService.getInstance().get_current_user();
+		SamDBDao dao = SamService.getInstance().getDao();
 		
+		List<FollowerRecord> rdList = dao.query_FollowerRecord_db(currentUser.getunique_id());
+		List<ContactUser> userArray = new ArrayList<ContactUser>();
+		
+		for(FollowerRecord rd:rdList){
+			ContactUser user = dao.query_ContactUser_db_by_username(rd.getusername());
+			if(user!=null){
+				userArray.add(user);
+			}
+		}
+
+		mAdapter.setPublicArray(userArray);
+		mAdapter.setCount(userArray.size());
+		mAdapter.notifyDataSetChanged();		
+	}
+			
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -51,7 +89,10 @@ public class SamPublic_Fragment extends Fragment{
 		
 		if(rootView == null){
 			rootView = inflater.inflate(R.layout.fragment_public, container,false);
-			
+			mSampublic_list = (ListView)rootView.findViewById(R.id.sampublic_list);
+			mContext = getActivity().getBaseContext();
+			mAdapter = new PublicListAdapter(mContext);
+			mSampublic_list.setAdapter(mAdapter);			
 		}
 		return rootView;
 	}
@@ -87,12 +128,41 @@ public class SamPublic_Fragment extends Fragment{
 		super.onDetach();
 		SamLog.i(TAG, "onDetach");
 	}
+
+	private void registerBroadcastReceiver() {
+		broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Constants.ACTION_FOLLOWER_CHANAGED);
+
+		broadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				refresh();
+			}
+		};
+		
+		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+	}
+		
+
+	
+	private void unregisterBroadcastReceiver(){
+	    broadcastManager.unregisterReceiver(broadcastReceiver);
+	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
+
+		refresh();
+		
+		if(!isBroadcastRegistered){
+			registerBroadcastReceiver();
+			isBroadcastRegistered = true;
+		}
 		
 	}
+
 	
 	@Override
 	public void onPause(){
@@ -118,6 +188,10 @@ public class SamPublic_Fragment extends Fragment{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		if(isBroadcastRegistered){
+			unregisterBroadcastReceiver();
+			isBroadcastRegistered = false;
+		}
 	}
 	
 }

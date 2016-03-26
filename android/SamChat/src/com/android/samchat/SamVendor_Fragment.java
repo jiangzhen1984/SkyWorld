@@ -51,6 +51,10 @@ public class SamVendor_Fragment extends Fragment{
 	private LinearLayout mNew_layout;
 	private RelativeLayout mModify_layout;
 	private TextView mModify;
+
+	private TextView mMy_business;
+	private TextView mIntroduction;
+	private TextView mLocation;
 		
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +76,10 @@ public class SamVendor_Fragment extends Fragment{
 			mNew_layout = (LinearLayout)rootView.findViewById(R.id.new_layout);
 			mModify_layout = (RelativeLayout)rootView.findViewById(R.id.modify_layout);
 
+			mMy_business = (TextView)rootView.findViewById(R.id.my_business);
+			mIntroduction = (TextView)rootView.findViewById(R.id.introduction);
+			mLocation = (TextView)rootView.findViewById(R.id.location);
+
 			LoginUser cuser = SamService.getInstance().get_current_user();
 			if(cuser.getUserType() == LoginUser.USER){
 				mModify_layout.setVisibility(View.GONE);
@@ -79,13 +87,17 @@ public class SamVendor_Fragment extends Fragment{
 			}else{
 				mNew_layout.setVisibility(View.GONE);
 				mModify_layout.setVisibility(View.VISIBLE);
+				mMy_business.setText(cuser.area);
+				mLocation.setText(cuser.location);
+				mIntroduction.setText(cuser.description);
 			}
 
 			mModify =  (TextView)rootView.findViewById(R.id.modify);
 			mModify.setOnClickListener(new OnClickListener(){
 		    		@Override
 		    		public void onClick(View arg0) {
-		    			launchVendorInfoInputActivity("a","b","c");
+		    			LoginUser cuser = SamService.getInstance().get_current_user();
+		    			launchVendorInfoInputActivity(cuser.area,cuser.location,cuser.description);
 		    		}
 			});
 			
@@ -169,6 +181,11 @@ public class SamVendor_Fragment extends Fragment{
 				}else{
 					mNew_layout.setVisibility(View.GONE);
 					mModify_layout.setVisibility(View.VISIBLE);
+					
+					mMy_business.setText(cuser.area);
+					mLocation.setText(cuser.location);
+					mIntroduction.setText(cuser.description);
+					
 				}
 			}else{
 

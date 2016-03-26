@@ -2,8 +2,10 @@ package com.android.samservice.info;
 
 import java.io.Serializable;
 
+import com.android.samservice.Constants;
+
 	/*
-	id(primary) | username | phonenumber | usertype | imagefile |description | unique_id | easemob_username |lastupdate
+	id(primary) | username | phonenumber | imagefile |description |area | location | unique_id | easemob_username | lastupdate
 	*/
 public class ContactUser implements Serializable
 {
@@ -13,6 +15,8 @@ public class ContactUser implements Serializable
 	public int usertype;
 	public String imagefile;
 	public String description;
+	public String area;
+	public String location;
 	public long unique_id;
 	public String easemob_username;
 	public long lastupdate;
@@ -24,6 +28,8 @@ public class ContactUser implements Serializable
 		this.usertype = 0;
 		this.imagefile = null;
 		this.description = null;
+		this.area = null;
+		this.location = null;
 		this.unique_id = 0;
 		this.easemob_username = null;
 		this.lastupdate = 0;
@@ -76,6 +82,19 @@ public class ContactUser implements Serializable
 		this.description = description;
 	}
 
+	public String getarea(){
+		return this.area;
+	}
+	public void setarea(String area){
+		this.area = area;
+	}
+
+	public String getlocation(){
+		return this.location;
+	}
+	public void setlocation(String location){
+		this.location = location;
+	}
 
 	public long getunique_id(){
 		return this.unique_id;
@@ -87,7 +106,10 @@ public class ContactUser implements Serializable
 
 	public String geteasemob_username(){
 		if(this.easemob_username == null){
-			return this.phonenumber;
+			if(Constants.USERNAME_EQUAL_EASEMOB_ID)
+				return this.username;
+			else
+				return this.phonenumber;
 		}
 		return this.easemob_username;
 	}

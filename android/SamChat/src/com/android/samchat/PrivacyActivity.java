@@ -42,11 +42,9 @@ public class PrivacyActivity extends Activity {
 
 	private void launchBlackListActivity(){
 		Intent newIntent = new Intent(this,BlackListActivity.class);
-		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
 		newIntent.setFlags(intentFlags);
-		
-		startActivityForResult(newIntent,1);
-		
+		startActivity(newIntent);
 	}
 	
 

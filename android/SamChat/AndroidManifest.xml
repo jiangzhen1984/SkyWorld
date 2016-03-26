@@ -159,7 +159,6 @@
         
         <activity
             android:name="com.android.samchat.NameCardActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" 
             android:screenOrientation="portrait">
             <intent-filter>
               

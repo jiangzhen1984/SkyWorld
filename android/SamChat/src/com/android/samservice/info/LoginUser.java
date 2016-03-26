@@ -1,9 +1,11 @@
 package com.android.samservice.info;
 
+import com.android.samservice.Constants;
+
 
 
 /*
-	id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
+	id(primary) | status | username | countrycode |phonenumber |password |usertype | image file |description |area | location |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
 */
 
 public class LoginUser
@@ -20,10 +22,13 @@ public class LoginUser
 	public int status;
 	public String username;
 	public String phonenumber;
+	public String countrycode;
 	public String password;
 	public int usertype;
 	public String imagefile;
 	public String description;
+	public String area;
+	public String location;
 	public long logintime;
 	public long logouttime;
 	public long unique_id;
@@ -31,15 +36,18 @@ public class LoginUser
 	public int easemob_status;
 	public long lastupdate;
 
-	public LoginUser(String cellphone,String username,String password){
+	public LoginUser(String countrycode,String cellphone,String username,String password){
 		this.id = 0;
 		this.status = INACTIVE;
 		this.username = username;
+		this.countrycode = countrycode;
 		this.phonenumber = cellphone;
 		this.password = password;
 		this.usertype = USER;
 		this.imagefile = null;
 		this.description = null;
+		this.area = null;
+		this.location =null;
 		this.logintime = System.currentTimeMillis();
 		this.logouttime = 0;
 		this.unique_id = 0;
@@ -53,11 +61,14 @@ public class LoginUser
 		this.id = 0;
 		this.status = INACTIVE;
 		this.username = null;
+		this.countrycode = null;
 		this.phonenumber = null;
 		this.password = null;
 		this.usertype = USER;
 		this.imagefile = null;
 		this.description = null;
+		this.area = null;
+		this.location =null;
 		this.logintime = 0;
 		this.logouttime = 0;
 		this.unique_id = 0;
@@ -74,11 +85,21 @@ public class LoginUser
 		return this.id;
 	}
 
+	public long getunique_id(){
+		return this.unique_id;
+	}
+
 	public String getusername(){
 		return this.username;
 	}
 
 	public String geteasemob_username(){
+		if(this.easemob_username == null){
+			if(Constants.USERNAME_EQUAL_EASEMOB_ID)
+				return this.username;
+			else
+				return this.phonenumber;
+		}
 		return this.easemob_username;
 	}
 

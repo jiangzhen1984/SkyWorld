@@ -172,8 +172,8 @@ public class SamMe_Fragment extends Fragment{
 			mUpgrade_spec.setText(getString(R.string.sam_gbdy));
 		}
 
-		String phonenumber = cuser.getphonenumber();
-		AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(phonenumber);
+		String username = cuser.getusername();
+		AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(username);
 		if(rd!=null && rd.getavatarname()!=null){
 			Bitmap bp = null;
 			bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(),60,60);
@@ -457,7 +457,7 @@ public class SamMe_Fragment extends Fragment{
 					SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.INACTIVE);
-					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);			
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);			
                             }
                         });
                     }
@@ -472,7 +472,7 @@ public class SamMe_Fragment extends Fragment{
 					SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.INACTIVE);
-					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);			
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);			
                             }
                         });
                     }
@@ -528,7 +528,7 @@ public class SamMe_Fragment extends Fragment{
 						SignService.getInstance().SignOut( mHandler, MSG_LOGOUT_CALLBACK);
 						LoginUser user = SamService.getInstance().get_current_user();
 						user.seteasemob_status(LoginUser.INACTIVE);
-						SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getphonenumber(),LoginUser.INACTIVE);	
+						SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);	
 					} 
 				}
 			});

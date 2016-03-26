@@ -230,7 +230,7 @@ public class SignService{
 	cellphone = sInfo.cellphone;
     	passwd = sInfo.password;
     	
-    	if(!hcc.signin(cellphone, passwd)){
+    	if(!hcc.signin(null,username, passwd)){
     		return false;
     	}
     	
@@ -290,27 +290,67 @@ public class SignService{
 				throw new RuntimeException("fatal error: auto signin but no active user!");
 			}else if(userdb!=null && userdb.getlastupdate()!=user.getlastupdate()){
 				need_update = true;
+				userdb.unique_id = user.unique_id;
 				userdb.username = user.username;
+				userdb.countrycode = user.countrycode;
 				userdb.phonenumber = user.phonenumber;
 				userdb.password = user.password;
 				userdb.usertype = user.usertype;
+				if(user.usertype == LoginUser.MIDSERVER){
+					userdb.area = user.area;
+					userdb.location = user.location;
+					userdb.description =user.description;
+				}
 				userdb.lastupdate = user.lastupdate;
 				userdb.imagefile = user.imagefile;
+
 				user = userdb;
 			}else if(user.imagefile!=null){
 				String shortImg = getShortImgName(user.imagefile);
 				if(shortImg != null){
-					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(user.getphonenumber());
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(user.getusername());
 					if(rd == null || rd.getavatarname()==null){
 						need_update = true;
 					}else if(!rd.getavatarname().equals(shortImg)){
 						need_update = true;
+					}else{
+						File file = new File(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+shortImg);
+						if(!file.exists()){
+							need_update = true;
+						}
 					}
 				}
+				userdb.unique_id = user.unique_id;
+				userdb.username = user.username;
+				userdb.countrycode = user.countrycode;
+				userdb.phonenumber = user.phonenumber;
+				userdb.password = user.password;
+				userdb.usertype = user.usertype;
+				if(user.usertype == LoginUser.MIDSERVER){
+					userdb.area = user.area;
+					userdb.location = user.location;
+					userdb.description =user.description;
+				}
+				userdb.lastupdate = user.lastupdate;
+				userdb.imagefile = user.imagefile;
+				user = userdb;
+			}else{
+				userdb.unique_id = user.unique_id;
+				userdb.username = user.username;
+				userdb.countrycode = user.countrycode;
+				userdb.phonenumber = user.phonenumber;
+				userdb.password = user.password;
+				userdb.usertype = user.usertype;
+				if(user.usertype == LoginUser.MIDSERVER){
+					userdb.area = user.area;
+					userdb.location = user.location;
+					userdb.description =user.description;
+				}
+				userdb.lastupdate = user.lastupdate;
+				userdb.imagefile = user.imagefile;
+				user = userdb;
 			}
 
-			user = userdb;
-			
 			user.id = SamService.getInstance().getDao().add_update_LoginUser_db(user);
 			SamService.getInstance().set_current_user(user);
 
@@ -367,17 +407,25 @@ public class SignService{
 */	
     private boolean signin_with_un_pa( SignInfo sInfo,HttpCommClient hcc){
     	String username=null;
-        String passwd=null;
+       String passwd=null;
+	String countrycode =null;
 
         if(sInfo == null ){
         	return false;
         }
         
         /*sign in with username and password*/
-    	username = sInfo.username;
-    	passwd = sInfo.password;
+	countrycode = sInfo.country_code;
+	if(countrycode == null){
+		username = sInfo.username;
+	}else{
+		username = sInfo.cellphone;
+	}
     	
-	return hcc.signin(username, passwd);
+    	passwd = sInfo.password;
+	
+    	
+	return hcc.signin(countrycode,username, passwd);
 	
     }
 
@@ -396,7 +444,7 @@ public class SignService{
 
 	HttpCommClient hcc = new HttpCommClient();
 
-	SignInfo sinfo = new SignInfo(siobj.username,siobj.password);
+	SignInfo sinfo = siobj.countrycode == null ?new SignInfo(siobj.username,siobj.password):new SignInfo(siobj.countrycode,siobj.username,siobj.password);
 
 	if(signin_with_un_pa(sinfo,hcc)){
                 if(hcc.ret == RET_SI_FROM_SERVER_OK){
@@ -409,41 +457,78 @@ public class SignService{
 					continue_run = false;
 				}
 			}
-
 			if(!continue_run) return;
-			
-			
+
+			//need_update: if need to update avatar 
 			boolean need_update = false;
 			/*store login user into db*/
 			LoginUser user = hcc.userinfo;
-			LoginUser userdb = SamService.getInstance().getDao().query_LoginUser_db(user.getphonenumber());
+			LoginUser userdb = SamService.getInstance().getDao().query_LoginUser_db_by_username(user.getusername());
+			
 			if(userdb == null){
 				need_update = true;
 			}else if(userdb!=null && userdb.getlastupdate()!=user.getlastupdate()){
 				need_update = true;
+				userdb.unique_id = user.unique_id;
 				userdb.username = user.username;
+				userdb.countrycode = user.countrycode;
 				userdb.phonenumber = user.phonenumber;
 				userdb.password = user.password;
 				userdb.usertype = user.usertype;
+				if(user.usertype == LoginUser.MIDSERVER){
+					userdb.area = user.area;
+					userdb.location = user.location;
+					userdb.description =user.description;
+				}
 				userdb.lastupdate = user.lastupdate;
 				userdb.imagefile = user.imagefile;
 				user = userdb;
 			}else if(user.imagefile!=null){
 				String shortImg = getShortImgName(user.imagefile);
 				if(shortImg != null){
-					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db(user.getphonenumber());
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(user.getusername());
 					if(rd == null || rd.getavatarname()==null){
 						need_update = true;
 					}else if(!rd.getavatarname().equals(shortImg)){
 						need_update = true;
+					}else{
+						File file = new File(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+shortImg);
+						if(!file.exists()){
+							need_update = true;
+						}
 					}
 				}
-
+				userdb.unique_id = user.unique_id;
+				userdb.username = user.username;
+				userdb.countrycode = user.countrycode;
+				userdb.phonenumber = user.phonenumber;
+				userdb.password = user.password;
+				userdb.usertype = user.usertype;
+				if(user.usertype == LoginUser.MIDSERVER){
+					userdb.area = user.area;
+					userdb.location = user.location;
+					userdb.description =user.description;
+				}
+				userdb.lastupdate = user.lastupdate;
+				userdb.imagefile = user.imagefile;
 				user = userdb;
 			}else{
+				userdb.unique_id = user.unique_id;
+				userdb.username = user.username;
+				userdb.countrycode = user.countrycode;
+				userdb.phonenumber = user.phonenumber;
+				userdb.password = user.password;
+				userdb.usertype = user.usertype;
+				if(user.usertype == LoginUser.MIDSERVER){
+					userdb.area = user.area;
+					userdb.location = user.location;
+					userdb.description =user.description;
+				}
+				userdb.lastupdate = user.lastupdate;
+				userdb.imagefile = user.imagefile;
 				user = userdb;
 			}
-			
+						
 			user.logintime = System.currentTimeMillis();
 			user.status = LoginUser.ACTIVE;
 			
@@ -451,7 +536,7 @@ public class SignService{
 			SamService.getInstance().set_current_user(user);
 
 			sinfo.token = hcc.token_id;
-			SamLog.e(TAG,"hcc token id:"+hcc.token_id);
+			SamLog.i(TAG,"hcc token id:"+hcc.token_id);
 			SamService.getInstance().store_current_token(hcc.token_id);
 
 			if(need_update){
@@ -504,6 +589,7 @@ public class SignService{
 	String username=null;
 	String passwd=null;
 	String cellphone=null;
+	String country_code = null;
 
         if(sInfo == null ){
         	return false;
@@ -513,8 +599,9 @@ public class SignService{
     	username = sInfo.username;
     	passwd = sInfo.password;
 	cellphone = sInfo.cellphone;
+	country_code = sInfo.country_code;
 
-	return hcc.signup(username, passwd,passwd,cellphone);
+	return hcc.signup(username, passwd,passwd,cellphone,country_code);
 	
     }
 	
@@ -522,7 +609,7 @@ public class SignService{
 		CBObj cbobj = samobj.refCBObj;
 		SignUpCoreObj suobj = (SignUpCoreObj)samobj;
 
-		SignInfo sinfo = new SignInfo(suobj.username,suobj.password,suobj.cellphone);
+		SignInfo sinfo = new SignInfo(suobj.username,suobj.password,suobj.cellphone,suobj.country_code);
 
 		HttpCommClient hcc = new HttpCommClient();
 
@@ -544,6 +631,7 @@ public class SignService{
 				
 				/*store login user into db*/
 				LoginUser user = hcc.userinfo;
+				user.countrycode = suobj.country_code;
 				user.logintime = System.currentTimeMillis();
 				user.status = LoginUser.ACTIVE;
 				
@@ -618,20 +706,20 @@ public class SignService{
 		HttpCommClient hcc = new HttpCommClient();
 		LoginUser user = SamService.getInstance().get_current_user();
 		String token = SamService.getInstance().get_current_token();
-		if(user!=null && hcc.signout(user.username,user.phonenumber,token)){
+		if(user!=null && hcc.signout(token)){
 			if(hcc.ret == RET_SOUT_FROM_SERVER_OK || hcc.ret == RET_SOUT_FROM_SERVER_TOKEN_INVALUD){
-				SamService.getInstance().getDao().update_LogoutUser_db(user.getphonenumber());
+				SamService.getInstance().getDao().update_LogoutUser_db(user.getusername());
 				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_OUT_OK, -1);
 				hndl.sendMessage(msg);
 			}else{
 				SamLog.e(TAG,"Fatal Error, need fix this error");
-				SamService.getInstance().getDao().update_LogoutUser_db(user.getphonenumber());
+				SamService.getInstance().getDao().update_LogoutUser_db(user.getusername());
 				Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_OUT_FAILED, -1);
 				hndl.sendMessage(msg);
 			}
 			
 		}else{
-			SamService.getInstance().getDao().update_LogoutUser_db(user.getphonenumber());
+			SamService.getInstance().getDao().update_LogoutUser_db(user.getusername());
 			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SIGN_OUT_FAILED, -1);
 			hndl.sendMessage(msg);
 		}
@@ -824,14 +912,14 @@ public class SignService{
 
 		LoginUser user = SamService.getInstance().getDao().query_activie_LoginUser_db();
 		if(user != null){
-			if(user.username!=null && user.username.length()>=SamService.MIN_USERNAME_LENGTH){
+			if(user.username!=null && user.username.length()>=SamService.MIN_USERNAME_LENGTH && user.username.length()<=SamService.MAX_USERNAME_LENGTH){
 				u_p.username = user.username;
 			}else{
 				SamLog.e(TAG,"get sign info failed in username");
 				return false;
 			}
 
-			if(user.phonenumber!=null && user.phonenumber.length()>=SamService.MIN_MPHONE_NUMBER_LENGTH){
+			if(user.phonenumber!=null && user.phonenumber.length()>=SamService.MIN_MPHONE_NUMBER_LENGTH && user.phonenumber.length()<=SamService.MAX_MPHONE_NUMBER_LENGTH){
 				u_p.cellphone = user.phonenumber;
 			}else{
 				SamLog.e(TAG,"get sign info failed in phonenumber");
@@ -852,10 +940,10 @@ public class SignService{
 		return true;
 	}
 	
-	public void SignUp(String uname, String pwd,String cellphone,SMCallBack SMcb)
+	public void SignUp(String uname, String pwd,String cellphone,String country_code,SMCallBack SMcb)
 	{
 		CBObj obj = new CBObj(SMcb);
-		SamCoreObj  samobj = new SignUpCoreObj(obj,uname,pwd,cellphone);
+		SamCoreObj  samobj = new SignUpCoreObj(obj,uname,pwd,cellphone,country_code);
 		Message msg = mServiceHandler.obtainMessage(MSG_SIGN_UP, samobj);
 		mServiceHandler.sendMessage(msg);
 		startTimeOut(samobj);
@@ -864,6 +952,14 @@ public class SignService{
 	public void SignIn(String un, String pwd, SMCallBack SMcb){
 		CBObj obj = new CBObj(SMcb);
 		SamCoreObj  samobj = new SignInCoreObj(obj,un,pwd);
+		Message msg = mServiceHandler.obtainMessage(MSG_SIGN_IN, samobj);
+		mServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+	}
+
+	public void SignIn(String cc,String un, String pwd, SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj  samobj = new SignInCoreObj(obj,cc,un,pwd);
 		Message msg = mServiceHandler.obtainMessage(MSG_SIGN_IN, samobj);
 		mServiceHandler.sendMessage(msg);
 		startTimeOut(samobj);

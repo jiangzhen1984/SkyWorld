@@ -6,6 +6,7 @@ import java.util.List;
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
 import com.android.samservice.info.ContactUser;
+import com.android.samservice.info.LoginUser;
 import com.android.samservice.info.ReceivedQuestion;
 import com.android.samservice.info.SendAnswer;
 
@@ -198,7 +199,9 @@ public class SamQADetailActivity extends Activity {
 		mAdpater.setReceivedQuestion(question);
 		mAdpater.setContactUser(user);
 		/*query newest answer*/
-		List<SendAnswer> answerArray = SamService.getInstance().getDao().query_SendAnswer_db(question.getquestion_id());
+		LoginUser owner  = SamService.getInstance().get_current_user();
+		
+		List<SendAnswer> answerArray = SamService.getInstance().getDao().query_SendAnswer_db(question.getquestion_id(),owner.getid());
 		mAdpater.setSendAnswerArray(answerArray);
 		mAdpater.setCount(1+answerArray.size());
 		mAdpater.notifyDataSetChanged();

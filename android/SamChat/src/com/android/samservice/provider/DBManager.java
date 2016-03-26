@@ -31,16 +31,19 @@ public class DBManager
 		//DatabaseHelper:TABLE_NAME_LOGIN_USER
 		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
 		/*
-		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
+		id(primary) | status | username | countrycode |phonenumber |password |usertype | image file |description |area | location |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
 		*/
 		ContentValues cv = new ContentValues();
 		cv.put("status",user.status);
 		cv.put("username",user.username);
+		cv.put("countrycode",user.countrycode);
 		cv.put("phonenumber",user.phonenumber);
 		cv.put("password",user.password);
 		cv.put("usertype",user.usertype);
 		cv.put("imagefile",user.imagefile);
 		cv.put("description",user.description);
+		cv.put("area",user.description);
+		cv.put("location",user.description);
 		cv.put("logintime",user.logintime);
 		cv.put("logouttime",user.logouttime);
 		cv.put("unique_id",user.unique_id);
@@ -54,19 +57,19 @@ public class DBManager
 
 	public long updateLogInUser(long id, LoginUser user)
 	{
-		//DatabaseHelper:TABLE_NAME_LOGIN_USER
 		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
-		/*
-		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
-		*/
+		
 		ContentValues cv = new ContentValues();
 		cv.put("status",user.status);
 		cv.put("username",user.username);
+		cv.put("countrycode",user.countrycode);
 		cv.put("phonenumber",user.phonenumber);
 		cv.put("password",user.password);
 		cv.put("usertype",user.usertype);
 		cv.put("imagefile",user.imagefile);
 		cv.put("description",user.description);
+		cv.put("area",user.description);
+		cv.put("location",user.description);
 		cv.put("logintime",user.logintime);
 		cv.put("logouttime",user.logouttime);
 		cv.put("unique_id",user.unique_id);
@@ -81,49 +84,40 @@ public class DBManager
 		
 	}
 
-	public long updateLoginUserEasemobStatus(String phonenumber,int status){
+	public long updateLoginUserEasemobStatus(String username,int status){
 		//DatabaseHelper:TABLE_NAME_LOGIN_USER
 		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
-		/*
-		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
-		*/
-
+		
 		ContentValues cv = new ContentValues();
 		cv.put("easemob_status",status);
-		String whereClause = "phonenumber=?";
-		String [] whereArgs = {phonenumber};
+		String whereClause = "username=?";
+		String [] whereArgs = {username};
 
 		return db.update(table,cv,whereClause,whereArgs);
 	}
 
-	public long updateLoginUserAllStatus(String phonenumber,int status){
+	public long updateLoginUserAllStatus(String username,int status){
 		//DatabaseHelper:TABLE_NAME_LOGIN_USER
 		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
-		/*
-		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
-		*/
-
+		
 		ContentValues cv = new ContentValues();
 		cv.put("status",status);
 		cv.put("easemob_status",status);
-		String whereClause = "phonenumber=?";
-		String [] whereArgs = {phonenumber};
+		String whereClause = "username=?";
+		String [] whereArgs = {username};
 
 		return db.update(table,cv,whereClause,whereArgs);
 	}
 
-	public long updateLoginUserLogoutStatus(String phonenumber,int status,long logouttime){
+	public long updateLoginUserLogoutStatus(String username,int status,long logouttime){
 		//DatabaseHelper:TABLE_NAME_LOGIN_USER
 		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
-		/*
-		id(primary) | status | username | phonenumber |password |usertype | image file |description |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
-		*/
-
+		
 		ContentValues cv = new ContentValues();
 		cv.put("status",status);
 		cv.put("logouttime",logouttime);
-		String whereClause = "phonenumber=?";
-		String [] whereArgs = {phonenumber};
+		String whereClause = "username=?";
+		String [] whereArgs = {username};
 
 		return db.update(table,cv,whereClause,whereArgs);
 	}
@@ -143,11 +137,51 @@ public class DBManager
 			user.id = c.getLong(c.getColumnIndex("id"));
 			user.status = c.getInt(c.getColumnIndex("status"));
 			user.username = c.getString(c.getColumnIndex("username"));
+			user.countrycode = c.getString(c.getColumnIndex("countrycode"));
 			user.phonenumber = c.getString(c.getColumnIndex("phonenumber"));
 			user.password = c.getString(c.getColumnIndex("password"));
  			user.usertype = c.getInt(c.getColumnIndex("usertype"));
 			user.imagefile = c.getString(c.getColumnIndex("imagefile"));
 			user.description = c.getString(c.getColumnIndex("description"));
+			user.area = c.getString(c.getColumnIndex("area"));
+			user.location = c.getString(c.getColumnIndex("location"));
+ 			user.logintime = c.getLong(c.getColumnIndex("logintime"));
+			user.logouttime = c.getLong(c.getColumnIndex("logouttime"));
+			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
+			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
+			user.easemob_status = c.getInt(c.getColumnIndex("easemob_status"));
+			user.lastupdate = c.getLong(c.getColumnIndex("lastupdate"));
+		}
+
+		c.close();
+
+		return user;
+	}
+
+
+	public LoginUser queryLogInUserByUsername(String username){
+		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
+		LoginUser user = null;
+		Cursor c = db.query(table,null,"username=?",new String[]{username},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query login user by username");
+			throw new RuntimeException("Fatal Error for query login user by username!");
+		}
+		
+		while(c.moveToNext()){
+			user = new LoginUser();
+			user.id = c.getLong(c.getColumnIndex("id"));
+			user.status = c.getInt(c.getColumnIndex("status"));
+			user.username = c.getString(c.getColumnIndex("username"));
+			user.countrycode = c.getString(c.getColumnIndex("countrycode"));
+			user.phonenumber = c.getString(c.getColumnIndex("phonenumber"));
+			user.password = c.getString(c.getColumnIndex("password"));
+ 			user.usertype = c.getInt(c.getColumnIndex("usertype"));
+			user.imagefile = c.getString(c.getColumnIndex("imagefile"));
+			user.description = c.getString(c.getColumnIndex("description"));
+			user.area = c.getString(c.getColumnIndex("area"));
+			user.location = c.getString(c.getColumnIndex("location"));
  			user.logintime = c.getLong(c.getColumnIndex("logintime"));
 			user.logouttime = c.getLong(c.getColumnIndex("logouttime"));
 			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
@@ -176,11 +210,14 @@ public class DBManager
 			user.id = c.getLong(c.getColumnIndex("id"));
 			user.status = c.getInt(c.getColumnIndex("status"));
 			user.username = c.getString(c.getColumnIndex("username"));
+			user.countrycode = c.getString(c.getColumnIndex("countrycode"));
 			user.phonenumber = c.getString(c.getColumnIndex("phonenumber"));
 			user.password = c.getString(c.getColumnIndex("password"));
  			user.usertype = c.getInt(c.getColumnIndex("usertype"));
 			user.imagefile = c.getString(c.getColumnIndex("imagefile"));
 			user.description = c.getString(c.getColumnIndex("description"));
+			user.area = c.getString(c.getColumnIndex("area"));
+			user.location = c.getString(c.getColumnIndex("location"));
  			user.logintime = c.getLong(c.getColumnIndex("logintime"));
 			user.logouttime = c.getLong(c.getColumnIndex("logouttime"));
 			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
@@ -207,11 +244,14 @@ public class DBManager
 			user.id = c.getLong(c.getColumnIndex("id"));
 			user.status = c.getInt(c.getColumnIndex("status"));
 			user.username = c.getString(c.getColumnIndex("username"));
+			user.countrycode = c.getString(c.getColumnIndex("countrycode"));
 			user.phonenumber = c.getString(c.getColumnIndex("phonenumber"));
 			user.password = c.getString(c.getColumnIndex("password"));
  			user.usertype = c.getInt(c.getColumnIndex("usertype"));
 			user.imagefile = c.getString(c.getColumnIndex("imagefile"));
 			user.description = c.getString(c.getColumnIndex("description"));
+			user.area = c.getString(c.getColumnIndex("area"));
+			user.location = c.getString(c.getColumnIndex("location"));
  			user.logintime = c.getLong(c.getColumnIndex("logintime"));
 			user.logouttime = c.getLong(c.getColumnIndex("logouttime"));
 			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
@@ -231,15 +271,15 @@ public class DBManager
 	{
 		//DatabaseHelper:TABLE_NAME_CONTACT_USER
 		String table = DatabaseHelper.TABLE_NAME_CONTACT_USER;
-		/*
-		id(primary) | username | phonenumber | usertype | imagefile |description | unique_id | easemob_username
-		*/
+
 		ContentValues cv = new ContentValues();
 		cv.put("username",user.username);
 		cv.put("phonenumber",user.phonenumber);
 		cv.put("usertype",user.usertype);
 		cv.put("imagefile",user.imagefile);
 		cv.put("description",user.description);
+		cv.put("area",user.area);
+		cv.put("location",user.location);
 		cv.put("unique_id",user.unique_id);
 		cv.put("easemob_username",user.easemob_username);
 
@@ -251,15 +291,15 @@ public class DBManager
 	{
 		//DatabaseHelper:TABLE_NAME_LOGIN_USER
 		String table = DatabaseHelper.TABLE_NAME_CONTACT_USER;
-		/*
-		id(primary) | username | phonenumber | usertype | imagefile |description | unique_id | easemob_username
-		*/
+
 		ContentValues cv = new ContentValues();
 		cv.put("username",user.username);
 		cv.put("phonenumber",user.phonenumber);
 		cv.put("usertype",user.usertype);
 		cv.put("imagefile",user.imagefile);
 		cv.put("description",user.description);
+		cv.put("area",user.area);
+		cv.put("location",user.location);
 		cv.put("unique_id",user.unique_id);
 		cv.put("easemob_username",user.easemob_username);
 
@@ -289,6 +329,38 @@ public class DBManager
  			user.usertype = c.getInt(c.getColumnIndex("usertype"));
 			user.imagefile = c.getString(c.getColumnIndex("imagefile"));
 			user.description = c.getString(c.getColumnIndex("description"));
+			user.area = c.getString(c.getColumnIndex("area"));
+			user.location = c.getString(c.getColumnIndex("location"));			
+			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
+			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
+		}
+
+		c.close();
+
+		return user;
+	}
+
+	public ContactUser queryContactUserByUsername(String username){
+		String table = DatabaseHelper.TABLE_NAME_CONTACT_USER;
+		ContactUser user = null;
+		Cursor c = db.query(table,null,"username=?",new String[]{username},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query contact user by username");
+			throw new RuntimeException("Fatal Error for query contact user by username!");
+			
+		}
+		
+		while(c.moveToNext()){
+			user = new ContactUser();
+			user.id = c.getLong(c.getColumnIndex("id"));
+			user.username = c.getString(c.getColumnIndex("username"));
+			user.phonenumber = c.getString(c.getColumnIndex("phonenumber"));
+ 			user.usertype = c.getInt(c.getColumnIndex("usertype"));
+			user.imagefile = c.getString(c.getColumnIndex("imagefile"));
+			user.description = c.getString(c.getColumnIndex("description"));
+			user.area = c.getString(c.getColumnIndex("area"));
+			user.location = c.getString(c.getColumnIndex("location"));			
 			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
 			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
 		}
@@ -316,6 +388,8 @@ public class DBManager
  			user.usertype = c.getInt(c.getColumnIndex("usertype"));
 			user.imagefile = c.getString(c.getColumnIndex("imagefile"));
 			user.description = c.getString(c.getColumnIndex("description"));
+			user.area = c.getString(c.getColumnIndex("area"));
+			user.location = c.getString(c.getColumnIndex("location"));
 			user.unique_id = c.getLong(c.getColumnIndex("unique_id"));
 			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
 		}
@@ -330,9 +404,7 @@ public class DBManager
   	public long addSendQuestion(SendQuestion question)
 	{
 		String table = DatabaseHelper.TABLE_NAME_SEND_QUESTION;
-		/*
-		id(primary) |question_id | send user id | question | status | send time | cancel time | 
-		*/
+		
 		ContentValues cv = new ContentValues();
 		cv.put("question_id",question.question_id);
 		cv.put("senduserid",question.senduserid);
@@ -340,6 +412,8 @@ public class DBManager
 		cv.put("status",question.status);
 		cv.put("sendtime",question.sendtime);
 		cv.put("canceltime",question.canceltime);
+		cv.put("sendercellphone",question.sendercellphone);
+		cv.put("senderusername",question.senderusername);
 
 		return db.insert(table,null,cv);
 		
@@ -348,9 +422,7 @@ public class DBManager
 	public long updateSendQuestion(long id, SendQuestion question)
 	{
 		String table = DatabaseHelper.TABLE_NAME_SEND_QUESTION;
-		/*
-		id(primary) |question_id | send user id | question | status | send time | cancel time | 
-		*/
+
 		ContentValues cv = new ContentValues();
 		cv.put("question_id",question.question_id);
 		cv.put("senduserid",question.senduserid);
@@ -358,6 +430,8 @@ public class DBManager
 		cv.put("status",question.status);
 		cv.put("sendtime",question.sendtime);
 		cv.put("canceltime",question.canceltime);
+		cv.put("sendercellphone",question.sendercellphone);
+		cv.put("senderusername",question.senderusername);
 
 		String whereClause = "id=?";
 		String [] whereArgs = {""+id+""};
@@ -386,6 +460,10 @@ public class DBManager
 			
 			question.sendtime = c.getLong(c.getColumnIndex("sendtime"));
 			question.canceltime = c.getLong(c.getColumnIndex("canceltime"));
+
+			question.sendercellphone = c.getString(c.getColumnIndex("sendercellphone"));
+			question.senderusername = c.getString(c.getColumnIndex("senderusername"));
+			
 		}
 
 		c.close();
@@ -437,9 +515,7 @@ public class DBManager
 	public long addReceivedQuestion(ReceivedQuestion question)
 	{
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION;
-		/*
-		id(primary) |question_id | question |contact user id | status | response | received time | canceled time |receivercellphone
-		*/
+		
 		ContentValues cv = new ContentValues();
 		cv.put("question_id",question.question_id);
 		cv.put("question",question.question);
@@ -449,6 +525,7 @@ public class DBManager
 		cv.put("receivedtime",question.receivedtime );
 		cv.put("canceledtime",question.canceledtime );
 		cv.put("receivercellphone",question.receivercellphone );
+		cv.put("receiverusername",question.receiverusername );
 		
 		return db.insert(table,null,cv);
 		
@@ -457,9 +534,7 @@ public class DBManager
 	public long updateReceivedQuestion(long id, ReceivedQuestion question)
 	{
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION;
-		/*
-		id(primary) |question_id | question |contact user id | status | response |received time | canceled time |receivercellphone
-		*/
+
 		ContentValues cv = new ContentValues();
 		cv.put("question_id",question.question_id);
 		cv.put("question",question.question);
@@ -469,6 +544,7 @@ public class DBManager
 		cv.put("receivedtime",question.receivedtime );
 		cv.put("canceledtime",question.canceledtime );
 		cv.put("receivercellphone",question.receivercellphone );
+		cv.put("receiverusername",question.receiverusername );
 		
 		String whereClause = "id=?";
 		String [] whereArgs = {""+id+""};
@@ -497,6 +573,7 @@ public class DBManager
 			question.receivedtime  = c.getLong(c.getColumnIndex("receivedtime"));
 			question.canceledtime =  c.getLong(c.getColumnIndex("canceledtime"));
 			question.receivercellphone = c.getString(c.getColumnIndex("receivercellphone"));
+			question.receiverusername= c.getString(c.getColumnIndex("receiverusername"));
 		}
 
 		c.close();
@@ -512,17 +589,13 @@ public class DBManager
 		return count;
 	}
 
-	public List<ReceivedQuestion> queryRecentReceivedQuestion(String phonenumber){
+	public List<ReceivedQuestion> queryRecentReceivedQuestion(String receiverusername){
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION ;
-		
-		/*
-		id(primary) |question_id | question |contact user id | status | response |received time | canceled time |receivercellphone
-		*/
 
 		List<ReceivedQuestion> ReceivedQuestionArray = new ArrayList<ReceivedQuestion>();
 		ReceivedQuestion question = null;
 
-		Cursor c = db.query(table,null,"receivercellphone=? and status=?",new String[]{phonenumber,""+ReceivedQuestion.ACTIVE},null,null,null);
+		Cursor c = db.query(table,null,"receiverusername=? and status=?",new String[]{receiverusername,""+ReceivedQuestion.ACTIVE},null,null,null);
 		while(c.moveToNext()){
 			question = new ReceivedQuestion();
 			question.id = c.getLong(c.getColumnIndex("id"));
@@ -534,6 +607,8 @@ public class DBManager
 			question.receivedtime  = c.getLong(c.getColumnIndex("receivedtime"));
 			question.canceledtime =  c.getLong(c.getColumnIndex("canceledtime"));
 			question.receivercellphone = c.getString(c.getColumnIndex("receivercellphone"));
+			question.receiverusername = c.getString(c.getColumnIndex("receiverusername"));
+			
 			
 			ReceivedQuestionArray.add(question);
 		}
@@ -579,7 +654,7 @@ public class DBManager
 		
 	}
 
-	public List<SendAnswer> querySendAnswer(String question_id){
+	public List<SendAnswer> querySendAnswer(String question_id,long sender_id){
 		String table = DatabaseHelper.TABLE_NAME_SEND_ANSWER ;
 
 		/*
@@ -589,7 +664,7 @@ public class DBManager
 		List<SendAnswer> sendAnswerArray = new ArrayList<SendAnswer>();
 		SendAnswer answer=null;
 
-		Cursor c = db.query(table,null,"question_id=?",new String[]{question_id},null,null,null);
+		Cursor c = db.query(table,null,"question_id=? and loginuserid=?",new String[]{question_id,""+sender_id},null,null,null);
 		while(c.moveToNext()){
 			answer = new SendAnswer();
 			answer.id = c.getLong(c.getColumnIndex("id"));
@@ -889,12 +964,39 @@ public class DBManager
 		return record;
 	}
 
+	public AvatarRecord queryAvatarRecordByUsername(String nickname){
+		String table = DatabaseHelper.TABLE_NAME_AVATAR ;
+
+		/*
+		id(primary) |phonenumber | avatarname |nickname
+		*/
+
+		AvatarRecord record = null;
+
+		Cursor c = db.query(table,null,"nickname=?",new String[]{nickname},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query avatar by username");
+			throw new RuntimeException("Fatal Error for query avatar by username!");
+		}
+
+		while(c.moveToNext()){
+			record = new AvatarRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.phonenumber= c.getString(c.getColumnIndex("phonenumber"));
+			record.avatarname= c.getString(c.getColumnIndex("avatarname"));
+			record.nickname= c.getString(c.getColumnIndex("nickname"));
+		}
+
+		c.close();
+
+		return record;
+	}
+
 	public long addFGRecord(FGRecord record)
 	{
 		String table = DatabaseHelper.TABLE_NAME_FG;
-		/*
-		id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber |owner_phonenumber
-		*/
+
 		ContentValues cv = new ContentValues();
 		cv.put("timestamp",record.timestamp);
 		cv.put("fg_id",record.fg_id);
@@ -902,17 +1004,40 @@ public class DBManager
 		cv.put("comment",record.comment);
 		cv.put("publisher_phonenumber",record.publisher_phonenumber);
 		cv.put("owner_phonenumber",record.owner_phonenumber);
+		cv.put("publisher_username",record.publisher_username);
+		cv.put("owner_username",record.owner_username);
 		
 		return db.insert(table,null,cv);
 	}
 
+	public List<FGRecord> queryFGRecordByUsername(String publisher_username,String owner_username){
+		String table = DatabaseHelper.TABLE_NAME_FG ;
+		FGRecord record = null;
+
+		Cursor c = db.query(table,null,"publisher_username=? and owner_username=?",new String[]{publisher_username,owner_username},null,null,null);
+		List<FGRecord> RecordArray = new ArrayList<FGRecord>();
+		while(c.moveToNext()){
+			record = new FGRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.timestamp= c.getLong(c.getColumnIndex("timestamp"));
+			record.fg_id= c.getLong(c.getColumnIndex("fg_id"));
+			record.status= c.getInt(c.getColumnIndex("status"));
+			record.comment= c.getString(c.getColumnIndex("comment"));
+			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
+			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+			record.publisher_username = c.getString(c.getColumnIndex("publisher_username"));
+			record.owner_username = c.getString(c.getColumnIndex("owner_username"));
+			
+			RecordArray.add(record);
+		}
+
+		c.close();
+
+		return RecordArray;
+	}
+
 	public List<FGRecord> queryFGRecord(String publisher_phonenumber,String owner_phonenumber){
 		String table = DatabaseHelper.TABLE_NAME_FG ;
-
-		/*
-		id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
-		*/
-
 		FGRecord record = null;
 
 		Cursor c = db.query(table,null,"publisher_phonenumber=? and owner_phonenumber=?",new String[]{publisher_phonenumber,owner_phonenumber},null,null,null);
@@ -926,6 +1051,9 @@ public class DBManager
 			record.comment= c.getString(c.getColumnIndex("comment"));
 			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
 			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+			record.publisher_username = c.getString(c.getColumnIndex("publisher_username"));
+			record.owner_username = c.getString(c.getColumnIndex("owner_username"));
+			
 			RecordArray.add(record);
 		}
 
@@ -935,12 +1063,35 @@ public class DBManager
 	}
 
 
-	public List<FGRecord> queryFGRecord(String owner_phonenumber){
+	public List<FGRecord> queryFGRecordByUsername(String owner_username){
 		String table = DatabaseHelper.TABLE_NAME_FG ;
 
-		/*
-		id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
-		*/
+		FGRecord record = null;
+
+		Cursor c = db.query(table,null,"owner_username=?",new String[]{owner_username},null,null,"timestamp desc");
+		List<FGRecord> RecordArray = new ArrayList<FGRecord>();
+		while(c.moveToNext()){
+			record = new FGRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.timestamp= c.getLong(c.getColumnIndex("timestamp"));
+			record.fg_id= c.getLong(c.getColumnIndex("fg_id"));
+			record.status= c.getInt(c.getColumnIndex("status"));
+			record.comment= c.getString(c.getColumnIndex("comment"));
+			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
+			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+			record.publisher_username = c.getString(c.getColumnIndex("publisher_username"));
+			record.owner_username = c.getString(c.getColumnIndex("owner_username"));
+			
+			RecordArray.add(record);
+		}
+
+		c.close();
+
+		return RecordArray;
+	}
+
+	public List<FGRecord> queryFGRecord(String owner_phonenumber){
+		String table = DatabaseHelper.TABLE_NAME_FG ;
 
 		FGRecord record = null;
 
@@ -955,6 +1106,9 @@ public class DBManager
 			record.comment= c.getString(c.getColumnIndex("comment"));
 			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
 			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+			record.publisher_username = c.getString(c.getColumnIndex("publisher_username"));
+			record.owner_username = c.getString(c.getColumnIndex("owner_username"));
+			
 			RecordArray.add(record);
 		}
 
@@ -963,12 +1117,40 @@ public class DBManager
 		return RecordArray;
 	}
 
-	public FGRecord queryFGRecord(long fg_id,String owner_phonenumber){
+
+	public FGRecord queryFGRecordByUsername(long fg_id,String owner_username){
 		String table = DatabaseHelper.TABLE_NAME_FG ;
 
-		/*
-		id(primary) |timestamp | fg_id |status |comment | publisher_phonenumber | owner_phonenumber
-		*/
+		FGRecord record = null;
+
+		Cursor c = db.query(table,null,"fg_id=? and owner_username=?",new String[]{""+fg_id , owner_username},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query FG");
+			throw new RuntimeException("Fatal Error for query FG!");
+		}
+
+		while(c.moveToNext()){
+			record = new FGRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.timestamp= c.getLong(c.getColumnIndex("timestamp"));
+			record.fg_id= c.getLong(c.getColumnIndex("fg_id"));
+			record.status= c.getInt(c.getColumnIndex("status"));
+			record.comment= c.getString(c.getColumnIndex("comment"));
+			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
+			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+			record.publisher_username = c.getString(c.getColumnIndex("publisher_username"));
+			record.owner_username = c.getString(c.getColumnIndex("owner_username"));
+			
+		}
+
+		c.close();
+
+		return record;
+	}
+
+	public FGRecord queryFGRecord(long fg_id,String owner_phonenumber){
+		String table = DatabaseHelper.TABLE_NAME_FG ;
 
 		FGRecord record = null;
 
@@ -988,6 +1170,9 @@ public class DBManager
 			record.comment= c.getString(c.getColumnIndex("comment"));
 			record.publisher_phonenumber= c.getString(c.getColumnIndex("publisher_phonenumber"));
 			record.owner_phonenumber = c.getString(c.getColumnIndex("owner_phonenumber"));
+			record.publisher_username = c.getString(c.getColumnIndex("publisher_username"));
+			record.owner_username = c.getString(c.getColumnIndex("owner_username"));
+			
 		}
 
 		c.close();
@@ -1264,6 +1449,126 @@ public class DBManager
 
 		return record;
 	}
+
+
+
+	public long addFollowerRecord(FollowerRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_FOLLOWER;
+
+		ContentValues cv = new ContentValues();
+		cv.put("unique_id",record.unique_id);
+		cv.put("username",record.username);
+		cv.put("owner_unique_id",record.owner_unique_id);
+		
+		return db.insert(table,null,cv);
+	}
+
+	public long updateFollowerRecord(long id, FollowerRecord record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_FOLLOWER;
+
+		ContentValues cv = new ContentValues();
+		cv.put("unique_id",record.unique_id);
+		cv.put("username",record.username);
+		cv.put("owner_unique_id",record.owner_unique_id);
+		
+
+		String whereClause = "id=?";
+		String [] whereArgs = {""+id+""};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	public List<FollowerRecord> queryFollowerRecord(long owner_unique_id){
+		String table = DatabaseHelper.TABLE_NAME_FOLLOWER ;
+
+		List<FollowerRecord> recordArray = new ArrayList<FollowerRecord>();
+		FollowerRecord record = null;
+
+		Cursor c = db.query(table,null,"owner_unique_id=?",new String[]{""+owner_unique_id},null,null,null);
+
+		while(c.moveToNext()){
+			record = new FollowerRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.unique_id = c.getLong(c.getColumnIndex("unique_id"));
+			record.username= c.getString(c.getColumnIndex("username"));
+			record.owner_unique_id = c.getLong(c.getColumnIndex("owner_unique_id"));
+			recordArray.add(record);
+		}
+
+		c.close();
+
+		return recordArray;
+	}
+
+	public FollowerRecord queryFollowerRecord(long unique_id,long owner_unique_id){
+		String table = DatabaseHelper.TABLE_NAME_FOLLOWER ;
+
+		FollowerRecord record = null;
+
+		Cursor c = db.query(table,null,"unique_id=? and owner_unique_id=?",new String[]{""+unique_id,""+owner_unique_id},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query follower");
+			throw new RuntimeException("Fatal Error for query follower!");
+		}
+
+		while(c.moveToNext()){
+			record = new FollowerRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.unique_id = c.getLong(c.getColumnIndex("unique_id"));
+			record.username= c.getString(c.getColumnIndex("username"));
+			record.owner_unique_id = c.getLong(c.getColumnIndex("owner_unique_id"));
+		}
+
+		c.close();
+
+		return record;
+	}
+
+	public FollowerRecord queryFollowerRecordByUsername(String username,long owner_unique_id){
+		String table = DatabaseHelper.TABLE_NAME_FOLLOWER ;
+
+		FollowerRecord record = null;
+
+		Cursor c = db.query(table,null,"username=? and owner_unique_id=?",new String[]{username,""+owner_unique_id},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query follower by name");
+			throw new RuntimeException("Fatal Error for query follower by name!");
+		}
+
+		while(c.moveToNext()){
+			record = new FollowerRecord();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.unique_id = c.getLong(c.getColumnIndex("unique_id"));
+			record.username= c.getString(c.getColumnIndex("username"));
+			record.owner_unique_id = c.getLong(c.getColumnIndex("owner_unique_id"));
+		}
+
+		c.close();
+
+		return record;
+	}
+
+	public void clearFollowerTable(){
+		String table = DatabaseHelper.TABLE_NAME_FOLLOWER ;
+		db.delete(table, null, null);
+	}
+
+	public void deleteFollower(long unique_id){
+		String table = DatabaseHelper.TABLE_NAME_FOLLOWER ;
+
+		db.delete(table, "unique_id=?", new String[]{""+unique_id});
+	}
+
+	public void deleteFollowerByUsername(String username){
+		String table = DatabaseHelper.TABLE_NAME_FOLLOWER ;
+
+		db.delete(table, "username=?", new String[]{username});
+	}
+
 
     /**
      * close database

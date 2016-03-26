@@ -119,7 +119,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="20dp"
         android:layout_toRightOf="@id/my_business_constant"
-        android:text="房产经纪人"
         android:textSize="18sp"
         android:textStyle="bold"/>
     
@@ -131,7 +130,6 @@
         android:layout_marginTop="5dp"
         android:layout_below="@id/my_business"
         android:layout_alignLeft="@id/my_business"
-        android:text="sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
         android:textSize="15sp"/>
     
     <TextView
@@ -152,7 +150,6 @@
         android:layout_marginRight="20dp"
         android:layout_alignLeft="@id/my_business"
         android:layout_alignTop="@id/location_constant"
-        android:text="旧金山南湾"
         android:textSize="18sp"
         android:textStyle="bold"/>
     

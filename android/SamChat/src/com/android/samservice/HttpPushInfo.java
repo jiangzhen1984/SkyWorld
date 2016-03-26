@@ -10,6 +10,9 @@ public class HttpPushInfo{
 	public String cellphone;
 	public String easemob_username;
 	public String avatar;
+	public String area;
+	public String location;
+	public String desc;
 
 	public String quest_id;
 	public String quest;
@@ -19,6 +22,8 @@ public class HttpPushInfo{
 	public String username;
 
 	public String answer;
+
+	public long lastupdate;
 
 	
 	
@@ -37,6 +42,12 @@ public class HttpPushInfo{
 		easemob_username = null;
 		avatar = null;
 
+		area = null;
+		location = null;
+		desc = null;
+
+		lastupdate = 0;
+		
 		answer = null;
 		
 	}

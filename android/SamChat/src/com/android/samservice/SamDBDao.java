@@ -32,10 +32,10 @@ public class SamDBDao{
 		dbHandle = new DBManager(context);
 	}
 
-	public long updateLoginUserEaseStatus(String phonenumber,int status){
+	public long updateLoginUserEaseStatus(String username,int status){
 		long ret = 0;
 		synchronized(dbLock){
-			ret = dbHandle.updateLoginUserEasemobStatus(phonenumber,status);
+			ret = dbHandle.updateLoginUserEasemobStatus(username,status);
 		}
 
 		if(ret == -1){
@@ -45,10 +45,10 @@ public class SamDBDao{
 		return ret;
 	}
 
-	public long updateLoginUserAllStatus(String phonenumber,int status){
+	public long updateLoginUserAllStatus(String username,int status){
 		long ret = 0;
 		synchronized(dbLock){
-			ret = dbHandle.updateLoginUserAllStatus(phonenumber,status);
+			ret = dbHandle.updateLoginUserAllStatus(username,status);
 		}
 
 		if(ret == -1){
@@ -63,7 +63,7 @@ public class SamDBDao{
 	public long add_update_LoginUser_db(LoginUser user){
 		long ret = 0;
 		synchronized(dbLock){
-			LoginUser tuser = dbHandle.queryLogInUser(user.phonenumber);
+			LoginUser tuser = dbHandle.queryLogInUserByUsername(user.username);
 			if(tuser !=null){
 				ret = dbHandle.updateLogInUser(tuser.id, user);
 			}else{
@@ -88,12 +88,12 @@ public class SamDBDao{
 		}
 	}
 
-	public long update_LogoutUser_db(String phonenumber){
+	public long update_LogoutUser_db(String username){
 		long ret = 0;
 		int status = LoginUser.INACTIVE;
 		long logouttime = System.currentTimeMillis();
 		synchronized(dbLock){
-			ret = dbHandle.updateLoginUserLogoutStatus(phonenumber,status,logouttime);
+			ret = dbHandle.updateLoginUserLogoutStatus(username,status,logouttime);
 		}
 
 		if(ret == -1){
@@ -121,6 +121,12 @@ public class SamDBDao{
 		}
 	}
 
+	public LoginUser query_LoginUser_db_by_username(String username){
+		synchronized(dbLock){
+			return dbHandle.queryLogInUserByUsername(username);
+		}
+	}
+
 	public long add_update_SendQuestion_db(SendQuestion question){
 		synchronized(dbLock){
 			SendQuestion tq = dbHandle.querySendQuestion(question.question_id);
@@ -143,7 +149,7 @@ public class SamDBDao{
 	public long add_update_ContactUser_db(ContactUser user){
 		long ret = -1;
 		synchronized(dbLock){
-			ContactUser tuser = dbHandle.queryContactUser(user.getphonenumber());
+			ContactUser tuser = dbHandle.queryContactUserByUsername(user.getusername());
 			if(tuser !=null){
 				ret = dbHandle.updateContactUser(tuser.getid(), user);
 			}else{
@@ -161,6 +167,13 @@ public class SamDBDao{
 	public  ContactUser query_ContactUser_db(String phonenumber){
 		synchronized(dbLock){
 			return dbHandle.queryContactUser(phonenumber);
+		}
+
+	}
+
+	public  ContactUser query_ContactUser_db_by_username(String usrname){
+		synchronized(dbLock){
+			return dbHandle.queryContactUserByUsername(usrname);
 		}
 
 	}
@@ -192,7 +205,7 @@ public class SamDBDao{
 
 	public List<ReceivedQuestion> query_RecentReceivedQuestion_db(){
 		synchronized(dbLock){
-			return dbHandle.queryRecentReceivedQuestion(SamService.getInstance().get_current_user().getphonenumber());
+			return dbHandle.queryRecentReceivedQuestion(SamService.getInstance().get_current_user().getusername());
 		}
 	}
 
@@ -208,9 +221,9 @@ public class SamDBDao{
 		}
 	}
 
-	public List<SendAnswer> query_SendAnswer_db(String question_id){
+	public List<SendAnswer> query_SendAnswer_db(String question_id,long sender_id){
 		synchronized(dbLock){
-				return dbHandle.querySendAnswer(question_id);
+				return dbHandle.querySendAnswer(question_id,sender_id);
 		}
 	}
 
@@ -289,7 +302,7 @@ public class SamDBDao{
 		}
 	}
 
-	public void sava_UserFriendList_db(List<UserFriendRecord> list){
+	public void save_UserFriendList_db(List<UserFriendRecord> list){
 		synchronized(dbLock){
 				dbHandle.clearUserFriendTable();
 				for (UserFriendRecord record : list) {
@@ -320,7 +333,7 @@ public class SamDBDao{
 	public long add_update_AvatarRecord_db(String phonenumber,String nickname, String filename,StringBuffer oldAvatar){
 		long ret = -1;
 		synchronized(dbLock){
-			AvatarRecord rd = dbHandle.queryAvatarRecord(phonenumber);
+			AvatarRecord rd = dbHandle.queryAvatarRecordByUsername(nickname);
 			if(rd!=null){
 				oldAvatar.append(rd.getavatarname());
 				if(oldAvatar.length()!=0 && oldAvatar.toString().equals(filename)){
@@ -351,6 +364,7 @@ public class SamDBDao{
 			if(rd!=null){
 				rd.setavatarname(filename);
 				rd.setnickname(nickname);
+				rd.setavatarname(filename);
 				ret = dbHandle.updateAvatarRecord(rd.id, rd);
 			}else{
 				rd = new AvatarRecord(phonenumber,filename,nickname);
@@ -372,8 +386,24 @@ public class SamDBDao{
 		}
 	}
 
+	public AvatarRecord query_AvatarRecord_db_by_username(String useranme){
+		synchronized(dbLock){
+				return dbHandle.queryAvatarRecordByUsername(useranme);
+		}
+	}
+
 	public boolean isAvatarExistedInDB(String phonenumber,String shortImg){
 		AvatarRecord rd = query_AvatarRecord_db(phonenumber);
+		if(rd!=null && rd.getavatarname()!=null && rd.getavatarname().equals(shortImg)){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+
+	public boolean isAvatarExistedInDBByUsername(String username,String shortImg){
+		AvatarRecord rd = query_AvatarRecord_db_by_username(username);
 		if(rd!=null && rd.getavatarname()!=null && rd.getavatarname().equals(shortImg)){
 			return true;
 		}else{
@@ -411,6 +441,18 @@ public class SamDBDao{
 	public FGRecord query_FGRecord_db(long fg_id,String owner_phonenumber){
 		synchronized(dbLock){
 				return dbHandle.queryFGRecord(fg_id,owner_phonenumber);
+		}
+	}
+
+	public List<FGRecord> query_FGRecord_db_by_username(String owner_username){
+		synchronized(dbLock){
+				return dbHandle.queryFGRecordByUsername(owner_username);
+		}
+	}
+
+	public FGRecord query_FGRecord_db_by_username(long fg_id,String owner_username){
+		synchronized(dbLock){
+				return dbHandle.queryFGRecordByUsername(fg_id,owner_username);
 		}
 	}
 
@@ -499,6 +541,51 @@ public class SamDBDao{
 		}
 
 		return false;
+	}
+
+	public void clear_FollowerRecord_db(){
+		synchronized(dbLock){
+				dbHandle.clearFollowerTable();
+		}
+	}
+
+	public void save_FollowerRecordList_db(List<FollowerRecord> list){
+		synchronized(dbLock){
+				dbHandle.clearFollowerTable();
+				for (FollowerRecord record : list) {
+					dbHandle.addFollowerRecord(record);
+				}
+		}
+	}
+
+	public long add_FollowerRecord_db(FollowerRecord record){
+		synchronized(dbLock){
+				return dbHandle.addFollowerRecord(record);
+		}
+	}
+
+	public long update_FollowerRecord_db(long id, FollowerRecord record){
+		synchronized(dbLock){
+				return dbHandle.updateFollowerRecord(id, record);
+		}
+	}
+
+	public void delete_FollowerRecord_db(long unique_id){
+		synchronized(dbLock){
+				dbHandle.deleteFollower(unique_id);
+		}
+	}
+
+	public FollowerRecord query_FollowerRecord_db(long unique_id,long owner_unique_id){
+		synchronized(dbLock){
+				return dbHandle.queryFollowerRecord(unique_id,owner_unique_id);
+		}
+	}
+
+	public List<FollowerRecord> query_FollowerRecord_db(long owner_unique_id){
+		synchronized(dbLock){
+				return dbHandle.queryFollowerRecord(owner_unique_id);
+		}
 	}
 
 
