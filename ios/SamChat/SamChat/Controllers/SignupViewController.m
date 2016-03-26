@@ -42,6 +42,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)backgroundTap:(id)sender
+{
+    [self.cellphone resignFirstResponder];
+}
 
 #pragma mark - Navigation
 

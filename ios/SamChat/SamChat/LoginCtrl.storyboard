@@ -177,7 +177,7 @@
                         <viewControllerLayoutGuide type="top" id="Q5W-zf-zr6"/>
                         <viewControllerLayoutGuide type="bottom" id="ug4-zQ-e30"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="His-XA-CGM">
+                    <view key="view" contentMode="scaleToFill" id="His-XA-CGM" customClass="UIControl">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -303,6 +303,9 @@
                                 <exclude reference="zjG-TV-dqA"/>
                             </mask>
                         </variation>
+                        <connections>
+                            <action selector="backgroundTap:" destination="tRT-wL-nhh" eventType="touchDown" id="azY-ce-BOs"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="cellphone" destination="M0x-H1-9az" id="BX8-AH-PIK"/>
@@ -320,19 +323,25 @@
                         <viewControllerLayoutGuide type="top" id="DZf-1T-Ixd"/>
                         <viewControllerLayoutGuide type="bottom" id="7RM-Mh-Fci"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Smr-7E-n3K">
+                    <view key="view" contentMode="scaleToFill" id="Smr-7E-n3K" customClass="UIControl">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="3～8位用户名" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n4K-5P-tNd">
                                 <rect key="frame" x="20" y="139" width="560" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                <connections>
+                                    <action selector="usernameDoneEditing:" destination="ifK-Jr-wzR" eventType="editingDidEndOnExit" id="SAu-Ep-f54"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="4～10位密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u8e-Be-5by">
                                 <rect key="frame" x="20" y="192" width="560" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES"/>
+                                <connections>
+                                    <action selector="passwordDoneEditing:" destination="ifK-Jr-wzR" eventType="editingDidEndOnExit" id="Khe-my-G70"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0k-RM-Lxd">
                                 <rect key="frame" x="20" y="256" width="560" height="47"/>
@@ -415,6 +424,9 @@
                                 <exclude reference="CnH-N5-mdL"/>
                             </mask>
                         </variation>
+                        <connections>
+                            <action selector="backgroundTap:" destination="ifK-Jr-wzR" eventType="touchDown" id="2FY-xM-c1d"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="labelErrorTip" destination="o4b-6r-L9m" id="8Bq-Tq-yNq"/>

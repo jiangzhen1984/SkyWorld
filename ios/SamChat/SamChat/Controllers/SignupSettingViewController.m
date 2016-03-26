@@ -127,6 +127,23 @@
     }
 }
 
+- (IBAction)usernameDoneEditing:(id)sender
+{
+    [self.password becomeFirstResponder];
+}
+
+- (IBAction)passwordDoneEditing:(id)sender
+{
+    [sender resignFirstResponder];
+    [self register:nil];
+}
+
+- (IBAction)backgroundTap:(id)sender
+{
+    [self.username resignFirstResponder];
+    [self.password resignFirstResponder];
+}
+
 /*
 #pragma mark - Navigation
 
