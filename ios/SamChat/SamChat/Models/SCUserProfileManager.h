@@ -15,4 +15,8 @@
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *token;
 
+- (LoginUserInformation *)currentLoginUserInformation;
+
+- (BOOL)isCurrentUserLoginStatusOK;
+
 @end

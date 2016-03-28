@@ -88,7 +88,7 @@
     [appDelegate saveContext];
 }
 
-+ (LoginUserInformation *)infoForUser:(NSString *)username
++ (LoginUserInformation *)loginUserInformationForUser:(NSString *)username
 {
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
@@ -105,16 +105,5 @@
     return info;
 }
 
-
-+ (BOOL)isCurrentUserLoginStatusOK
-{
-    BOOL status = FALSE;
-    NSString *username = [SCUserProfileManager sharedInstance].username;
-    if(username) {
-        LoginUserInformation *currentUserInformation = [LoginUserInformation infoForUser:username];
-        status = [currentUserInformation.status integerValue] == SC_LOGINUSER_LOGIN ? TRUE : FALSE;
-    }
-    return status;
-}
 
 @end

@@ -73,4 +73,19 @@ static SCUserProfileManager *sharedInstance = nil;
     }
 }
 
+- (LoginUserInformation *)currentLoginUserInformation
+{
+    LoginUserInformation *currentLoginUserInformation = nil;
+    if(self.username) {
+        currentLoginUserInformation = [LoginUserInformation loginUserInformationForUser:self.username];
+    }
+    return currentLoginUserInformation;
+}
+
+- (BOOL)isCurrentUserLoginStatusOK
+{
+    LoginUserInformation *currentUserInformation = [self currentLoginUserInformation];
+    return [currentUserInformation.status integerValue] == SC_LOGINUSER_LOGIN ? TRUE : FALSE;
+}
+
 @end

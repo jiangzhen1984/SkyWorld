@@ -20,8 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (LoginUserInformation *)infoWithServerResponse:(NSDictionary *)response;
 + (void)saveContext;
 
-+ (LoginUserInformation *)infoForUser:(NSString *)username;
-+ (BOOL)isCurrentUserLoginStatusOK;
++ (LoginUserInformation *)loginUserInformationForUser:(NSString *)username;
+
 
 @end
 

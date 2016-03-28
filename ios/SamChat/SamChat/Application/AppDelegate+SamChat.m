@@ -19,7 +19,7 @@
                                                  name:NOTIFICATION_LOGIN_STATE_CHANGE
                                                object:nil];
     
-    BOOL isCurrentUserLoginOK = [LoginUserInformation isCurrentUserLoginStatusOK];
+    BOOL isCurrentUserLoginOK = [[SCUserProfileManager sharedInstance] isCurrentUserLoginStatusOK];
     if (isCurrentUserLoginOK){
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
     }
