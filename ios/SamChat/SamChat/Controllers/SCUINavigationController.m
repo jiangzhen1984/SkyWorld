@@ -8,7 +8,6 @@
 
 #import "SCUINavigationController.h"
 #import "SCUtils.h"
-#import "AppMacro.h"
 
 @implementation SCUINavigationController
 

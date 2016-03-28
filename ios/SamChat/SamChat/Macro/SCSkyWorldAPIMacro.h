@@ -27,6 +27,7 @@
 
 #define SKYWORLD_CELLPHONE      @"cellphone"
 #define SKYWORLD_USERNAME       @"username"
+#define SKYWORLD_USER_USERNAME  @"user.username"
 #define SKYWORLD_PWD            @"pwd"
 #define SKYWORLD_CONFIRM_PWD    @"confirm_pwd"
 

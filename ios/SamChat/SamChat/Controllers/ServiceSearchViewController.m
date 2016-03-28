@@ -28,7 +28,7 @@
 
 - (IBAction)pushNewQuestion:(id)sender
 {
-    NSLog(@"search");
+    DebugLog(@"search");
     /*
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:[self generateNewQuestionUrlString]

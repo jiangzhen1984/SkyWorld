@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15E65" minimumToolsVersion="Automatic">
-    <entity name="LoginUserInformation" syncable="YES">
+    <entity name="LoginUserInformation" representedClassName="LoginUserInformation" syncable="YES">
         <attribute name="area" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="countrycode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="discription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="easemob_status" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="easemob_username" optional="YES" attributeType="String" syncable="YES"/>
@@ -18,6 +19,6 @@
         <attribute name="usertype" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="LoginUserInformation" positionX="-63" positionY="-18" width="128" height="270"/>
+        <element name="LoginUserInformation" positionX="-63" positionY="-18" width="128" height="283"/>
     </elements>
 </model>

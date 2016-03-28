@@ -1,0 +1,20 @@
+//
+//  SamChat-Prefix.pch
+//  SamChat
+//
+//  Created by HJ on 3/28/16.
+//  Copyright © 2016 SkyWorld. All rights reserved.
+//
+
+#ifndef SamChat_Prefix_pch
+#define SamChat_Prefix_pch
+
+#ifdef __OBJC__
+#import "AppMacro.h"
+#import "SCSkyWorldAPIMacro.h"
+#import "NotificationMacro.h"
+#import "LoginUserInformation.h"
+
+#endif
+
+#endif /* SamChat_Prefix_pch */

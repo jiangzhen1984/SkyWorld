@@ -10,7 +10,6 @@
 #import "SCSkyWorldAPI.h"
 #import "AFNetworking.h"
 #import "MBProgressHUD.h"
-#import "SCUserProfile.h"
 #import "SCUtils.h"
 #import "SCViewFactory.h"
 
@@ -83,7 +82,7 @@
         }
          success:^(NSURLSessionDataTask *task, id responseObject){
              if([responseObject isKindOfClass:[NSDictionary class]]) {
-                 NSLog(@"%@", responseObject);
+                 DebugLog(@"%@", responseObject);
                  NSDictionary *response = responseObject;
                  NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                  if(errorCode) {
@@ -94,7 +93,7 @@
              }
          }
          failure:^(NSURLSessionDataTask *task, NSError *error){
-             NSLog(@"Error: %@", error);
+             DebugLog(@"Error: %@", error);
              _hud.labelText = task.response.description;
              [_hud hide:YES afterDelay:1];
          }];
@@ -102,10 +101,22 @@
 
 - (void)registerSuccessWithResponse:(NSDictionary *)response
 {
-    SCUserProfile *userProfile = [[SCUserProfile alloc] initWithLoginSuccessServerResponse:response];
-    userProfile.password = self.password.text;
-    [userProfile saveProfileForLoginSuccess];
-    [SCUtils presentHomeViewFromViewController:self];
+    //SCUserProfile *userProfile = [[SCUserProfile alloc] initWithLoginSuccessServerResponse:response];
+    //userProfile.password = self.password.text;
+    //[userProfile saveProfileForLoginSuccess];
+    //[SCUtils presentHomeViewFromViewController:self];
+    
+    LoginUserInformation *loginUserInformation = [LoginUserInformation infoWithServerResponse:response];
+    loginUserInformation.password = self.password.text;
+    
+    // only logintime
+    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
+    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
+    //DebugLog(@"time: %lld", timestamp);
+    loginUserInformation.logintime = [NSNumber numberWithLongLong:timestamp];
+    
+    [LoginUserInformation saveContext];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
 }
 
 - (void)registerErrorWithErrorCode:(NSInteger)errorCode

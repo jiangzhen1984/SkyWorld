@@ -19,7 +19,10 @@
 		317596731CA54A48002D2F73 /* ServiceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 317596721CA54A48002D2F73 /* ServiceSearchViewController.m */; };
 		3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFE31CA5401600796D25 /* SCUINavigationController.m */; };
 		3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFEA1CA5494500796D25 /* SCSkyWorldAPI.m */; };
-		3183D0671CA67AA70088FD67 /* SCUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0661CA67AA70088FD67 /* SCUserProfile.m */; };
+		317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D431CA8C0270035A14E /* SCUserProfileManager.m */; };
+		317C2D4A1CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D471CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m */; };
+		317C2D4B1CA8E3960035A14E /* LoginUserInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D491CA8E3960035A14E /* LoginUserInformation.m */; };
+		317C2D501CA90A1E0035A14E /* AppDelegate+SamChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */; };
 		3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */; };
 		3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D06C1CA68C4A0088FD67 /* ResetPassWordViewController.m */; };
 		3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0701CA690730088FD67 /* SCViewFactory.m */; };
@@ -70,15 +73,23 @@
 		311BC6511CA37B19006B4707 /* SamChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		311BC6551CA37B19006B4707 /* SamChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatUITests.m; sourceTree = "<group>"; };
 		311BC6571CA37B19006B4707 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3164BF811CA8BDAE008D1505 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		317596711CA54A48002D2F73 /* ServiceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceSearchViewController.h; sourceTree = "<group>"; };
 		317596721CA54A48002D2F73 /* ServiceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceSearchViewController.m; sourceTree = "<group>"; };
 		3178FFE21CA5401600796D25 /* SCUINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUINavigationController.h; sourceTree = "<group>"; };
 		3178FFE31CA5401600796D25 /* SCUINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUINavigationController.m; sourceTree = "<group>"; };
 		3178FFE91CA5494500796D25 /* SCSkyWorldAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPI.h; sourceTree = "<group>"; };
 		3178FFEA1CA5494500796D25 /* SCSkyWorldAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSkyWorldAPI.m; sourceTree = "<group>"; };
+		317C2D421CA8C0270035A14E /* SCUserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCUserProfileManager.h; path = Models/SCUserProfileManager.h; sourceTree = "<group>"; };
+		317C2D431CA8C0270035A14E /* SCUserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCUserProfileManager.m; path = Models/SCUserProfileManager.m; sourceTree = "<group>"; };
+		317C2D461CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LoginUserInformation+CoreDataProperties.h"; path = "CoreData/LoginUserInformation+CoreDataProperties.h"; sourceTree = "<group>"; };
+		317C2D471CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LoginUserInformation+CoreDataProperties.m"; path = "CoreData/LoginUserInformation+CoreDataProperties.m"; sourceTree = "<group>"; };
+		317C2D481CA8E3960035A14E /* LoginUserInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginUserInformation.h; path = CoreData/LoginUserInformation.h; sourceTree = "<group>"; };
+		317C2D491CA8E3960035A14E /* LoginUserInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginUserInformation.m; path = CoreData/LoginUserInformation.m; sourceTree = "<group>"; };
+		317C2D4E1CA90A1E0035A14E /* AppDelegate+SamChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AppDelegate+SamChat.h"; path = "Application/AppDelegate+SamChat.h"; sourceTree = "<group>"; };
+		317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AppDelegate+SamChat.m"; path = "Application/AppDelegate+SamChat.m"; sourceTree = "<group>"; };
+		317C2D511CA90AE60035A14E /* NotificationMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NotificationMacro.h; path = Macro/NotificationMacro.h; sourceTree = "<group>"; };
 		317DE80D1CA42EA300ED39F5 /* SCSkyWorldAPIMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCSkyWorldAPIMacro.h; path = Macro/SCSkyWorldAPIMacro.h; sourceTree = "<group>"; };
-		3183D0651CA67AA70088FD67 /* SCUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCUserProfile.h; path = Models/SCUserProfile.h; sourceTree = "<group>"; };
-		3183D0661CA67AA70088FD67 /* SCUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCUserProfile.m; path = Models/SCUserProfile.m; sourceTree = "<group>"; };
 		3183D0681CA68AAF0088FD67 /* RetrievePassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetrievePassWordViewController.h; sourceTree = "<group>"; };
 		3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetrievePassWordViewController.m; sourceTree = "<group>"; };
 		3183D06B1CA68C4A0088FD67 /* ResetPassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassWordViewController.h; sourceTree = "<group>"; };
@@ -156,6 +167,8 @@
 		311BC62C1CA37B19006B4707 /* SamChat */ = {
 			isa = PBXGroup;
 			children = (
+				317C2D4D1CA909B80035A14E /* Application */,
+				317C2D451CA8E3410035A14E /* CoreData */,
 				3183D06E1CA690150088FD67 /* Views */,
 				31F8E7251CA3D2B10049EE23 /* Utils */,
 				31F8E7231CA3BCEF0049EE23 /* Macro */,
@@ -181,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				311BC62E1CA37B19006B4707 /* main.m */,
+				3164BF811CA8BDAE008D1505 /* SamChat-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -210,6 +224,26 @@
 				3178FFEA1CA5494500796D25 /* SCSkyWorldAPI.m */,
 			);
 			path = SkyWorld;
+			sourceTree = "<group>";
+		};
+		317C2D451CA8E3410035A14E /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				317C2D461CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.h */,
+				317C2D471CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m */,
+				317C2D481CA8E3960035A14E /* LoginUserInformation.h */,
+				317C2D491CA8E3960035A14E /* LoginUserInformation.m */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
+		317C2D4D1CA909B80035A14E /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				317C2D4E1CA90A1E0035A14E /* AppDelegate+SamChat.h */,
+				317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */,
+			);
+			name = Application;
 			sourceTree = "<group>";
 		};
 		3183D06E1CA690150088FD67 /* Views */ = {
@@ -247,8 +281,8 @@
 		31F8E71F1CA3BA790049EE23 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3183D0651CA67AA70088FD67 /* SCUserProfile.h */,
-				3183D0661CA67AA70088FD67 /* SCUserProfile.m */,
+				317C2D421CA8C0270035A14E /* SCUserProfileManager.h */,
+				317C2D431CA8C0270035A14E /* SCUserProfileManager.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -258,6 +292,7 @@
 			children = (
 				31F8E7241CA3BD580049EE23 /* AppMacro.h */,
 				317DE80D1CA42EA300ED39F5 /* SCSkyWorldAPIMacro.h */,
+				317C2D511CA90AE60035A14E /* NotificationMacro.h */,
 			);
 			name = Macro;
 			sourceTree = "<group>";
@@ -476,7 +511,6 @@
 				317596731CA54A48002D2F73 /* ServiceSearchViewController.m in Sources */,
 				31F8E72E1CA401310049EE23 /* SCConfig.m in Sources */,
 				31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */,
-				3183D0671CA67AA70088FD67 /* SCUserProfile.m in Sources */,
 				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
 				3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */,
 				311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */,
@@ -488,8 +522,12 @@
 				3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */,
 				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,
 				3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */,
+				317C2D4B1CA8E3960035A14E /* LoginUserInformation.m in Sources */,
 				31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */,
+				317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */,
+				317C2D501CA90A1E0035A14E /* AppDelegate+SamChat.m in Sources */,
 				31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */,
+				317C2D4A1CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,6 +669,7 @@
 			baseConfigurationReference = E6F84DEBA6BAFDCDDEB63EE0 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "/Users/gknows/Documents/SkyWorld/ios/SamChat/SamChat/SamChat-Prefix.pch";
 				INFOPLIST_FILE = SamChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SkyWorld.SamChat;
@@ -643,6 +682,7 @@
 			baseConfigurationReference = 6B8040025EA2D601540773F1 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "/Users/gknows/Documents/SkyWorld/ios/SamChat/SamChat/SamChat-Prefix.pch";
 				INFOPLIST_FILE = SamChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SkyWorld.SamChat;

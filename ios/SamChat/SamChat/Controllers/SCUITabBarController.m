@@ -8,7 +8,6 @@
 
 #import "SCUITabBarController.h"
 #import "SCUtils.h"
-#import "AppMacro.h"
 
 #define NAVBAR_HEGHT            44
 
