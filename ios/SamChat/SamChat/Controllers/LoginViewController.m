@@ -141,7 +141,9 @@
 
 - (void)loginSuccessWithResponse: (NSDictionary *)response
 {
-    [LoginUserInformation saveCurrentLoginUserName:[response valueForKeyPath:SKYWORLD_USER_USERNAME]];
+    SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
+    userProfileManager.username = [response valueForKeyPath:SKYWORLD_USER_USERNAME];
+    userProfileManager.token = response[SKYWORLD_TOKEN];
     LoginUserInformation *loginUserInformation = [LoginUserInformation infoWithServerResponse:response];
     loginUserInformation.password = self.password.text;
     

@@ -12,6 +12,5 @@
 
 @interface SCConfig : NSObject
 
-+ (NSString *)getUserToken;
 
 @end

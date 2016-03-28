@@ -25,14 +25,13 @@
 
 #pragma mark - Login User Information
 
-#define SC_CURRENT_LONGIN_USERNAME      @"currentloginusername"
+#define SC_CURRENT_LOGIN_USERNAME      @"currentloginusername"
+#define SC_CURRENT_LOGIN_TOKEN         @"token"
 
 
 #define SC_LOGINUSER_NO_LOGIN           0
 #define SC_LOGINUSER_LOGIN              1
 
-
-#define SC_LOGINUSER_TOKEN              @"token"
 
 #define SC_MINIMUM_USERNAME_LENGTH      4
 #define SC_MINIMUM_PASSWORD_LENGTH      6

@@ -20,7 +20,7 @@
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
-    if((!matches) || error || [matches count] > 1) {
+    if((!matches) || error || ([matches count] > 1)) {
     
     } else if([matches count]) {
         info = [matches firstObject];
@@ -88,14 +88,6 @@
     [appDelegate saveContext];
 }
 
-+ (void)saveCurrentLoginUserName:(NSString *)username
-{
-    if(username && (username.length > 0)) {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:username forKey:SC_CURRENT_LONGIN_USERNAME];
-    }
-}
-
 + (LoginUserInformation *)infoForUser:(NSString *)username
 {
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
@@ -107,19 +99,17 @@
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
-    if((!matches) || error || [matches count] > 1) {
-        
-    } else{
+    if(matches && ([matches count] == 1)) {
         info = [matches firstObject];
     }
     return info;
 }
 
+
 + (BOOL)isCurrentUserLoginStatusOK
 {
     BOOL status = FALSE;
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *username = [userDefaults objectForKey:SC_CURRENT_LONGIN_USERNAME];
+    NSString *username = [SCUserProfileManager sharedInstance].username;
     if(username) {
         LoginUserInformation *currentUserInformation = [LoginUserInformation infoForUser:username];
         status = [currentUserInformation.status integerValue] == SC_LOGINUSER_LOGIN ? TRUE : FALSE;

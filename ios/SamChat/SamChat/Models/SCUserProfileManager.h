@@ -12,4 +12,7 @@
 
 + (instancetype)sharedInstance;
 
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *token;
+
 @end
