@@ -12,6 +12,7 @@
 
 @interface SignupViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *cellphone;
+@property (weak, nonatomic) IBOutlet UILabel *labelCountryCode;
 
 @end
 
@@ -50,6 +51,7 @@
         if([segue.destinationViewController isKindOfClass:[SignupSettingViewController class]]) {
             SignupSettingViewController *signupSettingVC = (SignupSettingViewController *)segue.destinationViewController;
             signupSettingVC.cellphone = self.cellphone.text;
+            signupSettingVC.countryCode = self.labelCountryCode.text;
         }
     }
 }

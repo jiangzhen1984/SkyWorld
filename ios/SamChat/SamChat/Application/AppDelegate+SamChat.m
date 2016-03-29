@@ -19,6 +19,15 @@
                                                  name:NOTIFICATION_LOGIN_STATE_CHANGE
                                                object:nil];
     
+    NSString *appkey = @"skyworld#skyworld";
+    NSString *apnsCertName = @"";
+    
+    [[EaseSDKHelper shareHelper] easemobApplication:application
+                      didFinishLaunchingWithOptions:launchOptions
+                                             appkey:appkey
+                                       apnsCertName:apnsCertName
+                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
+    
     BOOL isCurrentUserLoginOK = [[SCUserProfileManager sharedInstance] isCurrentUserLoginStatusOK];
     if (isCurrentUserLoginOK){
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];

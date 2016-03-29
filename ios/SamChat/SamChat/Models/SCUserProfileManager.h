@@ -19,4 +19,6 @@
 
 - (BOOL)isCurrentUserLoginStatusOK;
 
+- (void)saveCurrentLoginUserInfoWithServerResponse: (NSDictionary *)response andOtherInfo:(NSDictionary *)otherInfo;
+
 @end

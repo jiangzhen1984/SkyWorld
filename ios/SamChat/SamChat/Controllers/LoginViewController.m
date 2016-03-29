@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonShowPassword;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLogin;
 @property (weak, nonatomic) IBOutlet UILabel *labelErrorTip;
+@property (nonatomic, copy) NSDictionary *loginInfo;
 
 @property (strong, nonatomic) MBProgressHUD *hud;
 
@@ -97,11 +98,11 @@
 - (NSString *)generateLoginUrlString
 {
     NSDictionary *header = @{SKYWORLD_ACTION: SKYWORLD_LOGIN};
-    NSDictionary *body = @{SKYWORLD_USERNAME: self.username.text,
+    self.loginInfo = @{SKYWORLD_USERNAME: self.username.text,
                            SKYWORLD_PWD: self.password.text};
     SCSkyWorldAPI *user = [[SCSkyWorldAPI alloc] initAPI:SKYWORLD_APITYPE_USERAPI
                                               WithHeader:header
-                                                 andBody:body];
+                                                 andBody:self.loginInfo];
     return [user generateUrlString];
 }
 
@@ -129,7 +130,8 @@
                      [self loginErrorWithErrorCode:errorCode];
                      return;
                  }
-                 [self loginSuccessWithResponse:response];
+                 [self loginSkyWorldSuccessWithResponse:response];
+                 [self loginEaseMobWithUsername:self.loginInfo[SKYWORLD_USERNAME] password:self.loginInfo[SKYWORLD_PWD]];
              }
          }
          failure:^(NSURLSessionDataTask *task, NSError *error){
@@ -139,22 +141,77 @@
          }];
 }
 
-- (void)loginSuccessWithResponse: (NSDictionary *)response
+- (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password
+{
+    LoginUserInformation *currentUserInfo = [[SCUserProfileManager sharedInstance] currentLoginUserInformation];
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient sharedClient] loginWithUsername:username
+                                                           password:password];
+        dispatch_async(dispatch_get_main_queue(), ^{
+//            [weakself hideHud];
+            if (!error) {
+                DebugLog(@"EaseMob Login Success!");
+                //设置是否自动登录
+                [[EMClient sharedClient].options setIsAutoLogin:YES];
+                currentUserInfo.easemob_status = @SC_LOGINUSER_LOGIN;
+                [LoginUserInformation saveContext];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
+/*
+                //获取数据库中数据
+                [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    [[EMClient sharedClient] dataMigrationTo3];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
+                        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
+                        [[ChatDemoHelper shareHelper] asyncPushOptions];
+                        [MBProgressHUD hideAllHUDsForView:weakself.view animated:YES];
+                        //发送自动登陆状态通知
+                        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
+                        
+                        //保存最近一次登录用户名
+                        [weakself saveLastLoginUsername];
+                    });
+                });*/
+            } else {
+                DebugLog(@"EaseMob Login Failed! %@", error);
+                currentUserInfo.easemob_status = @SC_LOGINUSER_NO_LOGIN;
+                [LoginUserInformation saveContext];
+                /*
+                switch (error.code)
+                {
+                      
+                        //                    case EMErrorNotFound:
+                        //                        TTAlertNoTitle(error.errorDescription);
+                        //                        break;
+                    case EMErrorNetworkUnavailable:
+                        TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
+                        break;
+                    case EMErrorServerNotReachable:
+                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
+                        break;
+                    case EMErrorUserAuthenticationFailed:
+                        TTAlertNoTitle(error.errorDescription);
+                        break;
+                    case EMErrorServerTimeout:
+                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
+                        break;
+                    default:
+                        TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
+                        break;
+                }*/
+            }
+        });
+    });
+}
+
+
+- (void)loginSkyWorldSuccessWithResponse: (NSDictionary *)response
 {
     SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
-    userProfileManager.username = [response valueForKeyPath:SKYWORLD_USER_USERNAME];
-    userProfileManager.token = response[SKYWORLD_TOKEN];
-    LoginUserInformation *loginUserInformation = [LoginUserInformation infoWithServerResponse:response];
-    loginUserInformation.password = self.password.text;
-    
-    // only logintime
-    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
-    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
-    //DebugLog(@"time: %lld", timestamp);
-    loginUserInformation.logintime = [NSNumber numberWithLongLong:timestamp];
-    
-    [LoginUserInformation saveContext];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
+    [userProfileManager saveCurrentLoginUserInfoWithServerResponse:response
+                                                      andOtherInfo:@{SKYWORLD_PWD:self.loginInfo[SKYWORLD_PWD]}];
 }
 
 - (void)loginErrorWithErrorCode: (NSInteger)errorCode

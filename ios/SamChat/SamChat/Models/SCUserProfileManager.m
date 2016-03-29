@@ -84,8 +84,29 @@ static SCUserProfileManager *sharedInstance = nil;
 
 - (BOOL)isCurrentUserLoginStatusOK
 {
+    BOOL status = FALSE;
     LoginUserInformation *currentUserInformation = [self currentLoginUserInformation];
-    return [currentUserInformation.status integerValue] == SC_LOGINUSER_LOGIN ? TRUE : FALSE;
+    status = ([currentUserInformation.status integerValue] == SC_LOGINUSER_LOGIN)
+             && ([currentUserInformation.easemob_status integerValue] == SC_LOGINUSER_LOGIN)
+             && [EMClient sharedClient].isAutoLogin;
+    return status;
+}
+
+- (void)saveCurrentLoginUserInfoWithServerResponse: (NSDictionary *)response andOtherInfo:(NSDictionary *)otherInfo
+{
+    //SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
+    self.username = [response valueForKeyPath:SKYWORLD_USER_USERNAME];
+    self.token = response[SKYWORLD_TOKEN];
+    LoginUserInformation *loginUserInformation = [LoginUserInformation infoWithServerResponse:response];
+    loginUserInformation.password = otherInfo[SKYWORLD_PWD];
+    
+    // only logintime
+    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
+    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
+    //DebugLog(@"time: %lld", timestamp);
+    loginUserInformation.logintime = [NSNumber numberWithLongLong:timestamp];
+    
+    [LoginUserInformation saveContext];
 }
 
 @end

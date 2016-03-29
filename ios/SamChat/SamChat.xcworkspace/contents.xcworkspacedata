@@ -5,6 +5,9 @@
       location = "group:SamChat.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:EaseUI/EaseUI.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

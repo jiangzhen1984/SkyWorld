@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet UILabel *labelErrorTip;
+@property (nonatomic, copy) NSDictionary *registerInfo;
 
 @property (strong, nonatomic) MBProgressHUD *hud;
 @end
@@ -58,13 +59,14 @@
 - (NSString *)generateSignUpUrlString
 {
     NSDictionary *header = @{SKYWORLD_ACTION: SKYWORLD_REGISTER};
-    NSDictionary *body = @{SKYWORLD_CELLPHONE: self.cellphone,
-                           SKYWORLD_USERNAME: self.username.text,
-                           SKYWORLD_PWD: self.password.text,
-                           SKYWORLD_CONFIRM_PWD: self.password.text};
+    self.registerInfo = @{SKYWORLD_CELLPHONE: self.cellphone,
+                          SKYWORLD_USERNAME: self.username.text,
+                          SKYWORLD_PWD: self.password.text,
+                          SKYWORLD_COUNTRY_CODE: [NSNumber numberWithInteger:[self.countryCode integerValue]],
+                          SKYWORLD_CONFIRM_PWD: self.password.text};
     SCSkyWorldAPI *user = [[SCSkyWorldAPI alloc] initAPI:SKYWORLD_APITYPE_USERAPI
                                               WithHeader:header
-                                                 andBody:body];
+                                                 andBody:self.registerInfo];
     return [user generateUrlString];
 }
 
@@ -90,6 +92,7 @@
                      return;
                  }
                  [self registerSuccessWithResponse:response];
+                 [self loginEaseMobWithUsername:self.registerInfo[SKYWORLD_USERNAME] password:self.registerInfo[SKYWORLD_PWD]];
              }
          }
          failure:^(NSURLSessionDataTask *task, NSError *error){
@@ -99,24 +102,36 @@
          }];
 }
 
+- (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password
+{
+    LoginUserInformation *currentUserInfo = [[SCUserProfileManager sharedInstance] currentLoginUserInformation];
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient sharedClient] loginWithUsername:username
+                                                           password:password];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //            [weakself hideHud];
+            if (!error) {
+                DebugLog(@"EaseMob Login Success!");
+                //设置是否自动登录
+                [[EMClient sharedClient].options setIsAutoLogin:YES];
+                currentUserInfo.easemob_status = @SC_LOGINUSER_LOGIN;
+                [LoginUserInformation saveContext];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
+
+            } else {
+                DebugLog(@"EaseMob Login Failed! %@", error);
+                currentUserInfo.easemob_status = @SC_LOGINUSER_NO_LOGIN;
+                [LoginUserInformation saveContext];
+            }
+        });
+    });
+}
+
 - (void)registerSuccessWithResponse:(NSDictionary *)response
 {
-    //SCUserProfile *userProfile = [[SCUserProfile alloc] initWithLoginSuccessServerResponse:response];
-    //userProfile.password = self.password.text;
-    //[userProfile saveProfileForLoginSuccess];
-    //[SCUtils presentHomeViewFromViewController:self];
-    
-    LoginUserInformation *loginUserInformation = [LoginUserInformation infoWithServerResponse:response];
-    loginUserInformation.password = self.password.text;
-    
-    // only logintime
-    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
-    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
-    //DebugLog(@"time: %lld", timestamp);
-    loginUserInformation.logintime = [NSNumber numberWithLongLong:timestamp];
-    
-    [LoginUserInformation saveContext];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
+    SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
+    [userProfileManager saveCurrentLoginUserInfoWithServerResponse:response andOtherInfo:@{SKYWORLD_PWD:self.registerInfo[SKYWORLD_PWD]}];
 }
 
 - (void)registerErrorWithErrorCode:(NSInteger)errorCode
