@@ -133,7 +133,7 @@ public class SWQuestionService extends BaseService {
 			que.setQuestion(swq.getQuestion());
 			que.setTimestamp(swq.getTimestamp());
 			que.setState(Question.State.fromInt(swq.getState()));
-			que.setAsker(userService.getUser(swq.getUserId()));
+			que.setAsker(userService.getUser(swq.getUserId(), session));
 		}
 		session.close();
 		return list;

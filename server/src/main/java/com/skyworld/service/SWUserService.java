@@ -34,11 +34,31 @@ public class SWUserService extends BaseService {
 		}
 		return user;
 	}
+	
+	
+	public User getUser(long uid, Session sess) {
+		User user = CacheManager.getIntance().getUser(uid);
+		if (user == null) {
+			user = selectUser(uid, sess);
+			if (user == null) {
+				return null;
+			}
+			CacheManager.getIntance().putUser(uid, user);
+		}
+		return user;
+	}
 
 	
 	public User selectUser(long uid) {
 		Session session = openSession();
-		SWPUser u = (SWPUser)session.get(SWPUser.class, uid);
+		User user = selectUser(uid, session);
+		session.close();
+		return user;
+	}
+	
+	
+	public User selectUser(long uid, Session sess) {
+		SWPUser u = (SWPUser)sess.get(SWPUser.class, uid);
 		if (u == null) {
 			return null;
 		}
@@ -50,10 +70,11 @@ public class SWUserService extends BaseService {
 		} else {
 			user = new User(u);
 		}
-		user.setAvatar(queryAvatar(user, session));
-		session.close();
+		user.setAvatar(queryAvatar(user, sess));
 		return user;
 	}
+	
+	
 	
 	public User selectUser(String userName, String mail, String password) {
 		Session session = openSession();
@@ -430,7 +451,7 @@ public class SWUserService extends BaseService {
 		List<SWPRelationship> list = query.list();
 		Iterator<SWPRelationship> it = list.iterator();
 		while(it.hasNext()) {
-			user.addFriend(getUser(it.next().getUserId2()));
+			user.addFriend(getUser(it.next().getUserId2(), session));
 		}
 		session.close();
 		user.setRelationQueryFlag(true);
@@ -448,7 +469,7 @@ public class SWUserService extends BaseService {
 		List<User> fans = new ArrayList<User>(list.size());
 		Iterator<SWPRelationship> it = list.iterator();
 		while(it.hasNext()) {
-			fans.add(getUser(it.next().getUserId1()));
+			fans.add(getUser(it.next().getUserId1(), session));
 		}
 		session.close();
 		return fans;

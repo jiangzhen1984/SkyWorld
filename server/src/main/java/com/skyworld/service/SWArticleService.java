@@ -163,7 +163,7 @@ public class SWArticleService extends BaseService {
 			article.setLat(ar.getLat());
 			article.setLng(ar.getLng());
 			article.setLocation(ar.getLocation());
-			article.setPublisher(ServiceFactory.getESUserService().getUser(ar.getUserId()));
+			article.setPublisher(ServiceFactory.getESUserService().getUser(ar.getUserId(), session));
 			article.setTime(new Date(ar.getTimeStamp()));
 			queryArticleData(session, article, true, true, true);
 		}
@@ -228,7 +228,7 @@ public class SWArticleService extends BaseService {
 				ar.setId(((BigInteger)obj[0]).longValue());
 				ar.setComment((String)obj[1]);
 				ar.setPublisher(ServiceFactory.getESUserService()
-						.getUser(((BigInteger)obj[2]).longValue()));
+						.getUser(((BigInteger)obj[2]).longValue(), session));
 				
 				queryArticleData(session, ar, true, true, false);
 			} else {
@@ -270,7 +270,7 @@ public class SWArticleService extends BaseService {
 			while (it.hasNext()) {
 				SWPArticleComment c = it.next();
 				article.addComment(c.getId(), ServiceFactory.getESUserService()
-						.getUser(c.getUserId()), c.getComment(), c.getToUserId() <= 0 ? null :ServiceFactory
+						.getUser(c.getUserId(), session), c.getComment(), c.getToUserId() <= 0 ? null :ServiceFactory
 						.getESUserService().getUser(c.getToUserId()), c.getTimeStamp());
 			}
 		}

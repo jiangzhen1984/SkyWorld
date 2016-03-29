@@ -6,8 +6,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.Token;
+import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
+import com.skyworld.service.dsf.UserType;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.JSONBasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
@@ -59,6 +62,10 @@ public class APIQueryService extends APIBasicJsonApiService {
 		}
 		String uname = param.getString("username");
 		User user = ServiceFactory.getESUserService().selectUser(uname, uname, true);
+		if (user.getUserType() == UserType.SERVICER) {
+			user = new SKServicer(user);
+			ServiceFactory.getESUserService().populateServicer((SKServicer)user);
+		}
 		List<User> l = null;
 		if (user != null) {
 			l = new ArrayList<User>();

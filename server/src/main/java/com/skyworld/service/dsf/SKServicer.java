@@ -13,6 +13,17 @@ public class SKServicer extends User {
 	
 	private String serviceDesc;
 	
+	
+	///////company
+	private String cmpName;
+	
+	private String website;
+	
+	private String cmpDesc;
+	
+	private String logoPath;
+	
+	
 
 	public SKServicer() {
 		super();
@@ -53,6 +64,42 @@ public class SKServicer extends User {
 
 	public void setServiceDesc(String serviceDesc) {
 		this.serviceDesc = serviceDesc;
+	}
+
+	public String getCmpName() {
+		return cmpName;
+	}
+
+	public void setCmpName(String cmpName) {
+		this.cmpName = cmpName;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public String getCmpDesc() {
+		return cmpDesc;
+	}
+
+	public void setCmpDesc(String cmpDesc) {
+		this.cmpDesc = cmpDesc;
+	}
+
+	public String getLogoPath() {
+		return logoPath;
+	}
+	
+	public String getLogoURL() {
+		return logoPath;
+	}
+
+	public void setLogoPath(String logoPath) {
+		this.logoPath = logoPath;
 	}
 	
 	

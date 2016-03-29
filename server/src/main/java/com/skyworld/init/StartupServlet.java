@@ -1,6 +1,8 @@
 package com.skyworld.init;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
@@ -34,10 +36,22 @@ public class StartupServlet extends GenericServlet {
 		super.init();
 		log.info("============server starting up=======");
 		ServiceFactory.getEaseMobService().start();
-		log.info("============server initialized easemod service ==>"+ServiceFactory.getEaseMobService());
-		log.info("============server initialized user service ==>"+ServiceFactory.getESUserService());
-		log.info("============server initialized querstion service ==>"+ServiceFactory.getQuestionService());
-		log.info("============server initialized API service ==>"+ ServiceFactory.getAPIService());
+		Class cls = ServiceFactory.class;
+		Method[] ms = cls.getMethods();
+		for (Method m : ms) {
+			int i = m.getName().lastIndexOf("Service");
+			if (i != -1) {
+				try {
+					if (m.getGenericParameterTypes().length <= 0) {
+						m.invoke(null, null);
+						log.info("============server initialized  ==> " + m.getName());
+					}
+				}catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		ServiceFactory.getEaseMobService().authorize("SkyWorld", "SkyWorld", "YXA6UW3TIKTGEeW8okGnOCdMYw", "YXA60GJ7UHua7FFXKEf_P3brVRdUusM");
 		log.info("============server start request easemod token <<<=====");

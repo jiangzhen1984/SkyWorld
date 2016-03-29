@@ -45,7 +45,9 @@ public class APIUserRelationQueryService extends APIBasicJsonApiService {
 			relation = ServiceFactory.getESUserService().queryUserRelationReverse(user);
 			break;
 		case TYPE_FOLLOW:
-			ServiceFactory.getESUserService().queryUserRelation(user);
+			if (!user.isRelationQueryFlag()) {
+				ServiceFactory.getESUserService().queryUserRelation(user);
+			}
 			relation = user.getRelationCopy();
 			break;
 		case TYPE_TEST_RELATIONS:

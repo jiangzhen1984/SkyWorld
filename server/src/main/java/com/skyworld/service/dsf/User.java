@@ -1,8 +1,11 @@
 package com.skyworld.service.dsf;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.skyworld.cache.Token;
@@ -24,7 +27,7 @@ public class User extends SWPUser {
 	
 	private Queue<SHPEvent> pengingEvents;
 	
-	private List<User> relationUser;
+	private Set<User> relationUser;
 	
 	private List<User> fansUser;
 	
@@ -33,7 +36,7 @@ public class User extends SWPUser {
 	public User() {
 		super();
 		userType = UserType.CUSTOMER;
-		relationUser = new ArrayList<User>();
+		relationUser = new HashSet<User>();
 		fansUser = new ArrayList<User>();
 	}
 	
@@ -58,7 +61,7 @@ public class User extends SWPUser {
 			this.userType = UserType.GROUP;
 			break;
 		}
-		relationUser = new ArrayList<User>();
+		relationUser = new HashSet<User>();
 		fansUser = new ArrayList<User>();
 		
 	}
@@ -83,7 +86,7 @@ public class User extends SWPUser {
 			this.userType = UserType.GROUP;
 			break;
 		}
-		relationUser = new ArrayList<User>();
+		relationUser = new HashSet<User>();
 		fansUser = new ArrayList<User>();
 	}
 
@@ -152,20 +155,21 @@ public class User extends SWPUser {
 	
 	
 	public boolean isInRelation(User u) {
-		int index = this.relationUser.indexOf(u);
-		return !(index == -1);
+		return this.relationUser.contains(u);
 	}
 	
 	public int getRelationUserCount() {
 		return relationUser.size();
 	}
 	
-	public User getRelationUser(int index) {
-		if (index < 0 || index >=relationUser.size()) {
-			throw new IndexOutOfBoundsException("index["+index+"] out of array");
+	public Iterator<User> iteratorRelationUser() {
+		if (relationUser != null) {
+			return relationUser.iterator();
+		} else {
+			return null;
 		}
-		return relationUser.get(index);
 	}
+	
 	
 	public List<User> getRelationCopy() {
 		return new ArrayList<User>(relationUser);
