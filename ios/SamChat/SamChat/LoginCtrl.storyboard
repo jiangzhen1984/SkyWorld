@@ -374,40 +374,32 @@
                                     <constraint firstAttribute="height" constant="1" id="Jde-oT-xnV"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="vBj-Ds-sdQ">
-                                <rect key="frame" x="167" y="311" width="266" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O2P-Qg-yYp">
-                                        <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
-                                        <state key="normal" title="Button"/>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已阅读并同意" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zM4-9V-nGG">
-                                        <rect key="frame" x="51" y="0.0" width="90" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRg-gc-gLg">
-                                        <rect key="frame" x="146" y="0.0" width="120" height="30"/>
-                                        <state key="normal" title="《天际用户协议》"/>
-                                    </button>
-                                </subviews>
-                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4b-6r-L9m">
                                 <rect key="frame" x="20" y="223" width="35.5" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O2P-Qg-yYp">
+                                <rect key="frame" x="148" y="311" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="已阅读并同意" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zM4-9V-nGG">
+                                <rect key="frame" x="233" y="311" width="90" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRg-gc-gLg">
+                                <rect key="frame" x="337" y="311" width="120" height="30"/>
+                                <state key="normal" title="《天际用户协议》"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="leadingMargin" secondItem="ia3-7D-SYx" secondAttribute="leading" id="1cP-HT-9at"/>
-                            <constraint firstItem="vBj-Ds-sdQ" firstAttribute="centerX" secondItem="Smr-7E-n3K" secondAttribute="centerX" id="5o4-aw-enX"/>
-                            <constraint firstItem="vBj-Ds-sdQ" firstAttribute="top" secondItem="r0k-RM-Lxd" secondAttribute="bottom" constant="43" id="CnH-N5-mdL"/>
                             <constraint firstItem="r0k-RM-Lxd" firstAttribute="top" secondItem="u8e-Be-5by" secondAttribute="bottom" constant="47" id="DFa-RU-Txg"/>
                             <constraint firstItem="ia3-7D-SYx" firstAttribute="top" secondItem="u8e-Be-5by" secondAttribute="bottom" constant="5" id="J57-wR-1DT"/>
-                            <constraint firstItem="vBj-Ds-sdQ" firstAttribute="top" secondItem="r0k-RM-Lxd" secondAttribute="bottom" constant="8" id="OcH-Ml-3zb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="n4K-5P-tNd" secondAttribute="trailing" id="SSy-Zp-jCl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="u8e-Be-5by" secondAttribute="trailing" id="UGw-V8-sQc"/>
                             <constraint firstAttribute="leadingMargin" secondItem="n4K-5P-tNd" secondAttribute="leading" id="X0h-K0-fBw"/>
@@ -423,11 +415,6 @@
                             <constraint firstItem="n4K-5P-tNd" firstAttribute="top" secondItem="DZf-1T-Ixd" secondAttribute="bottom" constant="75" id="ulA-XL-bJT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ia3-7D-SYx" secondAttribute="trailing" id="z2g-IE-vqL"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="CnH-N5-mdL"/>
-                            </mask>
-                        </variation>
                         <connections>
                             <action selector="backgroundTap:" destination="ifK-Jr-wzR" eventType="touchDown" id="2FY-xM-c1d"/>
                         </connections>
