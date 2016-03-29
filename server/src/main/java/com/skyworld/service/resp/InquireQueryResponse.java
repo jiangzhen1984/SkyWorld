@@ -30,12 +30,10 @@ public class InquireQueryResponse extends JSONBasicResponse {
 	@Override
 	public JSONObject getResponseJSON() {
 		JSONObject resp = new JSONObject();
-		if (ques == null || ques.size() <= 0) {
-			resp.put("ret", APICode.QUERY_ERROR_NO_ELEMENTS);
-		} else {
-			resp.put("ret", APICode.SUCCESS);
-			resp.put("count", ques.size());
-			JSONArray qarr = new JSONArray();
+		resp.put("ret", APICode.SUCCESS);
+		resp.put("count", ques.size());
+		JSONArray qarr = new JSONArray();
+		if (ques != null && ques.size() > 0) {
 			for (Question q : ques) {
 				JSONObject jsonQ = new JSONObject();
 				jsonQ.put("id", q.getId());
@@ -46,9 +44,9 @@ public class InquireQueryResponse extends JSONBasicResponse {
 				jsonQ.put("asker", asker);
 				qarr.put(jsonQ);
 			}
-			
-			resp.put("ques", qarr);
 		}
+			
+		resp.put("ques", qarr);
 		return resp;
 	}
 

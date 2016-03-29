@@ -47,7 +47,6 @@ public class APICode {
 	
 	
 	public static final int QUERY_ERROR_OPT_NOT_SUPPORT = -701;
-	public static final int QUERY_ERROR_NO_ELEMENTS = -702;
 	
 	
 	public static final int UPDATE_AVATAR_ERROR = -801;

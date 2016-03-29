@@ -27,11 +27,11 @@ public class UserQueryResponse extends JSONBasicResponse {
 	@Override
 	public JSONObject getResponseJSON() {
 		JSONObject resp = new JSONObject();
-		if (userList == null || userList.size() <= 0) {
-			resp.put("ret", APICode.QUERY_ERROR_NO_ELEMENTS);
-		} else {
-			resp.put("ret", APICode.SUCCESS);
-			JSONArray users = new JSONArray();
+
+		resp.put("ret", APICode.SUCCESS);
+		resp.put("count", userList.size());
+		JSONArray users = new JSONArray();
+		if (userList != null && userList.size() > 0) {
 			for (User u : userList) {
 				JSONObject jsonUser = new JSONObject();
 				users.put(jsonUser);
@@ -41,8 +41,8 @@ public class UserQueryResponse extends JSONBasicResponse {
 				}
 				JSONFormat.populateEasemobData(jsonUser, u);
 			}
-			resp.put("users", users);
 		}
+		resp.put("users", users);
 		
 		
 		
