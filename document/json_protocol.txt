@@ -39,6 +39,8 @@ Protocol Version: M16
               Add relation query api for user interaction
               Update easemob register policy: user username as easemob user name instead cell phone.
               Update user data from when return user information
+Protocol Version: M17
+              Update user query response return code, abandon -702, use count instead
 
 
 =======================================Register JSON Protocol =====================================
@@ -294,6 +296,7 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI
 成功返回: 
 {
      "ret"    : 0,
+     "count"  :  users count,
      "users"  :[
          {
              "id"  : id,
@@ -324,7 +327,6 @@ action参数不支持返回：  {ret: -2}
 token 格式不正确：  {ret: -4}  
 token不存在：  {ret: -5}  
 opt不支持 :{ret : -701}  
-Not Found Any data :{ret : -702}  
 
 User Query:
 http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 1, "param" : { "username" : "138"}}}
@@ -355,6 +357,7 @@ http://121.42.207.185/SkyWorld/api/1.0/UserAPI
 成功返回: 
 {
      "ret"    : 0,
+     "count"  : users count
      "users"  :[
          {
              "id"  : id,
@@ -384,7 +387,6 @@ action参数不支持返回：  {ret: -2}
 参数不满足返回：  {ret: -3}  
 token 格式不正确：  {ret: -4}  
 token不存在：  {ret: -5}  
-no any data or no relateion：  {ret: -702}  
 
 http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "relation", "token": "token"},"body":{"type" : [1/2/3], userid2: user2}}
 
@@ -457,7 +459,7 @@ Query ：
 
 query sucessful:
 {
-    "ret"   : [0/-702]   0:successful   -702  no such element,
+    "ret"   : [0]   0:successful,
     "count" : question count,
     "ques"  :
     [
