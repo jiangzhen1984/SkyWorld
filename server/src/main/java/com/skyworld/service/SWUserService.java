@@ -24,15 +24,7 @@ public class SWUserService extends BaseService {
 	
 	
 	public User getUser(long uid) {
-		User user = CacheManager.getIntance().getUser(uid);
-		if (user == null) {
-			user = selectUser(uid);
-			if (user == null) {
-				return null;
-			}
-			CacheManager.getIntance().putUser(uid, user);
-		}
-		return user;
+		return getUser(uid, null);
 	}
 	
 	
@@ -324,7 +316,7 @@ public class SWUserService extends BaseService {
 		}
 		session.close();
 		
-		//FIXME update cache
+		CacheManager.getIntance().putUser(servicer.getId(), servicer);
 		return true;
 	}
 	
