@@ -9,28 +9,33 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
         android:background="@color/common_bg_green">
-
-        <ImageView
-    	    android:id="@+id/back"
+        
+        <RelativeLayout
+            android:id="@+id/back_layout"
+    		android:layout_width="wrap_content"
+    		android:layout_height="match_parent"
+    		android:orientation="vertical">
+    		
+            <ImageView
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:layout_marginLeft="25dp"
-        	android:layout_marginStart="25dp"
+        	android:layout_marginLeft="@dimen/title_left_margin"
+        	android:layout_marginRight="@dimen/title_left_margin"
         	android:contentDescription="@null"
-        	android:layout_centerVertical="true"
-        	android:src="@drawable/back"/>
+        	android:layout_centerInParent="true"
+        	android:src="@drawable/back"/>           
+    		
+        </RelativeLayout>
 
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/back"
-            android:layout_toEndOf="@id/back"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/back_layout"
             android:text="@string/sam_register"
-            android:textColor="@color/text_valid_white"
-            android:textSize="18sp" />
+            android:textColor="@color/common_white"
+            android:textSize="20sp" />
     </RelativeLayout>
     
     <LinearLayout 
@@ -40,25 +45,74 @@
         android:orientation="horizontal"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/bg_edit_focus" >
+        android:layout_marginRight="20dp">
         
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:text="@string/country_location"
-            android:textSize="18sp" />
-        
-        <TextView
-            android:id="@+id/country"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="中国"
             android:textSize="18sp" 
-            android:textColor="@color/common_bg_green"/>
+            android:gravity="left"/>
+        
+        <RelativeLayout 
+	        android:layout_width="0dp"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="0.5">
+            
+            <LinearLayout
+                android:id="@+id/layout_china" 
+	        	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:orientation="horizontal"
+        		android:layout_alignParentLeft="true">
+            
+            	<ImageView
+            	    android:id="@+id/china_select_button"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:contentDescription="@null"/>
+            	
+            	<TextView
+            	    android:id="@+id/china"
+            		android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
+            		android:layout_marginLeft="10dp"
+            		android:text="@string/China"
+            		android:textSize="18sp" />            
+            
+        	</LinearLayout>
+        	
+            <LinearLayout
+                android:id="@+id/layout_usa" 
+	        	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:orientation="horizontal"
+        		android:layout_alignParentRight="true">
+            
+            	<ImageView
+            	    android:id="@+id/usa_select_button"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:contentDescription="@null"/>
+            	
+            	<TextView
+            	    android:id="@+id/usa"
+            		android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
+            		android:layout_marginLeft="10dp"
+            		android:text="@string/USA"
+            		android:textSize="18sp" />            
+            
+        	</LinearLayout>
+            
+            
+        </RelativeLayout>
+        
         
     </LinearLayout>
+    
+    
       
     <LinearLayout 
         android:layout_width="match_parent"
@@ -74,7 +128,6 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="+"
             android:gravity="left"/>
         
         <EditText
@@ -86,10 +139,11 @@
 			android:textSize="18sp"
 			android:singleLine="true"
 			android:maxLines="1"
+			android:enabled="false"
 			android:background="@null"
 			android:layout_gravity="center_vertical"/>
         
-        <EditText
+       <EditText
               android:id="@+id/phonenumber"
         	  android:layout_width="0dp"
         	  android:layout_height="wrap_content"
@@ -104,14 +158,64 @@
         	  android:background="@null"
         	  android:layout_gravity="center_vertical"/>
         
-        <ImageView
-    	    android:id="@+id/clear"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:contentDescription="@null"
-        	android:src="@drawable/clear"/>
+        <TextView
+        	android:id="@+id/send_verify_code"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/send_verify_code"/>
         
     </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_edit_focus" >
+        
+        <TextView
+        	android:id="@+id/plus2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="+"
+            android:visibility="invisible"/>
+        
+        <EditText
+			android:id="@+id/countrycode2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:inputType="phone"
+			android:maxLength="2"
+			android:hint="86"
+			android:textSize="18sp"
+			android:singleLine="true"
+			android:maxLines="1"
+			android:enabled="false"
+			android:background="@null"
+			android:layout_gravity="center_vertical"
+			android:visibility="invisible"/>
+        
+        <EditText
+              android:id="@+id/input_verify_code"
+        	  android:layout_width="match_parent"
+        	  android:layout_height="wrap_content"
+        	  android:layout_marginLeft="20dp"
+        	  android:inputType="phone"
+        	  android:hint="@string/verify_code"
+        	  android:maxLength="15"
+        	  android:textSize="18sp"
+        	  android:singleLine="true"
+        	  android:maxLines="1"
+        	  android:background="@null"
+        	  android:layout_gravity="center_vertical"/>
+        
+    </LinearLayout>
+    
+     
     
     <LinearLayout 
         android:id="@+id/layout_verify"
@@ -134,9 +238,9 @@
          android:textSize="20sp"
          android:clickable="false"> 
      	</Button>
-     </LinearLayout>
+    </LinearLayout>
     
-    
+   
     
     
 </LinearLayout>

@@ -119,8 +119,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="20dp"
         android:layout_toRightOf="@id/my_business_constant"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textSize="18sp"/>
     
     <TextView
         android:id="@+id/introduction"
@@ -150,8 +149,7 @@
         android:layout_marginRight="20dp"
         android:layout_alignLeft="@id/my_business"
         android:layout_alignTop="@id/location_constant"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textSize="18sp"/>
     
     <TextView
         android:id="@+id/mainpage_constant"
@@ -172,8 +170,7 @@
         android:layout_alignLeft="@id/location"
         android:layout_alignTop="@id/mainpage_constant"
         android:text="www.samchat.com"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textSize="18sp"/>
     
      <TextView
         android:id="@+id/modify"

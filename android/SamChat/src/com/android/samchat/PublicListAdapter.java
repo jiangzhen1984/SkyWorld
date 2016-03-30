@@ -70,6 +70,7 @@ public class PublicListAdapter extends BaseAdapter{
 	
 	@Override
 	public View getView(int position,View convertView, ViewGroup parent){
+		SamLog.e(TAG,"position:"+position);
 		int viewType = getItemViewType(position);
 		ViewHolder holder;
 		
@@ -77,7 +78,7 @@ public class PublicListAdapter extends BaseAdapter{
 			holder = new ViewHolder();
 			if(viewType == TYPE_PUBLIC_NORMAL){
 				convertView = mInflater.inflate(R.layout.public_list_item,parent,false);
-				holder.userimg = (ImageView) convertView.findViewById(R.id.userimg);
+				holder.userimage = (ImageView) convertView.findViewById(R.id.userimage);
 				holder.username = (TextView) convertView.findViewById(R.id.username);
 				holder.date = (TextView) convertView.findViewById(R.id.date);
 				holder.desc = (TextView) convertView.findViewById(R.id.desc);
@@ -105,13 +106,13 @@ public class PublicListAdapter extends BaseAdapter{
 											   45,
 											   45);
 					if(bp!=null){
-						holder.userimg.setImageBitmap(bp);
+						holder.userimage.setImageBitmap(bp);
 						avatarExisted = true;
 					}
 				}
 
 				if(!avatarExisted){
-					holder.userimg.setImageResource(R.drawable.em_default_avatar);
+					holder.userimage.setImageResource(R.drawable.em_default_avatar);
 				}
 				
 				break;
@@ -135,7 +136,7 @@ public class PublicListAdapter extends BaseAdapter{
 	
 	
 	public static class ViewHolder{
-		public ImageView userimg;
+		public ImageView userimage;
 		public TextView username;
 		public TextView date;
 		public TextView desc;

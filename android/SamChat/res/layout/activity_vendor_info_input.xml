@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/common_white">
+        android:background="@color/common_bg_green">
         
         <LinearLayout
             android:id="@+id/back_layout"
@@ -33,6 +33,7 @@
             android:layout_toRightOf="@id/back_layout"
             android:layout_centerVertical="true"
             android:text="@string/vendor_info_input"
+            android:textColor="@color/common_white"
             android:textSize="18sp" />
         
         
@@ -40,25 +41,38 @@
     
     
     
-    <TextView
+     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
 		android:layout_marginLeft="20dp"
         android:text="@string/bussiness_line"
         android:textSize="15sp" />
-    <EditText
-        android:id="@+id/bussiness_line_input"
-  		android:layout_width="match_parent"
-   		android:layout_height="wrap_content"
-   		android:layout_marginTop="10dp"
-   		android:layout_marginLeft="20dp"
-   		android:layout_marginRight="20dp"
-   		android:textSize="18sp"
-   		android:singleLine="true"
-  		android:hint="@null"
-   		android:background="@drawable/bg_answer_edit"/>
     
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/shadow_rectange_bg"
+        android:focusable="true" 
+		android:focusableInTouchMode="true" >
+    	<EditText
+            android:id="@+id/bussiness_line_input"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="2dp"
+        	android:layout_marginBottom="2dp"
+        	android:layout_marginLeft="2dp"
+			android:layout_gravity="center_vertical"
+			android:hint="@null"
+        	android:textSize="18sp"
+        	android:singleLine="true"
+        	android:maxLines="1"
+        	android:background="@null"/>
+     </LinearLayout>
+        
      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,17 +80,30 @@
 		android:layout_marginLeft="20dp"
         android:text="@string/bussiness_location"
         android:textSize="15sp" />
-     <EditText
-        android:id="@+id/bussiness_location_input"
-  		android:layout_width="match_parent"
-   		android:layout_height="wrap_content"
-   		android:layout_marginTop="10dp"
-   		android:layout_marginLeft="20dp"
-   		android:layout_marginRight="20dp"
-   		android:textSize="18sp"
-   		android:singleLine="true"
-  		android:hint="@null"
-   		android:background="@drawable/bg_answer_edit"/>
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/shadow_rectange_bg"
+        android:focusable="true" 
+		android:focusableInTouchMode="true" >
+    	<EditText
+            android:id="@+id/bussiness_location_input"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="2dp"
+        	android:layout_marginBottom="2dp"
+        	android:layout_marginLeft="2dp"
+			android:layout_gravity="center_vertical"
+			android:hint="@null"
+        	android:textSize="18sp"
+        	android:singleLine="true"
+        	android:maxLines="1"
+        	android:background="@null"/>
+     </LinearLayout>
+
      
       <TextView
         android:layout_width="wrap_content"
@@ -85,47 +112,70 @@
 		android:layout_marginLeft="20dp"
         android:text="@string/bussiness_introduction"
         android:textSize="15sp" />
-      <EditText
-        android:id="@+id/bussiness_introduction_input"
-  		android:layout_width="match_parent"
-   		android:layout_height="wrap_content"
-   		android:layout_marginTop="10dp"
-   		android:layout_marginLeft="20dp"
-   		android:layout_marginRight="20dp"
-   		android:textSize="18sp"
-   		android:singleLine="false"
-   		android:maxLines="4"
-  		android:hint="@null"
-   		android:background="@drawable/bg_answer_edit"/>
+      
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/shadow_rectange_bg"
+        android:focusable="true" 
+		android:focusableInTouchMode="true" >
+    	<EditText
+            android:id="@+id/bussiness_introduction_input"
+        	android:layout_width="match_parent"
+        	android:layout_height="160dp"
+        	android:layout_marginTop="4dp"
+        	android:layout_marginBottom="4dp"
+        	android:layout_marginLeft="4dp"
+			android:layout_gravity="center_vertical"
+        	android:textSize="18sp"
+			android:inputType="textMultiLine"      
+    		android:singleLine="false"
+    		android:gravity="left|top"
+        	android:maxLines="8"
+        	android:background="@null"/>
+    </LinearLayout>
+    
+    <View android:layout_width="match_parent"
+    	  android:layout_height="0dp"
+    	  android:layout_weight="1"/>
+    
       
      <LinearLayout
     	android:layout_width="match_parent"
-    	android:layout_height="0dp"
-    	android:layout_weight="1"
+    	android:layout_height="wrap_content"
     	android:orientation="horizontal" 
-    	android:layout_marginTop="20dp"
-    	android:layout_marginLeft = "@dimen/title_left_margin">
+    	android:layout_marginBottom="20dp"
+    	android:layout_marginRight="@dimen/title_left_margin">
+    	
+        <View android:layout_width="0dp"
+    	  android:layout_height="match_parent"
+    	  android:layout_weight="1"/>
         
         <ImageView
     	    android:id="@+id/agree"
         	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"       		
+        	android:layout_height="wrap_content"  
         	android:contentDescription="@null"
-        	android:layout_gravity="top"/>
+        	android:layout_gravity="center_vertical"
+        	android:gravity="right"/>
         
         <TextView
 	        android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
+    	    android:layout_marginLeft="5dp"
         	android:text="@string/agreement"
         	android:textSize="15sp"
-        	android:layout_gravity="top"/>
+        	android:layout_gravity="center_vertical"/>
         
          <TextView
 	        android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
         	android:text="@string/sam_vendor_protocol"
         	android:textSize="15sp"
-        	android:layout_gravity="top"
+        	android:layout_gravity="center_vertical"
         	android:textColor="@color/common_bg_green"/>
         
       </LinearLayout>

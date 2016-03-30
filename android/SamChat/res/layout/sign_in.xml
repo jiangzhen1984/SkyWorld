@@ -53,16 +53,36 @@
         	android:maxLength="32"
         	android:background="@drawable/bg_edit_focus"/>
         
-        <TextView
+        <LinearLayout
+			android:id="@+id/layout_error_pop"
+			android:layout_width="match_parent"
+          	android:layout_height="wrap_content"
+          	android:orientation="horizontal"
+          	android:layout_marginTop="5dp"
+          	android:layout_marginBottom="5dp"
+          	android:layout_marginLeft="5dp"
+        	android:layout_marginRight="5dp"
+        	android:layout_below="@id/password"
+        	android:visibility="gone">
+        	
+            <TextView
           		android:id="@+id/error_pop"
-          		android:layout_width="match_parent"
+          		android:layout_width="0dp"
           		android:layout_height="wrap_content"
-          		android:layout_marginTop="5dp"
-          		android:layout_marginBottom="5dp"
-          		android:layout_marginLeft="5dp"
-        		android:layout_marginRight="5dp"
-        		android:layout_below="@id/password"
+          		android:layout_weight="1"
+          		android:layout_gravity="center_vertical"
           		android:textSize="12sp"/>
+            
+            <ImageView 
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+                android:src="@drawable/sign_error_logo"
+                android:layout_gravity="center_vertical"
+        		android:contentDescription="@null"/>            
+            
+        </LinearLayout>
+        
+        
         
         <LinearLayout 
 			android:id="@+id/layout_signin"
@@ -71,7 +91,7 @@
 			android:layout_marginTop="20dp"
         	android:layout_marginLeft="5dp"
         	android:layout_marginRight="5dp"
-			android:layout_below="@id/error_pop"
+			android:layout_below="@id/layout_error_pop"
 			android:orientation="vertical"
 			android:background="@color/common_bg_green">
         	<TextView

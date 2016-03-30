@@ -850,7 +850,8 @@ public class SamService{
 				user_answer.setimagefile(phinfoa.avatar);
 				user_answer.setusertype(LoginUser.MIDSERVER);
 				user_answer.setlastupdate(phinfoa.lastupdate);
-				
+
+				SamLog.e(TAG,"user_anser username:"+user_answer.getusername());
 				user_answer.id = dao.add_update_ContactUser_db(user_answer);
 
 				ReceivedAnswer ra = new ReceivedAnswer();
@@ -1430,6 +1431,7 @@ public class SamService{
 				if(!continue_run) return;
 
 				if(fwobj.cmd == FollowCoreObj.FOLLOW){
+					SamLog.e(TAG,"follow guy "+"unique_id:"+fwobj.unique_id+" username:"+fwobj.username);
 					if(dao.query_FollowerRecord_db(fwobj.unique_id, current_user.getunique_id()) == null){
 						dao.add_FollowerRecord_db(new FollowerRecord(fwobj.unique_id,fwobj.username,current_user.getunique_id()));
 					}

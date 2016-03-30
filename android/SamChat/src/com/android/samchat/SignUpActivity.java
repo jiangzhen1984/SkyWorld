@@ -32,6 +32,12 @@ public class SignUpActivity extends Activity {
 	
 	private boolean available_countrycode=true;
 	private boolean available_phone=false;
+	private boolean available_verifycode=true;
+
+	static final int CHINA=1;
+	static final int USA=2;
+
+	private Context mContext;
 	
 	/*country code*/
 	private String mcc="86";
@@ -40,18 +46,54 @@ public class SignUpActivity extends Activity {
 	/*verified code*/
 	private String mvc;
 
-	private ImageView mBack;
-	private TextView mCountry;
-	private ImageView mClear;
+	private int country_selected=CHINA;
+
+	private RelativeLayout mBack_layout;
+	private LinearLayout mLayout_china;
+	private ImageView mChina_select_button;
+	private TextView mChina;
+
+	private LinearLayout mLayout_usa;
+	private ImageView mUsa_select_button;
+	private TextView mUsa;
+
 	private LinearLayout mLayout_verify;
 	private TextView mPlus;
 	private EditText mCountryCode;
 	private EditText mPhoneNumber;
+	private TextView mSend_verify_code;
+
+	private EditText mInput_verify_code;
 
 	private Button mBtnVerify;
 	
 	
 	SamProcessDialog mDialog;
+
+	private void countrySelect(int country){
+		if(country == CHINA){
+			country_selected = CHINA;
+			mcc = "86";
+			mCountryCode.setText(mcc);
+			mCountryCode.setTextColor((mContext.getResources().getColor(R.color.common_bg_green)));
+			mChina.setTextColor((mContext.getResources().getColor(R.color.common_bg_green)));
+			mChina_select_button.setImageResource(R.drawable.select);
+			mUsa.setTextColor(Color.rgb(0x00, 0x00, 0x00));
+			mUsa_select_button.setImageResource(R.drawable.not_select);
+						
+			
+		}else if(country == USA){
+			country_selected = USA;
+			mcc = "1";
+			mCountryCode.setText(mcc);
+			mCountryCode.setTextColor((mContext.getResources().getColor(R.color.common_bg_green)));
+			mUsa.setTextColor((mContext.getResources().getColor(R.color.common_bg_green)));
+			mUsa_select_button.setImageResource(R.drawable.select);
+			mChina.setTextColor(Color.rgb(0x00, 0x00, 0x00));
+			mChina_select_button.setImageResource(R.drawable.select);
+			
+		}
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,38 +104,43 @@ public class SignUpActivity extends Activity {
            registerReceiver(DestoryReceiver, destroy_filter);
 	    
            setContentView(R.layout.sign_up);
+	    mContext = getBaseContext();
 
-	    mBack = (ImageView)findViewById(R.id.back); 
-	    mCountry = (TextView)findViewById(R.id.country);
-	    mClear = (ImageView)findViewById(R.id.clear); 
-	    mLayout_verify = (LinearLayout)findViewById(R.id.layout_verify); 
+	    mBack_layout = (RelativeLayout)findViewById(R.id.back_layout); 
+	    mLayout_china = (LinearLayout)findViewById(R.id.layout_china); 
+	    mChina_select_button=(ImageView)findViewById(R.id.china_select_button); 
+	    mChina= (TextView)findViewById(R.id.china);
+
+	    mLayout_usa = (LinearLayout)findViewById(R.id.layout_usa); 
+	    mUsa_select_button=(ImageView)findViewById(R.id.usa_select_button); 
+	    mUsa= (TextView)findViewById(R.id.usa);
+		
+	    
 	    mPlus = (TextView)findViewById(R.id.plus);
 	    mCountryCode = (EditText)findViewById(R.id.countrycode);
 	    mPhoneNumber = (EditText)findViewById(R.id.phonenumber);
+	    mSend_verify_code =  (TextView)findViewById(R.id.send_verify_code);
+
+	    mInput_verify_code =(EditText)findViewById(R.id.input_verify_code); 
 	    mBtnVerify = (Button)findViewById(R.id.button_verify); 
-	    
+	    mLayout_verify = (LinearLayout)findViewById(R.id.layout_verify); 
 	    
 	    mPlus.setText("+");
-	    mCountryCode.setText(mcc);
-	    mCountry.setText(getString(R.string.China));
+	    mPlus.setTextColor((mContext.getResources().getColor(R.color.common_bg_green)));
 	    
-	    mCountryCode.addTextChangedListener(CC_TextWatcher);
+	    //mCountryCode.addTextChangedListener(CC_TextWatcher);
 	    mPhoneNumber.addTextChangedListener(PN_TextWatcher);
 	    
 	    
 	    mBtnVerify.setEnabled(false);
 	    mBtnVerify.setClickable(false);
-	    
-	    mClear.setOnClickListener(new OnClickListener(){
-	    	@Override
-	    	public void onClick(View arg0) {
-	    		mPhoneNumber.setText("");
-	    	}
-	    	
-	    });
+	    mLayout_verify.setEnabled(false);
+	    mLayout_verify.setClickable(false);
+
+	    countrySelect(country_selected);
 	    
 	    /*cancel from sign up activity*/
-	    mBack.setOnClickListener(new OnClickListener(){
+	    mBack_layout.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
 	    		SamLog.i(TAG,"cancel from sign up activity");
@@ -105,7 +152,7 @@ public class SignUpActivity extends Activity {
 	    
     
 	    /*verify the phone number*/
-	    mBtnVerify.setOnClickListener(new OnClickListener(){
+	    mLayout_verify.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
 	    		if(!NetworkMonitor.isNetworkAvailable()){
@@ -115,13 +162,37 @@ public class SignUpActivity extends Activity {
 	    		SamLog.i(TAG,"verify the phone number input by user");
 	    		/*verify the code:compare to the one server received*/
 	    		//do verify process
-	    		if(!isSignParamIllegal()){
+	    		//if(!isSignParamIllegal()){
 	    		/*launch the sign account activity*/
-	    			launchSignAccountActivity();
-	    		}
+	    		launchSignAccountActivity();
+	    		//}
 	    	}
 	    	
 	    });
+
+
+	    mLayout_china.setOnClickListener(new OnClickListener(){
+	    	@Override
+	    	public void onClick(View arg0) {
+	    		if(country_selected !=CHINA){
+	    			countrySelect(CHINA);
+			}
+	    	}
+	    	
+	    });
+
+	    mLayout_usa.setOnClickListener(new OnClickListener(){
+	    	@Override
+	    	public void onClick(View arg0) {
+	    		if(country_selected !=USA){
+	    			countrySelect(USA);
+			}
+	    		
+	    	}
+	    	
+	    });
+
+		
 	    
 	   
 	    
@@ -157,15 +228,15 @@ public class SignUpActivity extends Activity {
 	
 	private void updateBtnVerify()
 	{
-		boolean clickable = available_countrycode & available_phone ;
+		boolean clickable = available_countrycode & available_phone & available_verifycode ;
 		if(clickable){
 			mBtnVerify.setTextColor(getResources().getColor(R.color.text_valid_white));
 		}else{
 			mBtnVerify.setTextColor(getResources().getColor(R.color.text_invalid_gray));
 		}
 		
-		 mBtnVerify.setEnabled(clickable);
-		 mBtnVerify.setClickable(clickable);
+		 mLayout_verify.setEnabled(clickable);
+		 mLayout_verify.setClickable(clickable);
 		
 	}
 	
@@ -194,7 +265,7 @@ public class SignUpActivity extends Activity {
 		    }     
 	};
 	
-	private TextWatcher CC_TextWatcher = new TextWatcher(){
+	/*private TextWatcher CC_TextWatcher = new TextWatcher(){
 		 @Override 
 		    public void onTextChanged(CharSequence s, int start, int before, int count) { 
 		        
@@ -224,7 +295,7 @@ public class SignUpActivity extends Activity {
 		    	
 		    	updateBtnVerify();
 		    }     
-	};
+	};*/
 	
 	 
 	

@@ -28,7 +28,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.KeyEvent;
@@ -61,6 +63,10 @@ public class SamService_Fragment extends Fragment {
 	private TextView mCancel_search;
 	private TextView mHot_topic;
 
+	private EditText mSamservice_search_input_show;
+	private LinearLayout mSamservice_search_layout_show;
+	private RelativeLayout mBanner_layout;
+
 	private String current_question;
 	private SamServiceType current_type;
 
@@ -82,6 +88,15 @@ public class SamService_Fragment extends Fragment {
 			mSearch = (EditText) rootView.findViewById(R.id.samservice_search_input);
 			mClear = (ImageView) rootView.findViewById(R.id.samservice_search_clear);
 			mHot_topic = (TextView) rootView.findViewById(R.id.hot_topic);
+
+			mBanner_layout = (RelativeLayout)rootView.findViewById(R.id.banner_layout);
+
+			mSamservice_search_input_show = (EditText)rootView.findViewById(R.id.samservice_search_input_show);
+			mSamservice_search_layout_show = (LinearLayout)rootView.findViewById(R.id.samservice_search_layout_show);
+
+			mSamservice_search_input_show.setEnabled(false);
+			mSamservice_search_input_show.setFocusable(false);
+			mSamservice_search_layout_show.setVisibility(View.GONE);
 
 			mCancel_search = (TextView)  rootView.findViewById(R.id.cancel_search);
 			mCancel_search.setVisibility(View.GONE);
@@ -262,7 +277,7 @@ public class SamService_Fragment extends Fragment {
 	private void back_to_topsearch(){
 		mAdpater.clearAnswerInfo();
 		mAdpater.setListType_topSearch();
-		mAdpater.setCount(5);	
+		mAdpater.setCount(15);	
 		mAdpater.notifyDataSetChanged();
 	}
 	
@@ -283,6 +298,10 @@ public class SamService_Fragment extends Fragment {
 				if(mDialog!=null){
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
+				mBanner_layout.setVisibility(View.GONE);
+				mSamservice_search_input_show.setText(current_question);
+				mSamservice_search_layout_show.setVisibility(View.VISIBLE);
+				
 				mCancel_search.setVisibility(View.VISIBLE);
 				mHot_topic.setVisibility(View.GONE);
 				current_type = SamServiceType.ANSWER;
@@ -326,6 +345,11 @@ public class SamService_Fragment extends Fragment {
 				if(mDialog!=null){
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
+
+				mBanner_layout.setVisibility(View.VISIBLE);
+				mSamservice_search_input_show.setText("");
+				mSamservice_search_layout_show.setVisibility(View.GONE);
+				
 				current_type = SamServiceType.TOP_SEARCH;
 				current_question = null;
 				mSearch.setInputType(InputType.TYPE_CLASS_TEXT);

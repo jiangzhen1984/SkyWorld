@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.InputType;
+import android.text.Selection;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -56,14 +58,17 @@ public class SignAccountActivity extends Activity {
 	private String cellphone=null;
 	private String country_code=null;
 
+	private boolean isPasswordShow=false;
+	private ImageView mShow_passwd;
+
 	private ImageView mBack;
-	private LinearLayout mLayout_verify;
+	private LinearLayout mLayout_signup;
 	private EditText mUsername;
 	private EditText mPassword;
 	private Button mBtnSignup;
 	private TextView mError_pop;
 
-	private CheckBox mCheckBox;
+	private ImageView mCheckBox;
 	private TextView mReadProtocol;
 	
 	SamProcessDialog mDialog;
@@ -288,23 +293,42 @@ public class SignAccountActivity extends Activity {
 		setContentView(R.layout.sign_account);
 
 	    mBack = (ImageView)findViewById(R.id.back); 
-	    mLayout_verify = (LinearLayout)findViewById(R.id.layout_signup); 
+	    mLayout_signup = (LinearLayout)findViewById(R.id.layout_signup); 
 	    mUsername = (EditText)findViewById(R.id.username);
 	    mPassword = (EditText)findViewById(R.id.password);
 	    mBtnSignup = (Button)findViewById(R.id.button_signup);
-	    mCheckBox = (CheckBox)findViewById(R.id.checkbox_protocol);
+	    mCheckBox = (ImageView)findViewById(R.id.CheckBox);
 	    mReadProtocol = (TextView)findViewById(R.id.read_protocol);
+
+	    mShow_passwd = (ImageView)findViewById(R.id.show_passwd);
 
 	    mError_pop = (TextView)findViewById(R.id.error_pop);
 	    clearErrorPop();
 
-	    mCheckBox.setOnCheckedChangeListener(new CK_Listner());
+	    //mCheckBox.setOnCheckedChangeListener(new CK_Listner());
+	    mCheckBox.setOnClickListener(new OnClickListener(){
+	    	@Override
+	    	public void onClick(View arg0) {
+			if(available_checkbox){
+				available_checkbox  = false;
+				mCheckBox.setImageResource(R.drawable.not_select);
+				updateBtnSignup();
+			}else{
+				available_checkbox  = true;
+				mCheckBox.setImageResource(R.drawable.select);
+				updateBtnSignup();
+			}
+		}
+	    	
+	    });
 	    
 	    mUsername.addTextChangedListener(UN_TextWatcher);
 	    mPassword.addTextChangedListener(PW_TextWatcher);
 	    
 	    mBtnSignup.setEnabled(false);
 	    mBtnSignup.setClickable(false);
+	    mLayout_signup.setEnabled(false);
+	    mLayout_signup.setClickable(false);
 	    
 	    mDialog = new SamProcessDialog();
 
@@ -321,7 +345,7 @@ public class SignAccountActivity extends Activity {
 	    });
 	    
 	    /*sign up*/
-	    mBtnSignup.setOnClickListener(new OnClickListener(){
+	    mLayout_signup.setOnClickListener(new OnClickListener(){
 	    	@Override
 	    	public void onClick(View arg0) {
 	    		clearErrorPop();
@@ -347,6 +371,25 @@ public class SignAccountActivity extends Activity {
 	    	}
 	    	
 	    });
+
+	    mShow_passwd.setOnClickListener(new OnClickListener(){
+	    	@Override
+	    	public void onClick(View arg0) {
+			if(!isPasswordShow){
+				isPasswordShow = true;
+				mPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+				Editable etable = mPassword.getText();
+				Selection.setSelection(etable, etable.length());
+			}else{
+				isPasswordShow = false;
+				mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				Editable etable = mPassword.getText();
+				Selection.setSelection(etable, etable.length());
+			}
+		}
+	    	
+	    });
+		
 	}
 
 	private void launchProtocolURL()
@@ -458,8 +501,8 @@ public class SignAccountActivity extends Activity {
 			//mSignin.setTextColor(Color.rgb(0x99, 0x99, 0x99));
 		}
 		
-		mBtnSignup.setEnabled(clickable);
-		mBtnSignup.setClickable(clickable);
+		mLayout_signup.setEnabled(clickable);
+		mLayout_signup.setClickable(clickable);
 		//clearErrorPop();
 		
 	}
@@ -522,14 +565,14 @@ public class SignAccountActivity extends Activity {
 		}    
 	};
 
-	private class CK_Listner implements CompoundButton.OnCheckedChangeListener {
+	/*private class CK_Listner implements CompoundButton.OnCheckedChangeListener {
 		@Override  
         	public void onCheckedChanged(CompoundButton button,boolean isChecked){
 			available_checkbox = mCheckBox.isChecked();
 			updateBtnSignup();
 		}  
 		
-	};
+	};*/
 	
 
 	private void launchDialogActivity(String title,String msg){

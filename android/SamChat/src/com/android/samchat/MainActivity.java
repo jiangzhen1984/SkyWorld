@@ -49,6 +49,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
@@ -149,16 +152,18 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private LinearLayout mSettings_layout;
 	private LinearLayout mLogout_layout;
 	private LinearLayout mExitapp_layout;
+	private TextView mVersion;
 
 	private RelativeLayout mMine_layout;
 	private ImageView mAvatar;
 	private TextView mUsername;
 	
-	private TextView mMe;
+	//private TextView mMe;
 
 	//private ImageView mOption_button;
 	private RelativeLayout mOption_button_layout;
 	private ImageView mOption_button_reminder;
+	
 
 	private SamProcessDialog mDialog;
 
@@ -173,8 +178,11 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	private Uri cropImageUri;
 
-	private boolean isSyncedFollowList = false;;
+	private boolean isSyncedFollowList = false;
 	private boolean isSyncingFollowList = false;
+
+	private String versionName;
+	private Context mContext;
 
 	public static int getInviteNum(){
 		return sInviteNum;
@@ -231,6 +239,19 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		startActivityForResult(intent, CONFIRM_ID_AVATAR_SELECTED);
 	}
 
+	private void getSWVersion(Context ctx){
+		try {  
+			PackageManager pm = ctx.getPackageManager();  
+			PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(),PackageManager.GET_ACTIVITIES);  
+			if (pi != null) {  
+				versionName = pi.versionName == null ? "null" : pi.versionName;  
+			}  
+		} catch (NameNotFoundException e) {  
+            
+		}  
+
+	}
+
 	
 
 	@Override
@@ -240,6 +261,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		Intent intent = new Intent();
 		intent.setAction(SamService.FINISH_ALL_SIGN_ACTVITY);
 		sendBroadcast(intent);
+
+		mContext = getBaseContext();
+		getSWVersion(mContext);
 
 		initPage();
 
@@ -310,14 +334,14 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		});
 
-		mMe = (TextView)menu.findViewById(R.id.me);
+		/*mMe = (TextView)menu.findViewById(R.id.me);
 		mMe.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				menu.toggle();
 				launchMeActivity();
 			}
-		});
+		});*/
 
 		mLogout_layout = (LinearLayout)menu.findViewById(R.id.logout_layout);
 		mLogout_layout.setOnClickListener(new OnClickListener(){
@@ -335,6 +359,10 @@ public class MainActivity extends IndicatorFragmentActivity implements
 					launchDialogActivityNeedConfirmForExitApp(getString(R.string.reminder),getString(R.string.exitapp_reminder));
 				}
 			});
+
+		mVersion = (TextView)menu.findViewById(R.id.version);
+		mVersion.setText(versionName);
+		
 
 		//mOption_button = (ImageView)findViewById(R.id.option_button);
 		mOption_button_reminder = (ImageView)findViewById(R.id.option_button_reminder);

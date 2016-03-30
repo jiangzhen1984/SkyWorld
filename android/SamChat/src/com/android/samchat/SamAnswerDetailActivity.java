@@ -73,7 +73,7 @@ public class SamAnswerDetailActivity extends Activity {
 		mServicer_img.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-
+				launchUserInfoActivity(syservicer);
 			}
 		    	
 		});
@@ -292,6 +292,19 @@ public class SamAnswerDetailActivity extends Activity {
 	private void launchNameCardActivity(ContactUser userinfo){
 		Intent newIntent = new Intent(this,NameCardActivity.class);
 		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("ContactUser",syservicer);
+		newIntent.putExtras(bundle);
+		
+		startActivity(newIntent);
+	}
+
+
+	private void launchUserInfoActivity(ContactUser userinfo){
+		Intent newIntent = new Intent(this,UserInfoActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP;
 		newIntent.setFlags(intentFlags);
 		
 		Bundle bundle = new Bundle();

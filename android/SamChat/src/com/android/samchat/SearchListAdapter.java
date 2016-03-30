@@ -34,7 +34,7 @@ public class SearchListAdapter extends BaseAdapter{
 	private int list_type;
 	private Context mContext;
 	private LayoutInflater mInflater;
-	private int mCount = 5;
+	private int mCount = 15;
 
 	private List<ReceivedAnswer> answerArray = new ArrayList<ReceivedAnswer>();
 	private List<readOrNot> isReadArray = new ArrayList<readOrNot>();
@@ -153,11 +153,11 @@ public class SearchListAdapter extends BaseAdapter{
 		
 		switch(viewType){
 		case TYPE_TOPIC:
-			if(position ==0)	holder.search_info.setText("硅谷比较好的学区在哪里");
-			else if(position == 1) holder.search_info.setText("女儿去美国 读高中,怎么样才能找到合适的寄宿家庭");
-			else if(position == 2) holder.search_info.setText("如何得到医院的医疗补助");
-			else if(position == 3) holder.search_info.setText("美国的一栋房产,每年要多少花费");
-			else if(position == 4) holder.search_info.setText("想去cosco,没有会员卡怎么办");
+			if(position%5 ==0)	holder.search_info.setText("硅谷比较好的学区在哪里");
+			else if(position%5 == 1) holder.search_info.setText("女儿去美国 读高中,怎么样才能找到合适的寄宿家庭");
+			else if(position%5 == 2) holder.search_info.setText("如何得到医院的医疗补助");
+			else if(position%5 == 3) holder.search_info.setText("美国的一栋房产,每年要多少花费");
+			else if(position%5 == 4) holder.search_info.setText("想去cosco,没有会员卡怎么办");
 		break;
 		case TYPE_ANSWER:
 			ReceivedAnswer info = answerArray.get(position);
