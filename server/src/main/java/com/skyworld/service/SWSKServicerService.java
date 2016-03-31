@@ -28,6 +28,7 @@ public class SWSKServicerService extends BaseService {
 			desc.setCmpName(skervicer.getCmpName());
 			desc.setLogoPath(skervicer.getLogoPath());
 			desc.setWebsite(skervicer.getWebsite());
+			desc.setPhone(skervicer.getCmpPhone());
 			sess.save(desc);
 		} else {
 			SWPServicerCompanyDesc desc = descList.get(0);
@@ -35,6 +36,7 @@ public class SWSKServicerService extends BaseService {
 			desc.setCmpName(skervicer.getCmpName());
 			desc.setLogoPath(skervicer.getLogoPath());
 			desc.setWebsite(skervicer.getWebsite());
+			desc.setPhone(skervicer.getCmpPhone());
 			sess.update(desc);
 		}
 		trans.commit();
@@ -54,6 +56,7 @@ public class SWSKServicerService extends BaseService {
 			skervicer.setCmpName(desc.getCmpName());
 			skervicer.setLogoPath(desc.getLogoPath());
 			skervicer.setWebsite(desc.getWebsite());
+			skervicer.setCmpPhone(desc.getPhone());
 		}
 		sess.close();
 	}

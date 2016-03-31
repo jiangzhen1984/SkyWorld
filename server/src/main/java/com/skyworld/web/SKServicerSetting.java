@@ -73,13 +73,15 @@ public class SKServicerSetting extends HttpServlet {
 		}
 		
 		String auth = req.getHeader("Authorization");
-		SKServicer sk = CacheManager.getIntance().getSKServicer(TokenFactory.valueOf(auth));
+		SKServicer sk = new SKServicer();
+		sk.setId(1);
+		sk.setCmpName("www");
+		sk.setCmpDesc("bbb");
+		sk.setWebsite("http://www.google.com");
+		sk.setCmpPhone("131231");
+		//SKServicer sk = CacheManager.getIntance().getSKServicer(TokenFactory.valueOf(auth));
 		if ("/setting".equalsIgnoreCase(action)) {
-			
-			if (method == null && strId != null) {
-				forwardSettingIndex(req, resp, sk);
-			}else if ("update".equals(method) && strId != null) {
-			}
+			forwardSettingIndex(req, resp, sk);
 		}
 		
 	}
@@ -94,10 +96,11 @@ public class SKServicerSetting extends HttpServlet {
 		HttpSession sess = req.getSession(true);
 		sess.setAttribute("uid", sk.getId());
 		resp.addCookie(new Cookie("uid", sk.getId()+""));
-		resp.addCookie(new Cookie("website", sk.getWebsite()));
+		resp.addCookie(new Cookie("wwebsite", sk.getWebsite()));
 		resp.addCookie(new Cookie("logo", sk.getLogoURL()));
 		resp.addCookie(new Cookie("desc", sk.getCmpDesc()));
 		resp.addCookie(new Cookie("name", sk.getCmpName()));
+		resp.addCookie(new Cookie("phone", sk.getCmpPhone()));
 		req.getRequestDispatcher("/web/info_basic_company.html").forward(req, resp);
 	}
 	

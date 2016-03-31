@@ -44,38 +44,51 @@
 			<tr>
 				<td>
 					<p class="infotitle">公司Logo</p>
-					<input type="image" src="images/company_logo_test1.png" onclick="" class="infoheader">
+					<input type="image" id="c_logo" src="images/company_logo_test1.png" onclick="" class="infoheader">
 				</td>
-				<td><button type="button" class="infoconfirmbutton" style="margin-top: 100px;">确认</button></td>
+			</tr>
+		</table>
+			<table>
+			<tr>
+				<td>
+					<p class="infotitle">公司名称</p>
+					<input type="text" id="c_cmp_name"  class="info">
+				</td>
 			</tr>
 		</table>
 		<table>
 			<tr>
 				<td>
 					<p class="infotitle">公司简单介绍</p>
-					<textarea type="text" class="info" style="height: 180px;"></textarea>
+					<textarea type="text" id="c_cmp_desc" class="info" style="height: 180px;"></textarea>
 				</td>
-				<td><button type="button" class="infoconfirmbutton" style="margin-top: 180px;">确认</button></td>
 			</tr>
 		</table>
 		<table>
 			<tr>
 				<td>
 					<p class="infotitle">公司网站地址</p>
-					<input type="text" class="info">
+					<input type="text" id="c_cmp_website" class="info">
 				</td>
-				<td><button type="button" class="infoconfirmbutton" style="margin-top: 30px;">确认</button></td>
 			</tr>
 		</table>
 		<table>
 			<tr>
 				<td>
 					<p class="infotitle">公司客服电话</p>
-					<input type="text" class="info">
+					<input type="text" id="c_cmp_phone"  class="info">
 				</td>
-				<td><button type="button" class="infoconfirmbutton" style="margin-top: 30px;">确认</button></td>
 			</tr>
 		</table>
+		<table>
+			<tr>
+				<td>
+				<p style="margin: 6px 0px 6px 50px;"><button type="button" class="phonebutton">提交</button></p>
+				</td>
+			</tr>
+		</table>
+		
+			
 	</div>
 	<div id="mainright" class="fl">
 			<div id = "mainrightbody">
@@ -166,7 +179,38 @@
 		<p>©2016 Samchat Inc。 All Rights Reserved</p>
 	</div>
 </div>
+<script src="../js/jquery-latest.min.js" ></script>
+<script src="../js/jquery.cookie.js" ></script>
 
-
+<script type="text/javascript">
+function g_init() {
+   var c_desc = $.cookie("desc");
+   var c_name = $.cookie("name");
+   var c_logo = $.cookie("logo");
+   var c_website = $.cookie("wwebsite");
+   var c_phone = $.cookie("phone");
+   
+   var c_name_tv = $("#c_cmp_name");
+   var c_logo_iv = $("#c_logo");
+   var c_cmp_desc_tv = $("#c_cmp_desc");
+   var c_cmp_website_tv = $("#c_cmp_website");
+   var c_cmp_phone_tv = $("#c_cmp_phone");
+   
+   console.log(c_desc);
+   console.log(c_name);
+   console.log(c_logo);
+   console.log(c_website);
+   console.log(c_phone);
+   
+   
+   c_name_tv.val(c_name);
+   c_cmp_website_tv.val(c_website);
+   c_cmp_desc_tv.val(c_desc);
+   c_cmp_phone_tv.val(c_phone);
+   
+}
+ 
+ g_init();
+</script>
 </body>
 </html>

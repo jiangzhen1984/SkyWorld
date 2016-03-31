@@ -23,6 +23,8 @@ public class SKServicer extends User {
 	
 	private String logoPath;
 	
+	private String cmpPhone;
+	
 	
 
 	public SKServicer() {
@@ -100,6 +102,14 @@ public class SKServicer extends User {
 
 	public void setLogoPath(String logoPath) {
 		this.logoPath = logoPath;
+	}
+
+	public String getCmpPhone() {
+		return cmpPhone;
+	}
+
+	public void setCmpPhone(String cmpPhone) {
+		this.cmpPhone = cmpPhone;
 	}
 	
 	

@@ -23,7 +23,8 @@ public class SSOFilter implements Filter {
 		HttpServletRequest hsr = (HttpServletRequest)req;
 		String auth = hsr.getHeader("Authorization");
 		if (auth == null) {
-			req.getRequestDispatcher("/no_login.html").forward(req, resp);
+			//req.getRequestDispatcher("/no_login.html").forward(req, resp);
+			chain.doFilter(req, resp);
 		} else {
 			chain.doFilter(req, resp);
 		}

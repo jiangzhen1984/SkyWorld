@@ -23,8 +23,11 @@ public class SWPServicerCompanyDesc {
 	@Column(name="CMP_NAME", columnDefinition="VARCHAR(200)")
 	private String cmpName;
 	
-	@Column(name="WEBSITE", columnDefinition="VARCHAR(1000)")
+	@Column(name="CMP_WEBSITE", columnDefinition="VARCHAR(1000)")
 	private String website;
+	
+	@Column(name="CMP_PHONE", columnDefinition="VARCHAR(100)")
+	private String phone;
 	
 	@Column(name="CMP_DESC", columnDefinition="VARCHAR(2000)")
 	private String cmpDesc;
@@ -102,6 +105,15 @@ public class SWPServicerCompanyDesc {
 	public void setLogoPath(String logoPath) {
 		this.logoPath = logoPath;
 	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
 	
 	
 

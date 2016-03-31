@@ -93,7 +93,7 @@
 	
 	<servlet-mapping>
 		<servlet-name>SKServicer</servlet-name>
-		<url-pattern>/skservicer/setting/*</url-pattern>
+		<url-pattern>/skservicer/setting</url-pattern>
 	</servlet-mapping>
 
 
