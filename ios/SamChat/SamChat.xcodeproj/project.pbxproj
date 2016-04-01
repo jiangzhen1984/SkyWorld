@@ -1103,8 +1103,6 @@
 			isa = PBXGroup;
 			children = (
 				3159D99F1CAEADC600212DAB /* 3rdparty */,
-				310A9A5F1CAA08EF000616F0 /* EaseMob */,
-				317B82521CA9625E000415E9 /* HyphenateSDK */,
 				317C2D4D1CA909B80035A14E /* Application */,
 				317C2D451CA8E3410035A14E /* CoreData */,
 				3183D06E1CA690150088FD67 /* Views */,
@@ -1175,6 +1173,8 @@
 		3159D99F1CAEADC600212DAB /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				310A9A5F1CAA08EF000616F0 /* EaseMob */,
+				317B82521CA9625E000415E9 /* HyphenateSDK */,
 			);
 			name = 3rdparty;
 			sourceTree = "<group>";
