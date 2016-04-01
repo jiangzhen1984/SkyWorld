@@ -30,6 +30,7 @@
 //                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
     
     BOOL isCurrentUserLoginOK = [[SCUserProfileManager sharedInstance] isCurrentUserLoginStatusOK];
+    isCurrentUserLoginOK = YES;
     if (isCurrentUserLoginOK){
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
     }
@@ -45,26 +46,32 @@
     UIViewController *viewController = nil;
     if(loginSuccess) {
         //-----------
-        //UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        //viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
+//        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//        viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
         //------------
         //加载申请通知的数据
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
-        if (self.mainController == nil) {
-            self.mainController = [[MainViewController alloc] init];
-            viewController = [[UINavigationController alloc] initWithRootViewController:self.mainController];
-        }else{
-            viewController  = self.mainController.navigationController;
-        }
+//        if (self.homeController == nil) {
+//            self.homeController = [[HomeViewController alloc] init];
+//            viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
+//        }else{
+//            viewController  = self.mainController.navigationController;
+//        }
         
-        [ChatDemoHelper shareHelper].mainVC = self.mainController;
+//        [ChatDemoHelper shareHelper].mainVC = self.mainController;
+//        
+//        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
+//        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
+//        [[ChatDemoHelper shareHelper] asyncPushOptions];
+        //--------------
+        
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView2"];
+        [ChatDemoHelper shareHelper].mainVC = self.homeController;
         
         [[ChatDemoHelper shareHelper] asyncGroupFromServer];
         [[ChatDemoHelper shareHelper] asyncConversationFromDB];
         [[ChatDemoHelper shareHelper] asyncPushOptions];
-        //--------------
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView2"];
         
     } else {
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoginCtrl" bundle:[NSBundle mainBundle]];

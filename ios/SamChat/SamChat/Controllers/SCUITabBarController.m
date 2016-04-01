@@ -43,6 +43,16 @@
     tabFrame.origin.y = yStatusBar + NAVBAR_HEGHT;
     self.tabBar.frame = tabFrame;
     
+    // indicator
+    CGRect indicatorFrame = self.tabBar.frame;
+    
+    indicatorFrame.origin.y = indicatorFrame.origin.y + indicatorFrame.size.height - 2;
+    indicatorFrame.size.height = 2;
+    indicatorFrame.size.width /= 4;
+    UIView *tabIndicator = [[UIView alloc] initWithFrame:indicatorFrame];
+    //[tabIndicator setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:tabIndicator];
+    [tabIndicator setBackgroundColor:[UIColor whiteColor]];
     
     [self.tabBar setBackgroundImage:[SCUtils createImageWithColor:SC_MAIN_COLOR]];
     [self.tabBar setShadowImage:[SCUtils createImageWithColor:[UIColor clearColor]]];

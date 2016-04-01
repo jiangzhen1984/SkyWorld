@@ -11,8 +11,9 @@
   */
 
 #import <UIKit/UIKit.h>
-#import "MainViewController.h"
+//#import "MainViewController.h"
 #import "ApplyViewController.h"
+#import "HomeViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, EMChatManagerDelegate>
 {
@@ -20,7 +21,8 @@
 }
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) MainViewController *mainController;
+//@property (strong, nonatomic) MainViewController *mainController;
+@property (strong, nonatomic) HomeViewController *homeController;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

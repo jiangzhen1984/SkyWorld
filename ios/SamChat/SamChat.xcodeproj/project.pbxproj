@@ -18,7 +18,9 @@
 		311BC6401CA37B19006B4707 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 311BC63E1CA37B19006B4707 /* LaunchScreen.storyboard */; };
 		311BC64B1CA37B19006B4707 /* SamChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC64A1CA37B19006B4707 /* SamChatTests.m */; };
 		311BC6561CA37B19006B4707 /* SamChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC6551CA37B19006B4707 /* SamChatUITests.m */; };
-		317596731CA54A48002D2F73 /* ServiceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 317596721CA54A48002D2F73 /* ServiceSearchViewController.m */; };
+		3159D9901CAE68F200212DAB /* ServiceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */; };
+		3159D9941CAE6A8C00212DAB /* OfficalListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */; };
+		3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9971CAE6B5C00212DAB /* ProducerViewController.m */; };
 		3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFE31CA5401600796D25 /* SCUINavigationController.m */; };
 		3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFEA1CA5494500796D25 /* SCSkyWorldAPI.m */; };
 		317B827D1CA9625E000415E9 /* libHyphenateFullSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317B827B1CA9625E000415E9 /* libHyphenateFullSDK.a */; };
@@ -398,9 +400,13 @@
 		311BC6511CA37B19006B4707 /* SamChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		311BC6551CA37B19006B4707 /* SamChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatUITests.m; sourceTree = "<group>"; };
 		311BC6571CA37B19006B4707 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3159D98E1CAE68F200212DAB /* ServiceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceSearchViewController.h; path = Service/ServiceSearchViewController.h; sourceTree = "<group>"; };
+		3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiceSearchViewController.m; path = Service/ServiceSearchViewController.m; sourceTree = "<group>"; };
+		3159D9921CAE6A8C00212DAB /* OfficalListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OfficalListTableViewController.h; path = Offical/OfficalListTableViewController.h; sourceTree = "<group>"; };
+		3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OfficalListTableViewController.m; path = Offical/OfficalListTableViewController.m; sourceTree = "<group>"; };
+		3159D9961CAE6B5C00212DAB /* ProducerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProducerViewController.h; path = Producer/ProducerViewController.h; sourceTree = "<group>"; };
+		3159D9971CAE6B5C00212DAB /* ProducerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProducerViewController.m; path = Producer/ProducerViewController.m; sourceTree = "<group>"; };
 		3164BF811CA8BDAE008D1505 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
-		317596711CA54A48002D2F73 /* ServiceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceSearchViewController.h; sourceTree = "<group>"; };
-		317596721CA54A48002D2F73 /* ServiceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceSearchViewController.m; sourceTree = "<group>"; };
 		3178FFE21CA5401600796D25 /* SCUINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUINavigationController.h; sourceTree = "<group>"; };
 		3178FFE31CA5401600796D25 /* SCUINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUINavigationController.m; sourceTree = "<group>"; };
 		3178FFE91CA5494500796D25 /* SCSkyWorldAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPI.h; sourceTree = "<group>"; };
@@ -1145,6 +1151,24 @@
 			path = SamChatUITests;
 			sourceTree = "<group>";
 		};
+		3159D9911CAE6A1500212DAB /* Offical */ = {
+			isa = PBXGroup;
+			children = (
+				3159D9921CAE6A8C00212DAB /* OfficalListTableViewController.h */,
+				3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */,
+			);
+			name = Offical;
+			sourceTree = "<group>";
+		};
+		3159D9951CAE6B3900212DAB /* Producer */ = {
+			isa = PBXGroup;
+			children = (
+				3159D9961CAE6B5C00212DAB /* ProducerViewController.h */,
+				3159D9971CAE6B5C00212DAB /* ProducerViewController.m */,
+			);
+			name = Producer;
+			sourceTree = "<group>";
+		};
 		3178FFE81CA5494500796D25 /* SkyWorld */ = {
 			isa = PBXGroup;
 			children = (
@@ -1248,6 +1272,8 @@
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3159D9951CAE6B3900212DAB /* Producer */,
+				3159D9911CAE6A1500212DAB /* Offical */,
 				31FAC77F1CAE38C40034A0CD /* Custom */,
 				31F8E71A1CA3A8CF0049EE23 /* SCUITabBarController.h */,
 				31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */,
@@ -1833,8 +1859,6 @@
 				31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */,
 				31F8E70E1CA37F530049EE23 /* SignupViewController.h */,
 				31F8E70F1CA37F530049EE23 /* SignupViewController.m */,
-				317596711CA54A48002D2F73 /* ServiceSearchViewController.h */,
-				317596721CA54A48002D2F73 /* ServiceSearchViewController.m */,
 				3183D0681CA68AAF0088FD67 /* RetrievePassWordViewController.h */,
 				3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */,
 				3183D06B1CA68C4A0088FD67 /* ResetPassWordViewController.h */,
@@ -1846,6 +1870,8 @@
 		31FAC7231CAC02D70034A0CD /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				3159D98E1CAE68F200212DAB /* ServiceSearchViewController.h */,
+				3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -2216,7 +2242,6 @@
 				31FAC6B01CAAB7E30034A0CD /* EMLoginViewController.m in Sources */,
 				31FAC6B91CAAB7E30034A0CD /* BlackListViewController.m in Sources */,
 				31FAC6BE1CAAB7E30034A0CD /* UserProfileEditViewController.m in Sources */,
-				317596731CA54A48002D2F73 /* ServiceSearchViewController.m in Sources */,
 				31F8E72E1CA401310049EE23 /* SCConfig.m in Sources */,
 				31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */,
 				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
@@ -2231,6 +2256,7 @@
 				31FAC6BB1CAAB7E30034A0CD /* EditNicknameViewController.m in Sources */,
 				31FAC6A71CAAB7E30034A0CD /* ContactListViewController.m in Sources */,
 				31FAC6AC1CAAB7E30034A0CD /* RealtimeSearchUtil.m in Sources */,
+				3159D9941CAE6A8C00212DAB /* OfficalListTableViewController.m in Sources */,
 				31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */,
 				31FAC5981CAAB3C50034A0CD /* EMRemarkImageView.m in Sources */,
 				31FAC58B1CAAB3C50034A0CD /* TTGlobalUICommon.m in Sources */,
@@ -2255,6 +2281,7 @@
 				31FAC6A31CAAB7E30034A0CD /* ChatroomDetailViewController.m in Sources */,
 				31FAC6951CAAB7E30034A0CD /* CallViewController.m in Sources */,
 				31FAC5931CAAB3C50034A0CD /* UIResponder+Router.m in Sources */,
+				3159D9901CAE68F200212DAB /* ServiceSearchViewController.m in Sources */,
 				31FAC6B21CAAB7E30034A0CD /* UserProfileViewController.m in Sources */,
 				31FAC69F1CAAB7E30034A0CD /* GroupSettingViewController.m in Sources */,
 				3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */,
@@ -2275,6 +2302,7 @@
 				317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */,
 				31FAC6B41CAAB7E30034A0CD /* EMRotbotChatViewCell.m in Sources */,
 				31FAC5811CAAB3C50034A0CD /* EMGifImage.m in Sources */,
+				3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */,
 				317C2D501CA90A1E0035A14E /* AppDelegate+SamChat.m in Sources */,
 				31FAC59D1CAAB3C50034A0CD /* XHMessageTextView.m in Sources */,
 				31FAC69B1CAAB7E30034A0CD /* ContactView.m in Sources */,

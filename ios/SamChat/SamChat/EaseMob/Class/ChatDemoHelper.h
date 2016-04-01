@@ -10,7 +10,7 @@
 
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
-#import "MainViewController.h"
+#import "HomeViewController.h"
 #import "ChatViewController.h"
 
 #if DEMO_CALL == 1
@@ -29,7 +29,7 @@
 
 @property (nonatomic, weak) ConversationListController *conversationListVC;
 
-@property (nonatomic, weak) MainViewController *mainVC;
+@property (nonatomic, weak) HomeViewController *mainVC;
 
 @property (nonatomic, weak) ChatViewController *chatVC;
 
