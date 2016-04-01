@@ -17,8 +17,8 @@
 @property (weak, nonatomic) IBOutlet UIView *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *hotQuestionTable;
 
-@property (nonatomic, strong) NSLayoutConstraint *searchBarToTop;
-@property (nonatomic, strong) NSLayoutConstraint *tableViewToTop;
+@property (nonatomic, strong) NSLayoutConstraint *searchBarTopSpaceConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *tableViewTopSpaceConstraint;
 
 //- (void)hideHomeImage:(BOOL)hide withsearchBarToTop:(CGFloat)barTop duration:(CGFloat)duration;
 
@@ -28,14 +28,14 @@
 
 - (void)viewDidLoad
 {
-    self.searchBarToTop = [NSLayoutConstraint constraintWithItem:_searchBar
+    self.searchBarTopSpaceConstraint = [NSLayoutConstraint constraintWithItem:_searchBar
                                                        attribute:NSLayoutAttributeTop
                                                        relatedBy:NSLayoutRelationEqual
                                                           toItem:self.view
                                                        attribute:NSLayoutAttributeTop
                                                       multiplier:1.0f
                                                         constant:130];
-    self.tableViewToTop = [NSLayoutConstraint constraintWithItem:_hotQuestionTable
+    self.tableViewTopSpaceConstraint = [NSLayoutConstraint constraintWithItem:_hotQuestionTable
                                                        attribute:NSLayoutAttributeTop
                                                        relatedBy:NSLayoutRelationEqual
                                                           toItem:self.view
@@ -43,7 +43,7 @@
                                                       multiplier:1.0f
                                                         constant:200];
 
-    [self.view addConstraints:@[self.searchBarToTop, self.tableViewToTop]];
+    [self.view addConstraints:@[self.searchBarTopSpaceConstraint, self.tableViewTopSpaceConstraint]];
 }
 
 - (NSString *)generateNewQuestionUrlString
@@ -99,8 +99,8 @@
     [UIView animateWithDuration:duration
                      animations:^{
                          self.homeImage.hidden = hide;
-                         [self.searchBarToTop setConstant:barTop];
-                         [self.tableViewToTop setConstant:tableTop];
+                         [self.searchBarTopSpaceConstraint setConstant:barTop];
+                         [self.tableViewTopSpaceConstraint setConstant:tableTop];
                          [self.view layoutIfNeeded];
                      }];
 }

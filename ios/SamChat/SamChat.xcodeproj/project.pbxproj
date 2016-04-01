@@ -22,6 +22,10 @@
 		3159D9941CAE6A8C00212DAB /* OfficalListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */; };
 		3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9971CAE6B5C00212DAB /* ProducerViewController.m */; };
 		3159D99E1CAE725A00212DAB /* home_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3159D99D1CAE725A00212DAB /* home_background.png */; };
+		3159D9AF1CAEAE1800212DAB /* UIBarButtonItem+WZLBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9A31CAEAE1800212DAB /* UIBarButtonItem+WZLBadge.m */; };
+		3159D9B01CAEAE1800212DAB /* UITabBarItem+WZLBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9A51CAEAE1800212DAB /* UITabBarItem+WZLBadge.m */; };
+		3159D9B11CAEAE1800212DAB /* CAAnimation+WAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9A81CAEAE1800212DAB /* CAAnimation+WAnimation.m */; };
+		3159D9B21CAEAE1800212DAB /* UIView+WZLBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9AD1CAEAE1800212DAB /* UIView+WZLBadge.m */; };
 		3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFE31CA5401600796D25 /* SCUINavigationController.m */; };
 		3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFEA1CA5494500796D25 /* SCSkyWorldAPI.m */; };
 		317B827D1CA9625E000415E9 /* libHyphenateFullSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317B827B1CA9625E000415E9 /* libHyphenateFullSDK.a */; };
@@ -408,6 +412,16 @@
 		3159D9961CAE6B5C00212DAB /* ProducerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProducerViewController.h; path = Producer/ProducerViewController.h; sourceTree = "<group>"; };
 		3159D9971CAE6B5C00212DAB /* ProducerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProducerViewController.m; path = Producer/ProducerViewController.m; sourceTree = "<group>"; };
 		3159D99D1CAE725A00212DAB /* home_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_background.png; sourceTree = "<group>"; };
+		3159D9A21CAEAE1800212DAB /* UIBarButtonItem+WZLBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+WZLBadge.h"; sourceTree = "<group>"; };
+		3159D9A31CAEAE1800212DAB /* UIBarButtonItem+WZLBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+WZLBadge.m"; sourceTree = "<group>"; };
+		3159D9A41CAEAE1800212DAB /* UITabBarItem+WZLBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarItem+WZLBadge.h"; sourceTree = "<group>"; };
+		3159D9A51CAEAE1800212DAB /* UITabBarItem+WZLBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarItem+WZLBadge.m"; sourceTree = "<group>"; };
+		3159D9A71CAEAE1800212DAB /* CAAnimation+WAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CAAnimation+WAnimation.h"; sourceTree = "<group>"; };
+		3159D9A81CAEAE1800212DAB /* CAAnimation+WAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CAAnimation+WAnimation.m"; sourceTree = "<group>"; };
+		3159D9AA1CAEAE1800212DAB /* WZLBadgeProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZLBadgeProtocol.h; sourceTree = "<group>"; };
+		3159D9AC1CAEAE1800212DAB /* UIView+WZLBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WZLBadge.h"; sourceTree = "<group>"; };
+		3159D9AD1CAEAE1800212DAB /* UIView+WZLBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WZLBadge.m"; sourceTree = "<group>"; };
+		3159D9AE1CAEAE1800212DAB /* WZLBadgeImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZLBadgeImport.h; sourceTree = "<group>"; };
 		3164BF811CA8BDAE008D1505 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3178FFE21CA5401600796D25 /* SCUINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUINavigationController.h; sourceTree = "<group>"; };
 		3178FFE31CA5401600796D25 /* SCUINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUINavigationController.m; sourceTree = "<group>"; };
@@ -1102,6 +1116,7 @@
 		311BC62C1CA37B19006B4707 /* SamChat */ = {
 			isa = PBXGroup;
 			children = (
+				3159D99F1CAEADC600212DAB /* 3rdparty */,
 				310A9A5F1CAA08EF000616F0 /* EaseMob */,
 				317B82521CA9625E000415E9 /* HyphenateSDK */,
 				317C2D4D1CA909B80035A14E /* Application */,
@@ -1169,6 +1184,64 @@
 				3159D9971CAE6B5C00212DAB /* ProducerViewController.m */,
 			);
 			name = Producer;
+			sourceTree = "<group>";
+		};
+		3159D99F1CAEADC600212DAB /* 3rdparty */ = {
+			isa = PBXGroup;
+			children = (
+				3159D9A01CAEAE1800212DAB /* WZLBadge */,
+			);
+			name = 3rdparty;
+			sourceTree = "<group>";
+		};
+		3159D9A01CAEAE1800212DAB /* WZLBadge */ = {
+			isa = PBXGroup;
+			children = (
+				3159D9A11CAEAE1800212DAB /* BarItem */,
+				3159D9A61CAEAE1800212DAB /* CategorySupport */,
+				3159D9A91CAEAE1800212DAB /* Protocol */,
+				3159D9AB1CAEAE1800212DAB /* View */,
+				3159D9AE1CAEAE1800212DAB /* WZLBadgeImport.h */,
+			);
+			name = WZLBadge;
+			path = 3rdparty/WZLBadge;
+			sourceTree = "<group>";
+		};
+		3159D9A11CAEAE1800212DAB /* BarItem */ = {
+			isa = PBXGroup;
+			children = (
+				3159D9A21CAEAE1800212DAB /* UIBarButtonItem+WZLBadge.h */,
+				3159D9A31CAEAE1800212DAB /* UIBarButtonItem+WZLBadge.m */,
+				3159D9A41CAEAE1800212DAB /* UITabBarItem+WZLBadge.h */,
+				3159D9A51CAEAE1800212DAB /* UITabBarItem+WZLBadge.m */,
+			);
+			path = BarItem;
+			sourceTree = "<group>";
+		};
+		3159D9A61CAEAE1800212DAB /* CategorySupport */ = {
+			isa = PBXGroup;
+			children = (
+				3159D9A71CAEAE1800212DAB /* CAAnimation+WAnimation.h */,
+				3159D9A81CAEAE1800212DAB /* CAAnimation+WAnimation.m */,
+			);
+			path = CategorySupport;
+			sourceTree = "<group>";
+		};
+		3159D9A91CAEAE1800212DAB /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				3159D9AA1CAEAE1800212DAB /* WZLBadgeProtocol.h */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		3159D9AB1CAEAE1800212DAB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3159D9AC1CAEAE1800212DAB /* UIView+WZLBadge.h */,
+				3159D9AD1CAEAE1800212DAB /* UIView+WZLBadge.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		3178FFE81CA5494500796D25 /* SkyWorld */ = {
@@ -2233,6 +2306,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31FAC6981CAAB7E30034A0CD /* ChatDemoHelper.m in Sources */,
+				3159D9AF1CAEAE1800212DAB /* UIBarButtonItem+WZLBadge.m in Sources */,
 				31FAC6BC1CAAB7E30034A0CD /* PushNotificationViewController.m in Sources */,
 				31FAC5941CAAB3C50034A0CD /* UIViewController+HUD.m in Sources */,
 				31FAC6B31CAAB7E30034A0CD /* EMRobotChatTextBubbleView.m in Sources */,
@@ -2247,6 +2321,7 @@
 				31FAC6B91CAAB7E30034A0CD /* BlackListViewController.m in Sources */,
 				31FAC6BE1CAAB7E30034A0CD /* UserProfileEditViewController.m in Sources */,
 				31F8E72E1CA401310049EE23 /* SCConfig.m in Sources */,
+				3159D9B21CAEAE1800212DAB /* UIView+WZLBadge.m in Sources */,
 				31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */,
 				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
 				31FAC5951CAAB3C50034A0CD /* BaseTableViewCell.m in Sources */,
@@ -2268,6 +2343,7 @@
 				31FAC6A91CAAB7E30034A0CD /* AddFriendViewController.m in Sources */,
 				3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */,
 				31FAC6991CAAB7E30034A0CD /* ChatGroupDetailViewController.m in Sources */,
+				3159D9B11CAEAE1800212DAB /* CAAnimation+WAnimation.m in Sources */,
 				31FAC68F1CAAB7E30034A0CD /* AppDelegate+EaseMob.m in Sources */,
 				31FAC58A1CAAB3C50034A0CD /* THProgressView.m in Sources */,
 				31FAC6A01CAAB7E30034A0CD /* GroupSubjectChangingViewController.m in Sources */,
@@ -2291,6 +2367,7 @@
 				3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */,
 				31FAC7851CAE39410034A0CD /* SCUITabView.m in Sources */,
 				31FAC6971CAAB7E30034A0CD /* ChatViewController.m in Sources */,
+				3159D9B01CAEAE1800212DAB /* UITabBarItem+WZLBadge.m in Sources */,
 				31FAC59B1CAAB3C50034A0CD /* EMNavigationController.m in Sources */,
 				31FAC7881CAE3A0B0034A0CD /* SCUITabPagerViewController.m in Sources */,
 				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,

@@ -20,6 +20,8 @@
 #import "OfficalListTableViewController.h"
 #import "ProducerViewController.h"
 
+#import "WZLBadgeImport.h"
+
 
 @interface HomeViewController () <SCUITabPagerDataSource, SCUITabPagerDelegate, UIAlertViewDelegate>
 {
@@ -34,7 +36,9 @@
 
 @property (nonatomic, strong) ContactListViewController *contactsVC;
 
-@property (strong, nonatomic) NSDate *lastPlaySoundDate;
+@property (nonatomic, strong) NSDate *lastPlaySoundDate;
+
+@property (nonatomic, strong) NSArray *tabButtons;
 
 - (void)easeMobSetup;
 
@@ -116,10 +120,11 @@
 {
     //CGRect frame = CGRectMake(0, 0, self.view.frame.size.width/4, 50);
     //UIButton *buttonView = [[UIButton alloc] initWithFrame:frame];
-    UIButton *buttonView = [[UIButton alloc] init];
-    buttonView.backgroundColor = SC_MAIN_COLOR;
-    [buttonView setTitle:[NSString stringWithFormat:@"%ld", index] forState:UIControlStateNormal];
-    return buttonView;
+//    UIButton *buttonView = [[UIButton alloc] init];
+//    buttonView.backgroundColor = SC_MAIN_COLOR;
+//    [buttonView setTitle:[NSString stringWithFormat:@"%ld", index] forState:UIControlStateNormal];
+//    return buttonView;
+    return self.tabButtons[index];
 }
 
 //- (NSString *)titleForTabAtIndex:(NSInteger)index
@@ -129,7 +134,7 @@
 
 - (CGFloat)tabHeight
 {
-    return 60.0f;
+    return 44.0f;
 }
 
 - (UIColor *)tabColor
@@ -235,9 +240,30 @@ static NSString *kGroupName = @"GroupName";
 
 #pragma mark - private
 
+- (void)setupTabButtons
+{
+    UIButton *button1 = [[UIButton alloc] init];
+    button1.backgroundColor = SC_MAIN_COLOR;
+    [button1 setTitle:[NSString stringWithFormat:@"1"] forState:UIControlStateNormal];
+    
+    UIButton *button2 = [[UIButton alloc] init];
+    button2.backgroundColor = SC_MAIN_COLOR;
+    [button2 setTitle:[NSString stringWithFormat:@"2"] forState:UIControlStateNormal];
+    
+    UIButton *button3 = [[UIButton alloc] init];
+    button3.backgroundColor = SC_MAIN_COLOR;
+    [button3 setTitle:[NSString stringWithFormat:@"3"] forState:UIControlStateNormal];
+    
+    UIButton *button4 = [[UIButton alloc] init];
+    button4.backgroundColor = SC_MAIN_COLOR;
+    [button4 setTitle:[NSString stringWithFormat:@"4"] forState:UIControlStateNormal];
+    
+    self.tabButtons = @[button1, button2, button3, button4];
+}
+
 - (void)setupSubviews
 {
-    
+    [self setupTabButtons];
     _serviceSearchVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ServiceSearch"];
     
     _officalListVC = [self.storyboard instantiateViewControllerWithIdentifier:@"OfficalList"];
@@ -295,6 +321,12 @@ static NSString *kGroupName = @"GroupName";
 //                                        nil] forState:UIControlStateSelected];
 //}
 
+- (void)setupBadgeToView:(UIView *)view
+{
+    [view showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
+    view.badgeCenterOffset = CGPointMake(-8, 8);
+}
+
 // 统计未读消息数
 -(void)setupUnreadMessageCount
 {
@@ -306,13 +338,16 @@ static NSString *kGroupName = @"GroupName";
     if (_chatListVC) {
         if (unreadCount > 0) {
             //_chatListVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
+            [self setupBadgeToView:self.tabButtons[1]];
         }else{
             //_chatListVC.tabBarItem.badgeValue = nil;
+            [self.tabButtons[1] clearBadge];
         }
     }
     
     UIApplication *application = [UIApplication sharedApplication];
     [application setApplicationIconBadgeNumber:unreadCount];
+    DebugLog(@"unread");
 }
 
 - (void)setupUntreatedApplyCount

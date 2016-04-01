@@ -30,7 +30,7 @@
 //                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
     
     BOOL isCurrentUserLoginOK = [[SCUserProfileManager sharedInstance] isCurrentUserLoginStatusOK];
-    isCurrentUserLoginOK = YES;
+    //isCurrentUserLoginOK = YES;
     if (isCurrentUserLoginOK){
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
     }
@@ -65,8 +65,19 @@
 //        [[ChatDemoHelper shareHelper] asyncPushOptions];
         //--------------
         
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView2"];
+//        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//        viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView2"];
+//        [ChatDemoHelper shareHelper].mainVC = self.homeController;
+        
+        if(self.homeController == nil) {
+            //self.homeController = [[HomeViewController alloc] init];
+            //viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
+            UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            self.homeController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
+            viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
+        }else{
+            viewController = self.homeController.navigationController;
+        }
         [ChatDemoHelper shareHelper].mainVC = self.homeController;
         
         [[ChatDemoHelper shareHelper] asyncGroupFromServer];
