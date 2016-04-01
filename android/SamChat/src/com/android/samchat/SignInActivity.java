@@ -56,6 +56,7 @@ public class SignInActivity extends Activity {
 	private EditText mPassword;
 
 	private TextView mError_pop;
+	private LinearLayout mLayout_error_pop;
 
 	private LinearLayout mLayout_signin;
 	private TextView mSignin;
@@ -186,15 +187,13 @@ public class SignInActivity extends Activity {
 	 };
 
 	private void clearErrorPop(){
-		mError_pop.setText("");
-		mError_pop.setTextColor(getResources().getColor(R.color.text_right_black));
-		mError_pop.setVisibility(View.GONE);
+		mLayout_error_pop.setVisibility(View.GONE);
 	}
 
 	private void setErrorPop(String errStr){
 		mError_pop.setText(errStr);
 		mError_pop.setTextColor(getResources().getColor(R.color.text_error_red));
-		mError_pop.setVisibility(View.VISIBLE);
+		mLayout_error_pop.setVisibility(View.VISIBLE);
 	}
 
 	
@@ -211,6 +210,7 @@ public class SignInActivity extends Activity {
 		mUsername = (EditText) findViewById(R.id.username);
 		mPassword = (EditText) findViewById(R.id.password);
 
+		mLayout_error_pop = (LinearLayout) findViewById(R.id.layout_error_pop);
 		mError_pop = (TextView) findViewById(R.id.error_pop);
 		clearErrorPop();
 
@@ -222,6 +222,8 @@ public class SignInActivity extends Activity {
 
 		mSignin.setEnabled(false);
 		mSignin.setClickable(false);
+		mLayout_signin.setEnabled(false);
+		mLayout_signin.setClickable(false);
 
 		mUsername.addTextChangedListener(UN_TextWatcher);
 		mPassword.addTextChangedListener(PW_TextWatcher);
@@ -239,7 +241,7 @@ public class SignInActivity extends Activity {
 		});
 
 		/*Start sign in process*/
-		mSignin.setOnClickListener(new OnClickListener(){
+		mLayout_signin.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				clearErrorPop();
@@ -368,8 +370,8 @@ public class SignInActivity extends Activity {
 			//mSignin.setTextColor(Color.rgb(0x99, 0x99, 0x99));
 		}
 		
-		mSignin.setEnabled(clickable);
-		mSignin.setClickable(clickable);
+		mLayout_signin.setEnabled(clickable);
+		mLayout_signin.setClickable(clickable);
 
 		clearErrorPop();
 	}

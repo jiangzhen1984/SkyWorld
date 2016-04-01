@@ -164,18 +164,7 @@ public class SendVerifyMsgActivity extends Activity {
 		super.onDestroy();	
 	}
 
-	private void launchDialogActivity(String title,String msg){
-		Intent newIntent = new Intent(this,DialogActivity.class);
-		int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP;
-		newIntent.setFlags(intentFlags);
-		newIntent.putExtra("title", title);
-		newIntent.putExtra("message", msg);
-		startActivity(newIntent);
-	}
-
-
 	
-
 }
 
 

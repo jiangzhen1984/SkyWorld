@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="version">Version</string>
     <string name="USA">USA</string>
     <string name="China">China</string>
     <string name="country_location">Country/Location</string>
@@ -37,7 +38,7 @@
     <string name="cancel">Cancel</string>
     <string name="phonenumber">phone number</string>
     <string name="send_verify_code">send veriy code</string>
-    <string name="verify_code">verified code</string>
+    <string name="verify_code">input verify code</string>
     <string name="next_step">Next step</string>
     <string name="agreement">has read and agree</string>
     <string name="sam_protocol">sam user protocol</string>
@@ -62,8 +63,8 @@
     <string name="sign_up_timeout_statement">Sign up timeout,please try again later</string>
     <string name="exit_app_confirmation">Exit application if click again</string>
     <string name="sign_in_failed_title">Sign in failed</string>
-    <string name="sign_in_failed_reason_unpd">username or passwd is wrong</string>
-    <string name="sign_in_failed_reason_others">sign in error!please try again later</string>
+    <string name="sign_in_failed_reason_unpd">username or passwd is wrong,please input again</string>
+    <string name="sign_in_failed_reason_others">network error,please try again later</string>
 
     <string name="sign_up_failed_title">Sign up failed</string>
     <string name="sign_up_failed_reason_unph">username or phone number has been existed!</string>
@@ -111,11 +112,16 @@
     <string name="sam_question_and_answer">Sam QA</string>
     <string name="answer">answer</string>
     
-     <string name="temp_talk">Talking Now</string>
-     <string name="add_friends">Add Friends</string>
-     <string name="follow">Follow Me</string>
-     <string name="followed">Followed Already</string>
-     <string name="new_friends">New Friends</string>
+    <string name="temp_talk">Talking Now</string>
+    <string name="add_friends">Add Friends</string>
+    <string name="start_talk">Start Talk</string>
+    <string name="follow">Follow Me</string>
+    <string name="cancel_follow">Cancel Follow</string>
+     
+    <string name="invite_friend">Invite Friend</string>
+    <string name="start_group">Start Group</string>
+    
+    <string name="new_friends">New Friends</string>
     <string name="new_friends_search_hint">phone number</string>
     
     <string name="query_user_info_failed_title">Search Failed </string>
@@ -206,4 +212,16 @@
     <string name="modify">modify</string>
     <string name="follow_succeed">follow succeed</string>
     <string name="follow_failed">follow failed</string>
+    <string name="cancel_follow_succeed">cancel follow succeed</string>
+    <string name="cancel_follow_failed">cancel follow failed</string>
+    
+    <string name="address">address</string>
+    <string name="name">name</string>
+    <string name="two_dimension">two dimension code</string>
+    <string name="sex">sex</string>
+    <string name="hobby">hobby</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="nofill">none</string>
+    <string name="store">store</string>
 </resources>

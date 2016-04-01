@@ -2,6 +2,7 @@ package com.skyworld.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -95,13 +96,17 @@ public class APIArticleQuery extends APIBasicJsonPartApiService {
 			if (!user.isRelationQueryFlag()) {
 				ServiceFactory.getESUserService().queryUserRelation(user);
 			}
-			
 			int count = user.getRelationUserCount();
 			ids = new ArrayList<Long>(count + 1);
 			ids.add(user.getId());
-			for(int i =0; i < count; i++) {
-				ids.add(user.getRelationUser(i).getId());
+			
+			Iterator<User> it = user.iteratorRelationUser();
+			if (it != null) {
+				while(it.hasNext()) {
+					ids.add(it.next().getId());
+				}
 			}
+			
 		}
 		
 		

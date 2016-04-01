@@ -257,6 +257,10 @@ public class EaseMobHelper {
 		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_FOLLOWER_CHANAGED));
 	}
 
+	public void sendAvatarUpdateBroadcast(){
+		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_AVATAR_UPDATE));
+	}
+
 
 	public class SamSettingsProvider implements EaseSettingsProvider{
 

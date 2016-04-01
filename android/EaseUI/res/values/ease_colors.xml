@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="common_bg_green">#385596</color>
+    <!--  color name="common_bg_green">#385596</color> -->
+    <color name="common_bg_green">#407BC1</color>
     <color name="default_bg">#EEEEEE</color>
     <color name="listview_gray_devider">#CCCCCC</color>
     <color name="common_gray">#CCCCCC</color>
+    <color name="common_black">#000000</color>
     
     <color name="common_top_bar_blue">#4ebcd3</color>
     <color name="btn_login_normal">#00acff</color>

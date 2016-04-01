@@ -23,6 +23,8 @@ public class ServiceFactory {
 	
 	private static EaseMobDeamon  mEaseMobDeamon;
 	
+	private static SWSKServicerService eSKServicerService;
+	
 	private static APIService[] mApiService;
 
 	public ServiceFactory() {
@@ -72,6 +74,15 @@ public class ServiceFactory {
 		}
 		
 		return eSystemBasicService;
+	}
+	
+	
+	public static SWSKServicerService getESKServicerService() {
+		if (eSKServicerService == null) {
+			eSKServicerService = new SWSKServicerService();
+		}
+		
+		return eSKServicerService;
 	}
 	
 	

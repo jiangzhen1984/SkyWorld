@@ -179,9 +179,11 @@ public class HttpCommClient {
 					hpinfo.easemob_username = easemobA.getString("username");
 					hpinfo.avatar = getImageFilename(syservicer);
 
+					SamLog.e(TAG,"before quest");
 					JSONObject quest = body.getJSONObject("quest");
 					hpinfo.quest_id = quest.getString("quest_id");
 					hpinfo.quest = quest.getString("quest");
+					SamLog.e(TAG,"after quest");
 					
 				}else if(category.equals("easemob")){
 					SamLog.i(TAG,"received easemob");
@@ -215,7 +217,7 @@ public class HttpCommClient {
 			return false;
 		} catch (Exception e) { 
 			SamLog.e(TAG,"Exception");
-			//e.printStackTrace(); 
+			e.printStackTrace(); 
 			return false;
 		} finally{
 			if(httppost!=null) httppost.abort();
@@ -933,6 +935,8 @@ public class HttpCommClient {
 				}
 				return true;
 			}else{
+
+				SamLog.e(TAG,"statusCode:"+statusCode);
 				return false;
 			}
 		}catch (JSONException e) {  

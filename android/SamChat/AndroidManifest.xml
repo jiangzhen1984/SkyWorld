@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.samchat"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -283,6 +283,37 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar">
           </activity>
+          
+          <activity
+            android:name="com.android.samchat.UserInfoActivity"
+            android:theme="@style/Transparent"
+            android:screenOrientation="portrait">
+          </activity>
+          
+          <activity
+            android:name="com.android.samchat.MineActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait">
+          </activity>
+          
+          <activity
+            android:name="com.android.samchat.SexSelectActivity"
+            android:theme="@style/Transparent"
+            android:screenOrientation="portrait">
+          </activity>
+          
+          <activity
+            android:name="com.android.samchat.BasicInfoUpdateActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait">
+          </activity>
+          
+          
+          
+          
+          
+          
+          
          
          
          

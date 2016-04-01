@@ -97,63 +97,12 @@ public class EaseUserUtils {
 		} catch(Exception e) {
 			e.printStackTrace();
 			return null;
-    	}
+    		}
 	
-}
-
-	public static Bitmap decodeImageFileAsBitmap(String filename) {
-		File file = null;
-		FileInputStream fos = null;
-
-		try{
-			file = new File(filename);
-
-			if(!file.exists()){
-				return null;
-			}
-
-			fos = new FileInputStream(file);    
-
-			BitmapFactory.Options o = new BitmapFactory.Options();
-			o.inJustDecodeBounds = true;
-			BitmapFactory.decodeStream(fos, null, o);
- 
-			// Find the correct scale value. It should be the power of 2.
-			final int REQUIRED_SIZE = 50;
-			int width_tmp = o.outWidth, height_tmp = o.outHeight;
-			int scale = 1;
-			while (true) {
-				if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
-					break;
-				width_tmp /= 2;
-				height_tmp /= 2;
-				scale *= 2;
-			}
- 
-			// decode with inSampleSize
-			BitmapFactory.Options o2 = new BitmapFactory.Options();
-			o2.inSampleSize = scale;
-			
-			return BitmapFactory.decodeStream(fos, null, o2);
-
-		}catch(Exception e){
-			return null;
-			
-		}finally{
-			try{
-				if(fos!=null) fos.close();
-			}catch(Exception e){
-
-			}
-
-		}
-
-
 	}
 
 	public static boolean setAvatarView(String filename, ImageView imageView){
 		Bitmap bp = null;
-		//bp = decodeImageFileAsBitmap(filename);
 		bp = decodeFile(filename,43,43);
 
 		if(bp!=null){

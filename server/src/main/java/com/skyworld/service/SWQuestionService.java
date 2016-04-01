@@ -109,6 +109,10 @@ public class SWQuestionService extends BaseService {
 		while(it.hasNext()) {
 			User u = it.next();
 			if (u.getPushTerminal() != null) {
+				if (u.getId() == question.getAsker().getId()) {
+					log.info("Igore question to user["+u+"] terminal: " +  u.getPushTerminal());
+					continue;
+				}
 				log.info("Push question to user["+u+"] terminal: " +  u.getPushTerminal());
 				u.getPushTerminal().postEvent(new MessageEvent(new QuestionMessage(question)));
 				question.addSKServicer((SKServicer)u);
@@ -133,7 +137,7 @@ public class SWQuestionService extends BaseService {
 			que.setQuestion(swq.getQuestion());
 			que.setTimestamp(swq.getTimestamp());
 			que.setState(Question.State.fromInt(swq.getState()));
-			que.setAsker(userService.getUser(swq.getUserId()));
+			que.setAsker(userService.getUser(swq.getUserId(), session));
 		}
 		session.close();
 		return list;

@@ -5,9 +5,9 @@
     <color name="text_valid_white">#FFFFFF</color>
     <color name="text_error_red">#FF0000</color>
     <color name="text_right_black">#000000</color>
-    <color name="text_theme">#009688</color>
+    <color name="text_theme">#2767AD</color>
     
-	<color name="transparent_background">#50000000</color>
+	<color name="transparent_background">#89000000</color>
 	<color name="transparent">#00000000</color>
 	<color name="blue">#3366cc</color>
 	<color name="black">#000000</color>

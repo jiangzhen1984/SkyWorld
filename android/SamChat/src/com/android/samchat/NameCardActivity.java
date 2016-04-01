@@ -220,7 +220,6 @@ public class NameCardActivity extends Activity {
 		
 		if(rd!=null && rd.getavatarname()!=null){
 			SamLog.e(TAG,"show image:"+rd.getavatarname());
-			//bp = decodeImageFileAsBitmap(SamService.sam_cache_path+SamService.AVATAR_FOLDER,rd.getavatarname());
 			bp = decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER,rd.getavatarname(),50,50);
 		}
 
@@ -625,7 +624,7 @@ public class NameCardActivity extends Activity {
 
 	private void launchSendVerifyMsgActivity(String easemob_name){
 		Intent newIntent = new Intent(this,SendVerifyMsgActivity.class);
-		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP;;
 		newIntent.setFlags(intentFlags);
 		newIntent.putExtra("easemob_name", easemob_name);
 		startActivity(newIntent);

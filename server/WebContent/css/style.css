@@ -1,0 +1,488 @@
+@charset "utf-8";
+
+.header {
+	width: 100%;
+	position: relative;
+}
+.logo {
+	float: left;
+	margin-top: 23px;
+}
+
+.headermain {
+	margin: auto;
+	width: 960px;
+}
+
+.headerbanner {
+	height: 80px;
+	margin-top: 12px;
+	background-color: #0066cc;
+}
+
+.headerbanner p {
+	color: #FFF;
+    overflow:hidden; 
+}
+
+.headerbanner #p1{
+	padding: 22px;
+	margin-left: 30px;
+	font-size: 26px;
+}
+
+.headerbanner #p2 {
+	padding: 15px 0px 5px 22px;
+	margin-left: 30px;
+	font-size: 20px;	
+}
+
+.headerbanner #p3 {
+	padding: 5px 0px 15px 22px;
+	margin-left: 30px;
+	font-size: 16px; 
+}
+
+.headerbanner p a{
+	color: #FFF;
+}
+
+
+.language {
+	float: right; 
+	height: 31px; 
+	line-height: 31px; 
+	text-align: right;
+	color: #acd38c;
+}
+
+.language a{
+	color: #000099;
+	font-size: 16px;
+}
+
+.language a:hover{
+	text-decoration: underline;
+}
+
+.main {
+	width: 960px;
+	margin: auto;
+	padding-bottom: 30px;
+	position: relative;
+	Color: black;
+}
+
+#mainintroduce {
+	margin: 28px 50px 28px 50px;
+	font-size:16px;
+}
+
+#mainleft {
+	width: 544px;
+}
+
+#mainright {
+	width: 416px;
+}
+
+#loginbody{
+	margin-top: 105px;
+	margin-left: 108px;
+	margin-right: 108px;
+}
+
+#signinbody{
+	margin-top: 53px;
+	margin-left: 108px;
+	margin-right: 108px;
+}
+
+#mainrightbody{
+	margin-top: 40px;
+	margin-right: 30px;
+}
+
+#forgetpassw{
+	height: 20px;
+}
+
+.grouptitle {
+	margin-left: 30px;
+	padding: 0px 10px 0px 10px;
+	font-size: 16px;
+}
+
+input.username, input.password {
+	border: 1px solid #a7a7a7;
+	vertical-align: middle;
+	height: 30px;
+	line-height: 30px;
+	width: 200px;
+	margin-top: 20px;
+	background: white;
+}
+
+
+input.submit {
+	border: none;
+	background: #0066cc;
+	height: 30px;
+	line-height: 30px;
+	width: 200px;
+	margin-top: 20px;
+	text-align: center;
+	color: white;
+}
+
+.loginfield, .signinfield{
+	width: 416px;
+	height: 420px;
+	margin: 30px 0px 0px 0px;
+}
+
+.infofield {
+	width: 416px;
+	margin: 30px 0px 0px 0px;
+}
+
+.infobody {
+	margin: 10px;
+}
+
+.footer {
+	width: 960px;
+	height: 150px;
+	margin: auto;
+}
+
+.nav{
+	float:right; 
+	width:100%; 
+	margin-top:45px; 
+	position:relative; 
+	z-index:1;
+}
+
+.nav ul {
+	width:100%;
+}
+.nav li {
+	float:left; 
+	margin-right:16px;
+}
+.nav li>a {
+	display:block; 
+	width:79px; 
+	height:26px; 
+	text-align:center; 
+	line-height:26px; 
+	font-size:16px; 
+	color:black;
+}
+.nav hr {
+	clear:both; 
+	height:2px;
+	border:none; 
+	border-top:2px ridge #000099;
+}
+
+.copyright {
+	text-align: right;
+	font-size:14px;
+}
+
+.officialaccount table {
+	font-size: 16px;
+	background-color: white;
+}
+
+.officialaccount .tdleft {
+	width: 60px;
+	height: 30px;
+	padding: 3px;
+	border:1px solid #b2b2b2;
+}
+
+.officialaccount .tdright{
+	width: 336px;
+	padding: 3px;
+	border:1px solid #b2b2b2;
+}
+
+.officialaccount input{
+	width: 100%;
+	height: 100%;
+	border: none;
+	background-color: white;
+}
+
+.infonav {
+	float:right; 
+	width:460px; 
+	margin-top:28px; 
+	position:relative; 
+}
+
+.infonav li>a {
+	display:block; 
+	width:96px; 
+	height:26px; 
+	text-align:center; 
+	line-height:26px; 
+	font-size:16px;
+	padding:2px 10px 2px 10px;
+    -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px; 
+    border-radius:5px; 
+}
+
+.infonavitem {
+	float:left; 
+	padding:5px 5px 5px 5px;
+	margin-left: 16px;
+	background-color: white;
+    -moz-border-radius: 8px; 
+    -webkit-border-radius: 8px; 
+    border-radius:8px; 
+}
+
+
+.infonavactive {
+	background-color: #0066cc;
+    color: white;
+}
+
+.infonavinactive {
+	background-color: #f2f2f2;
+    color: black;
+}
+
+.infotitle {
+	margin-top: 10px;
+	height: 20px;
+	font-size: 14px;
+}
+
+.infoheader {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #a7a7a7;
+}
+
+.infoconfirmbutton {
+	margin-bottom: 0px;
+	border: none;
+	text-align: left;
+	width:75px; 
+	height:26px; 
+	font-size: 14px;
+	background:url(../images/confirm.png) no-repeat top left;
+}
+
+input.info {
+	border: 1px solid #a7a7a7;
+	vertical-align: middle;
+	height: 30px;
+	line-height: 30px;
+	width: 320px;
+	background: white;
+}
+
+textarea.info {
+	border: 1px solid #a7a7a7;
+	vertical-align: middle;
+	width: 320px;
+	background: white;
+	font-size: 14px;
+}
+
+.pushonline {
+	height: 50px;
+	width: 356px;
+	margin-left: 30px;
+}
+
+.pushonline input.submit {
+	border: none;
+	background: #ff6600;
+	height: 30px;
+	line-height: 30px;
+	width: 200px;
+	margin: 0px 0px 0px 50px;
+	text-align: center;
+	color: white;
+	font-size: 16px;
+}
+
+.onlinepreview {
+	width: 300px;
+	margin-left: 30px;
+	background-color: white;
+}
+
+.onlinepreview table{
+	width: 300px;
+	
+	border-collapse: collapse;
+}
+
+.onlinepreview tr{
+	border: none;
+
+}
+
+.phonestatusbar {
+	width: 299px;
+	height: 24px;
+	border: 1px solid #a7a7a7;
+}
+
+.phonebackbtn {
+	border: none;
+	border-left: 1px solid #a7a7a7;
+	width: 52px; 
+}
+
+.phonebackbtnimg {
+	margin: 5px 10px 5px 10px;
+	width: 30px;
+	height: 30px;
+}
+
+.phonepagetitle {
+	border-spacing: 0px;
+	border-right: 1px solid #a7a7a7;
+	width: 249px;
+}
+
+.headerpreview {
+	margin: 5px 5px 5px 20px;
+	width: 50px;
+	height: 50px;
+
+}
+
+.phonebutton {
+	height: 30px; 
+	width: 200px; 
+	background-color: #0066cc; 
+	border: none; color: white;
+}
+
+.phonetdleft {
+	width: 32px;
+	border-top: 1px solid #a7a7a7; 
+	border-left: none;
+	padding: 5px 20px 5px 20px; 
+	height: 30px;
+}
+
+.phonetdright {
+	 border: 1px solid #a7a7a7;
+	 padding-left: 5px;
+}
+
+.phonetdrightbtn {
+	 border: 1px solid #a7a7a7;
+	 text-align: right; 
+	 padding-right: 20px;
+}
+
+.phoneintroduce {
+	display:inline-block; 
+	margin: 5px 10px 5px 10px; 
+	height: 80px; 
+	width: 280px; 
+	border: none;
+}
+
+.infomainimg {
+	border: 1px solid #a7a7a7;
+	vertical-align: middle;
+	height: 80px;
+	width: 320px;
+}
+
+.infomaintext {
+	border: 1px solid #a7a7a7;
+	margin-top: 5px;
+	vertical-align: middle;
+	height: 50px;
+	width: 320px;
+	background-color: white;
+}
+
+.infolistform {
+	border: 1px solid #a7a7a7;
+	height: 400px;
+	width: 320px;
+	background-color: white;
+	
+}
+
+.phonetimetd {
+	height: 30px; 
+	padding-right: 5px 0px 5px 0px; 
+	text-align: center;
+}
+
+.phonetime {
+	padding:5px 5px 5px 5px;
+	margin-left: 16px;
+	background-color: white;
+    -moz-border-radius: 8px; 
+    -webkit-border-radius: 8px; 
+    border-radius:8px;
+    background-color: #7f7f7f; 
+    color: white;
+}
+
+.phoneinfomaintexttd {
+	height: 30px; 
+	width: 260px; 
+	background-color: #3f3f3f; 
+	color: white; 
+	text-align: center; 
+	padding: 0px 20px 0px 20px;
+}
+
+.phonelisttdleft {
+	border: 1px solid #a7a7a7; 
+	width: 160px; 
+	height: 60px;
+}
+
+.phonelisttdright {
+	border: 1px solid #a7a7a7; 
+	width: 80px;
+}
+
+.infodetailtitleimg {
+	border: 1px solid #a7a7a7; 
+	padding: 5px 10px 5px 10px;
+	width: 66px;
+	height: 66px;
+}
+
+.infodetailtitletext {
+	border: 1px solid #a7a7a7; 
+	margin: 0px;
+}
+
+.infodetailtitletdleft {
+	border: 1px solid #a7a7a7; 
+	height: 66px; 
+	width:200px; 
+	background-color: white; 
+	padding: 5px; 
+	text-align: top;
+}
+
+.infodetailtitletdright {
+	border: 1px solid #a7a7a7; 
+	height: 66px; 
+	width:100px; 
+	background-color: white; 
+	text-align: center;
+}

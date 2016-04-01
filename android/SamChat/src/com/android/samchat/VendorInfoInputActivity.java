@@ -82,16 +82,16 @@ public class VendorInfoInputActivity extends Activity {
 		});
 
 		mAgree = (ImageView) findViewById(R.id.agree);
-		mAgree.setImageResource(R.drawable.em_dx_checkbox_on);
+		mAgree.setImageResource(R.drawable.select);
 		mAgree.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				if(!available_agree){
 					available_agree = true;
-					mAgree.setImageResource(R.drawable.em_dx_checkbox_on);
+					mAgree.setImageResource(R.drawable.select);
 				}else{
 					available_agree = false;
-					mAgree.setImageResource(R.drawable.em_dx_checkbox_off);
+					mAgree.setImageResource(R.drawable.not_select);
 				}
 			}
 		    	

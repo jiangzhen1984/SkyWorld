@@ -65,7 +65,8 @@ public class SamDBDao{
 		synchronized(dbLock){
 			LoginUser tuser = dbHandle.queryLogInUserByUsername(user.username);
 			if(tuser !=null){
-				ret = dbHandle.updateLogInUser(tuser.id, user);
+				dbHandle.updateLogInUser(tuser.id, user);
+				ret = tuser.id;
 			}else{
 				ret = dbHandle.addLogInUser(user);
 			}	
@@ -131,7 +132,8 @@ public class SamDBDao{
 		synchronized(dbLock){
 			SendQuestion tq = dbHandle.querySendQuestion(question.question_id);
 			if(tq !=null){
-				return dbHandle.updateSendQuestion(tq.id, question);
+				dbHandle.updateSendQuestion(tq.id, question);
+				return  tq.id;
 			}else{
 				return dbHandle.addSendQuestion(question);
 			}	
@@ -151,7 +153,8 @@ public class SamDBDao{
 		synchronized(dbLock){
 			ContactUser tuser = dbHandle.queryContactUserByUsername(user.getusername());
 			if(tuser !=null){
-				ret = dbHandle.updateContactUser(tuser.getid(), user);
+				dbHandle.updateContactUser(tuser.getid(), user);
+				ret = tuser.getid();
 			}else{
 				ret = dbHandle.addContactUser(user);
 			}	
@@ -190,7 +193,8 @@ public class SamDBDao{
 		synchronized(dbLock){
 			ReceivedQuestion tq = dbHandle.queryReceivedQuestion(quest.getquestion_id());
 			if(tq !=null){
-				return dbHandle.updateReceivedQuestion(tq.getid(), quest);
+				dbHandle.updateReceivedQuestion(tq.getid(), quest);
+				return  tq.getid();
 			}else{
 				return dbHandle.addReceivedQuestion(quest);
 			}	
@@ -244,7 +248,8 @@ public class SamDBDao{
 			if(record.id == 0){
 				return dbHandle.addInviteRecord(record);
 			}else{
-				return dbHandle.updateInviteRecord(record.id, record);
+				dbHandle.updateInviteRecord(record.id, record);
+				return record.id;
 			}
 		}
 	}
@@ -285,7 +290,8 @@ public class SamDBDao{
 			if(record.id == 0){
 				return dbHandle.addUserFriendRecord(record);
 			}else{
-				return dbHandle.updateUserFriendRecord(record.id, record);
+				dbHandle.updateUserFriendRecord(record.id, record);
+				return record.id;
 			}
 		}
 	}
@@ -325,7 +331,8 @@ public class SamDBDao{
 			if(record.id == 0){
 				return dbHandle.addAvatarRecord(record);
 			}else{
-				return dbHandle.updateAvatarRecord(record.id, record);
+				dbHandle.updateAvatarRecord(record.id, record);
+				return record.id;
 			}
 		}
 	}
@@ -343,7 +350,8 @@ public class SamDBDao{
 					rd.setavatarname(filename);
 				}
 				rd.setnickname(nickname);
-				ret = dbHandle.updateAvatarRecord(rd.id, rd);
+				dbHandle.updateAvatarRecord(rd.id, rd);
+				ret = rd.id;
 			}else{
 				rd = new AvatarRecord(phonenumber,filename,nickname);
 				ret = dbHandle.addAvatarRecord(rd);
@@ -365,7 +373,8 @@ public class SamDBDao{
 				rd.setavatarname(filename);
 				rd.setnickname(nickname);
 				rd.setavatarname(filename);
-				ret = dbHandle.updateAvatarRecord(rd.id, rd);
+				dbHandle.updateAvatarRecord(rd.id, rd);
+				ret = rd.id;
 			}else{
 				rd = new AvatarRecord(phonenumber,filename,nickname);
 				ret = dbHandle.addAvatarRecord(rd);
@@ -570,9 +579,9 @@ public class SamDBDao{
 		}
 	}
 
-	public void delete_FollowerRecord_db(long unique_id){
+	public void delete_FollowerRecord_db(long unique_id,long owner_unique_id){
 		synchronized(dbLock){
-				dbHandle.deleteFollower(unique_id);
+				dbHandle.deleteFollower(unique_id,owner_unique_id);
 		}
 	}
 

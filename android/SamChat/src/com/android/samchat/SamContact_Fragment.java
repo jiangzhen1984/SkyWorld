@@ -34,17 +34,7 @@ public class SamContact_Fragment extends EaseContactListFragment{
 
 	static final String TAG = "SamContact_Fragment";
 
-	private static int contact_invite_msg_num=0;
-
 	private View rootView;
-	private LinearLayout mNewFriend_layout;
-	private RelativeLayout mNewFriend_relativelayout;
-	//private TextView mNewFriendtxt;
-
-	private RelativeLayout mUn_read_new_friend_num_layout;
-	private TextView mUn_read_new_friend_num;
-
-	private LinearLayout mGroupchat_layout;
 
 	ContactSyncListener contactSyncListener;
 	BlackListSyncListener blackListSyncListener;
@@ -52,8 +42,6 @@ public class SamContact_Fragment extends EaseContactListFragment{
 	private boolean isBroadcastRegistered = false;
 	private BroadcastReceiver broadcastReceiver;
 	private LocalBroadcastManager broadcastManager;
-
-	private boolean isNewFriendLaunched = false;
 
 	private void registerBroadcastReceiver() {
 		broadcastManager = LocalBroadcastManager.getInstance(getActivity());
@@ -64,17 +52,11 @@ public class SamContact_Fragment extends EaseContactListFragment{
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				boolean isInvite = intent.getBooleanExtra("isInvite",false);
-				if(isInvite){
-					if(!isNewFriendLaunched){
-						contact_invite_msg_num++;
-						showBage();
-					}
-				}else{
+				if(!isInvite){
 					SamLog.e(TAG,"update contacts");
 					setContactsMap(EaseMobHelper.getInstance().getContactList());
 					refresh();
 				}
-
 			}
 		};
 		
@@ -106,81 +88,14 @@ public class SamContact_Fragment extends EaseContactListFragment{
 			Bundle savedInstanceState) {
 		if(rootView == null){
 			rootView = inflater.inflate(R.layout.fragment_contact, container,false);
-			mNewFriend_layout = (LinearLayout)rootView.findViewById(R.id.newFriend_layout);
-			mNewFriend_relativelayout = (RelativeLayout)rootView.findViewById(R.id.newFriend_relativelayout);
-			//mNewFriendtxt = (TextView)rootView.findViewById(R.id.newFriendtxt);
-
-			mUn_read_new_friend_num_layout = (RelativeLayout)rootView.findViewById(R.id.un_read_new_friend_num_layout);
-			mUn_read_new_friend_num = (TextView)rootView.findViewById(R.id.un_read_new_friend_num);
-
-			mGroupchat_layout = (LinearLayout)rootView.findViewById(R.id.groupchat_layout);
-			
-			mNewFriend_layout.setOnClickListener(new OnClickListener(){
-		    		@Override
-		    		public void onClick(View arg0) {
-					isNewFriendLaunched = true;
-					contact_invite_msg_num = 0;
-					hideBage();
-		    			launchNewFriendActivity();
-				}
-			});
-
-			mGroupchat_layout.setOnClickListener(new OnClickListener(){
-		    		@Override
-		    		public void onClick(View arg0) {
-		    			launchGroupsActivity();
-				}
-			});
-
-			if(contact_invite_msg_num!=0){
-				showBage();
-			}
-			
 		}
 		return rootView;
 	}
 
-	private void hideBage(){
-		mUn_read_new_friend_num_layout.setVisibility(View.INVISIBLE);
-		
-	}
-
-	private void showBage(){
-		if(contact_invite_msg_num == 0)
-			return;
-		
-		mUn_read_new_friend_num.setText(""+contact_invite_msg_num);
-		mUn_read_new_friend_num_layout.setVisibility(View.VISIBLE);
-	}
-
-
-
-	private void launchNewFriendActivity()
-	{
-		Intent newIntent = new Intent(getActivity(),NewFriendActivity.class);
-		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
-		newIntent.setFlags(intentFlags);
-		SamLog.e(TAG,"launchNewFriendActivity!");
-		startActivityForResult(newIntent,1);
-	}
-
-	private void launchGroupsActivity()
-	{
-		startActivity(new Intent(getActivity(), GroupsActivity.class));
-		SamLog.e(TAG,"launchGroupsActivity!");
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
-		if(requestCode == 1){
-			isNewFriendLaunched = false;
-		}
-	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		contact_invite_msg_num = MainActivity.sInviteNum;
 		SamLog.i(TAG, "onCreated");
 	}
 	

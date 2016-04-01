@@ -48,7 +48,8 @@ public class SamAnswerDetailActivity extends Activity {
 
 	private ContactUser syservicer; 
 
-	private boolean followed = false;
+	private boolean isFollowed = false;
+	private boolean isFriend = false;
 
 	
 	@Override
@@ -73,7 +74,7 @@ public class SamAnswerDetailActivity extends Activity {
 		mServicer_img.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-
+				launchUserInfoActivity(syservicer);
 			}
 		    	
 		});
@@ -102,8 +103,10 @@ public class SamAnswerDetailActivity extends Activity {
 		mFollow.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				if(!followed){
+				if(!isFollowed){
 					follow_vendor();
+				}else{
+					unfollow_vendor();
 				}
 			}
 		    	
@@ -121,11 +124,11 @@ public class SamAnswerDetailActivity extends Activity {
 			LoginUser currentUser = SamService.getInstance().get_current_user();
 			FollowerRecord rd = SamService.getInstance().getDao().query_FollowerRecord_db(syservicer.getunique_id(),currentUser.getunique_id());
 			if(rd!=null){
-				mFollow.setText(getString(R.string.followed));
-				followed = true;
+				mFollow.setText(getString(R.string.cancel_follow));
+				isFollowed = true;
 			}else{
 				mFollow.setText(getString(R.string.follow));
-				followed = false;
+				isFollowed = false;
 			}
 		}
 
@@ -159,6 +162,34 @@ public class SamAnswerDetailActivity extends Activity {
 		//mAdapter.setCount(1);
 		//mAdapter.notifyDataSetChanged();
 		
+	}
+
+
+
+	@Override
+	public void onResume(){
+		 super.onResume();
+		 if(syservicer == null){
+			return;
+		 }
+		 if(SamService.getInstance().getDao().query_UserFriendRecord_db(syservicer.geteasemob_username()) != null){
+			isFriend = true;
+			mAdd_friend.setEnabled(false);
+			mAdd_friend.setClickable(false);
+			mAdd_friend.setTextColor((getResources().getColor(R.color.text_invalid_gray)));
+		}else{
+			isFriend = false;
+			mAdd_friend.setEnabled(true);
+			mAdd_friend.setClickable(true);
+		}
+
+		if(SamService.getInstance().getDao().query_FollowerRecord_db(syservicer.getunique_id(), SamService.getInstance().get_current_user().getunique_id())!=null){
+			isFollowed = true;
+			mFollow.setText(getString(R.string.cancel_follow));
+		}else{
+			isFollowed = false;
+			mFollow.setText(getString(R.string.follow));
+		}
 	}
 
 	private void initFromIntent(Intent intent) {
@@ -199,8 +230,8 @@ public class SamAnswerDetailActivity extends Activity {
 							mDialog.dismissPrgoressDiglog();
 						}
 						Toast.makeText(SamAnswerDetailActivity.this, R.string.follow_succeed, 0).show();
-						followed = true;
-						mFollow.setText(getString(R.string.followed));
+						isFollowed = true;
+						mFollow.setText(getString(R.string.cancel_follow));
 						EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
 					}
 				});
@@ -234,6 +265,72 @@ public class SamAnswerDetailActivity extends Activity {
 							mDialog.dismissPrgoressDiglog();
 						}
 						Toast.makeText(SamAnswerDetailActivity.this, R.string.follow_failed, 0).show();
+					}
+				});
+			}
+
+		});
+		
+		
+	}
+
+
+	private void unfollow_vendor(){
+		long user_id = syservicer.getunique_id();
+		String username = syservicer.getusername();
+		
+		if(mDialog!=null){
+			mDialog.launchProcessDialog(this,getString(R.string.process));
+		}
+		SamLog.i(TAG,"unfollow vendor id:"+user_id);
+		SamService.getInstance().unfollow(user_id,username,new SMCallBack(){
+			@Override
+			public void onSuccess(Object obj) {
+				if(SamAnswerDetailActivity.this == null ||SamAnswerDetailActivity.this.isFinishing() ){
+					return;
+				}
+				
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+							mDialog.dismissPrgoressDiglog();
+						}
+						Toast.makeText(SamAnswerDetailActivity.this, R.string.cancel_follow_succeed, 0).show();
+						isFollowed = false;
+						mFollow.setText(getString(R.string.follow));
+						EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+					}
+				});
+				
+				
+			}
+
+			@Override
+			public void onFailed(int code) {
+				if(SamAnswerDetailActivity.this == null ||SamAnswerDetailActivity.this.isFinishing() ){
+					return;
+				}
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+							mDialog.dismissPrgoressDiglog();
+						}
+						Toast.makeText(SamAnswerDetailActivity.this, R.string.cancel_follow_failed, 0).show();
+					}
+				});
+			}
+
+			@Override
+			public void onError(int code) {
+				if(SamAnswerDetailActivity.this == null ||SamAnswerDetailActivity.this.isFinishing() ){
+					return;
+				}
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(mDialog!=null){
+							mDialog.dismissPrgoressDiglog();
+						}
+						Toast.makeText(SamAnswerDetailActivity.this, R.string.cancel_follow_failed, 0).show();
 					}
 				});
 			}
@@ -292,6 +389,19 @@ public class SamAnswerDetailActivity extends Activity {
 	private void launchNameCardActivity(ContactUser userinfo){
 		Intent newIntent = new Intent(this,NameCardActivity.class);
 		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("ContactUser",syservicer);
+		newIntent.putExtras(bundle);
+		
+		startActivity(newIntent);
+	}
+
+
+	private void launchUserInfoActivity(ContactUser userinfo){
+		Intent newIntent = new Intent(this,UserInfoActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP;
 		newIntent.setFlags(intentFlags);
 		
 		Bundle bundle = new Bundle();

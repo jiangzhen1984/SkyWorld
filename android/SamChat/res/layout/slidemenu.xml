@@ -9,7 +9,7 @@
         android:id="@+id/mine_layout"
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:background="#007968">
+    	android:background="@color/text_theme">
     	
         <com.easemob.easeui.ui.CircleImageView
             android:id="@+id/avatar"
@@ -43,8 +43,8 @@
     	android:orientation="horizontal" >
         
       <ImageView
-      	 android:layout_width="28dp"
-         android:layout_height="28dp"
+      	 android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
          android:layout_marginRight="30dp"
          android:contentDescription="@null"
          android:src="@drawable/sam_contact_icon"
@@ -80,6 +80,97 @@
         android:layout_marginTop="5dp"/>
     
     <LinearLayout
+        android:id="@+id/invite_friend_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+        
+      <ImageView
+      	 android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginRight="30dp"
+         android:contentDescription="@null"
+         android:src="@drawable/invite_friend"
+         android:layout_gravity="center_vertical"/>
+    
+      <TextView
+        android:id="@+id/invite_friend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp"
+        android:text="@string/invite_friend"/>
+      
+      <RelativeLayout
+            android:id="@+id/un_read_new_friend_num_layout"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginRight="10dp"
+        	android:layout_gravity="center_vertical"
+        	android:visibility="invisible">
+        	
+            <ImageView
+            	android:layout_width="20dp"
+        		android:layout_height="20dp"
+        		android:layout_centerInParent="true"
+        		android:gravity="center"
+            	android:contentDescription="@null"
+            	android:src="@drawable/reminder_point_bg"/>
+            <TextView
+            	android:id="@+id/un_read_new_friend_num"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:textSize="12sp"
+        		android:layout_centerInParent="true"
+        		android:gravity="center"
+        		android:textColor="@color/common_white"/>
+         </RelativeLayout>
+    
+    </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/listview_gray_devider"
+        android:layout_marginTop="5dp"/>
+    
+     <LinearLayout
+        android:id="@+id/start_group_layout" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+        
+      <ImageView
+      	 android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginRight="30dp"
+         android:contentDescription="@null"
+         android:src="@drawable/start_group"
+         android:layout_gravity="center_vertical"/>
+    
+      <TextView
+        android:id="@+id/start_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp"
+        android:text="@string/start_group"/>
+      
+    </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/listview_gray_devider"
+        android:layout_marginTop="5dp"/>
+    
+    <LinearLayout
         android:id="@+id/settings_layout"  
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
@@ -88,8 +179,8 @@
     	android:orientation="horizontal" >
         
       <ImageView
-      	 android:layout_width="28dp"
-         android:layout_height="28dp"
+      	 android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
          android:layout_marginRight="30dp"
          android:layout_gravity="center_vertical"
          android:contentDescription="@null"
@@ -122,8 +213,8 @@
     	android:orientation="horizontal" >
         
       <ImageView
-      	 android:layout_width="28dp"
-         android:layout_height="28dp"
+      	 android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
          android:layout_marginRight="30dp"
          android:layout_gravity="center_vertical"
          android:contentDescription="@null"
@@ -156,8 +247,8 @@
     	android:orientation="horizontal" >
         
       <ImageView
-      	 android:layout_width="28dp"
-         android:layout_height="28dp"
+      	 android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
          android:layout_marginRight="30dp"
          android:layout_gravity="center_vertical"
          android:contentDescription="@null"
@@ -181,20 +272,41 @@
         android:background="@color/listview_gray_devider"
         android:layout_marginTop="5dp"/>
     
-    <TextView
-        android:id="@+id/me"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:textSize="18sp"
-        android:text="@string/sam_me"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
     
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/listview_gray_devider"
-        android:layout_marginTop="5dp"/>
+        android:background="@color/listview_gray_devider"/>
     
+    <LinearLayout  
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+      
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_vertical"
+        	android:layout_marginRight="30dp"
+        	android:layout_marginTop="10dp"
+        	android:layout_marginBottom="10dp"
+        	android:textSize="18sp"
+        	android:text="@string/version"/> 
+        	
+        <TextView
+            android:id="@+id/version"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_vertical"
+        	android:layout_marginTop="10dp"
+        	android:layout_marginBottom="10dp"
+        	android:textSize="18sp"/>
+      
+    </LinearLayout>
 
 </LinearLayout>
