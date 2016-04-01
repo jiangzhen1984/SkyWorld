@@ -18,6 +18,12 @@
 #import "NotificationMacro.h"
 #import "LoginUserInformation.h"
 #import "SCUserProfileManager.h"
+#import "SCUtils.h"
+
+// easemob
+#import "ChatDemoUIDefine.h"
+#import "EMAlertView.h"
+#import "TTGlobalUICommon.h"
 
 #import "EMSDKFull.h"
 #import "EaseUI.h"

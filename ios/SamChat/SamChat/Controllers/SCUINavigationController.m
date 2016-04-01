@@ -14,9 +14,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationBar setBackgroundImage:[SCUtils createImageWithColor:SC_MAIN_COLOR] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationBar setBackIndicatorImage:[SCUtils createImageWithColor:SC_MAIN_COLOR]];
-    [self.navigationBar setShadowImage:[SCUtils createImageWithColor:[UIColor clearColor]]];
+//    [self.navigationBar setBackgroundImage:[SCUtils createImageWithColor:SC_MAIN_COLOR] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationBar setBackIndicatorImage:[SCUtils createImageWithColor:SC_MAIN_COLOR]];
+//    [self.navigationBar setShadowImage:[SCUtils createImageWithColor:[UIColor clearColor]]];
+    
 }
 
 @end
