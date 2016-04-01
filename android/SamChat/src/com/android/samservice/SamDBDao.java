@@ -579,9 +579,9 @@ public class SamDBDao{
 		}
 	}
 
-	public void delete_FollowerRecord_db(long unique_id){
+	public void delete_FollowerRecord_db(long unique_id,long owner_unique_id){
 		synchronized(dbLock){
-				dbHandle.deleteFollower(unique_id);
+				dbHandle.deleteFollower(unique_id,owner_unique_id);
 		}
 	}
 

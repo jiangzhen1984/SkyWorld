@@ -1557,16 +1557,16 @@ public class DBManager
 		db.delete(table, null, null);
 	}
 
-	public void deleteFollower(long unique_id){
+	public void deleteFollower(long unique_id,long owner_unique_id){
 		String table = DatabaseHelper.TABLE_NAME_FOLLOWER ;
 
-		db.delete(table, "unique_id=?", new String[]{""+unique_id});
+		db.delete(table, "unique_id=? and owner_unique_id=?", new String[]{""+unique_id,""+owner_unique_id});
 	}
 
-	public void deleteFollowerByUsername(String username){
+	public void deleteFollowerByUsername(String username,long owner_unique_id){
 		String table = DatabaseHelper.TABLE_NAME_FOLLOWER ;
 
-		db.delete(table, "username=?", new String[]{username});
+		db.delete(table, "username=? and owner_unique_id=?", new String[]{username,""+owner_unique_id});
 	}
 
 

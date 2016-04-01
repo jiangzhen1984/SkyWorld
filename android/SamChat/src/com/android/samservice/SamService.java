@@ -1435,6 +1435,9 @@ public class SamService{
 					if(dao.query_FollowerRecord_db(fwobj.unique_id, current_user.getunique_id()) == null){
 						dao.add_FollowerRecord_db(new FollowerRecord(fwobj.unique_id,fwobj.username,current_user.getunique_id()));
 					}
+				}else{
+					SamLog.e(TAG,"unfollow guy "+"unique_id:"+fwobj.unique_id+" username:"+fwobj.username);
+					dao.delete_FollowerRecord_db(fwobj.unique_id,current_user.getunique_id());
 				}
 
 				cbobj.smcb.onSuccess(null);

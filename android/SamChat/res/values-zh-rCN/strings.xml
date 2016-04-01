@@ -118,8 +118,10 @@
     <string name="add_friends">加为好友</string>
     <string name="start_talk">发起聊天</string>
     <string name="follow">请您关注</string>
-    <string name="followed">您已关注</string>
+    <string name="cancel_follow">取消关注</string>
     
+    <string name="invite_friend">朋友邀请</string>
+    <string name="start_group">发起群聊</string>
     <string name="new_friends">新的朋友</string>
     <string name="new_friends_search_hint">手机号</string>
     
@@ -217,4 +219,17 @@
     <string name="modify">修改</string>
     <string name="follow_succeed">关注成功</string>
     <string name="follow_failed">关注失败</string>
+    <string name="cancel_follow_succeed">取消关注成功</string>
+    <string name="cancel_follow_failed">取消关注失败</string>
+    
+    <string name="address">地址</string>
+    <string name="name">用户名</string>
+    <string name="two_dimension">二维码</string>
+    <string name="sex">性别</string>
+    <string name="hobby">兴趣爱好</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="nofill">未填写</string>
+    <string name="store">保存</string>
+    
 </resources>

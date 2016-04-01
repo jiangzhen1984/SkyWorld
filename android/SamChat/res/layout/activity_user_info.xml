@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#89000000">
     
     <RelativeLayout
     	android:layout_width="match_parent"
@@ -38,7 +38,8 @@
         	android:layout_marginTop="5dp"
         	android:layout_below="@id/avatar"
         	android:layout_centerHorizontal="true"
-        	android:textSize="18sp"/>
+        	android:textSize="18sp"
+        	android:textColor="#000000"/>
     	
     	<LinearLayout
     	    android:id="@+id/location_area_layout"
@@ -119,7 +120,8 @@
         			android:layout_height="wrap_content"
         			android:layout_below="@id/friend_op_img"
         			android:layout_centerHorizontal="true"
-        			android:layout_marginTop="3dp"/>    	
+        			android:layout_marginTop="3dp"
+        			android:textColor="#000000"/>    	
     	    </RelativeLayout>
     	    
     	    <RelativeLayout
@@ -144,7 +146,8 @@
         			android:layout_height="wrap_content"
         			android:layout_below="@id/follow_op_img"
         			android:layout_centerHorizontal="true"
-        			android:layout_marginTop="3dp"/>    	
+        			android:layout_marginTop="3dp"
+        			android:textColor="#000000"/>    	
     	    </RelativeLayout>
     	    
     	    

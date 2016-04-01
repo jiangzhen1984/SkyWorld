@@ -6,6 +6,7 @@
     <color name="default_bg">#EEEEEE</color>
     <color name="listview_gray_devider">#CCCCCC</color>
     <color name="common_gray">#CCCCCC</color>
+    <color name="common_black">#000000</color>
     
     <color name="common_top_bar_blue">#4ebcd3</color>
     <color name="btn_login_normal">#00acff</color>

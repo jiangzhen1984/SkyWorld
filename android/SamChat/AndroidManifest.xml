@@ -286,9 +286,32 @@
           
           <activity
             android:name="com.android.samchat.UserInfoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar">
+            android:theme="@style/Transparent"
+            android:screenOrientation="portrait">
           </activity>
+          
+          <activity
+            android:name="com.android.samchat.MineActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait">
+          </activity>
+          
+          <activity
+            android:name="com.android.samchat.SexSelectActivity"
+            android:theme="@style/Transparent"
+            android:screenOrientation="portrait">
+          </activity>
+          
+          <activity
+            android:name="com.android.samchat.BasicInfoUpdateActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait">
+          </activity>
+          
+          
+          
+          
+          
           
           
          

@@ -92,9 +92,11 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	public static final int CONFIRM_ID_AVATAR_SELECTED=304;
 	public static final int CONFIRM_ID_CROP_FINISHED=305;
+
+	public static final int CONFIRM_ID_INVITE_FRIEND_ACTIVITY_EXITED=306;
 	
 
-	public static int sInviteNum = 0;
+	private int sInviteNum = 0;
 	
 	private boolean isExit = false; 
 	
@@ -147,9 +149,13 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 
 	private TextView mContact_reminder;
+	private RelativeLayout mUn_read_new_friend_num_layout;
+	private TextView mUn_read_new_friend_num;
 
 	private LinearLayout mContact_layout;
-	private LinearLayout mSettings_layout;
+	private LinearLayout mInvite_friend_layout;
+	private LinearLayout mStart_group_layout;
+	private LinearLayout mSettings_layout;	
 	private LinearLayout mLogout_layout;
 	private LinearLayout mExitapp_layout;
 	private TextView mVersion;
@@ -174,6 +180,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private BroadcastReceiver	broadcastReceiver;
 
 	private boolean isContactActivityLaunched = false;
+	private boolean isInviteFriendActivityLaunched = false;
 
 
 	private Uri cropImageUri;
@@ -183,12 +190,6 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	private String versionName;
 	private Context mContext;
-
-	public static int getInviteNum(){
-		return sInviteNum;
-	}
-
-
 
 	public void updateReminderIcon( final int id , final boolean show){
 		if(show)	{
@@ -224,6 +225,13 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		tabs.add(tabinfo);
 
 		return TAB_ID_SAMSERVICES;
+	}
+
+	private void launchMineActivity(){
+		Intent newIntent = new Intent(this,MineActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
 	}
 
 	private void launchAvatarActivity(){
@@ -309,7 +317,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		mMine_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				launchAvatarActivity();
+				//launchAvatarActivity();
+				launchMineActivity();
 			}
 		});
 
@@ -320,8 +329,30 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			public void onClick(View arg0) {
 				menu.toggle();
 				isContactActivityLaunched = true;
-				updateContactReminder(false);
+				//updateContactReminder(false);
 				launchContactActivity();
+			}
+		});
+
+		mUn_read_new_friend_num =  (TextView)menu.findViewById(R.id.un_read_new_friend_num);
+		mUn_read_new_friend_num_layout = (RelativeLayout)menu.findViewById(R.id.un_read_new_friend_num_layout); 
+		mInvite_friend_layout = (LinearLayout)menu.findViewById(R.id.invite_friend_layout); 
+		mInvite_friend_layout.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				menu.toggle();
+				isInviteFriendActivityLaunched = true;
+				updateInviteFriendReminder(false);
+				launchInviteFriendActivity();
+			}
+		});
+
+		mStart_group_layout = (LinearLayout)menu.findViewById(R.id.start_group_layout);
+		mStart_group_layout.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				menu.toggle();
+				launchGroupsActivity();
 			}
 		});
 
@@ -333,15 +364,6 @@ public class MainActivity extends IndicatorFragmentActivity implements
 				launchSettingActivity();
 			}
 		});
-
-		/*mMe = (TextView)menu.findViewById(R.id.me);
-		mMe.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View arg0) {
-				menu.toggle();
-				launchMeActivity();
-			}
-		});*/
 
 		mLogout_layout = (LinearLayout)menu.findViewById(R.id.logout_layout);
 		mLogout_layout.setOnClickListener(new OnClickListener(){
@@ -535,6 +557,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		}else if(requestCode == CONFIRM_ID_CONTACT_ACTIVITY_EXITED){
 			isContactActivityLaunched = false;
+		}else if(requestCode ==  CONFIRM_ID_INVITE_FRIEND_ACTIVITY_EXITED){
+			isInviteFriendActivityLaunched = false;
 			sInviteNum = 0;
 		}else if(requestCode == CONFIRM_ID_AVATAR_SELECTED){
 			if(resultCode == Activity.RESULT_OK){
@@ -696,19 +720,27 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		startActivityForResult(newIntent, CONFIRM_ID_CONTACT_ACTIVITY_EXITED);
 	}
 
+	private void launchInviteFriendActivity()
+	{
+		Intent newIntent = new Intent(this,NewFriendActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		SamLog.e(TAG,"launchNewFriendActivity!");
+		startActivityForResult(newIntent,CONFIRM_ID_INVITE_FRIEND_ACTIVITY_EXITED);
+	}
+
+	private void launchGroupsActivity()
+	{
+		startActivity(new Intent(this, GroupsActivity.class));
+		SamLog.e(TAG,"launchGroupsActivity!");
+	}
+
 	private void launchSettingActivity(){
 		Intent newIntent = new Intent(this,SettingActivity.class);
 		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP;;
 		newIntent.setFlags(intentFlags);
 		startActivity(newIntent);
 
-	}
-
-	private void launchMeActivity(){
-		Intent newIntent = new Intent(this,MeActivity.class);
-		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
-		newIntent.setFlags(intentFlags);
-		startActivity(newIntent);
 	}
 
 	private void launchDialogActivityNeedConfirmForExitApp(String title,String msg){
@@ -1120,25 +1152,52 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		}
 	}
 
+	private void updateInviteFriendReminder(boolean show){
+		if(show){
+			mUn_read_new_friend_num.setText(""+(sInviteNum<=99?sInviteNum:99));
+			mUn_read_new_friend_num_layout.setVisibility(View.VISIBLE);
+		}else{
+			mUn_read_new_friend_num_layout.setVisibility(View.INVISIBLE);
+		}
+	}
+
 	private void registerBroadcastReceiver() {
 		broadcastManager = LocalBroadcastManager.getInstance(this);
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(Constants.ACTION_CONTACT_CHANAGED);
+		intentFilter.addAction(Constants.ACTION_AVATAR_UPDATE);
 
 		broadcastReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				boolean isInvite = intent.getBooleanExtra("isInvite",false);
-				if(isInvite){
-					if(!menu.isMenuShowing() && !isContactActivityLaunched){
-						updateOptionButtonReminder(true);
-					}
+				if(intent.getAction().equals(Constants.ACTION_CONTACT_CHANAGED)){
+					boolean isInvite = intent.getBooleanExtra("isInvite",false);
+					if(isInvite){
+						if(!menu.isMenuShowing() && !isInviteFriendActivityLaunched){
+							updateOptionButtonReminder(true);
+						}
 
-					if(!isContactActivityLaunched){
-						updateContactReminder(true);
-						sInviteNum ++;
+						if(!isInviteFriendActivityLaunched){
+							sInviteNum ++;
+							updateInviteFriendReminder(true);
+						}
 					}
-				}
+					
+				}else if(intent.getAction().equals(Constants.ACTION_AVATAR_UPDATE)){
+					LoginUser cuser = SamService.getInstance().get_current_user();
+
+					String username = cuser.getusername();
+					AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(username);
+					if(rd!=null && rd.getavatarname()!=null){
+						Bitmap bp = null;
+						bp = EaseUserUtils.decodeFile(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname(),60,60);
+
+						if(bp!=null){
+							mAvatar.setImageBitmap(bp);
+						}
+					}
+				}	
+				
 
 			}
 		};

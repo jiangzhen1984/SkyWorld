@@ -2,6 +2,7 @@ package com.android.samchat;
 
 import java.util.ArrayList;
 
+import com.android.samservice.Constants;
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
 import com.android.samservice.info.ReceivedQuestion;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.MotionEvent;
@@ -37,66 +39,64 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 
-public class SendVerifyMsgActivity extends Activity {
-	private final String TAG = "SendVerifyMsgActivity";
-	public static int MSG_SEND_VERIFY_MSG_CALLBACK = 1;
+public class BasicInfoUpdateActivity extends Activity {
+	private final String TAG = "BasicInfoUpdateActivity";
+
+	public static final String NEW_INFO = "new_info";
+
+	public static final int BASIC_INFO_ADDRESS = 0;
+	public static final int BASIC_INFO_HOBBY=1;
 
 	private Context mContext;
-	private ImageView mBack;
-	private LinearLayout mSend_msg_action_layout;
-	private EditText mSend_msg_input;
+	private RelativeLayout mBack_layout;
+	private TextView mBasic_info;
+	private LinearLayout mStore_layout;
+	private EditText mInfo_input;
 
 	private SamProcessDialog mDialog;
-	private String easemob_name;
+
+	private int info_type;
+	private String default_info;
+	private String info;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		mDialog = new SamProcessDialog();
 	
-		setContentView(R.layout.activity_send_verify_msg);
+		setContentView(R.layout.activity_basic_info_update);
 		mContext = getBaseContext();
 
 		initFromIntent(getIntent());
 
-		mBack =  (ImageView) findViewById(R.id.back);
-		mBack.setOnClickListener(new OnClickListener(){
+		mBack_layout=(RelativeLayout) findViewById(R.id.back_layout);
+		mBack_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
+				setResult(RESULT_CANCELED);
 				finish();
 			}
 		});
+		
+		mBasic_info = (TextView) findViewById(R.id.basic_info);
+		if(info_type == BASIC_INFO_ADDRESS){
+			mBasic_info.setText(getString(R.string.address));
+		}else if(info_type == BASIC_INFO_HOBBY){
+			mBasic_info.setText(getString(R.string.hobby));
+		}
 
-		mSend_msg_action_layout = (LinearLayout) findViewById(R.id.send_msg_action_layout);
-		mSend_msg_input =  (EditText) findViewById(R.id.send_msg_input);
+		mStore_layout = (LinearLayout) findViewById(R.id.store_layout);
+		mInfo_input =  (EditText) findViewById(R.id.info_input);
+		if(default_info!=null){
+			mInfo_input.setText(default_info);
+		}
 
-		mSend_msg_action_layout.setOnClickListener(new OnClickListener(){
+		mStore_layout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				String verify_msg = mSend_msg_input.getText().toString().trim();
-				if(!verify_msg.equals("")){
-					/*send verify_msg to server*/
-					closeInputMethod();
-					if(mDialog!=null){
-    						mDialog.launchProcessDialog(SendVerifyMsgActivity.this,getString(R.string.process));
-    					}
-					
-					if(!sendVerifyMsg(easemob_name,verify_msg)){
-						if(mDialog!=null){
-	    						mDialog.dismissPrgoressDiglog();
-	    					}
-
-						Toast.makeText(mContext, getString(R.string.send_msg_failed), Toast.LENGTH_SHORT).show(); 
-						finish();
-					}else{
-						if(mDialog!=null){
-	    						mDialog.dismissPrgoressDiglog();
-	    					}
-						
-						Toast.makeText(mContext, getString(R.string.send_msg_succeed), Toast.LENGTH_SHORT).show(); 
-						finish();
-
-					}
+				String info = mInfo_input.getText().toString().trim();
+				if(info!=null && !info.equals("")){
+					storeBasicInfo(info_type,info);
 				}
 				return ;
 			}
@@ -104,17 +104,18 @@ public class SendVerifyMsgActivity extends Activity {
 	       
 	}
 
-	private boolean sendVerifyMsg(String easemob_name, String verify_msg){
-	/*use easemob interface*/
-		try{
-			SamLog.e(TAG,"easemob_name:"+easemob_name+" reason:"+verify_msg);
-			EMContactManager.getInstance().addContact(easemob_name, verify_msg);
-		}catch(EaseMobException e){
-			e.printStackTrace(); 
-	    		return false;
-		}
+	private void storeBasicInfo(int type, String info){
+		closeInputMethod();
+		//if(mDialog!=null){
+    		//	mDialog.launchProcessDialog(BasicInfoUpdateActivity.this,getString(R.string.process));
+    		//}
 
-		return true;
+		Intent data = new Intent();
+		data.putExtra(NEW_INFO, info);
+		setResult(RESULT_OK, data);
+		finish();
+
+		
 
 	}
 
@@ -127,25 +128,11 @@ public class SendVerifyMsgActivity extends Activity {
 	}
 
 	private void initFromIntent(Intent intent) {
-		if (intent != null) {
-			easemob_name = intent.getStringExtra("easemob_name");
-			if(easemob_name == null){
-				SamLog.ship(TAG,"easemob_name is null, fatal error");
-				finish();
-			}
-		}else{
-			SamLog.ship(TAG,"initFromIntent is null, fatal error");
-			finish();
-		}
+		info_type = intent.getIntExtra(Constants.BASIC_INFO_TYPE, BASIC_INFO_ADDRESS);
+		default_info = intent.getStringExtra(Constants.BASIC_INFO_DEFAULT_VALUE);
 	}
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		SamLog.e(TAG,"onNewIntent");
-		this.onResume();
-	}
-
+	
 	@Override
 	public void onResume(){
 		super.onResume();
@@ -155,6 +142,7 @@ public class SendVerifyMsgActivity extends Activity {
 
 	@Override
 	public void onBackPressed(){
+		setResult(RESULT_CANCELED);
 		finish();
 	}
 
@@ -166,6 +154,7 @@ public class SendVerifyMsgActivity extends Activity {
 
 	
 }
+
 
 
 
