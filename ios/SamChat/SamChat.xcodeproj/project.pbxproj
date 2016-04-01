@@ -21,6 +21,7 @@
 		3159D9901CAE68F200212DAB /* ServiceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */; };
 		3159D9941CAE6A8C00212DAB /* OfficalListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */; };
 		3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9971CAE6B5C00212DAB /* ProducerViewController.m */; };
+		3159D99E1CAE725A00212DAB /* home_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3159D99D1CAE725A00212DAB /* home_background.png */; };
 		3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFE31CA5401600796D25 /* SCUINavigationController.m */; };
 		3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFEA1CA5494500796D25 /* SCSkyWorldAPI.m */; };
 		317B827D1CA9625E000415E9 /* libHyphenateFullSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317B827B1CA9625E000415E9 /* libHyphenateFullSDK.a */; };
@@ -406,6 +407,7 @@
 		3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OfficalListTableViewController.m; path = Offical/OfficalListTableViewController.m; sourceTree = "<group>"; };
 		3159D9961CAE6B5C00212DAB /* ProducerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProducerViewController.h; path = Producer/ProducerViewController.h; sourceTree = "<group>"; };
 		3159D9971CAE6B5C00212DAB /* ProducerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProducerViewController.m; path = Producer/ProducerViewController.m; sourceTree = "<group>"; };
+		3159D99D1CAE725A00212DAB /* home_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_background.png; sourceTree = "<group>"; };
 		3164BF811CA8BDAE008D1505 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3178FFE21CA5401600796D25 /* SCUINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUINavigationController.h; sourceTree = "<group>"; };
 		3178FFE31CA5401600796D25 /* SCUINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUINavigationController.m; sourceTree = "<group>"; };
@@ -1879,6 +1881,7 @@
 		31FAC7291CAC0F890034A0CD /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				3159D99D1CAE725A00212DAB /* home_background.png */,
 				31FAC7271CAC0F810034A0CD /* Images.xcassets */,
 			);
 			name = Resource;
@@ -2135,6 +2138,7 @@
 				31FAC6071CAAB3C50034A0CD /* tabbar_setting@2x.png in Resources */,
 				31FAC5C41CAAB3C50034A0CD /* chat_sender_audio_playing_001@2x.png in Resources */,
 				31FAC5A91CAAB3C50034A0CD /* call_out_h@2x.png in Resources */,
+				3159D99E1CAE725A00212DAB /* home_background.png in Resources */,
 				31FAC5EF1CAAB3C50034A0CD /* back@2x.png in Resources */,
 				31FAC7281CAC0F810034A0CD /* Images.xcassets in Resources */,
 				31FAC5EB1CAAB3C50034A0CD /* account@2x.png in Resources */,
