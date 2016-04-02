@@ -9,7 +9,9 @@
 #ifndef NotificationMacro_h
 #define NotificationMacro_h
 
-#define NOTIFICATION_LOGIN_STATE_CHANGE    @"LoginStateChange"
+#define NOTIFICATION_LOGIN_STATE_CHANGE     @"LoginStateChangeNotification"
+
+#define NOTIFICATION_GET_PUSH_MESSAGE       @"GetPushMessageNotification"
 
 
 #endif /* NotificationMacro_h */

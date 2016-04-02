@@ -97,13 +97,9 @@
 
 - (NSString *)generateLoginUrlString
 {
-    NSDictionary *header = @{SKYWORLD_ACTION: SKYWORLD_LOGIN};
     self.loginInfo = @{SKYWORLD_USERNAME: self.username.text,
                            SKYWORLD_PWD: self.password.text};
-    SCSkyWorldAPI *user = [[SCSkyWorldAPI alloc] initAPI:SKYWORLD_APITYPE_USERAPI
-                                              WithHeader:header
-                                                 andBody:self.loginInfo];
-    return [user generateUrlString];
+    return [SCSkyWorldAPI urlLoginWithUsername:self.loginInfo[SKYWORLD_USERNAME] passWord:self.loginInfo[SKYWORLD_PWD]];
 }
 
 

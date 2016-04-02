@@ -43,14 +43,14 @@
                                     <constraint firstAttribute="height" constant="200" id="hol-py-eRM"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QfS-mW-MfH">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QfS-mW-MfH">
                                 <rect key="frame" x="0.0" y="220" width="600" height="380"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
-                            <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C9l-vV-Lt8">
+                            <view alpha="0.90000000000000002" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C9l-vV-Lt8">
                                 <rect key="frame" x="20" y="150" width="560" height="45"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入您的问题或者需求" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fr7-Rv-hGO">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入您的问题或者需求" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fr7-Rv-hGO">
                                         <rect key="frame" x="70" y="14.5" width="420" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -67,6 +67,11 @@
                                     <constraint firstAttribute="trailing" secondItem="Fr7-Rv-hGO" secondAttribute="trailing" constant="70" id="joq-Nk-Gf6"/>
                                     <constraint firstItem="Fr7-Rv-hGO" firstAttribute="leading" secondItem="C9l-vV-Lt8" secondAttribute="leading" constant="70" id="u9i-Z4-vfC"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="0Ke-nr-9cz"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -90,8 +95,12 @@
                             <mask key="constraints">
                                 <exclude reference="4Bc-JZ-HAg"/>
                                 <exclude reference="ZJR-Gh-BcU"/>
+                                <exclude reference="aOL-YF-kHf"/>
                                 <exclude reference="jld-lb-pz9"/>
+                                <exclude reference="krE-NO-0oB"/>
+                                <exclude reference="m3u-bL-b2Q"/>
                                 <exclude reference="JRh-v5-Xgh"/>
+                                <exclude reference="tav-GU-5UJ"/>
                             </mask>
                         </variation>
                         <connections>

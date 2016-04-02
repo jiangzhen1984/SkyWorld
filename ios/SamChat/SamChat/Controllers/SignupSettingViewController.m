@@ -58,16 +58,17 @@
 
 - (NSString *)generateSignUpUrlString
 {
-    NSDictionary *header = @{SKYWORLD_ACTION: SKYWORLD_REGISTER};
     self.registerInfo = @{SKYWORLD_CELLPHONE: self.cellphone,
                           SKYWORLD_USERNAME: self.username.text,
                           SKYWORLD_PWD: self.password.text,
                           SKYWORLD_COUNTRY_CODE: [NSNumber numberWithInteger:[self.countryCode integerValue]],
                           SKYWORLD_CONFIRM_PWD: self.password.text};
-    SCSkyWorldAPI *user = [[SCSkyWorldAPI alloc] initAPI:SKYWORLD_APITYPE_USERAPI
-                                              WithHeader:header
-                                                 andBody:self.registerInfo];
-    return [user generateUrlString];
+    
+    NSString *urlString = [SCSkyWorldAPI urlRegisterWithCellphone:self.registerInfo[SKYWORLD_CELLPHONE]
+                                                      countryCode:self.registerInfo[SKYWORLD_COUNTRY_CODE]
+                                                         userName:self.registerInfo[SKYWORLD_USERNAME]
+                                                         passWord:self.registerInfo[SKYWORLD_PWD]];
+    return urlString;
 }
 
 - (IBAction)register:(UIButton *)sender

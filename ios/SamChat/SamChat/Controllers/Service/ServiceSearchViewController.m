@@ -28,22 +28,40 @@
 
 - (void)viewDidLoad
 {
-    self.searchBarTopSpaceConstraint = [NSLayoutConstraint constraintWithItem:_searchBar
-                                                       attribute:NSLayoutAttributeTop
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:self.view
-                                                       attribute:NSLayoutAttributeTop
-                                                      multiplier:1.0f
-                                                        constant:130];
-    self.tableViewTopSpaceConstraint = [NSLayoutConstraint constraintWithItem:_hotQuestionTable
-                                                       attribute:NSLayoutAttributeTop
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:self.view
-                                                       attribute:NSLayoutAttributeTop
-                                                      multiplier:1.0f
-                                                        constant:200];
+    [super viewDidLoad];
+    [self setupSubViewsConstraints];
+}
 
+- (void)setupSubViewsConstraints
+{
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_searchBar]-20-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_searchBar)]];
+    [_searchBar addConstraint:[NSLayoutConstraint constraintWithItem:_searchBar
+                                                            attribute:NSLayoutAttributeHeight
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:1.0f
+                                                             constant:44]];
+    self.searchBarTopSpaceConstraint = [NSLayoutConstraint constraintWithItem:_searchBar
+                                                                    attribute:NSLayoutAttributeTop
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:self.view
+                                                                    attribute:NSLayoutAttributeTop
+                                                                   multiplier:1.0f
+                                                                     constant:130];
+    self.tableViewTopSpaceConstraint = [NSLayoutConstraint constraintWithItem:_hotQuestionTable
+                                                                    attribute:NSLayoutAttributeTop
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:self.view
+                                                                    attribute:NSLayoutAttributeTop
+                                                                   multiplier:1.0f
+                                                                     constant:200];
+    
     [self.view addConstraints:@[self.searchBarTopSpaceConstraint, self.tableViewTopSpaceConstraint]];
+
 }
 
 - (NSString *)generateNewQuestionUrlString
@@ -56,17 +74,44 @@
 - (IBAction)pushNewQuestion:(id)sender
 {
     DebugLog(@"search");
-    /*
+    
+    if((!self.searchTextField.text) || (self.searchTextField.text.length <= 0)){
+        return;
+    }
+    NSString *urlString = [SCSkyWorldAPI urlNewQuestionWithQuestion:self.searchTextField.text];
+    DebugLog(@"pushing new question with: %@", urlString);
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:[self generateNewQuestionUrlString]
+    [manager GET:urlString
       parameters:nil
         progress:^(NSProgress *downloadProgress){
         }
          success:^(NSURLSessionDataTask *task, id responseObject) {
+             if([responseObject isKindOfClass:[NSDictionary class]]) {
+                 DebugLog(@"%@", responseObject);
+                 NSDictionary *response = responseObject;
+                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
+                 if(errorCode) {
+                     [self questionErrorWithErrorCode:errorCode];
+                     return;
+                 }
+                 [self questionSuccessWithResponse:response];
+             }
          }
          failure:^(NSURLSessionDataTask *task, NSError *error){
+             DebugLog(@"Error: %@", error);
          }];
-    */
+    
+}
+
+- (void)questionErrorWithErrorCode:(NSInteger)errorCode
+{
+    DebugLog(@"question error code: %ld", errorCode);
+}
+
+- (void)questionSuccessWithResponse:(NSDictionary *)response
+{
+
 }
 
 - (IBAction)begingEditQuestion:(UITextField *)sender
