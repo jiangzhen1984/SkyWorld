@@ -6,7 +6,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.Token;
 import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
