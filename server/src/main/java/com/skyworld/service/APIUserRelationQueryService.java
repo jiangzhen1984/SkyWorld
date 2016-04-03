@@ -12,6 +12,11 @@ import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
 import com.skyworld.service.resp.UserQueryResponse;
 
+/**
+ * @FIXME do not support cluster
+ * @author 28851274
+ *
+ */
 public class APIUserRelationQueryService extends APIBasicJsonApiService {
 	
 	
