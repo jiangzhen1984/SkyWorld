@@ -41,6 +41,8 @@ Protocol Version: M16
               Update user data from when return user information
 Protocol Version: M17
               Update user query response return code, abandon -702, use count instead
+Protocol Version: M18
+              Update article query parameter
 
 
 =======================================Register JSON Protocol =====================================
@@ -738,8 +740,8 @@ Article Query
     }, 
     "body":  
     {
-        "timestamp_end"  :  1455174572266,  //millisecons end
-        "timestamp_start":  1455178172266   //millisecons start
+        "timestamp_end"  :  [optional] 1455174572266,  //millisecons end
+        "timestamp_start":  [optional if does not input this, use server current timestamp] 1455178172265   //millisecons start
         "fetch_count"    :  count // optional  default is 15
         "qt"             :  [0/1] // 0 : for native 1 : for easemob contacts
     }
