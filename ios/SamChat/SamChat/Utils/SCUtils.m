@@ -41,4 +41,31 @@
     [viewContoller presentViewController:homeViewController animated:YES completion:^(void){}];
 }
 
++ (NSNumber *)currentTimeStamp
+{
+    // only logintime
+    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
+    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
+    //DebugLog(@"time: %lld", timestamp);
+    return [NSNumber numberWithLongLong:timestamp];
+}
+
+//+ (NSDate *)convertToDateWithTimeStamp:(NSInteger)timeStamp
+//{
+//    return [NSDate dateWithTimeIntervalSince1970:timeStamp];
+//}
+
++ (NSString *)convertToDateStringWithTimeStamp:(NSInteger)timestamp
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timestamp];
+    
+    [formatter setDateFormat:@"YYYY.MM.dd HH:mm"];
+    NSString *str = [formatter stringFromDate:confromTimesp];
+    return str;
+}
+
 @end

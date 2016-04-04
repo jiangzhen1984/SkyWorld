@@ -8,6 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol SCQuestionPushDelegate
+- (void)didReceiveNewQuestion:(NSDictionary *)questionBody;
+@end
+
+@protocol SCAnswerPushDelegate
+- (void)didReceiveNewAnswer:(NSDictionary *)answerBody;
+@end
+
 @interface SCPushDispatcher : NSObject
+
+@property (nonatomic, weak) id<SCQuestionPushDelegate> questionPushDelegate;
+@property (nonatomic, weak) id<SCAnswerPushDelegate> answerPushDelegate;
+
++ (instancetype)sharedInstance;
+- (void)asyncWaitingPush;
 
 @end

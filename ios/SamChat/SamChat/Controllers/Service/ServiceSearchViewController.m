@@ -10,26 +10,48 @@
 #import "AFNetworking.h"
 #import "SCSkyWorldAPI.h"
 #import "SCConfig.h"
+#import "SCPushDispatcher.h"
+#import "SCTableViewCell.h"
+#import "ReceivedAnswer.h"
 
-@interface ServiceSearchViewController ()
+@interface ServiceSearchViewController () <SCAnswerPushDelegate,UITableViewDataSource,UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *homeImage;
 @property (weak, nonatomic) IBOutlet UIView *searchBar;
-@property (weak, nonatomic) IBOutlet UITableView *hotQuestionTable;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSLayoutConstraint *searchBarTopSpaceConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *tableViewTopSpaceConstraint;
+@property (nonatomic, assign) NSInteger currentQuestionID;
+@property (nonatomic, assign) BOOL isSearching;
 
+@property (nonatomic, strong) NSMutableArray *hotQuestions;
+@property (nonatomic, strong) NSMutableArray *answers;
 //- (void)hideHomeImage:(BOOL)hide withsearchBarToTop:(CGFloat)barTop duration:(CGFloat)duration;
 
 @end
 
 @implementation ServiceSearchViewController
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self setupSubViewsConstraints];
+    self.hotQuestions = [[NSMutableArray alloc] init];
+    self.answers = [[NSMutableArray alloc] init];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    
+    [SCPushDispatcher sharedInstance].answerPushDelegate = self;
+    
+    // for test
+    [self.hotQuestions addObject:@"硅谷比较好的学区在哪儿？"];
+    [self.hotQuestions addObject:@"女儿去美国读高中，怎么样才能找到合适的"];
+    
+    self.isSearching = false;
 }
 
 - (void)setupSubViewsConstraints
@@ -52,7 +74,7 @@
                                                                     attribute:NSLayoutAttributeTop
                                                                    multiplier:1.0f
                                                                      constant:130];
-    self.tableViewTopSpaceConstraint = [NSLayoutConstraint constraintWithItem:_hotQuestionTable
+    self.tableViewTopSpaceConstraint = [NSLayoutConstraint constraintWithItem:_tableView
                                                                     attribute:NSLayoutAttributeTop
                                                                     relatedBy:NSLayoutRelationEqual
                                                                        toItem:self.view
@@ -64,6 +86,15 @@
 
 }
 
+#pragma mark - Question Process
+- (void)setIsSearching:(BOOL)isSearching
+{
+    if(_isSearching != isSearching) {
+        _isSearching = isSearching;
+        [self.tableView reloadData];
+    }
+}
+
 - (NSString *)generateNewQuestionUrlString
 {
     NSDictionary *header = @{SKYWORLD_CATEGORY: SKYWORLD_QUESTION};
@@ -73,8 +104,8 @@
 
 - (IBAction)pushNewQuestion:(id)sender
 {
-    DebugLog(@"search");
-    
+    DebugLog(@"token: %@", [SCUserProfileManager sharedInstance].token);
+    [self.answers removeAllObjects];
     if((!self.searchTextField.text) || (self.searchTextField.text.length <= 0)){
         return;
     }
@@ -101,8 +132,8 @@
          failure:^(NSURLSessionDataTask *task, NSError *error){
              DebugLog(@"Error: %@", error);
          }];
-    
 }
+
 
 - (void)questionErrorWithErrorCode:(NSInteger)errorCode
 {
@@ -111,8 +142,101 @@
 
 - (void)questionSuccessWithResponse:(NSDictionary *)response
 {
-
+    NSNumber *questionid = response[SKYWORLD_QUESTION_ID];
+    self.currentQuestionID = [questionid integerValue];
+    self.isSearching = true;
 }
+
+#pragma mark - Table Data Source
+//-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    return 1;
+//}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(self.isSearching){
+        return self.answers.count;
+    }else{
+        return self.hotQuestions.count;
+    }
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    if(self.isSearching){
+        static NSString *QuestionAnswerCellIdentifier = @"QuestionAnswerTableCell";
+        cell = (SCTableViewCell *)[tableView dequeueReusableCellWithIdentifier:QuestionAnswerCellIdentifier];
+        if (cell == nil) {
+            cell = [[SCTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:QuestionAnswerCellIdentifier];
+        }
+        
+        ((SCTableViewCell*)cell).model = self.answers[indexPath.row];
+    }else{
+        static NSString *HotQuestionCellIdentifier=@"HotQuestionTableCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:HotQuestionCellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:HotQuestionCellIdentifier];
+        }
+        cell.textLabel.text = self.hotQuestions[indexPath.row];
+    }
+    return cell;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if(self.isSearching){
+        return nil;
+    }else{
+        return @"热门搜索";
+    }
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return @"更多答案即将到来...";
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(self.isSearching){
+        return 0;
+    }else{
+        return 40;
+    }
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 40;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    view.tintColor = [UIColor clearColor];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DebugLog(@"table selected");
+}
+
+#pragma mark - SCAnswerPushDelegate
+- (void)didReceiveNewAnswer:(ReceivedAnswer *)answer
+{
+    if([answer.question_id isEqualToString:[NSString stringWithFormat:@"%ld", self.currentQuestionID]]){
+        [self.answers addObject:answer];
+        [self.tableView reloadData];
+    }
+}
+
+#pragma mark - UI Animation
 
 - (IBAction)begingEditQuestion:(UITextField *)sender
 {

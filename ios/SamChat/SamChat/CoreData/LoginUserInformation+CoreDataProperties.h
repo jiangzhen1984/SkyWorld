@@ -2,7 +2,7 @@
 //  LoginUserInformation+CoreDataProperties.h
 //  SamChat
 //
-//  Created by HJ on 3/28/16.
+//  Created by HJ on 4/4/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LoginUserInformation (CoreDataProperties)
 
 @property (nullable, nonatomic, retain) NSString *area;
+@property (nullable, nonatomic, retain) NSString *countrycode;
 @property (nullable, nonatomic, retain) NSString *discription;
 @property (nullable, nonatomic, retain) NSNumber *easemob_status;
 @property (nullable, nonatomic, retain) NSString *easemob_username;
@@ -30,7 +31,22 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSNumber *unique_id;
 @property (nullable, nonatomic, retain) NSString *username;
 @property (nullable, nonatomic, retain) NSNumber *usertype;
-@property (nullable, nonatomic, retain) NSString *countrycode;
+@property (nullable, nonatomic, retain) NSSet<SendQuestion *> *questions;
+@property (nullable, nonatomic, retain) NSSet<SendAnswer *> *answers;
+
+@end
+
+@interface LoginUserInformation (CoreDataGeneratedAccessors)
+
+- (void)addQuestionsObject:(SendQuestion *)value;
+- (void)removeQuestionsObject:(SendQuestion *)value;
+- (void)addQuestions:(NSSet<SendQuestion *> *)values;
+- (void)removeQuestions:(NSSet<SendQuestion *> *)values;
+
+- (void)addAnswersObject:(SendAnswer *)value;
+- (void)removeAnswersObject:(SendAnswer *)value;
+- (void)addAnswers:(NSSet<SendAnswer *> *)values;
+- (void)removeAnswers:(NSSet<SendAnswer *> *)values;
 
 @end
 

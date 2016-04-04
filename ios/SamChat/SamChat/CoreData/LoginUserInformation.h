@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class SendQuestion;
+@class SendAnswer;
+
 #define ENTITY_LOGIN_USER_INFORMATION           @"LoginUserInformation"
 #define LOGIN_USER_INFORMATION_USERNAME         @"username"
 #define LOGIN_USER_INFORMATION_EASEMOB_STATUS   @"easemob_status"

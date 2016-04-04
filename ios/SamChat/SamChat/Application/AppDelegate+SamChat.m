@@ -9,6 +9,7 @@
 #import "AppDelegate+SamChat.h"
 #import "LoginUserInformation.h"
 #import "ChatDemoHelper.h"
+#import "SCPushDispatcher.h"
 
 @implementation AppDelegate (SamChat)
 
@@ -83,6 +84,8 @@
         [[ChatDemoHelper shareHelper] asyncGroupFromServer];
         [[ChatDemoHelper shareHelper] asyncConversationFromDB];
         [[ChatDemoHelper shareHelper] asyncPushOptions];
+        
+        [[SCPushDispatcher sharedInstance] asyncWaitingPush];
         
     } else {
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoginCtrl" bundle:[NSBundle mainBundle]];

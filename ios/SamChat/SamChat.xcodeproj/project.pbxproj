@@ -37,13 +37,26 @@
 		317B82921CA962CA000415E9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 317B82911CA962CA000415E9 /* libiconv.tbd */; };
 		317B82941CA96CC2000415E9 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317B82931CA96CC2000415E9 /* libEaseUI.a */; };
 		317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D431CA8C0270035A14E /* SCUserProfileManager.m */; };
-		317C2D4A1CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D471CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m */; };
-		317C2D4B1CA8E3960035A14E /* LoginUserInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D491CA8E3960035A14E /* LoginUserInformation.m */; };
 		317C2D501CA90A1E0035A14E /* AppDelegate+SamChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */; };
 		3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */; };
 		3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D06C1CA68C4A0088FD67 /* ResetPassWordViewController.m */; };
 		3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0701CA690730088FD67 /* SCViewFactory.m */; };
 		31B3C8FF1CAF880900CDB105 /* SCPushDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C8FE1CAF880900CDB105 /* SCPushDispatcher.m */; };
+		31B3C9021CB0E67400CDB105 /* SCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */; };
+		31B3C90C1CB209B100CDB105 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C90B1CB209B100CDB105 /* AppDelegate.m */; };
+		31B3C9361CB214B600CDB105 /* ContactUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C91D1CB214B600CDB105 /* ContactUser.m */; };
+		31B3C9371CB214B600CDB105 /* ContactUser+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C91F1CB214B600CDB105 /* ContactUser+CoreDataProperties.m */; };
+		31B3C9381CB214B600CDB105 /* LoginUserInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9211CB214B600CDB105 /* LoginUserInformation.m */; };
+		31B3C9391CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9231CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m */; };
+		31B3C93A1CB214B600CDB105 /* ReceivedAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9251CB214B600CDB105 /* ReceivedAnswer.m */; };
+		31B3C93B1CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9271CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m */; };
+		31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9291CB214B600CDB105 /* ReceivedQuestion.m */; };
+		31B3C93D1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C92B1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m */; };
+		31B3C93E1CB214B600CDB105 /* SCCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C92D1CB214B600CDB105 /* SCCoreDataManager.m */; };
+		31B3C93F1CB214B600CDB105 /* SendAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C92F1CB214B600CDB105 /* SendAnswer.m */; };
+		31B3C9401CB214B600CDB105 /* SendAnswer+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9311CB214B600CDB105 /* SendAnswer+CoreDataProperties.m */; };
+		31B3C9411CB214B600CDB105 /* SendQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9331CB214B600CDB105 /* SendQuestion.m */; };
+		31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -226,7 +239,6 @@
 		31FAC6BC1CAAB7E30034A0CD /* PushNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6891CAAB7E30034A0CD /* PushNotificationViewController.m */; };
 		31FAC6BD1CAAB7E30034A0CD /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC68B1CAAB7E30034A0CD /* SettingsViewController.m */; };
 		31FAC6BE1CAAB7E30034A0CD /* UserProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC68D1CAAB7E30034A0CD /* UserProfileEditViewController.m */; };
-		31FAC6C21CAAB95D0034A0CD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6C11CAAB95D0034A0CD /* AppDelegate.m */; };
 		31FAC6C71CAABCA70034A0CD /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31FAC6C61CAABCA70034A0CD /* Social.framework */; };
 		31FAC6C91CAABCB60034A0CD /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31FAC6C81CAABCB60034A0CD /* Accounts.framework */; };
 		31FAC7261CAC032E0034A0CD /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC7251CAC032E0034A0CD /* HomeViewController.m */; };
@@ -466,10 +478,6 @@
 		317B82931CA96CC2000415E9 /* libEaseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEaseUI.a; path = "EaseUI/build/Debug-iphoneos/libEaseUI.a"; sourceTree = "<group>"; };
 		317C2D421CA8C0270035A14E /* SCUserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCUserProfileManager.h; path = Models/SCUserProfileManager.h; sourceTree = "<group>"; };
 		317C2D431CA8C0270035A14E /* SCUserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCUserProfileManager.m; path = Models/SCUserProfileManager.m; sourceTree = "<group>"; };
-		317C2D461CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LoginUserInformation+CoreDataProperties.h"; path = "CoreData/LoginUserInformation+CoreDataProperties.h"; sourceTree = "<group>"; };
-		317C2D471CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LoginUserInformation+CoreDataProperties.m"; path = "CoreData/LoginUserInformation+CoreDataProperties.m"; sourceTree = "<group>"; };
-		317C2D481CA8E3960035A14E /* LoginUserInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginUserInformation.h; path = CoreData/LoginUserInformation.h; sourceTree = "<group>"; };
-		317C2D491CA8E3960035A14E /* LoginUserInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginUserInformation.m; path = CoreData/LoginUserInformation.m; sourceTree = "<group>"; };
 		317C2D4E1CA90A1E0035A14E /* AppDelegate+SamChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AppDelegate+SamChat.h"; path = "Application/AppDelegate+SamChat.h"; sourceTree = "<group>"; };
 		317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AppDelegate+SamChat.m"; path = "Application/AppDelegate+SamChat.m"; sourceTree = "<group>"; };
 		317C2D511CA90AE60035A14E /* NotificationMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NotificationMacro.h; path = Macro/NotificationMacro.h; sourceTree = "<group>"; };
@@ -482,6 +490,37 @@
 		31B3C8FC1CAF6BE900CDB105 /* SCSkyWorldAPIMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPIMacro.h; sourceTree = "<group>"; };
 		31B3C8FD1CAF880900CDB105 /* SCPushDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPushDispatcher.h; path = Models/SCPushDispatcher.h; sourceTree = "<group>"; };
 		31B3C8FE1CAF880900CDB105 /* SCPushDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPushDispatcher.m; path = Models/SCPushDispatcher.m; sourceTree = "<group>"; };
+		31B3C9001CB0E67400CDB105 /* SCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCTableViewCell.h; path = Views/SCTableViewCell.h; sourceTree = "<group>"; };
+		31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCTableViewCell.m; path = Views/SCTableViewCell.m; sourceTree = "<group>"; };
+		31B3C9031CB0F08600CDB105 /* ISCTableCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ISCTableCellModel.h; path = Models/ISCTableCellModel.h; sourceTree = "<group>"; };
+		31B3C90A1CB209B100CDB105 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Application/AppDelegate.h; sourceTree = "<group>"; };
+		31B3C90B1CB209B100CDB105 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Application/AppDelegate.m; sourceTree = "<group>"; };
+		31B3C91C1CB214B600CDB105 /* ContactUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactUser.h; path = CoreData/ContactUser.h; sourceTree = "<group>"; };
+		31B3C91D1CB214B600CDB105 /* ContactUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactUser.m; path = CoreData/ContactUser.m; sourceTree = "<group>"; };
+		31B3C91E1CB214B600CDB105 /* ContactUser+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ContactUser+CoreDataProperties.h"; path = "CoreData/ContactUser+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31B3C91F1CB214B600CDB105 /* ContactUser+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ContactUser+CoreDataProperties.m"; path = "CoreData/ContactUser+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31B3C9201CB214B600CDB105 /* LoginUserInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginUserInformation.h; path = CoreData/LoginUserInformation.h; sourceTree = "<group>"; };
+		31B3C9211CB214B600CDB105 /* LoginUserInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginUserInformation.m; path = CoreData/LoginUserInformation.m; sourceTree = "<group>"; };
+		31B3C9221CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LoginUserInformation+CoreDataProperties.h"; path = "CoreData/LoginUserInformation+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31B3C9231CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LoginUserInformation+CoreDataProperties.m"; path = "CoreData/LoginUserInformation+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31B3C9241CB214B600CDB105 /* ReceivedAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReceivedAnswer.h; path = CoreData/ReceivedAnswer.h; sourceTree = "<group>"; };
+		31B3C9251CB214B600CDB105 /* ReceivedAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReceivedAnswer.m; path = CoreData/ReceivedAnswer.m; sourceTree = "<group>"; };
+		31B3C9261CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ReceivedAnswer+CoreDataProperties.h"; path = "CoreData/ReceivedAnswer+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31B3C9271CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ReceivedAnswer+CoreDataProperties.m"; path = "CoreData/ReceivedAnswer+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31B3C9281CB214B600CDB105 /* ReceivedQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReceivedQuestion.h; path = CoreData/ReceivedQuestion.h; sourceTree = "<group>"; };
+		31B3C9291CB214B600CDB105 /* ReceivedQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReceivedQuestion.m; path = CoreData/ReceivedQuestion.m; sourceTree = "<group>"; };
+		31B3C92A1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ReceivedQuestion+CoreDataProperties.h"; path = "CoreData/ReceivedQuestion+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31B3C92B1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ReceivedQuestion+CoreDataProperties.m"; path = "CoreData/ReceivedQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31B3C92C1CB214B600CDB105 /* SCCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCCoreDataManager.h; path = CoreData/SCCoreDataManager.h; sourceTree = "<group>"; };
+		31B3C92D1CB214B600CDB105 /* SCCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCCoreDataManager.m; path = CoreData/SCCoreDataManager.m; sourceTree = "<group>"; };
+		31B3C92E1CB214B600CDB105 /* SendAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SendAnswer.h; path = CoreData/SendAnswer.h; sourceTree = "<group>"; };
+		31B3C92F1CB214B600CDB105 /* SendAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SendAnswer.m; path = CoreData/SendAnswer.m; sourceTree = "<group>"; };
+		31B3C9301CB214B600CDB105 /* SendAnswer+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SendAnswer+CoreDataProperties.h"; path = "CoreData/SendAnswer+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31B3C9311CB214B600CDB105 /* SendAnswer+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SendAnswer+CoreDataProperties.m"; path = "CoreData/SendAnswer+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31B3C9321CB214B600CDB105 /* SendQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SendQuestion.h; path = CoreData/SendQuestion.h; sourceTree = "<group>"; };
+		31B3C9331CB214B600CDB105 /* SendQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SendQuestion.m; path = CoreData/SendQuestion.m; sourceTree = "<group>"; };
+		31B3C9341CB214B600CDB105 /* SendQuestion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SendQuestion+CoreDataProperties.h"; path = "CoreData/SendQuestion+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SendQuestion+CoreDataProperties.m"; path = "CoreData/SendQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -734,8 +773,6 @@
 		31FAC68D1CAAB7E30034A0CD /* UserProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileEditViewController.m; sourceTree = "<group>"; };
 		31FAC68E1CAAB7E30034A0CD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/EMLoginViewController.strings"; sourceTree = "<group>"; };
 		31FAC6BF1CAAB8CD0034A0CD /* ChatDemoUIDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ChatDemoUIDefine.h; path = EaseMob/ChatDemoUIDefine.h; sourceTree = "<group>"; };
-		31FAC6C01CAAB95D0034A0CD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		31FAC6C11CAAB95D0034A0CD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		31FAC6C61CAABCA70034A0CD /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		31FAC6C81CAABCB60034A0CD /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		31FAC7241CAC032E0034A0CD /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -1257,10 +1294,32 @@
 		317C2D451CA8E3410035A14E /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				317C2D461CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.h */,
-				317C2D471CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m */,
-				317C2D481CA8E3960035A14E /* LoginUserInformation.h */,
-				317C2D491CA8E3960035A14E /* LoginUserInformation.m */,
+				31B3C92C1CB214B600CDB105 /* SCCoreDataManager.h */,
+				31B3C92D1CB214B600CDB105 /* SCCoreDataManager.m */,
+				31B3C91C1CB214B600CDB105 /* ContactUser.h */,
+				31B3C91D1CB214B600CDB105 /* ContactUser.m */,
+				31B3C91E1CB214B600CDB105 /* ContactUser+CoreDataProperties.h */,
+				31B3C91F1CB214B600CDB105 /* ContactUser+CoreDataProperties.m */,
+				31B3C9201CB214B600CDB105 /* LoginUserInformation.h */,
+				31B3C9211CB214B600CDB105 /* LoginUserInformation.m */,
+				31B3C9221CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.h */,
+				31B3C9231CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m */,
+				31B3C9241CB214B600CDB105 /* ReceivedAnswer.h */,
+				31B3C9251CB214B600CDB105 /* ReceivedAnswer.m */,
+				31B3C9261CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.h */,
+				31B3C9271CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m */,
+				31B3C9281CB214B600CDB105 /* ReceivedQuestion.h */,
+				31B3C9291CB214B600CDB105 /* ReceivedQuestion.m */,
+				31B3C92A1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.h */,
+				31B3C92B1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m */,
+				31B3C92E1CB214B600CDB105 /* SendAnswer.h */,
+				31B3C92F1CB214B600CDB105 /* SendAnswer.m */,
+				31B3C9301CB214B600CDB105 /* SendAnswer+CoreDataProperties.h */,
+				31B3C9311CB214B600CDB105 /* SendAnswer+CoreDataProperties.m */,
+				31B3C9321CB214B600CDB105 /* SendQuestion.h */,
+				31B3C9331CB214B600CDB105 /* SendQuestion.m */,
+				31B3C9341CB214B600CDB105 /* SendQuestion+CoreDataProperties.h */,
+				31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -1268,6 +1327,8 @@
 		317C2D4D1CA909B80035A14E /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				31B3C90A1CB209B100CDB105 /* AppDelegate.h */,
+				31B3C90B1CB209B100CDB105 /* AppDelegate.m */,
 				317C2D4E1CA90A1E0035A14E /* AppDelegate+SamChat.h */,
 				317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */,
 			);
@@ -1279,6 +1340,8 @@
 			children = (
 				3183D06F1CA690730088FD67 /* SCViewFactory.h */,
 				3183D0701CA690730088FD67 /* SCViewFactory.m */,
+				31B3C9001CB0E67400CDB105 /* SCTableViewCell.h */,
+				31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1308,6 +1371,7 @@
 				317C2D431CA8C0270035A14E /* SCUserProfileManager.m */,
 				31B3C8FD1CAF880900CDB105 /* SCPushDispatcher.h */,
 				31B3C8FE1CAF880900CDB105 /* SCPushDispatcher.m */,
+				31B3C9031CB0F08600CDB105 /* ISCTableCellModel.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1671,8 +1735,6 @@
 		31FAC6201CAAB7E30034A0CD /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				31FAC6C01CAAB95D0034A0CD /* AppDelegate.h */,
-				31FAC6C11CAAB95D0034A0CD /* AppDelegate.m */,
 				31FAC6211CAAB7E30034A0CD /* AppDelegate+EaseMob.h */,
 				31FAC6221CAAB7E30034A0CD /* AppDelegate+EaseMob.m */,
 				31FAC62D1CAAB7E30034A0CD /* Call */,
@@ -2249,16 +2311,21 @@
 				31FAC6BC1CAAB7E30034A0CD /* PushNotificationViewController.m in Sources */,
 				31FAC5941CAAB3C50034A0CD /* UIViewController+HUD.m in Sources */,
 				31FAC6B31CAAB7E30034A0CD /* EMRobotChatTextBubbleView.m in Sources */,
+				31B3C9371CB214B600CDB105 /* ContactUser+CoreDataProperties.m in Sources */,
 				31FAC6AB1CAAB7E30034A0CD /* ApplyViewController.m in Sources */,
+				31B3C93A1CB214B600CDB105 /* ReceivedAnswer.m in Sources */,
+				31B3C93B1CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m in Sources */,
 				31FAC6B11CAAB7E30034A0CD /* MainViewController.m in Sources */,
 				31FAC6B61CAAB7E30034A0CD /* RobotListViewController.m in Sources */,
 				31FAC6B51CAAB7E30034A0CD /* RobotChatViewController.m in Sources */,
 				31FAC6A81CAAB7E30034A0CD /* AddFriendCell.m in Sources */,
 				31FAC6A61CAAB7E30034A0CD /* ContactListSelectViewController.m in Sources */,
 				31FAC6BD1CAAB7E30034A0CD /* SettingsViewController.m in Sources */,
+				31B3C93E1CB214B600CDB105 /* SCCoreDataManager.m in Sources */,
 				31FAC6B01CAAB7E30034A0CD /* EMLoginViewController.m in Sources */,
 				31FAC6B91CAAB7E30034A0CD /* BlackListViewController.m in Sources */,
 				31FAC6BE1CAAB7E30034A0CD /* UserProfileEditViewController.m in Sources */,
+				31B3C93D1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m in Sources */,
 				31F8E72E1CA401310049EE23 /* SCConfig.m in Sources */,
 				31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */,
 				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
@@ -2270,6 +2337,7 @@
 				31FAC6961CAAB7E30034A0CD /* ConversationListController.m in Sources */,
 				31FAC59C1CAAB3C50034A0CD /* EMSearchDisplayController.m in Sources */,
 				311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */,
+				31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */,
 				31FAC6AA1CAAB7E30034A0CD /* ApplyFriendCell.m in Sources */,
 				31FAC6BB1CAAB7E30034A0CD /* EditNicknameViewController.m in Sources */,
 				31FAC6A71CAAB7E30034A0CD /* ContactListViewController.m in Sources */,
@@ -2285,15 +2353,20 @@
 				31FAC68F1CAAB7E30034A0CD /* AppDelegate+EaseMob.m in Sources */,
 				31FAC58A1CAAB3C50034A0CD /* THProgressView.m in Sources */,
 				31FAC6A01CAAB7E30034A0CD /* GroupSubjectChangingViewController.m in Sources */,
+				31B3C9361CB214B600CDB105 /* ContactUser.m in Sources */,
 				31FAC5921CAAB3C50034A0CD /* UIImageView+HeadImage.m in Sources */,
+				31B3C9391CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m in Sources */,
 				31FAC5961CAAB3C50034A0CD /* EMSearchBar.m in Sources */,
+				31B3C90C1CB209B100CDB105 /* AppDelegate.m in Sources */,
 				31FAC69D1CAAB7E30034A0CD /* GroupBansViewController.m in Sources */,
+				31B3C9381CB214B600CDB105 /* LoginUserInformation.m in Sources */,
 				3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */,
 				31FAC6A11CAAB7E30034A0CD /* PublicGroupDetailViewController.m in Sources */,
 				31FAC7261CAC032E0034A0CD /* HomeViewController.m in Sources */,
 				31FAC5991CAAB3C50034A0CD /* BaseViewController.m in Sources */,
 				31FAC6B71CAAB7E30034A0CD /* RobotManager.m in Sources */,
 				311BC62F1CA37B19006B4707 /* main.m in Sources */,
+				31B3C93F1CB214B600CDB105 /* SendAnswer.m in Sources */,
 				31FAC69A1CAAB7E30034A0CD /* ContactSelectionViewController.m in Sources */,
 				31FAC5881CAAB3C50034A0CD /* SRRefreshView.m in Sources */,
 				31FAC6A31CAAB7E30034A0CD /* ChatroomDetailViewController.m in Sources */,
@@ -2311,13 +2384,14 @@
 				31FAC6A51CAAB7E30034A0CD /* MyChatroomListViewController.m in Sources */,
 				31FAC69E1CAAB7E30034A0CD /* GroupListViewController.m in Sources */,
 				3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */,
-				317C2D4B1CA8E3960035A14E /* LoginUserInformation.m in Sources */,
 				31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */,
 				31FAC6AD1CAAB7E30034A0CD /* InvitationManager.m in Sources */,
+				31B3C9401CB214B600CDB105 /* SendAnswer+CoreDataProperties.m in Sources */,
 				31FAC5971CAAB3C50034A0CD /* EMTextView.m in Sources */,
 				31FAC6A41CAAB7E30034A0CD /* ChatroomListViewController.m in Sources */,
-				31FAC6C21CAAB95D0034A0CD /* AppDelegate.m in Sources */,
 				317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */,
+				31B3C9021CB0E67400CDB105 /* SCTableViewCell.m in Sources */,
+				31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */,
 				31FAC6B41CAAB7E30034A0CD /* EMRotbotChatViewCell.m in Sources */,
 				31FAC5811CAAB3C50034A0CD /* EMGifImage.m in Sources */,
 				3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */,
@@ -2329,7 +2403,7 @@
 				31FAC59A1CAAB3C50034A0CD /* EMChooseViewController.m in Sources */,
 				31FAC6A21CAAB7E30034A0CD /* PublicGroupListViewController.m in Sources */,
 				31FAC6BA1CAAB7E30034A0CD /* DebugViewController.m in Sources */,
-				317C2D4A1CA8E3960035A14E /* LoginUserInformation+CoreDataProperties.m in Sources */,
+				31B3C9411CB214B600CDB105 /* SendQuestion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

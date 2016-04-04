@@ -19,6 +19,7 @@
 #import "LoginUserInformation.h"
 #import "SCUserProfileManager.h"
 #import "SCUtils.h"
+#import "SCCoreDataManager.h"
 
 // easemob
 #import "ChatDemoUIDefine.h"

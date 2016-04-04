@@ -67,8 +67,9 @@
 
 + (LoginUserInformation *)infoWithServerResponse:(NSDictionary *)response
 {
-    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    //AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    //NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] managedObjectContext];
     return [LoginUserInformation infoWithServerResponse:response inManagedObjectContext:context];
 }
 
@@ -84,14 +85,16 @@
 
 + (void)saveContext
 {
-    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-    [appDelegate saveContext];
+//    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+//    [appDelegate saveContext];
+    [[SCCoreDataManager sharedInstance] saveContext];
 }
 
 + (LoginUserInformation *)loginUserInformationForUser:(NSString *)username
 {
-    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+//    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+//    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] managedObjectContext];
     
     LoginUserInformation *info = nil;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_LOGIN_USER_INFORMATION];
