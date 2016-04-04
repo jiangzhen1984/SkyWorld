@@ -139,7 +139,6 @@
 
 - (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password
 {
-    LoginUserInformation *currentUserInfo = [[SCUserProfileManager sharedInstance] currentLoginUserInformation];
     __weak typeof(self) weakself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = [[EMClient sharedClient] loginWithUsername:username
@@ -150,8 +149,7 @@
                 DebugLog(@"EaseMob Login Success!");
                 //设置是否自动登录
                 [[EMClient sharedClient].options setIsAutoLogin:YES];
-                currentUserInfo.easemob_status = @SC_LOGINUSER_LOGIN;
-                [LoginUserInformation saveContext];
+                [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobStatus:SC_LOGINUSER_LOGIN];
                 [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
 /*
                 //获取数据库中数据
@@ -172,8 +170,7 @@
                 });*/
             } else {
                 DebugLog(@"EaseMob Login Failed! %@", error);
-                currentUserInfo.easemob_status = @SC_LOGINUSER_NO_LOGIN;
-                [LoginUserInformation saveContext];
+                [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobStatus:SC_LOGINUSER_NO_LOGIN];
                 /*
                 switch (error.code)
                 {
@@ -206,8 +203,10 @@
 - (void)loginSkyWorldSuccessWithResponse: (NSDictionary *)response
 {
     SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
-    [userProfileManager saveCurrentLoginUserInfoWithServerResponse:response
-                                                      andOtherInfo:@{SKYWORLD_PWD:self.loginInfo[SKYWORLD_PWD]}];
+//    [userProfileManager saveCurrentLoginUserInfoWithServerResponse:response
+//                                                      andOtherInfo:@{SKYWORLD_PWD:self.loginInfo[SKYWORLD_PWD]}];
+    [userProfileManager saveCurrentLoginUserInformationWithSkyWorldResponse:response
+                                                               andOtherInfo:@{SKYWORLD_PWD:self.loginInfo[SKYWORLD_PWD]}];
 }
 
 - (void)loginErrorWithErrorCode: (NSInteger)errorCode

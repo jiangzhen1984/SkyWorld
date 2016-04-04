@@ -77,10 +77,18 @@ static SCUserProfileManager *sharedInstance = nil;
 {
     LoginUserInformation *currentLoginUserInformation = nil;
     if(self.username) {
-        currentLoginUserInformation = [LoginUserInformation loginUserInformationForUser:self.username];
+        NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] managedObjectContext];
+        currentLoginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
+                                                                      inManagedObjectContext:context];
     }
     return currentLoginUserInformation;
 }
+
+//- (void)saveLoginUserInformation
+//{
+//    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] managedObjectContext];
+//    [context save:NULL];
+//}
 
 - (BOOL)isCurrentUserLoginStatusOK
 {
@@ -92,21 +100,103 @@ static SCUserProfileManager *sharedInstance = nil;
     return status;
 }
 
-- (void)saveCurrentLoginUserInfoWithServerResponse: (NSDictionary *)response andOtherInfo:(NSDictionary *)otherInfo
+- (void)saveCurrentLoginUserInformationWithSkyWorldResponse:(NSDictionary *)response andOtherInfo:(NSDictionary *)otherInfo
 {
-    //SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
     self.username = [response valueForKeyPath:SKYWORLD_USER_USERNAME];
     self.token = response[SKYWORLD_TOKEN];
-    LoginUserInformation *loginUserInformation = [LoginUserInformation infoWithServerResponse:response];
-    loginUserInformation.password = otherInfo[SKYWORLD_PWD];
-    
-    // only logintime
-    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
-    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
-    //DebugLog(@"time: %lld", timestamp);
-    loginUserInformation.logintime = [NSNumber numberWithLongLong:timestamp];
-    
-    [LoginUserInformation saveContext];
+    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
+    [privateContext performBlockAndWait:^{
+        LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
+                                                                                     inManagedObjectContext:privateContext];
+        NSDictionary *userInfo = response[SKYWORLD_USER];
+        if(userInfo[SKYWORLD_AREA]){
+            loginUserInformation.area = userInfo[SKYWORLD_AREA];
+        }
+        if(userInfo[SKYWORLD_COUNTRY_CODE]){
+            loginUserInformation.countrycode = [NSString stringWithFormat:@"%ld", [userInfo[SKYWORLD_COUNTRY_CODE] integerValue]];
+        }
+        if(userInfo[SKYWORLD_DESC]){
+            loginUserInformation.discription = userInfo[SKYWORLD_DESC];
+        }
+        loginUserInformation.easemob_status = @SC_LOGINUSER_LOGIN;
+        if([userInfo valueForKeyPath:SKYWORLD_EASEMOB_USERNAME]){
+            loginUserInformation.easemob_username = [userInfo valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
+        }else{
+            loginUserInformation.easemob_username = self.username;
+        }
+        if([userInfo valueForKeyPath:SKYWORLD_AVATAR_ORIGIN]){
+            loginUserInformation.imagefile = [self downloadAvatarFrom:[userInfo valueForKeyPath:SKYWORLD_AVATAR_ORIGIN]];
+        }
+        if(userInfo[SKYWORLD_LASTUPDATE]){
+            loginUserInformation.lastupdate = userInfo[SKYWORLD_LASTUPDATE];
+        }
+        if(userInfo[SKYWORLD_LOCATION]){
+            loginUserInformation.location = userInfo[SKYWORLD_LOCATION];
+        }
+        loginUserInformation.logintime = [SCUtils currentTimeStamp];
+        if(otherInfo[SKYWORLD_PWD]){
+            loginUserInformation.password = otherInfo[SKYWORLD_PWD];
+        }
+        if(userInfo[SKYWORLD_CELLPHONE]){
+            loginUserInformation.phonenumber = userInfo[SKYWORLD_CELLPHONE];
+        }
+        loginUserInformation.status = @SC_LOGINUSER_LOGIN;
+        if(userInfo[SKYWORLD_ID]){
+            loginUserInformation.unique_id = userInfo[SKYWORLD_ID];
+        }
+        if(userInfo[SKYWORLD_TYPE]){
+            loginUserInformation.usertype = userInfo[SKYWORLD_TYPE];
+        }
+        [privateContext save:NULL];
+    }];
+}
+
+- (void)updateCurrentLoginUserInformationWithEaseMobStatus:(NSInteger)status
+{
+    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
+    [privateContext performBlockAndWait:^{
+        LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
+                                                                                     inManagedObjectContext:privateContext];
+        loginUserInformation.easemob_status = [NSNumber numberWithInteger:status];
+        [privateContext save:NULL];
+    }];
+}
+
+- (void)updateCurrentLoginUserInformationWithEaseMobPushInfo:(NSDictionary *)info
+{
+    if((!info[SKYWORLD_USERNAME]) || (![info[SKYWORLD_USERNAME] isEqualToString:self.username])){
+        return;
+    }
+    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
+    [privateContext performBlockAndWait:^{
+        LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
+                                                                                     inManagedObjectContext:privateContext];
+        if(info[SKYWORLD_CELLPHONE]){
+            loginUserInformation.phonenumber = info[SKYWORLD_CELLPHONE];
+        }
+        if(info[SKYWORLD_AREA]){
+            loginUserInformation.area = info[SKYWORLD_AREA];
+        }
+        if(info[SKYWORLD_LOCATION]){
+            loginUserInformation.location = info[SKYWORLD_LOCATION];
+        }
+        if(info[SKYWORLD_DESC]){
+            loginUserInformation.discription = info[SKYWORLD_DESC];
+        }
+        if([info valueForKeyPath:SKYWORLD_AVATAR_ORIGIN]){
+            loginUserInformation.imagefile = [self downloadAvatarFrom:[info valueForKeyPath:SKYWORLD_AVATAR_ORIGIN]];
+        }
+        if([info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME]){
+            loginUserInformation.easemob_username = [info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
+        }
+        [privateContext save:NULL];
+    }];
+}
+
+- (NSString *)downloadAvatarFrom:(NSString *)urlStr
+{
+#warning add image file download
+    return @"test";
 }
 
 @end

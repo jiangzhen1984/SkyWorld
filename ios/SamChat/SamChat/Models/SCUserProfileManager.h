@@ -16,9 +16,10 @@
 @property (nonatomic, strong) NSString *token;
 
 - (LoginUserInformation *)currentLoginUserInformation;
-
+//- (void)saveLoginUserInformation;
 - (BOOL)isCurrentUserLoginStatusOK;
-
-- (void)saveCurrentLoginUserInfoWithServerResponse: (NSDictionary *)response andOtherInfo:(NSDictionary *)otherInfo;
+- (void)saveCurrentLoginUserInformationWithSkyWorldResponse:(NSDictionary *)response andOtherInfo:(NSDictionary *)otherInfo;
+- (void)updateCurrentLoginUserInformationWithEaseMobStatus:(NSInteger)status;
+- (void)updateCurrentLoginUserInformationWithEaseMobPushInfo:(NSDictionary *)info;
 
 @end

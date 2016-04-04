@@ -254,7 +254,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DebugLog(@"table selected");
-    DebugLog(@"%@", self.answers[indexPath.row]);
+    if(self.isSearching){
+        DebugLog(@"%@", self.answers[indexPath.row]);
+    }
 }
 
 #pragma mark - SCAnswerPushDelegate

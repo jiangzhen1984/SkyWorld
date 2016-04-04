@@ -107,6 +107,7 @@ static SCPushDispatcher *sharedInstance = nil;
             DebugLog(@"######### receive question push: %@", body);
         }else if([category isEqualToString:SKYWORLD_EASEMOB]){
             DebugLog(@"######### receive easemob push: %@", body);
+            [self receivedEasemobAccountInfo:body];
         }else{
             DebugLog(@"######### receive what? %@", content);
         }
@@ -137,6 +138,12 @@ static SCPushDispatcher *sharedInstance = nil;
             [self.answerPushDelegate didReceiveNewAnswer:receivedAnswer];
         });
     }];
+}
+
+#pragma mark - Receive Easemob Account Info
+- (void)receivedEasemobAccountInfo:(NSDictionary *)info
+{
+    [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobPushInfo:info];
 }
 
 @end

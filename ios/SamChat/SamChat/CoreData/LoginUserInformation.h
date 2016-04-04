@@ -18,11 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LoginUserInformation : NSManagedObject
 
 + (LoginUserInformation *)loginUserInformationWithUserName:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (LoginUserInformation *)infoWithServerResponse:(NSDictionary *)response;
-+ (void)saveContext;
-
-+ (LoginUserInformation *)loginUserInformationForUser:(NSString *)username;
-
 
 @end
 
