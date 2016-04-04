@@ -57,6 +57,7 @@
 		31B3C9401CB214B600CDB105 /* SendAnswer+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9311CB214B600CDB105 /* SendAnswer+CoreDataProperties.m */; };
 		31B3C9411CB214B600CDB105 /* SendQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9331CB214B600CDB105 /* SendQuestion.m */; };
 		31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */; };
+		31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -522,6 +523,8 @@
 		31B3C9341CB214B600CDB105 /* SendQuestion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SendQuestion+CoreDataProperties.h"; path = "CoreData/SendQuestion+CoreDataProperties.h"; sourceTree = "<group>"; };
 		31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SendQuestion+CoreDataProperties.m"; path = "CoreData/SendQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31B3C9431CB257B200CDB105 /* SCCoreDataMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCCoreDataMacro.h; path = CoreData/SCCoreDataMacro.h; sourceTree = "<group>"; };
+		31B3C9441CB27FD800CDB105 /* AnswerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnswerDetailViewController.h; path = Service/AnswerDetailViewController.h; sourceTree = "<group>"; };
+		31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnswerDetailViewController.m; path = Service/AnswerDetailViewController.m; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -1951,6 +1954,8 @@
 			children = (
 				3159D98E1CAE68F200212DAB /* ServiceSearchViewController.h */,
 				3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */,
+				31B3C9441CB27FD800CDB105 /* AnswerDetailViewController.h */,
+				31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -2394,6 +2399,7 @@
 				317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */,
 				31B3C9021CB0E67400CDB105 /* SCTableViewCell.m in Sources */,
 				31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */,
+				31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */,
 				31FAC6B41CAAB7E30034A0CD /* EMRotbotChatViewCell.m in Sources */,
 				31FAC5811CAAB3C50034A0CD /* EMGifImage.m in Sources */,
 				3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */,

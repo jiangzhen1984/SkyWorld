@@ -159,7 +159,73 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jzi-t0-9mP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2082" y="-520"/>
+            <point key="canvasLocation" x="2732" y="-1718"/>
+        </scene>
+        <!--Answer Detail View Controller-->
+        <scene sceneID="Q6l-7j-3TP">
+            <objects>
+                <viewController storyboardIdentifier="AnswerDetailView" id="uaa-vQ-1kF" customClass="AnswerDetailViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hW6-n5-lEO"/>
+                        <viewControllerLayoutGuide type="bottom" id="KGK-Ig-OG8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Yng-k6-gM4">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="你的问题" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZBR-JH-Ge6">
+                                <rect key="frame" x="20" y="79" width="68" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUC-wX-78h">
+                                <rect key="frame" x="96" y="79" width="484" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="我的答案" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kJ-Nh-Mw8">
+                                <rect key="frame" x="20" y="126" width="68" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hfc-1j-b0f">
+                                <rect key="frame" x="96" y="126" width="484" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="JUC-wX-78h" secondAttribute="trailing" id="02N-9y-4Xa"/>
+                            <constraint firstItem="hfc-1j-b0f" firstAttribute="top" secondItem="JUC-wX-78h" secondAttribute="bottom" constant="26.5" id="0T4-Uz-g6b"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="4kJ-Nh-Mw8" secondAttribute="leading" id="6ig-M3-mhU"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hfc-1j-b0f" secondAttribute="trailing" id="7nG-J5-0kI"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="ZBR-JH-Ge6" secondAttribute="leading" id="Gef-7U-fHf"/>
+                            <constraint firstItem="JUC-wX-78h" firstAttribute="leading" secondItem="ZBR-JH-Ge6" secondAttribute="trailing" constant="8" id="GtU-jn-29c"/>
+                            <constraint firstItem="ZBR-JH-Ge6" firstAttribute="top" secondItem="hW6-n5-lEO" secondAttribute="bottom" constant="59" id="NSC-m9-5Gd"/>
+                            <constraint firstItem="4kJ-Nh-Mw8" firstAttribute="top" secondItem="ZBR-JH-Ge6" secondAttribute="bottom" constant="26.5" id="Smk-LK-FCA"/>
+                            <constraint firstItem="hfc-1j-b0f" firstAttribute="leading" secondItem="4kJ-Nh-Mw8" secondAttribute="trailing" constant="8" id="Tot-zK-NSD"/>
+                            <constraint firstItem="hfc-1j-b0f" firstAttribute="leading" secondItem="JUC-wX-78h" secondAttribute="leading" id="iFQ-ar-Vpj"/>
+                            <constraint firstItem="JUC-wX-78h" firstAttribute="baseline" secondItem="ZBR-JH-Ge6" secondAttribute="baseline" id="s26-L7-WWj"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="iFQ-ar-Vpj"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="labelAnswer" destination="hfc-1j-b0f" id="AOI-Au-qAo"/>
+                        <outlet property="labelQuestion" destination="JUC-wX-78h" id="mXw-Cr-UE1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p1e-oB-dbq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3400" y="-1718"/>
         </scene>
         <!--Producer View Controller-->
         <scene sceneID="GVd-8P-5oB">
@@ -177,7 +243,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B42-cK-CN8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2739" y="-520"/>
+            <point key="canvasLocation" x="2732" y="-354"/>
         </scene>
         <!--Offical List Table View Controller-->
         <scene sceneID="rAY-vL-aSD">
@@ -205,7 +271,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qrd-Le-AUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2744" y="-1185"/>
+            <point key="canvasLocation" x="2732" y="-1033"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="M5H-BP-leb">

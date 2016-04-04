@@ -14,6 +14,7 @@
 #import "SCTableViewCell.h"
 #import "ReceivedAnswer.h"
 #import "SendQuestion.h"
+#import "AnswerDetailViewController.h"
 
 @interface ServiceSearchViewController () <SCAnswerPushDelegate,UITableViewDataSource,UITableViewDelegate>
 
@@ -255,7 +256,10 @@
 {
     DebugLog(@"table selected");
     if(self.isSearching){
-        DebugLog(@"%@", self.answers[indexPath.row]);
+        AnswerDetailViewController *answerDetailController = [self.storyboard instantiateViewControllerWithIdentifier:@"AnswerDetailView"];
+        answerDetailController.question = self.currentQuestion;
+        answerDetailController.answer = self.answers[indexPath.row];
+        [self.navigationController pushViewController:answerDetailController animated:YES];
     }
 }
 
@@ -311,5 +315,7 @@
     [self.searchTextField resignFirstResponder];
     [self hideHomeImage:NO withsearchBarToTop:130 tableToTop:200 duration:0.4f];
 }
+
+
 
 @end
