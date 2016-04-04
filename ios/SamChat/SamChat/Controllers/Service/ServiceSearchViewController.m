@@ -13,6 +13,7 @@
 #import "SCPushDispatcher.h"
 #import "SCTableViewCell.h"
 #import "ReceivedAnswer.h"
+#import "SendQuestion.h"
 
 @interface ServiceSearchViewController () <SCAnswerPushDelegate,UITableViewDataSource,UITableViewDelegate>
 
@@ -20,10 +21,12 @@
 @property (weak, nonatomic) IBOutlet UIImageView *homeImage;
 @property (weak, nonatomic) IBOutlet UIView *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCancleSearch;
 
 @property (nonatomic, strong) NSLayoutConstraint *searchBarTopSpaceConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *tableViewTopSpaceConstraint;
 @property (nonatomic, assign) NSInteger currentQuestionID;
+@property (nonatomic, copy) NSString *currentQuestion;
 @property (nonatomic, assign) BOOL isSearching;
 
 @property (nonatomic, strong) NSMutableArray *hotQuestions;
@@ -86,21 +89,16 @@
 
 }
 
-#pragma mark - Question Process
+#pragma mark - New Question Process
 - (void)setIsSearching:(BOOL)isSearching
 {
     if(_isSearching != isSearching) {
         _isSearching = isSearching;
         [self.tableView reloadData];
     }
+    self.buttonCancleSearch.hidden = !_isSearching;
 }
 
-- (NSString *)generateNewQuestionUrlString
-{
-    NSDictionary *header = @{SKYWORLD_CATEGORY: SKYWORLD_QUESTION};
-    //NSDictionary *body = @{SKYWORLD_ANSWER};
-    return nil;
-}
 
 - (IBAction)pushNewQuestion:(id)sender
 {
@@ -109,8 +107,9 @@
     if((!self.searchTextField.text) || (self.searchTextField.text.length <= 0)){
         return;
     }
-    NSString *urlString = [SCSkyWorldAPI urlNewQuestionWithQuestion:self.searchTextField.text];
-    DebugLog(@"pushing new question with: %@", urlString);
+    self.currentQuestion = self.searchTextField.text;
+    NSString *urlString = [SCSkyWorldAPI urlNewQuestionWithQuestion:self.currentQuestion];
+//    DebugLog(@"pushing new question with: %@", urlString);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:urlString
@@ -145,9 +144,39 @@
     NSNumber *questionid = response[SKYWORLD_QUESTION_ID];
     self.currentQuestionID = [questionid integerValue];
     self.isSearching = true;
+    
+    NSDictionary *questionInfo = @{SEND_QUESTION_QUESTION:self.currentQuestion,
+                                   SEND_QUESTION_QUESTION_ID:[NSString stringWithFormat:@"%ld", self.currentQuestionID]};
+    
+    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
+    [privateContext performBlockAndWait:^{
+        [SendQuestion sendQuestionWithInfo:questionInfo inManagedObjectContext:privateContext];
+    }];
 }
 
-#pragma mark - Table Data Source
+#pragma mark - Cancle Question Process
+- (IBAction)cancleSearch:(UIButton *)sender
+{
+    self.isSearching = false;
+    NSString *urlString = [SCSkyWorldAPI urlCancleQuestionWithQuestionID:self.currentQuestionID];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlString
+      parameters:nil
+        progress:^(NSProgress *downloadProgress){
+        }
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             if([responseObject isKindOfClass:[NSDictionary class]]) {
+                 DebugLog(@"%@", responseObject);
+                 
+             }
+         }
+         failure:^(NSURLSessionDataTask *task, NSError *error){
+             DebugLog(@"Error: %@", error);
+         }];
+}
+
+#pragma mark - Table Data Source & Delegate
 //-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 //{
 //    return 1;
@@ -225,6 +254,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DebugLog(@"table selected");
+    DebugLog(@"%@", self.answers[indexPath.row]);
 }
 
 #pragma mark - SCAnswerPushDelegate

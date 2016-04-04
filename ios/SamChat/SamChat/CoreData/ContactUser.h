@@ -11,8 +11,6 @@
 
 @class ReceivedAnswer, ReceivedQuestion;
 
-#define ENTITY_CONTACT_USER             @"ContactUser"
-#define CONTACT_USER_UNIQUE_ID          @"unique_id"
 
 
 NS_ASSUME_NONNULL_BEGIN

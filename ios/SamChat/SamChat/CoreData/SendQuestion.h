@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SendQuestion : NSManagedObject
 
-// Insert code here to declare functionality of your managed object subclass
++ (SendQuestion *)sendQuestionWithInfo:(NSDictionary *)questionInfo inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

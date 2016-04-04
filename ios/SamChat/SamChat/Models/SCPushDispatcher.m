@@ -129,9 +129,10 @@ static SCPushDispatcher *sharedInstance = nil;
 #pragma mark Receive New Answer
 - (void)receivedNewAnswer:(NSDictionary *)answer
 {
-    [[[SCCoreDataManager sharedInstance] privateObjectContext] performBlockAndWait:^{
+    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
+    [privateContext performBlockAndWait:^{
         ReceivedAnswer *receivedAnswer = [ReceivedAnswer receivedAnswerWithSkyWorldInfo:answer
-                                    inManagedObjectContext:[[SCCoreDataManager sharedInstance] privateObjectContext]];
+                                    inManagedObjectContext:privateContext];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.answerPushDelegate didReceiveNewAnswer:receivedAnswer];
         });

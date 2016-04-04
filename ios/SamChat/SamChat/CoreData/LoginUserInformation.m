@@ -11,6 +11,26 @@
 
 @implementation LoginUserInformation
 
++ (LoginUserInformation *)loginUserInformationWithUserName:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    LoginUserInformation *loginUserInformation = nil;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_LOGIN_USER_INFORMATION];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K = %@", LOGIN_USER_INFORMATION_USERNAME, username];
+    
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    if((!matches) || error || ([matches count] > 1)) {
+        
+    } else if([matches count]) {
+        loginUserInformation = [matches firstObject];
+    } else {
+        loginUserInformation = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_LOGIN_USER_INFORMATION
+                                             inManagedObjectContext:context];
+        loginUserInformation.username = username;
+    }
+    return loginUserInformation;
+}
+
 + (LoginUserInformation *)infoWithServerResponse:(NSDictionary *)response inManagedObjectContext:(NSManagedObjectContext *)context
 {
     LoginUserInformation *info = nil;

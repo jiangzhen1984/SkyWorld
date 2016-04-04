@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ReceivedAnswer.h"
 
 @protocol SCQuestionPushDelegate
 - (void)didReceiveNewQuestion:(NSDictionary *)questionBody;
 @end
 
 @protocol SCAnswerPushDelegate
-- (void)didReceiveNewAnswer:(NSDictionary *)answerBody;
+- (void)didReceiveNewAnswer:(ReceivedAnswer *)answerBody;
 @end
 
 @interface SCPushDispatcher : NSObject

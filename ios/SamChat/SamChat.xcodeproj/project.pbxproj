@@ -521,6 +521,7 @@
 		31B3C9331CB214B600CDB105 /* SendQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SendQuestion.m; path = CoreData/SendQuestion.m; sourceTree = "<group>"; };
 		31B3C9341CB214B600CDB105 /* SendQuestion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SendQuestion+CoreDataProperties.h"; path = "CoreData/SendQuestion+CoreDataProperties.h"; sourceTree = "<group>"; };
 		31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SendQuestion+CoreDataProperties.m"; path = "CoreData/SendQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31B3C9431CB257B200CDB105 /* SCCoreDataMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCCoreDataMacro.h; path = CoreData/SCCoreDataMacro.h; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -1296,6 +1297,7 @@
 			children = (
 				31B3C92C1CB214B600CDB105 /* SCCoreDataManager.h */,
 				31B3C92D1CB214B600CDB105 /* SCCoreDataManager.m */,
+				31B3C9431CB257B200CDB105 /* SCCoreDataMacro.h */,
 				31B3C91C1CB214B600CDB105 /* ContactUser.h */,
 				31B3C91D1CB214B600CDB105 /* ContactUser.m */,
 				31B3C91E1CB214B600CDB105 /* ContactUser+CoreDataProperties.h */,

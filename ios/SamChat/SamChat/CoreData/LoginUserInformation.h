@@ -12,15 +12,12 @@
 @class SendQuestion;
 @class SendAnswer;
 
-#define ENTITY_LOGIN_USER_INFORMATION           @"LoginUserInformation"
-#define LOGIN_USER_INFORMATION_USERNAME         @"username"
-#define LOGIN_USER_INFORMATION_EASEMOB_STATUS   @"easemob_status"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LoginUserInformation : NSManagedObject
 
-//+ (LoginUserInformation *)infoWithServerResponse:(NSDictionary *)response inManagedObjectContext:(NSManagedObjectContext *)context;
++ (LoginUserInformation *)loginUserInformationWithUserName:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context;
 + (LoginUserInformation *)infoWithServerResponse:(NSDictionary *)response;
 + (void)saveContext;
 
