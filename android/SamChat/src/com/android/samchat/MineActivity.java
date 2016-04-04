@@ -15,6 +15,7 @@ import com.android.samservice.SamService;
 import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.LoginUser;
 import com.easemob.easeui.utils.EaseUserUtils;
+import com.zijunlin.Zxing.Demo.CreateQRImageTest;
 
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
@@ -53,6 +54,8 @@ public class MineActivity extends Activity {
 	private LinearLayout mSex_layout;
 	private RelativeLayout mHobby_layout;
 
+	private ImageView mTwo_dimension_pic;
+
 	private TextView mUsername;
 	private TextView mSex;
 	private TextView mAddress;
@@ -88,9 +91,16 @@ public class MineActivity extends Activity {
 		mAddress = (TextView)findViewById(R.id.address);
 		mHobby = (TextView)findViewById(R.id.hobby);
 
+		mTwo_dimension_pic = (ImageView)findViewById(R.id.two_dimension_pic);
+
+		CreateQRImageTest qrI = new CreateQRImageTest(mTwo_dimension_pic,300,300);
+
 		LoginUser cuser = SamService.getInstance().get_current_user();
 
 		String username = cuser.getusername();
+		qrI.createQRImage(username);
+
+		
 		AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(username);
 		if(rd!=null && rd.getavatarname()!=null){
 			Bitmap bp = null;

@@ -3,6 +3,9 @@
  */
 package com.android.samchat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.android.samchat.R;
 import com.android.samservice.*;
 import com.android.samservice.info.ReceivedAnswer;
@@ -71,6 +74,26 @@ public class SamService_Fragment extends Fragment {
 	private SamServiceType current_type;
 
 	private SamProcessDialog mDialog;
+
+
+	private List<String> hotTopicArray = new ArrayList<String>();
+	private String testString[]={
+		"硅谷比较好的学区在哪里",
+		"女儿去美国 读高中,怎么样才能找到合适的寄宿家庭",
+		"如何得到医院的医疗补助",
+		"美国的一栋房产,每年要多少花费",
+		"想去cosco,没有会员卡怎么办",
+		"硅谷比较好的学区在哪里",
+		"女儿去美国 读高中,怎么样才能找到合适的寄宿家庭",
+		"如何得到医院的医疗补助",
+		"美国的一栋房产,每年要多少花费",
+		"想去cosco,没有会员卡怎么办",
+		"硅谷比较好的学区在哪里",
+		"女儿去美国 读高中,怎么样才能找到合适的寄宿家庭",
+		"如何得到医院的医疗补助",
+		"美国的一栋房产,每年要多少花费",
+		"想去cosco,没有会员卡怎么办",
+	};
 	
 
 	
@@ -80,10 +103,15 @@ public class SamService_Fragment extends Fragment {
 		if(rootView == null){
 			mDialog = new SamProcessDialog();
 			SamLog.e(TAG, "onCreateView");
+			
 			rootView=inflater.inflate(R.layout.fragment_samservice, container,false);
 			mTopSearchList = (ListView)rootView.findViewById(R.id.top_search_list);
 			mContext = getActivity().getBaseContext();
 			mAdpater = new SearchListAdapter(mContext);
+			for(int i=0;i<testString.length;i++){
+				hotTopicArray.add(testString[i]);
+			}
+			mAdpater.setHotTopicArray(hotTopicArray);	
 			mTopSearchList.setAdapter(mAdpater);
 			mSearch = (EditText) rootView.findViewById(R.id.samservice_search_input);
 			mClear = (ImageView) rootView.findViewById(R.id.samservice_search_clear);
@@ -97,6 +125,8 @@ public class SamService_Fragment extends Fragment {
 			mSamservice_search_input_show.setEnabled(false);
 			mSamservice_search_input_show.setFocusable(false);
 			mSamservice_search_layout_show.setVisibility(View.GONE);
+
+					
 
 			mCancel_search = (TextView)  rootView.findViewById(R.id.cancel_search);
 			mCancel_search.setVisibility(View.GONE);
@@ -163,7 +193,13 @@ public class SamService_Fragment extends Fragment {
 									
 				}else if(mAdpater.getListType() == SearchListAdapter.LIST_TYPE_TOP_SEARCH){
 				//click top search to view:
+					List<String> topicList = mAdpater.getHotTopicArray();
+					String question = topicList.get(arg2);
+					mSearch.setText(question);	
+					mSearch.requestFocus();
 
+					InputMethodManager inputManager =(InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE); 
+					inputManager.showSoftInput(mSearch, 0);
 				}
 				
 			}   
@@ -269,7 +305,7 @@ public class SamService_Fragment extends Fragment {
 
 	private void update_answers(ReceivedAnswer answer){
 		mAdpater.addAnswerInfo(answer);
-		mAdpater.setCount(mAdpater.getCountOfAnswerInfo()+1);
+		//mAdpater.setCount(mAdpater.getCountOfAnswerInfo()+1);
 		mAdpater.setListType_answer();
 		mAdpater.notifyDataSetChanged();
 	}
@@ -277,7 +313,7 @@ public class SamService_Fragment extends Fragment {
 	private void back_to_topsearch(){
 		mAdpater.clearAnswerInfo();
 		mAdpater.setListType_topSearch();
-		mAdpater.setCount(15);	
+		//mAdpater.setCount(15);	
 		mAdpater.notifyDataSetChanged();
 	}
 	
@@ -301,13 +337,13 @@ public class SamService_Fragment extends Fragment {
 				mBanner_layout.setVisibility(View.GONE);
 				mSamservice_search_input_show.setText(current_question);
 				mSamservice_search_layout_show.setVisibility(View.VISIBLE);
-				
+
 				mCancel_search.setVisibility(View.VISIBLE);
 				mHot_topic.setVisibility(View.GONE);
 				current_type = SamServiceType.ANSWER;
 				mSearch.setInputType(InputType.TYPE_NULL);
 				mAdpater.setListType_answer();
-				mAdpater.setCount(1);
+				//mAdpater.setCount(1);
 				mAdpater.notifyDataSetChanged();
 				/*store samobj*/
 	    		}else if(msg.arg1 == SamService.R_SEND_QUESTION_ERROR){

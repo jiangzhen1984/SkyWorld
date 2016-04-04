@@ -125,7 +125,7 @@
     	<EditText
             android:id="@+id/bussiness_introduction_input"
         	android:layout_width="match_parent"
-        	android:layout_height="160dp"
+        	android:layout_height="wrap_content"
         	android:layout_marginTop="4dp"
         	android:layout_marginBottom="4dp"
         	android:layout_marginLeft="4dp"
@@ -134,7 +134,8 @@
 			android:inputType="textMultiLine"      
     		android:singleLine="false"
     		android:gravity="left|top"
-        	android:maxLines="8"
+    		android:minLines="4"
+        	android:maxLines="4"
         	android:background="@null"/>
     </LinearLayout>
     
@@ -148,6 +149,7 @@
     	android:layout_height="wrap_content"
     	android:orientation="horizontal" 
     	android:layout_marginBottom="20dp"
+    	android:layout_marginLeft="@dimen/title_left_margin"
     	android:layout_marginRight="@dimen/title_left_margin">
     	
         <View android:layout_width="0dp"
@@ -175,6 +177,7 @@
     	    android:layout_height="wrap_content"
         	android:text="@string/sam_vendor_protocol"
         	android:textSize="15sp"
+        	android:layout_marginLeft="3dp"
         	android:layout_gravity="center_vertical"
         	android:textColor="@color/common_bg_green"/>
         

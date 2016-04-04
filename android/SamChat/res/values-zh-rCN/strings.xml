@@ -39,7 +39,7 @@
     <string name="send_verify_code">发送验证码</string>
     <string name="verify_code">请输入短信验证码</string>
     <string name="next_step">下一步</string>
-    <string name="agreement">已阅读并同意</string>
+    <string name="agreement">同意</string>
     <string name="sam_protocol">天际用户协议</string>
     <string name="sam_vendor_protocol">天际商家协议</string>
     <string name="sam_account">天际帐号设置</string>
@@ -231,5 +231,5 @@
     <string name="female">女</string>
     <string name="nofill">未填写</string>
     <string name="store">保存</string>
-    
+    <string name="sweep">扫一扫加好友</string>
 </resources>
