@@ -1,4 +1,4 @@
-package com.skyworld.service;
+package com.skyworld.service.user;
 
 import org.json.JSONObject;
 
@@ -6,6 +6,9 @@ import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.Token;
 import com.skyworld.push.event.MessageEvent;
 import com.skyworld.pushimpl.EasemobMessage;
+import com.skyworld.service.APIBasicJsonApiService;
+import com.skyworld.service.APICode;
+import com.skyworld.service.ServiceFactory;
 import com.skyworld.service.dsf.Customer;
 import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;

@@ -1,4 +1,4 @@
-package com.skyworld.service;
+package com.skyworld.service.skservicer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,15 +12,18 @@ import org.json.JSONObject;
 import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.Token;
 import com.skyworld.cache.TokenFactory;
-import com.skyworld.service.dsf.Article;
-import com.skyworld.service.dsf.User;
-import com.skyworld.service.resp.ArticleResponse;
+import com.skyworld.service.APIBasicJsonPartApiService;
+import com.skyworld.service.APICode;
+import com.skyworld.service.PartsWrapper;
+import com.skyworld.service.ServiceFactory;
+import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
+import com.skyworld.service.resp.RegisterResponse;
 import com.skyworld.utils.GlobalPath;
 import com.skyworld.utils.ImageUtil;
 
-public class APIArticlePushlihService extends APIBasicJsonPartApiService {
+public class APIServicerCompanyUpdateService extends APIBasicJsonPartApiService {
 
 	@Override
 	protected BasicResponse service(JSONObject json,  PartsWrapper partwrapper) {
@@ -36,17 +39,15 @@ public class APIArticlePushlihService extends APIBasicJsonPartApiService {
 		}
 		
 		Token token = TokenFactory.valueOf(tokenId);
-		User user = CacheManager.getIntance().getUser(token);
-		if (user == null) {
+		SKServicer servicer = CacheManager.getIntance().getSKServicer(token);
+		if (servicer == null) {
 			return new RTCodeResponse(APICode.TOKEN_INVALID);
 		}
 		
-		Article arc = extractData(header, body);
 		
-		arc.setPublisher(user);
 		boolean ret;
 		try {
-			ret = handlePart(arc,  partwrapper.getParts());
+			ret = handlePart(servicer,  partwrapper.getParts());
 			if (!ret) {
 				return new RTCodeResponse(APICode.HANDLER_STREAM_FAILED);
 			}
@@ -55,33 +56,40 @@ public class APIArticlePushlihService extends APIBasicJsonPartApiService {
 			return new RTCodeResponse(APICode.HANDLER_STREAM_FAILED);
 		}
 		
+		populateCmpData(servicer, body);
 		
-		ServiceFactory.getEArticleService().addArticle(arc);
-		return new ArticleResponse(arc);
+		ServiceFactory.getESKServicerService().updateCompanyInfo(servicer);
+		
+		
+		return new RegisterResponse(servicer, token);
 	}
 
 	
-	private Article extractData(JSONObject header, JSONObject body) {
-		Article article = new Article();
-		if (body.has("lat")) {
-			article.setLat(body.getDouble("lat"));
+	
+	private void populateCmpData(SKServicer servicer, JSONObject body) {
+		if (body.has("cmp_name")) {
+			servicer.setCmpName(body.getString("cmp_name"));
 		}
-		if (body.has("lng")) {
-			article.setLng(body.getDouble("lng"));
+		
+		if (body.has("cmp_desc")) {
+			servicer.setCmpDesc(body.getString("cmp_desc"));
 		}
-		if (body.has("location")) {
-			article.setLocation(body.getString("location"));
+		
+		if (body.has("cmp_website")) {
+			servicer.setWebsite(body.getString("cmp_website"));
 		}
-		if (body.has("comment")) {
-			article.setComment(body.getString("comment"));
+		
+		if (body.has("cmp_phone")) {
+			servicer.setCmpPhone(body.getString("cmp_phone"));
 		}
-		return article;
 	}
 	
-	private boolean handlePart(Article article, Collection<Part> parts) {
+
+	private boolean handlePart(SKServicer servicer, Collection<Part> parts) {
 		if (parts == null || parts.size() <= 0) {
 			return true;
 		}
+		
 		Iterator<Part> its = parts.iterator();
 		int index = 1;
 		while (its.hasNext()) {
@@ -96,9 +104,9 @@ public class APIArticlePushlihService extends APIBasicJsonPartApiService {
 				log.error("Found non-image type part: " + p.getContentType());
 				continue;
 			}
-			String filename = "article_"+article.getPublisher().getId()+"_"+System.currentTimeMillis()+"_" + index +".png";
-			String imageDir = GlobalPath.getArticlePicHome();
-			String contextPath = GlobalPath.getArticlePicContext();
+			String filename = "servicer_cmp_"+servicer.getId()+"_"+System.currentTimeMillis()+"_" + index +".png";
+			String imageDir = GlobalPath.getSKServicerHome();
+			String contextPath = GlobalPath.getSKServicerContext();
 			log.info("write article image to :"  +  (imageDir+"/" + filename));
 			InputStream in = null;
 			try {
@@ -117,12 +125,11 @@ public class APIArticlePushlihService extends APIBasicJsonPartApiService {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
+				} 
 					
 			}
-			index ++ ;
-			//TODO 0 for image 1 for video
-			article.addMedia(0, contextPath+filename, 0);
+			servicer.setLogoPath(contextPath+filename);
+			break;
 		}
 		
 		return true;

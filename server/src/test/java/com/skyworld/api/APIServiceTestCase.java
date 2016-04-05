@@ -1,4 +1,4 @@
-package com.skyworld.easemob;
+package com.skyworld.api;
 
 import junit.framework.TestCase;
 
@@ -7,17 +7,20 @@ import org.json.JSONTokener;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.skyworld.service.APIAnswerService;
+import com.skyworld.MockHttpServletRequest;
+import com.skyworld.MockHttpServletResponse;
 import com.skyworld.service.APIChainService;
 import com.skyworld.service.APICode;
-import com.skyworld.service.APIFeedbackService;
-import com.skyworld.service.APIFollowService;
-import com.skyworld.service.APIInquireService;
-import com.skyworld.service.APILoginService;
-import com.skyworld.service.APIRegisterService;
 import com.skyworld.service.APIService;
-import com.skyworld.service.APIUpgradeService;
-import com.skyworld.service.APIUserRelationQueryService;
+import com.skyworld.service.article.APIFollowService;
+import com.skyworld.service.question.APIAnswerService;
+import com.skyworld.service.question.APIInquireService;
+import com.skyworld.service.skservicer.APICmpQueryService;
+import com.skyworld.service.skservicer.APIUpgradeService;
+import com.skyworld.service.system.APIFeedbackService;
+import com.skyworld.service.user.APILoginService;
+import com.skyworld.service.user.APIRegisterService;
+import com.skyworld.service.user.APIUserRelationQueryService;
 
 public class APIServiceTestCase extends TestCase {
 
@@ -43,6 +46,7 @@ public class APIServiceTestCase extends TestCase {
 		((APIChainService)service).addActionMapping("feedback", new APIFeedbackService());
 		((APIChainService)service).addActionMapping("follow", new APIFollowService());
 		((APIChainService)service).addActionMapping("relation", new APIUserRelationQueryService());
+		((APIChainService)service).addActionMapping("skservicer-cmp-query", new APICmpQueryService());
 	}
 	
 	
@@ -268,6 +272,7 @@ public class APIServiceTestCase extends TestCase {
 		assertEquals(respJson.getJSONObject("user").getInt("type"), 1);
 		//re-get token
 		token =respJson.getString("token");
+		long uid = respJson.getJSONObject("user").getLong("id");
 		
 		//check upgrade again
 		response.resetBuffer();
@@ -392,6 +397,14 @@ public class APIServiceTestCase extends TestCase {
 		respJson = parse(str);
 		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
 		
+		
+		//normal servicer cmp query
+		response.resetBuffer();
+		request.setParam("data", buildNormalServicerCmpQuery(token, uid));
+		service.service(request, response);
+		str = response.getFlusedBuffer();
+		respJson = parse(str);
+		assertEquals(APICode.SUCCESS, respJson.getInt("ret"));
 
 	}
 	
@@ -486,6 +499,7 @@ public class APIServiceTestCase extends TestCase {
 		body.put("cellphone", cellphone);
 		body.put("pwd", pwd);
 		body.put("confirm_pwd", pwd);
+		body.put("country_code", 86);
 		return root.toString();
 	}
 	
@@ -665,6 +679,24 @@ public class APIServiceTestCase extends TestCase {
 		header.put("token", token);
 		body.put("userid2", uid2);
 		body.put("type", 3);
+		
+		return root.toString();
+	}
+	
+	
+	
+	String buildNormalServicerCmpQuery(String token, long uid2) {
+		JSONObject root = new JSONObject();
+		JSONObject header = new JSONObject();
+		JSONObject body = new JSONObject();
+		
+		root.put("header", header);
+		root.put("body", body);
+		
+		header.put("action", "skservicer-cmp-query");
+		header.put("token", token);
+		body.put("uid", uid2);
+		body.put("opt", 1);
 		
 		return root.toString();
 	}

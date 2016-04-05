@@ -3,6 +3,7 @@ package com.skyworld.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -60,6 +61,20 @@ public class JSONFormat {
 		jsobj.put("desc", servicer.getServiceDesc());
 	}
 	
+	
+	
+	public static void populateServicerCmpData(JSONObject jsobj, SKServicer servicer) {
+		JSONArray cmpJ = new JSONArray();
+		jsobj.put("cmp", cmpJ);
+		
+		JSONObject a = new JSONObject();
+		a.put("cmplogo", servicer.getLogoURL());
+		a.put("cmpwebsite", servicer.getWebsite());
+		a.put("cmpname", servicer.getCmpName());
+		a.put("cmpdesc", servicer.getCmpDesc());
+		a.put("cmpphone", servicer.getCmpPhone());
+		cmpJ.put(a);
+	}
 	
 	public static void populateEasemobData(JSONObject parent, JSONObject jsobj, User user) {
 		parent.put("easemob", jsobj);

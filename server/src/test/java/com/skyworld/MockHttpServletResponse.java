@@ -1,4 +1,4 @@
-package com.skyworld.easemob;
+package com.skyworld;
 
 import java.io.IOException;
 import java.io.PrintWriter;

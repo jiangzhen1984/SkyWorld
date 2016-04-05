@@ -1,4 +1,4 @@
-package com.skyworld.easemob;
+package com.skyworld.api;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,16 +14,18 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Test;
 
-import com.skyworld.service.APIArticleCommentService;
-import com.skyworld.service.APIArticlePushlihService;
-import com.skyworld.service.APIArticleQuery;
-import com.skyworld.service.APIArticleRecommendationService;
+import com.skyworld.MockHttpServletRequest;
+import com.skyworld.MockHttpServletResponse;
 import com.skyworld.service.APIChainService;
 import com.skyworld.service.APICode;
 import com.skyworld.service.APIJsonPartDispatchService;
-import com.skyworld.service.APILoginService;
-import com.skyworld.service.APIRegisterService;
 import com.skyworld.service.APIService;
+import com.skyworld.service.article.APIArticleCommentService;
+import com.skyworld.service.article.APIArticlePushlihService;
+import com.skyworld.service.article.APIArticleQuery;
+import com.skyworld.service.article.APIArticleRecommendationService;
+import com.skyworld.service.user.APILoginService;
+import com.skyworld.service.user.APIRegisterService;
 
 public class APIArticleTestCase extends TestCase {
 	

@@ -1,4 +1,4 @@
-package com.skyworld.easemob;
+package com.skyworld;
 
 import java.io.BufferedReader;
 import java.io.IOException;

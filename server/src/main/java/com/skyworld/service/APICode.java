@@ -64,6 +64,10 @@ public class APICode {
 	
 	public static final int ARTICLE_QUERY_ERROR_TYPE_NOT_SUPPORT = -1101;
 	
+	
+	public static final int SKSERVICER_QUERY_ERROR_TYPE_NOT_SUPPORT_OPT = -1201;
+	public static final int SKSERVICER_QUERY_ERROR_TYPE_NOT_SERVICER = -1202;
+	
 }
 
 

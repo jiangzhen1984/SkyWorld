@@ -1,4 +1,4 @@
-package com.skyworld.service;
+package com.skyworld.service.user;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +16,9 @@ import org.json.JSONTokener;
 import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.TokenFactory;
 import com.skyworld.init.GlobalConstants;
+import com.skyworld.service.APICode;
+import com.skyworld.service.APIService;
+import com.skyworld.service.ServiceFactory;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;

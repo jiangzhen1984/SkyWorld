@@ -29,6 +29,7 @@ public class SWSKServicerService extends BaseService {
 			desc.setLogoPath(skervicer.getLogoPath());
 			desc.setWebsite(skervicer.getWebsite());
 			desc.setPhone(skervicer.getCmpPhone());
+			desc.setServicer(skervicer);
 			sess.save(desc);
 		} else {
 			SWPServicerCompanyDesc desc = descList.get(0);

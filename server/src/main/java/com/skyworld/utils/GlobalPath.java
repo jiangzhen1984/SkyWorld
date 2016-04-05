@@ -23,16 +23,7 @@ public class GlobalPath {
 	
 	
 	public static String getArticlePicHome() {
-		String home = getServerHome();
-		Calendar c = Calendar.getInstance();
-		String contextPath =  c.get(Calendar.YEAR)+"/"+ (c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DAY_OF_MONTH)+"/";
-		File imageDir = new File(home + "/webapps/"+ GlobalConstants.PIC_CONTEXT + contextPath);
-		if (!imageDir.exists()) {
-			boolean ret = imageDir.mkdirs();
-			log.info("Create dir ret:" + ret+"   ===>" + imageDir.getAbsolutePath());
-		}
-		
-		return imageDir.getAbsolutePath();
+		return getSubHome(GlobalConstants.ARTICLE_CONTEXT);
 	}
 	
 	
@@ -43,16 +34,7 @@ public class GlobalPath {
 	
 	
 	public static String getAvatarHome() {
-		String home = getServerHome();
-		Calendar c = Calendar.getInstance();
-		String contextPath =  c.get(Calendar.YEAR)+"/"+ (c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DAY_OF_MONTH)+"/";
-		File imageDir = new File(home + "/webapps/avatar/" + contextPath);
-		if (!imageDir.exists()) {
-			boolean ret = imageDir.mkdirs();
-			log.info("Create dir ret:" + ret+"   ===>" + imageDir.getAbsolutePath());
-		}
-		
-		return imageDir.getAbsolutePath();
+		return getSubHome(GlobalConstants.AVATAR_CONTEXT);
 	}
 	
 	
@@ -60,5 +42,33 @@ public class GlobalPath {
 		Calendar c = Calendar.getInstance();
 		return c.get(Calendar.YEAR)+"/"+ (c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DAY_OF_MONTH)+"/";
 	}
+	
+	
+	
+	
+	public static String getSKServicerHome() {
+		return getSubHome(GlobalConstants.SKSERVICER_CONTEXT);
+	}
+	
+	
+	public static String getSKServicerContext() {
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.YEAR)+"/"+ (c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DAY_OF_MONTH)+"/";
+	}
 
+	
+	
+	
+	public static String getSubHome(String context) {
+		String home = getServerHome();
+		Calendar c = Calendar.getInstance();
+		String contextPath =  c.get(Calendar.YEAR)+"/"+ (c.get(Calendar.MONTH) + 1)+"/"+c.get(Calendar.DAY_OF_MONTH)+"/";
+		File imageDir = new File(home + "/webapps/"+context+"/" + contextPath);
+		if (!imageDir.exists()) {
+			boolean ret = imageDir.mkdirs();
+			log.info("Create dir ret:" + ret+"   ===>" + imageDir.getAbsolutePath());
+		}
+		
+		return imageDir.getAbsolutePath();
+	}
 }

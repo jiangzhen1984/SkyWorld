@@ -45,7 +45,7 @@ public class ArticleResponse extends JSONBasicResponse {
 		for (int i = 0; i < ps; i++) {
 			String pic = article.getPicPath(i);
 			JSONObject pi = new JSONObject();
-			pi.put("url", GlobalConstants.PIC_HOST+pic);
+			pi.put("url", GlobalConstants.ARTICLE_CONTEXT+pic);
 			jsonPics.put(pi);
 		}
 		jsonArticle.put("pics", jsonPics);

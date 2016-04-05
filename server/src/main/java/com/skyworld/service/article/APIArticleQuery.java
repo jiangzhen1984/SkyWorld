@@ -1,4 +1,4 @@
-package com.skyworld.service;
+package com.skyworld.service.article;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +11,10 @@ import com.skyworld.cache.CacheManager;
 import com.skyworld.cache.Token;
 import com.skyworld.cache.TokenFactory;
 import com.skyworld.easemob.EasemobUser;
+import com.skyworld.service.APIBasicJsonPartApiService;
+import com.skyworld.service.APICode;
+import com.skyworld.service.PartsWrapper;
+import com.skyworld.service.ServiceFactory;
 import com.skyworld.service.dsf.Article;
 import com.skyworld.service.dsf.User;
 import com.skyworld.service.resp.BasicResponse;
