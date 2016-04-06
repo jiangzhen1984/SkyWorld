@@ -93,8 +93,11 @@
 	
 	<servlet-mapping>
 		<servlet-name>SKServicer</servlet-name>
-		<url-pattern>/skservicer/setting</url-pattern>
+		<url-pattern>/skservicer/setting/info</url-pattern>
 		<url-pattern>/skservicer/setting/update</url-pattern>
+		<url-pattern>/skservicer/setting/cmplist</url-pattern>
+		<url-pattern>/skservicer/setting/cmplist/update</url-pattern>
+		<url-pattern>/skservicer/setting/cmplist/view/*</url-pattern>
 	</servlet-mapping>
 
 

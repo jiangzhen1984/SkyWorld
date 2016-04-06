@@ -46,7 +46,7 @@ public class SKServicerSetting extends HttpServlet {
 		String category= null;
 		String action = null;;
 		String method= null;
-		String strId= null;
+		String subMethod= null;
 		int i = 0;
 		while(m.find()) {
 			switch(i) {
@@ -67,7 +67,7 @@ public class SKServicerSetting extends HttpServlet {
 				i++;
 				break;
 			case 3:
-				method =  m.group();
+				subMethod =  m.group();
 				i++;
 				break;
 			}
@@ -76,7 +76,7 @@ public class SKServicerSetting extends HttpServlet {
 		
 	
 		
-		if ("/setting".equalsIgnoreCase(action) && method == null) {
+		if ("/setting".equalsIgnoreCase(action) && "/info".equals(method)) {
 			String auth = null;
 			SKServicer sk = null;
 			Token tk;
@@ -102,6 +102,8 @@ public class SKServicerSetting extends HttpServlet {
 			forwardSettingIndex(req, resp, sk, tk);
 		} else if ("/setting".equals(action) && "/update".equals(method)) {
 			updateServicer(req, resp);
+		} else if ("/setting".equals(action) && "/cmplist".equals(method)) {
+			showCmpList(req, resp);
 		}
 		
 	}
@@ -127,5 +129,9 @@ public class SKServicerSetting extends HttpServlet {
 	
 	private void updateServicer(HttpServletRequest req, HttpServletResponse resp) {
 		ServiceFactory.getAPIService(ServiceFactory.API_CODE_SERVICER).service(req, resp);
+	}
+	
+	private void showCmpList(HttpServletRequest req, HttpServletResponse resp) {
+		
 	}
 }

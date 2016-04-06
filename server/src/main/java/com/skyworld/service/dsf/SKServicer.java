@@ -1,10 +1,16 @@
 package com.skyworld.service.dsf;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.skyworld.service.po.SWPUser;
 
 
 
 public class SKServicer extends User {
+	
+	public static final int CMP_PAGE_NO = 15;
 
 	
 	private String location;
@@ -24,6 +30,9 @@ public class SKServicer extends User {
 	private String logoPath;
 	
 	private String cmpPhone;
+	
+	/////Item
+	private List<SKServicerCMPItem> items;
 	
 	
 
@@ -113,7 +122,107 @@ public class SKServicer extends User {
 	}
 	
 	
+	public void addCmpItem(long id, String title, String pic, String content) {
+		List<SKServicerCMPItem> list = getItemList();		
+		list.add(new SKServicerCMPItem(id, title, pic, content));
+	}
 	
+	
+	public void addCmpItem(String title, String pic, String content) {
+		List<SKServicerCMPItem> list = getItemList();		
+		list.add(new SKServicerCMPItem(title, pic, content));
+	}
+	
+	
+	public int getItemCount() {
+		return this.items == null? 0 : items.size();
+	}
+	
+	
+	public SKServicerCMPItem removeCMPItem(SKServicerCMPItem it) {
+		Iterator<SKServicerCMPItem> itor =iteratorCMPItem ();
+		if (itor == null) {
+			return null;
+		}
+		while (itor.hasNext()) {
+			if (itor.next() == it) {
+				itor.remove();
+				return it;
+			}
+		}
+		return null;
+	}
+	
+	
+	public SKServicerCMPItem removeCMPItem(long id) {
+		Iterator<SKServicerCMPItem> itor =iteratorCMPItem ();
+		if (itor == null) {
+			return null;
+		}
+		while (itor.hasNext()) {
+			SKServicerCMPItem tmp = itor.next();
+			if (tmp.id == id) {
+				itor.remove();
+				return tmp;
+			}
+		}
+		return null;
+	}
+	
+	
+	public Iterator<SKServicerCMPItem> iteratorCMPItem() {
+		if (items == null) {
+			return null;
+		}
+		return items.iterator();
+	}
+	
+	
+	
+	private synchronized List<SKServicerCMPItem>  getItemList() {
+		if (items != null) {
+			return this.items;
+		}
+		this.items = new ArrayList<SKServicerCMPItem>();
+		return items;
+	}
+	
+	public class SKServicerCMPItem {
+		public long id;
+		
+		public String title;
+		
+		public String pic;
+		
+		public String content;
+		
+		public boolean isNeedPersist;
+		
+		public boolean isNeedUpdate;
+
+		public SKServicerCMPItem(long id, String title, String pic,
+				String content) {
+			super();
+			this.id = id;
+			this.title = title;
+			this.pic = pic;
+			this.content = content;
+			isNeedPersist = false;
+			isNeedUpdate = false;
+		}
+		
+		public SKServicerCMPItem(String title, String pic,
+				String content) {
+			super();
+			this.title = title;
+			this.pic = pic;
+			this.content = content;
+			isNeedPersist = true;
+			isNeedUpdate = false;
+		}
+		
+		
+	}
 	
 
 }
