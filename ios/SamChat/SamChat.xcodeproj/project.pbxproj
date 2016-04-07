@@ -58,6 +58,15 @@
 		31B3C9411CB214B600CDB105 /* SendQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9331CB214B600CDB105 /* SendQuestion.m */; };
 		31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */; };
 		31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */; };
+		31B3C94A1CB28BD200CDB105 /* UserSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9491CB28BD200CDB105 /* UserSettingViewController.m */; };
+		31B3C94D1CB3463700CDB105 /* ProducerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C94C1CB3463700CDB105 /* ProducerEditViewController.m */; };
+		31B3C9511CB365F800CDB105 /* SCChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9501CB365F800CDB105 /* SCChatListViewController.m */; };
+		31B3C9541CB383FA00CDB105 /* QuestionAndAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9531CB383FA00CDB105 /* QuestionAndAnswerViewController.m */; };
+		31B3C9571CB387F400CDB105 /* SCArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9561CB387F400CDB105 /* SCArticleViewController.m */; };
+		31B3C9601CB3CB4600CDB105 /* AnswerTheQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C95F1CB3CB4600CDB105 /* AnswerTheQuestionViewController.m */; };
+		31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */; };
+		31BDF47A1CB5FBD500EDCED0 /* SCBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */; };
+		31BDF47D1CB6007C00EDCED0 /* SCChatMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -525,6 +534,25 @@
 		31B3C9431CB257B200CDB105 /* SCCoreDataMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCCoreDataMacro.h; path = CoreData/SCCoreDataMacro.h; sourceTree = "<group>"; };
 		31B3C9441CB27FD800CDB105 /* AnswerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnswerDetailViewController.h; path = Service/AnswerDetailViewController.h; sourceTree = "<group>"; };
 		31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnswerDetailViewController.m; path = Service/AnswerDetailViewController.m; sourceTree = "<group>"; };
+		31B3C9481CB28BD200CDB105 /* UserSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserSettingViewController.h; path = Setting/UserSettingViewController.h; sourceTree = "<group>"; };
+		31B3C9491CB28BD200CDB105 /* UserSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserSettingViewController.m; path = Setting/UserSettingViewController.m; sourceTree = "<group>"; };
+		31B3C94B1CB3463700CDB105 /* ProducerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProducerEditViewController.h; path = Producer/ProducerEditViewController.h; sourceTree = "<group>"; };
+		31B3C94C1CB3463700CDB105 /* ProducerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProducerEditViewController.m; path = Producer/ProducerEditViewController.m; sourceTree = "<group>"; };
+		31B3C94F1CB365F800CDB105 /* SCChatListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCChatListViewController.h; path = Chat/SCChatListViewController.h; sourceTree = "<group>"; };
+		31B3C9501CB365F800CDB105 /* SCChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCChatListViewController.m; path = Chat/SCChatListViewController.m; sourceTree = "<group>"; };
+		31B3C9521CB383FA00CDB105 /* QuestionAndAnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuestionAndAnswerViewController.h; path = Chat/QuestionAndAnswerViewController.h; sourceTree = "<group>"; };
+		31B3C9531CB383FA00CDB105 /* QuestionAndAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QuestionAndAnswerViewController.m; path = Chat/QuestionAndAnswerViewController.m; sourceTree = "<group>"; };
+		31B3C9551CB387F400CDB105 /* SCArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCArticleViewController.h; path = Chat/SCArticleViewController.h; sourceTree = "<group>"; };
+		31B3C9561CB387F400CDB105 /* SCArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCArticleViewController.m; path = Chat/SCArticleViewController.m; sourceTree = "<group>"; };
+		31B3C95E1CB3CB4600CDB105 /* AnswerTheQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnswerTheQuestionViewController.h; path = Chat/AnswerTheQuestionViewController.h; sourceTree = "<group>"; };
+		31B3C95F1CB3CB4600CDB105 /* AnswerTheQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnswerTheQuestionViewController.m; path = Chat/AnswerTheQuestionViewController.m; sourceTree = "<group>"; };
+		31B3C9611CB3D0F400CDB105 /* SCChatToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCChatToolBar.h; path = Views/SCChatToolBar.h; sourceTree = "<group>"; };
+		31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCChatToolBar.m; path = Views/SCChatToolBar.m; sourceTree = "<group>"; };
+		31BDF4781CB5FBD500EDCED0 /* SCBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCBubbleView.h; path = Views/MessageCell/MessageCellBubbleView/SCBubbleView.h; sourceTree = "<group>"; };
+		31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCBubbleView.m; path = Views/MessageCell/MessageCellBubbleView/SCBubbleView.m; sourceTree = "<group>"; };
+		31BDF47B1CB6007C00EDCED0 /* SCChatMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCChatMessageCell.h; path = Views/MessageCell/SCChatMessageCell.h; sourceTree = "<group>"; };
+		31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCChatMessageCell.m; path = Views/MessageCell/SCChatMessageCell.m; sourceTree = "<group>"; };
+		31BDF47E1CB609A600EDCED0 /* ISCChatMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ISCChatMessageModel.h; path = Models/ISCChatMessageModel.h; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -1210,6 +1238,8 @@
 			children = (
 				3159D9961CAE6B5C00212DAB /* ProducerViewController.h */,
 				3159D9971CAE6B5C00212DAB /* ProducerViewController.m */,
+				31B3C94B1CB3463700CDB105 /* ProducerEditViewController.h */,
+				31B3C94C1CB3463700CDB105 /* ProducerEditViewController.m */,
 			);
 			name = Producer;
 			sourceTree = "<group>";
@@ -1343,17 +1373,65 @@
 		3183D06E1CA690150088FD67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				31BDF4761CB5FB6600EDCED0 /* MessageCell */,
 				3183D06F1CA690730088FD67 /* SCViewFactory.h */,
 				3183D0701CA690730088FD67 /* SCViewFactory.m */,
 				31B3C9001CB0E67400CDB105 /* SCTableViewCell.h */,
 				31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */,
+				31B3C9611CB3D0F400CDB105 /* SCChatToolBar.h */,
+				31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		31B3C9471CB28BAE00CDB105 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				31B3C9481CB28BD200CDB105 /* UserSettingViewController.h */,
+				31B3C9491CB28BD200CDB105 /* UserSettingViewController.m */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
+		31B3C94E1CB365C700CDB105 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				31B3C94F1CB365F800CDB105 /* SCChatListViewController.h */,
+				31B3C9501CB365F800CDB105 /* SCChatListViewController.m */,
+				31B3C9521CB383FA00CDB105 /* QuestionAndAnswerViewController.h */,
+				31B3C9531CB383FA00CDB105 /* QuestionAndAnswerViewController.m */,
+				31B3C9551CB387F400CDB105 /* SCArticleViewController.h */,
+				31B3C9561CB387F400CDB105 /* SCArticleViewController.m */,
+				31B3C95E1CB3CB4600CDB105 /* AnswerTheQuestionViewController.h */,
+				31B3C95F1CB3CB4600CDB105 /* AnswerTheQuestionViewController.m */,
+			);
+			name = Chat;
+			sourceTree = "<group>";
+		};
+		31BDF4761CB5FB6600EDCED0 /* MessageCell */ = {
+			isa = PBXGroup;
+			children = (
+				31BDF4771CB5FB8000EDCED0 /* MessageCellBubbleView */,
+				31BDF47B1CB6007C00EDCED0 /* SCChatMessageCell.h */,
+				31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */,
+			);
+			name = MessageCell;
+			sourceTree = "<group>";
+		};
+		31BDF4771CB5FB8000EDCED0 /* MessageCellBubbleView */ = {
+			isa = PBXGroup;
+			children = (
+				31BDF4781CB5FBD500EDCED0 /* SCBubbleView.h */,
+				31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */,
+			);
+			name = MessageCellBubbleView;
 			sourceTree = "<group>";
 		};
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				31B3C94E1CB365C700CDB105 /* Chat */,
+				31B3C9471CB28BAE00CDB105 /* Setting */,
 				3159D9951CAE6B3900212DAB /* Producer */,
 				3159D9911CAE6A1500212DAB /* Offical */,
 				31FAC77F1CAE38C40034A0CD /* Custom */,
@@ -1377,6 +1455,7 @@
 				31B3C8FD1CAF880900CDB105 /* SCPushDispatcher.h */,
 				31B3C8FE1CAF880900CDB105 /* SCPushDispatcher.m */,
 				31B3C9031CB0F08600CDB105 /* ISCTableCellModel.h */,
+				31BDF47E1CB609A600EDCED0 /* ISCChatMessageModel.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2334,6 +2413,7 @@
 				31FAC6BE1CAAB7E30034A0CD /* UserProfileEditViewController.m in Sources */,
 				31B3C93D1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m in Sources */,
 				31F8E72E1CA401310049EE23 /* SCConfig.m in Sources */,
+				31B3C94D1CB3463700CDB105 /* ProducerEditViewController.m in Sources */,
 				31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */,
 				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
 				31FAC5951CAAB3C50034A0CD /* BaseTableViewCell.m in Sources */,
@@ -2344,7 +2424,9 @@
 				31FAC6961CAAB7E30034A0CD /* ConversationListController.m in Sources */,
 				31FAC59C1CAAB3C50034A0CD /* EMSearchDisplayController.m in Sources */,
 				311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */,
+				31BDF47D1CB6007C00EDCED0 /* SCChatMessageCell.m in Sources */,
 				31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */,
+				31BDF47A1CB5FBD500EDCED0 /* SCBubbleView.m in Sources */,
 				31FAC6AA1CAAB7E30034A0CD /* ApplyFriendCell.m in Sources */,
 				31FAC6BB1CAAB7E30034A0CD /* EditNicknameViewController.m in Sources */,
 				31FAC6A71CAAB7E30034A0CD /* ContactListViewController.m in Sources */,
@@ -2367,10 +2449,12 @@
 				31B3C90C1CB209B100CDB105 /* AppDelegate.m in Sources */,
 				31FAC69D1CAAB7E30034A0CD /* GroupBansViewController.m in Sources */,
 				31B3C9381CB214B600CDB105 /* LoginUserInformation.m in Sources */,
+				31B3C9571CB387F400CDB105 /* SCArticleViewController.m in Sources */,
 				3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */,
 				31FAC6A11CAAB7E30034A0CD /* PublicGroupDetailViewController.m in Sources */,
 				31FAC7261CAC032E0034A0CD /* HomeViewController.m in Sources */,
 				31FAC5991CAAB3C50034A0CD /* BaseViewController.m in Sources */,
+				31B3C94A1CB28BD200CDB105 /* UserSettingViewController.m in Sources */,
 				31FAC6B71CAAB7E30034A0CD /* RobotManager.m in Sources */,
 				311BC62F1CA37B19006B4707 /* main.m in Sources */,
 				31B3C93F1CB214B600CDB105 /* SendAnswer.m in Sources */,
@@ -2386,6 +2470,7 @@
 				31FAC7851CAE39410034A0CD /* SCUITabView.m in Sources */,
 				31FAC6971CAAB7E30034A0CD /* ChatViewController.m in Sources */,
 				31FAC59B1CAAB3C50034A0CD /* EMNavigationController.m in Sources */,
+				31B3C9601CB3CB4600CDB105 /* AnswerTheQuestionViewController.m in Sources */,
 				31FAC7881CAE3A0B0034A0CD /* SCUITabPagerViewController.m in Sources */,
 				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,
 				31FAC6A51CAAB7E30034A0CD /* MyChatroomListViewController.m in Sources */,
@@ -2394,11 +2479,13 @@
 				31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */,
 				31FAC6AD1CAAB7E30034A0CD /* InvitationManager.m in Sources */,
 				31B3C9401CB214B600CDB105 /* SendAnswer+CoreDataProperties.m in Sources */,
+				31B3C9511CB365F800CDB105 /* SCChatListViewController.m in Sources */,
 				31FAC5971CAAB3C50034A0CD /* EMTextView.m in Sources */,
 				31FAC6A41CAAB7E30034A0CD /* ChatroomListViewController.m in Sources */,
 				317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */,
 				31B3C9021CB0E67400CDB105 /* SCTableViewCell.m in Sources */,
 				31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */,
+				31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */,
 				31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */,
 				31FAC6B41CAAB7E30034A0CD /* EMRotbotChatViewCell.m in Sources */,
 				31FAC5811CAAB3C50034A0CD /* EMGifImage.m in Sources */,
@@ -2409,6 +2496,7 @@
 				31FAC5891CAAB3C50034A0CD /* SRSlimeView.m in Sources */,
 				31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */,
 				31FAC59A1CAAB3C50034A0CD /* EMChooseViewController.m in Sources */,
+				31B3C9541CB383FA00CDB105 /* QuestionAndAnswerViewController.m in Sources */,
 				31FAC6A21CAAB7E30034A0CD /* PublicGroupListViewController.m in Sources */,
 				31FAC6BA1CAAB7E30034A0CD /* DebugViewController.m in Sources */,
 				31B3C9411CB214B600CDB105 /* SendQuestion.m in Sources */,

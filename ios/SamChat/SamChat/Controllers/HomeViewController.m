@@ -24,12 +24,9 @@
 
 
 @interface HomeViewController () <SCUITabPagerDataSource, SCUITabPagerDelegate, UIAlertViewDelegate>
-{
-    //ConversationListController *_chatListVC;
-}
 
 @property (nonatomic, strong) ServiceSearchViewController *serviceSearchVC;
-@property (nonatomic, strong) ConversationListController *chatListVC;
+@property (nonatomic, strong) SCChatListViewController *chatListVC;
 @property (nonatomic, strong) OfficalListTableViewController *officalListVC;
 @property (nonatomic, strong) ProducerViewController *producerVC;
 
@@ -106,10 +103,6 @@
             viewController = self.producerVC;
             break;
         default:
-//            viewController = [UIViewController new];
-//            [[viewController view] setBackgroundColor:[UIColor colorWithRed:arc4random_uniform(255) / 255.0f
-//                                                          green:arc4random_uniform(255) / 255.0f
-//                                                           blue:arc4random_uniform(255) / 255.0f alpha:1]];
             break;
     }
     return viewController;
@@ -273,8 +266,11 @@ static NSString *kGroupName = @"GroupName";
 //    self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
 //    self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     
-    _chatListVC = [[ConversationListController alloc] initWithNibName:nil bundle:nil];
+    _chatListVC = [[SCChatListViewController alloc] initWithNibName:nil bundle:nil];
     [_chatListVC networkChanged:_connectionState];
+    
+//    _chatListVC = [[ConversationListController alloc] initWithNibName:nil bundle:nil];
+//    [_chatListVC networkChanged:_connectionState];
 //    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.conversation", @"Conversations")
 //                                                           image:nil
 //                                                             tag:0];

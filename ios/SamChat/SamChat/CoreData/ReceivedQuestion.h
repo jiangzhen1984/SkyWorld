@@ -8,14 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "ISCChatMessageModel.h"
+#import "ISCTableCellModel.h"
 
 @class ContactUser;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ReceivedQuestion : NSManagedObject
-
-// Insert code here to declare functionality of your managed object subclass
+@interface ReceivedQuestion : NSManagedObject  <ISCChatMessageModel, ISCTableCellModel>
+@property (nonatomic) CGFloat i_cellHeight;
++ (ReceivedQuestion *)receivedQuestionWithSkyWorldInfo:(NSDictionary *)questionDictionary inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

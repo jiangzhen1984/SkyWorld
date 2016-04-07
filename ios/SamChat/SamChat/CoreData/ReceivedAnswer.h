@@ -12,11 +12,11 @@
 
 @class ContactUser;
 
-#define ENTITY_RECEIVED_ANSWER          @"ReceivedAnswer"
+
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ReceivedAnswer : NSManagedObject <ISCTableCellModel>
+@interface ReceivedAnswer : NSManagedObject
 
 + (ReceivedAnswer *)receivedAnswerWithSkyWorldInfo:(NSDictionary *)answerDictionary inManagedObjectContext:(NSManagedObjectContext *)context;
 

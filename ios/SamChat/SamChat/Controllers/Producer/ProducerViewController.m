@@ -7,8 +7,12 @@
 //
 
 #import "ProducerViewController.h"
+#import "ProducerEditViewController.h"
 
 @interface ProducerViewController ()
+@property (weak, nonatomic) IBOutlet UITextView *textViewArea;
+@property (weak, nonatomic) IBOutlet UITextView *textViewLocation;
+@property (weak, nonatomic) IBOutlet UITextView *textViewDescription;
 
 @end
 
@@ -16,12 +20,36 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self producerInformationInit];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)producerInformationInit
+{
+    self.textViewArea.text = @"";
+    self.textViewLocation.text = @"";
+    self.textViewDescription.text = @"";
+    LoginUserInformation *loginUserInformation = [[SCUserProfileManager sharedInstance] currentLoginUserInformation];
+    if([loginUserInformation.usertype isEqualToNumber:LOGIN_USER_TYPE_SAMVENDOR]){
+        self.textViewArea.text = loginUserInformation.area;
+        self.textViewLocation.text = loginUserInformation.location;
+        self.textViewDescription.text = loginUserInformation.discription;
+    }
+}
+
+- (IBAction)backgroundTap:(id)sender
+{
+    ProducerEditViewController *editViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ProducerEditView"];
+    [self.navigationController pushViewController:editViewController animated:YES];
 }
 
 /*

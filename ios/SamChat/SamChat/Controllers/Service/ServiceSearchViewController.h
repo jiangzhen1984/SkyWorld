@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ServiceSearchViewController : UIViewController
+@interface ServiceSearchViewController : UIViewController <UIImagePickerControllerDelegate>
 
 @end

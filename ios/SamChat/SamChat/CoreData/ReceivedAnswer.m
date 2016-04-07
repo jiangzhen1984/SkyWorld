@@ -9,6 +9,10 @@
 #import "ReceivedAnswer.h"
 #import "ContactUser.h"
 
+@interface ReceivedAnswer () <ISCTableCellModel>
+
+@end
+
 @implementation ReceivedAnswer
 
 + (ReceivedAnswer *)receivedAnswerWithSkyWorldInfo:(NSDictionary *)answerDictionary inManagedObjectContext:(NSManagedObjectContext *)context

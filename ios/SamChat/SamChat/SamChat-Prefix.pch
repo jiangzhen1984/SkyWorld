@@ -22,6 +22,12 @@
 #import "SCCoreDataManager.h"
 #import "SCCoreDataMacro.h"
 
+#import "SCSkyWorldAPI.h"
+
+#import "SCTableViewCell.h"
+
+#import "AFNetworking.h"
+
 // easemob
 #import "ChatDemoUIDefine.h"
 #import "EMAlertView.h"

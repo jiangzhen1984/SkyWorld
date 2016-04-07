@@ -19,5 +19,6 @@
 + (void)presentHomeViewFromViewController:(UIViewController *)viewContoller;
 + (NSNumber *)currentTimeStamp;
 + (NSString *)convertToDateStringWithTimeStamp:(NSInteger)timestamp;
++ (UIStoryboard *)mainStoryBoard;
 
 @end

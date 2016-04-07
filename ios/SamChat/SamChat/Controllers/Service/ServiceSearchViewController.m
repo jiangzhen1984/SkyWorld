@@ -15,6 +15,7 @@
 #import "ReceivedAnswer.h"
 #import "SendQuestion.h"
 #import "AnswerDetailViewController.h"
+#import "UserSettingViewController.h"
 
 @interface ServiceSearchViewController () <SCAnswerPushDelegate,UITableViewDataSource,UITableViewDelegate>
 
@@ -316,6 +317,22 @@
     [self hideHomeImage:NO withsearchBarToTop:130 tableToTop:200 duration:0.4f];
 }
 
+
+- (IBAction)setUserAvatar:(id)sender
+{
+    UserSettingViewController *vc = [[UserSettingViewController alloc] init];
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    DebugLog(@"selectUserAvatar%@", [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypePhotoLibrary]);
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
+        DebugLog(@"selectUserAvatar in ...");
+        imagePickerController.sourceType =  UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePickerController.mediaTypes =[UIImagePickerController availableMediaTypesForSourceType:imagePickerController.sourceType];
+    }
+    imagePickerController.delegate = nil;
+    imagePickerController.allowsEditing = YES;
+    //[self presentModalViewController:imagePickerController animated:YES];
+     [self presentViewController:imagePickerController animated:YES completion:NULL];
+}
 
 
 @end

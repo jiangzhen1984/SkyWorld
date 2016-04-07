@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ConversationListController.h"
+//#import "ConversationListController.h"
 #import "ContactListViewController.h"
 #import "HomeViewController.h"
 #import "ChatViewController.h"
+#import "SCChatListViewController.h"
 
 #if DEMO_CALL == 1
 
@@ -27,7 +28,8 @@
 
 @property (nonatomic, weak) ContactListViewController *contactViewVC;
 
-@property (nonatomic, weak) ConversationListController *conversationListVC;
+//@property (nonatomic, weak) ConversationListController *conversationListVC;
+@property (nonatomic, weak) SCChatListViewController *conversationListVC;
 
 @property (nonatomic, weak) HomeViewController *mainVC;
 

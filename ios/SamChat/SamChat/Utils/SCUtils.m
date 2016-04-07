@@ -45,7 +45,7 @@
 {
     // only logintime
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
-    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue];
+    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue] * 1000;
     //DebugLog(@"time: %lld", timestamp);
     return [NSNumber numberWithLongLong:timestamp];
 }
@@ -58,14 +58,20 @@
 + (NSString *)convertToDateStringWithTimeStamp:(NSInteger)timestamp
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateStyle:NSDateFormatterMediumStyle];
-    [formatter setTimeStyle:NSDateFormatterShortStyle];
-    
-    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    
+    [formatter setLocale:[NSLocale currentLocale]];
+
+//    [formatter setDateStyle:NSDateFormatterMediumStyle];
+//    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    NSTimeInterval timeInterval = ((double)timestamp)/1000.0;
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timeInterval];
     [formatter setDateFormat:@"YYYY.MM.dd HH:mm"];
     NSString *str = [formatter stringFromDate:confromTimesp];
     return str;
+}
+
++ (UIStoryboard *)mainStoryBoard
+{
+    return [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
 }
 
 @end

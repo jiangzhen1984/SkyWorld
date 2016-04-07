@@ -9,14 +9,17 @@
 #import "SCPushDispatcher.h"
 #import "SCCoreDataManager.h"
 #import "ReceivedAnswer.h"
+#import "ReceivedQuestion.h"
 
 static SCPushDispatcher *sharedInstance = nil;
 
 @interface SCPushDispatcher ()
 {
     dispatch_queue_t _pushQueue;
-    BOOL pulling;
+//    BOOL pulling;
 }
+
+@property (nonatomic, assign) BOOL pulling;
 
 @end
 
@@ -37,19 +40,28 @@ static SCPushDispatcher *sharedInstance = nil;
     self = [super init];
     if(self){
         _pushQueue = dispatch_queue_create("SCPushDispatcher", NULL);
-        pulling = false;
+        //self.pulling = false;
     }
     return self;
+}
+
+- (void)setPulling:(BOOL)pulling
+{
+    if(pulling == false){
+        [self pullFromServerOnce];
+    }
+    _pulling = pulling;
 }
 
 - (void)asyncWaitingPush
 {
     DebugLog(@"main Thread: %@", [NSThread currentThread]);
-    [NSTimer scheduledTimerWithTimeInterval:2
-                                     target:self
-                                   selector:@selector(pullFromServerOnce)
-                                   userInfo:nil
-                                    repeats:YES];
+    self.pulling = false;
+//    [NSTimer scheduledTimerWithTimeInterval:2
+//                                     target:self
+//                                   selector:@selector(pullFromServerOnce)
+//                                   userInfo:nil
+//                                    repeats:YES];
     
     
 //    __weak typeof(self) weakSelf = self;
@@ -72,8 +84,8 @@ static SCPushDispatcher *sharedInstance = nil;
 
 - (void)pullFromServerOnce
 {
-    if(pulling) return;
-    pulling = true;
+    if(self.pulling) return;
+    self.pulling = true;
     NSURL *url = [NSURL URLWithString:SKYWORLD_API_PUSH];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setValue:[SCUserProfileManager sharedInstance].token forHTTPHeaderField:@"Authorization"];
@@ -96,15 +108,17 @@ static SCPushDispatcher *sharedInstance = nil;
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     // 数据大时候可能多次调用
-//    NSLog(@"接收到服务器的数据 %@:%@",[NSThread currentThread], data);
+    NSLog(@"接收到服务器的数据 %@:%@",[NSThread currentThread], data);
     if(data) {
         NSDictionary *content = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         NSString *category = [content valueForKeyPath:SKYWORLD_HEADER_CATEGORY];
         NSDictionary *body = content[SKYWORLD_BODY];
         if([category isEqualToString:SKYWORLD_ANSWER]){
+            DebugLog(@"######### receive answer push: %@", body);
             [self receivedNewAnswer:body];
         }else if([category isEqualToString:SKYWORLD_QUESTION]){
             DebugLog(@"######### receive question push: %@", body);
+            [self receivedNewQuestion:body];
         }else if([category isEqualToString:SKYWORLD_EASEMOB]){
             DebugLog(@"######### receive easemob push: %@", body);
             [self receivedEasemobAccountInfo:body];
@@ -118,25 +132,49 @@ static SCPushDispatcher *sharedInstance = nil;
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSLog(@"服务器的数据加载完毕%@", [NSThread currentThread]);
-    pulling = false;
+    self.pulling = false;
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     NSLog(@"请求错误 %@:%@", [NSThread currentThread],error);
-    pulling = false;
+    self.pulling = false;
 }
 
-#pragma mark Receive New Answer
+#pragma mark - Receive New Answer
 - (void)receivedNewAnswer:(NSDictionary *)answer
 {
     NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
     [privateContext performBlockAndWait:^{
         ReceivedAnswer *receivedAnswer = [ReceivedAnswer receivedAnswerWithSkyWorldInfo:answer
                                     inManagedObjectContext:privateContext];
+        NSManagedObjectID *objId = [receivedAnswer objectID];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.answerPushDelegate didReceiveNewAnswer:receivedAnswer];
+            ReceivedAnswer *answer = [[[SCCoreDataManager sharedInstance] managedObjectContext] existingObjectWithID:objId
+                                                                                      error:NULL];
+            if(answer){
+                [self.answerPushDelegate didReceiveNewAnswer:answer];
+            }
         });
+    }];
+}
+
+#pragma mark - Receive New Question
+- (void)receivedNewQuestion:(NSDictionary *)question
+{
+//    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
+//    [privateContext performBlockAndWait:^{
+//        [ReceivedQuestion receivedQuestionWithSkyWorldInfo:question
+//                                    inManagedObjectContext:privateContext];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.questionPushDelegate didReceiveNewQuestion:nil];
+//        });
+//    }];
+    
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].managedObjectContext;
+    [mainContext performBlockAndWait:^{
+        [ReceivedQuestion receivedQuestionWithSkyWorldInfo:question
+                                    inManagedObjectContext:mainContext];
     }];
 }
 

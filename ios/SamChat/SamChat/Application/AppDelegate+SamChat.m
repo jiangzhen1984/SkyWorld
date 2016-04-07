@@ -46,6 +46,7 @@
     BOOL loginSuccess = [notification.object boolValue];
     UIViewController *viewController = nil;
     if(loginSuccess) {
+        DebugLog(@"SAMCHAT_Token:%@", [SCUserProfileManager sharedInstance].token);
         //-----------
 //        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
 //        viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
