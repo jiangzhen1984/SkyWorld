@@ -10,6 +10,8 @@
 #import "LoginUserInformation.h"
 #import "ChatDemoHelper.h"
 #import "SCPushDispatcher.h"
+#import "KYDrawerController.h"
+#import "UserSettingViewController.h"
 
 @implementation AppDelegate (SamChat)
 
@@ -76,7 +78,13 @@
             //viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
             UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             self.homeController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
-            viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
+            //viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
+            
+            viewController = [[KYDrawerController alloc] initWithDrawerDirection:KYDrawerControllerDrawerDirectionRight drawerWidth:250.0f];
+            ((KYDrawerController*)viewController).mainViewController =[[UINavigationController alloc] initWithRootViewController:self.homeController];
+            
+            UserSettingViewController *settingViewController = [storyBoard instantiateViewControllerWithIdentifier:@"UserSettingView"];
+            ((KYDrawerController*)viewController).drawerViewController = settingViewController;
         }else{
             viewController = self.homeController.navigationController;
         }

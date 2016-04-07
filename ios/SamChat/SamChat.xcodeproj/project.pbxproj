@@ -67,6 +67,7 @@
 		31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */; };
 		31BDF47A1CB5FBD500EDCED0 /* SCBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */; };
 		31BDF47D1CB6007C00EDCED0 /* SCChatMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */; };
+		31BDF48B1CB6420700EDCED0 /* KYDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -553,6 +554,8 @@
 		31BDF47B1CB6007C00EDCED0 /* SCChatMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCChatMessageCell.h; path = Views/MessageCell/SCChatMessageCell.h; sourceTree = "<group>"; };
 		31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCChatMessageCell.m; path = Views/MessageCell/SCChatMessageCell.m; sourceTree = "<group>"; };
 		31BDF47E1CB609A600EDCED0 /* ISCChatMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ISCChatMessageModel.h; path = Models/ISCChatMessageModel.h; sourceTree = "<group>"; };
+		31BDF4891CB6420700EDCED0 /* KYDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYDrawerController.h; path = 3rdparty/KYDrawerController/KYDrawerController.h; sourceTree = "<group>"; };
+		31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KYDrawerController.m; path = 3rdparty/KYDrawerController/KYDrawerController.m; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -1247,6 +1250,7 @@
 		3159D99F1CAEADC600212DAB /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				31BDF4881CB641C300EDCED0 /* KYDrawerController */,
 				310A9A5F1CAA08EF000616F0 /* EaseMob */,
 				317B82521CA9625E000415E9 /* HyphenateSDK */,
 			);
@@ -1425,6 +1429,15 @@
 				31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */,
 			);
 			name = MessageCellBubbleView;
+			sourceTree = "<group>";
+		};
+		31BDF4881CB641C300EDCED0 /* KYDrawerController */ = {
+			isa = PBXGroup;
+			children = (
+				31BDF4891CB6420700EDCED0 /* KYDrawerController.h */,
+				31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */,
+			);
+			name = KYDrawerController;
 			sourceTree = "<group>";
 		};
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
@@ -2421,6 +2434,7 @@
 				31FAC69C1CAAB7E30034A0CD /* CreateGroupViewController.m in Sources */,
 				3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */,
 				31B3C8FF1CAF880900CDB105 /* SCPushDispatcher.m in Sources */,
+				31BDF48B1CB6420700EDCED0 /* KYDrawerController.m in Sources */,
 				31FAC6961CAAB7E30034A0CD /* ConversationListController.m in Sources */,
 				31FAC59C1CAAB3C50034A0CD /* EMSearchDisplayController.m in Sources */,
 				311BC63B1CA37B19006B4707 /* SamChat.xcdatamodeld in Sources */,

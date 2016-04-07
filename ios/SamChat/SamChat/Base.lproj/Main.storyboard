@@ -237,6 +237,84 @@
             </objects>
             <point key="canvasLocation" x="3400" y="-1718"/>
         </scene>
+        <!--User Setting View Controller-->
+        <scene sceneID="dCP-52-wFn">
+            <objects>
+                <viewController storyboardIdentifier="UserSettingView" id="eUE-cW-PZ6" customClass="UserSettingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aJk-8Y-ImL"/>
+                        <viewControllerLayoutGuide type="bottom" id="LhH-dZ-SRe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vLG-fa-Nil">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YDl-OJ-XUy">
+                                <rect key="frame" x="20" y="0.0" width="580" height="108"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hbq-as-ThU">
+                                        <rect key="frame" x="180" y="69" width="44" height="30"/>
+                                        <state key="normal" title="Avatar">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.078431372550000003" green="0.58823529409999997" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="hbq-as-ThU" firstAttribute="top" secondItem="YDl-OJ-XUy" secondAttribute="top" constant="69" id="7Ch-aB-jlz"/>
+                                    <constraint firstItem="hbq-as-ThU" firstAttribute="leading" secondItem="YDl-OJ-XUy" secondAttribute="leading" constant="180" id="LyY-rJ-hQt"/>
+                                    <constraint firstAttribute="height" constant="108" id="r2z-3z-cuc"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEq-yK-rWg">
+                                <rect key="frame" x="120" y="182" width="60" height="30"/>
+                                <state key="normal" title="朋友邀请"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xIe-wH-fdr">
+                                <rect key="frame" x="120" y="234" width="60" height="30"/>
+                                <state key="normal" title="发起群聊"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="348-0K-yo0">
+                                <rect key="frame" x="120" y="286" width="60" height="30"/>
+                                <state key="normal" title="安全设置"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ak5-Oe-0s6">
+                                <rect key="frame" x="120" y="338" width="60" height="30"/>
+                                <state key="normal" title="天际帮助"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaq-Qi-e1a">
+                                <rect key="frame" x="120" y="390" width="60" height="30"/>
+                                <state key="normal" title="退出登录"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlX-gL-6se">
+                                <rect key="frame" x="120" y="130" width="75" height="30"/>
+                                <state key="normal" title="天际通讯录"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xIe-wH-fdr" firstAttribute="leading" secondItem="xlX-gL-6se" secondAttribute="leading" id="2Zf-5s-sDU"/>
+                            <constraint firstItem="ak5-Oe-0s6" firstAttribute="top" secondItem="348-0K-yo0" secondAttribute="bottom" constant="22" id="7eI-hY-fwy"/>
+                            <constraint firstItem="xlX-gL-6se" firstAttribute="top" secondItem="YDl-OJ-XUy" secondAttribute="bottom" constant="22" id="Bgn-yD-dXv"/>
+                            <constraint firstItem="348-0K-yo0" firstAttribute="top" secondItem="xIe-wH-fdr" secondAttribute="bottom" constant="22" id="HYV-VP-0wQ"/>
+                            <constraint firstItem="qaq-Qi-e1a" firstAttribute="top" secondItem="ak5-Oe-0s6" secondAttribute="bottom" constant="22" id="RFH-Hv-8f8"/>
+                            <constraint firstItem="YDl-OJ-XUy" firstAttribute="top" secondItem="aJk-8Y-ImL" secondAttribute="bottom" constant="-20" id="RSf-xa-ruH"/>
+                            <constraint firstItem="UEq-yK-rWg" firstAttribute="top" secondItem="xlX-gL-6se" secondAttribute="bottom" constant="22" id="YaJ-gA-WWJ"/>
+                            <constraint firstItem="348-0K-yo0" firstAttribute="leading" secondItem="xlX-gL-6se" secondAttribute="leading" id="YkV-p2-f3c"/>
+                            <constraint firstItem="xIe-wH-fdr" firstAttribute="top" secondItem="UEq-yK-rWg" secondAttribute="bottom" constant="22" id="Z2O-2T-jNy"/>
+                            <constraint firstItem="xlX-gL-6se" firstAttribute="leading" secondItem="vLG-fa-Nil" secondAttribute="leadingMargin" constant="100" id="aeq-Z1-d3c"/>
+                            <constraint firstItem="UEq-yK-rWg" firstAttribute="leading" secondItem="xlX-gL-6se" secondAttribute="leading" id="b1E-NE-GZ3"/>
+                            <constraint firstItem="YDl-OJ-XUy" firstAttribute="leading" secondItem="vLG-fa-Nil" secondAttribute="leadingMargin" id="fJg-Nd-da9"/>
+                            <constraint firstItem="qaq-Qi-e1a" firstAttribute="leading" secondItem="xlX-gL-6se" secondAttribute="leading" id="m59-yO-Z0y"/>
+                            <constraint firstItem="ak5-Oe-0s6" firstAttribute="leading" secondItem="xlX-gL-6se" secondAttribute="leading" id="uHf-sk-Ax7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YDl-OJ-XUy" secondAttribute="trailing" constant="-20" id="xiW-GA-50j"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b5F-Gr-DAF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3400" y="-1060"/>
+        </scene>
         <!--Producer View Controller-->
         <scene sceneID="GVd-8P-5oB">
             <objects>
