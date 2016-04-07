@@ -1,6 +1,7 @@
 package com.skyworld.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -10,6 +11,7 @@ import org.json.JSONTokener;
 import com.skyworld.init.GlobalConstants;
 import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.User;
+import com.skyworld.service.dsf.SKServicer.SKServicerCMPItem;
 
 public class JSONFormat {
 
@@ -74,6 +76,21 @@ public class JSONFormat {
 		a.put("cmpdesc", servicer.getCmpDesc());
 		a.put("cmpphone", servicer.getCmpPhone());
 		cmpJ.put(a);
+	}
+	
+	
+	public static void populateServicerCmpItemData(JSONObject jsobj, List<SKServicerCMPItem> items) {
+		JSONArray cmpJ = new JSONArray();
+		jsobj.put("cmpitem", cmpJ);
+		
+		for (SKServicerCMPItem it : items) {
+			JSONObject a = new JSONObject();
+			a.put("id", it.id);
+			a.put("title", it.title);
+			a.put("con", it.content);
+			a.put("pic", it.pic);
+			cmpJ.put(a);
+		}
 	}
 	
 	public static void populateEasemobData(JSONObject parent, JSONObject jsobj, User user) {

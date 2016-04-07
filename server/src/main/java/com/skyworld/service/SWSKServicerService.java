@@ -1,5 +1,6 @@
 package com.skyworld.service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import com.skyworld.service.dsf.SKServicer;
 import com.skyworld.service.dsf.SKServicer.SKServicerCMPItem;
 import com.skyworld.service.po.SWPServicerCompanyDesc;
 import com.skyworld.service.po.SWPServicerCompanyItem;
+import com.skyworld.service.po.SWPUser;
 
 
 
@@ -26,13 +28,15 @@ public class SWSKServicerService extends BaseService {
 		List<SWPServicerCompanyDesc>  descList = query.list();
 		Transaction trans = sess.beginTransaction();
 		if (descList.size() <= 0) {
+			SWPUser user = new SWPUser();
+			user.setId(skervicer.getId());
 			SWPServicerCompanyDesc desc = new SWPServicerCompanyDesc();
 			desc.setCmpDesc(skervicer.getCmpDesc());
 			desc.setCmpName(skervicer.getCmpName());
 			desc.setLogoPath(skervicer.getLogoPath());
 			desc.setWebsite(skervicer.getWebsite());
 			desc.setPhone(skervicer.getCmpPhone());
-			desc.setServicer(skervicer);
+			desc.setServicer(user);
 			sess.save(desc);
 		} else {
 			SWPServicerCompanyDesc desc = descList.get(0);
@@ -164,5 +168,30 @@ public class SWSKServicerService extends BaseService {
 		t.commit();
 		sess.close();
 		skervicer.removeCMPItem(item.id);
+	}
+	
+	
+	public List<SKServicerCMPItem> querySKServicerCMPItemList(SKServicer skervicer, int startPage, int itemCount) {
+		if (skervicer == null) {
+			return null;
+		}
+		Session sess = openSession();
+		Query query = sess.createQuery(" from SWPServicerCompanyItem where servicer.id = ? ");
+		query.setLong(0, skervicer.getId());
+		query.setFirstResult((startPage - 1) * itemCount);
+		query.setMaxResults(itemCount);
+		List<SWPServicerCompanyItem> list = query.list();
+		if (list == null || list.size() <= 0) {
+			return null;
+		}
+		List<SKServicerCMPItem> cmpItemList = new ArrayList<SKServicerCMPItem>(list.size());
+		for (SWPServicerCompanyItem it : list) {
+			SKServicerCMPItem item = skervicer.new SKServicerCMPItem(it.getId(), it.getTitle(), it.getPic(), it.getContent());
+			item.servicer = skervicer;
+			cmpItemList.add(item);
+		}
+		sess.close();
+		
+		return cmpItemList;
 	}
 }

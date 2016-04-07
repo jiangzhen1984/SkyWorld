@@ -199,6 +199,8 @@ public class SKServicer extends User {
 		public boolean isNeedPersist;
 		
 		public boolean isNeedUpdate;
+		
+		public SKServicer servicer;
 
 		public SKServicerCMPItem(long id, String title, String pic,
 				String content) {

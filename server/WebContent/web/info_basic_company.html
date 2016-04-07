@@ -33,7 +33,7 @@
 			<div class="infonav">
 				<ul>
                     <div class="infonavitem"><li><a href="#" class="infonavactive">基本信息页面</a></li></div>
-					<div class="infonavitem"><li><a href="#" class="infonavinactive">信息目录页面</a></li></div>
+					<div class="infonavitem"><li><a href="/skservicer/setting/cmplist" class="infonavinactive">信息目录页面</a></li></div>
 					<div class="infonavitem"><li><a href="#" class="infonavinactive">信息细节页面</a></li></div>
 				</ul>
 			</div>
@@ -147,11 +147,11 @@
 					      </tr>
 					      <tr>
 					        <td class="phonetdleft">信息提示</td>
-					        <td class="phonetdrightbtn"><img src="images/onoff.png" alt="onoff"/></td>
+					        <td class="phonetdrightbtn"><img src="../../web/images/onoff.png" alt="onoff"/></td>
 					      </tr>
 					      <tr>
 					        <td class="phonetdleft">关注</td>
-					        <td class="phonetdrightbtn"><img src="images/onoff.png" alt="onoff"/></td>
+					        <td class="phonetdrightbtn"><img src="../../web/images/onoff.png" alt="onoff"/></td>
 					      </tr>
 					    </table></td>
 					  </tr>
@@ -194,6 +194,7 @@
 
 var g_id;
 var g_at;
+var g_cp;
 function g_init() {
    var c_id   =  $.cookie("uid");
    var c_desc = $.cookie("desc");
@@ -202,6 +203,7 @@ function g_init() {
    var c_website = $.cookie("wwebsite");
    var c_phone = $.cookie("phone");
    var c_at = $.cookie("at");
+   var c_cp = $.cookie("cp");
    
    var c_name_tv = $("#c_cmp_name");
    var c_logo_iv = $("#c_logo");
@@ -209,12 +211,14 @@ function g_init() {
    var c_cmp_website_tv = $("#c_cmp_website");
    var c_cmp_phone_tv = $("#c_cmp_phone");
    
+    console.log("id:" + c_id);
    console.log(c_desc);
    console.log(c_name);
    console.log(c_logo);
    console.log(c_website);
    console.log(c_phone);
    console.log(c_at);
+    console.log(c_cp);
    
    c_name_tv.val(c_name);
    c_cmp_website_tv.val(c_website);
@@ -228,6 +232,7 @@ function g_init() {
    $.removeCookie("phone");
    g_id = c_id;
    g_at = c_at;
+   g_cp = c_cp;
    
 }
 
@@ -246,12 +251,12 @@ function submit_update() {
    var d = { "header" :
    				{token : c_at, action: "servicer-company-update"} ,
    			 "body":
-   			    {cmp_name : c_name_tv , cmp_desc: c_cmp_desc_tv, cmp_website: c_cmp_website_tv, cmp_phone:c_cmp_phone_tv}
+   			    {opt:1, cmp_name : c_name_tv , cmp_desc: c_cmp_desc_tv, cmp_website: c_cmp_website_tv, cmp_phone:c_cmp_phone_tv}
    		   };
    var json = JSON.stringify(d);
    console.log(json);
    $.ajax({
-	  url: "/SkyWorld/skservicer/setting/update?data="+ json,
+	  url: g_cp+"/skservicer/setting/update?data="+ json,
 	  data: fd,
 	  type : 'POST',
 	  enctype: 'multipart/form-data',
@@ -263,6 +268,7 @@ function submit_update() {
 	});
    
 }
+
  
  g_init();
 </script>

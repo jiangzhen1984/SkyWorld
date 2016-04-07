@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="../../js/tinymce/tinymce.min.js"></script>
+<script>tinymce.init({
+  selector: 'textarea',
+  plugins: [
+    'image',
+  ],
+  toolbar: 'bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  menubar: false,
+  content_css: [
+  ]
+});</script>
+</head>
+<body>
+     <input type="text" name="title" id="title" />
+	<textarea id="ta">Easy (and free!) You should check out our premium features.</textarea>
+	
+	<input type="button"  value="添加" onclick="onadded()" />
+	<script src="../../js/jquery-latest.min.js"></script>
+	<script src="../../js/jquery.cookie.js"></script>
+	<script type="text/javascript">
+  var g_page_no = 1;
+  var g_cp;
+  var g_at;
+   window.onload= function() {
+     var c_id   =  $.cookie("uid");
+     var c_cp = $.cookie("cp");
+     var c_at = $.cookie("at");
+     console.log(c_id);
+     console.log(c_cp);
+     console.log(c_at);
+     g_at = c_at;
+     g_cp = c_cp;
+     
+    var d = { "header" :
+   				{token : c_at, action: "skservicer-cmp-query"} ,
+   			 "body":
+   			    {opt : 2, uid:c_id, page : g_page_no}
+   		   };
+   var json = JSON.stringify(d);
+    console.log(json);
+       $.ajax({
+		  url: c_cp+"/api/1.0/UserAPI?data="+ json,
+		  data: "",
+		  type : 'GET',
+		  success: function( data ) {
+		    if (data.ret == 0) {
+		        showItemData(data);
+		    } else {
+		        console.log("errror" + data.ret);
+		    }
+		  }
+		});
+     
+   }
+   
+   
+   function showItemData(data) {
+       var cmpitem = data.servicer.cmpitem;
+       if (cmpitem == undefined || cmpitem.length <= 0) {
+          console.log("===no data");
+       } else {
+          console.log("===111no data");
+       }
+       console.log(data.servicer.cmp.length);
+   };
+   
+   
+   function onadded() {
+       var title_tx = $("#title");
+       var ta_tx = $("#ta");
+       console.log(tinymce.activeEditor.getContent());
+       var d = { "header" :
+   				{token : g_at, action: "servicer-company-update"} ,
+   			 "body":
+   			    {opt: 2, title : title_tx.val(), content: tinymce.activeEditor.getContent()}
+   		   };
+       var json = JSON.stringify(d);
+         $.ajax({
+			  url: g_cp+"/skservicer/setting/cmplist/update",
+			  data:  {data :json},
+			  type : 'POST',
+			  enctype: 'multipart/form-data',
+			  processData: true,
+			  success: onaddsuccess,
+			  
+			});
+			
+   }
+   
+   function onaddsuccess(data) {
+       console.log(data);
+   }
+   
+   function onadderror(data){ 
+   }
+  </script>
+</body>
+</html>

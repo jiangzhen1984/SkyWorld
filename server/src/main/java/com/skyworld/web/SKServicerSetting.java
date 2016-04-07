@@ -1,9 +1,12 @@
 package com.skyworld.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Cookie;
@@ -23,6 +26,24 @@ public class SKServicerSetting extends HttpServlet {
 
 	private static final boolean DEBUG = true;
 	
+	private static  int CATEGORY_IDX = 0;
+	private static final  int CONTEXT_OFFSET = 1;
+	private static final  int ACTION_OFFSET =  1;
+	private static final  int METHOD_OFFSET =  2;
+	private static final  int SUB_METHOD_OFFSET =  3;
+	
+	
+	
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		String contextPath = config.getServletContext().getContextPath();
+		if (contextPath != null && !"".equals(contextPath)) {
+			CATEGORY_IDX = CONTEXT_OFFSET;
+		}
+	}
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -40,43 +61,16 @@ public class SKServicerSetting extends HttpServlet {
 	private void handle(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String cp = req.getRequestURI();
-		String contextp = req.getContextPath();
 		Pattern p = Pattern.compile("(/)([0-9A-Za-z]+)");
 		Matcher m = p.matcher(cp);
-		String category= null;
-		String action = null;;
-		String method= null;
-		String subMethod= null;
-		int i = 0;
+		List<String> groupList = new ArrayList<String>(6);
 		while(m.find()) {
-			switch(i) {
-			case 0:
-				category = m.group();
-				if (contextp.equalsIgnoreCase(category)) {
-					i = 0;
-					continue;
-				}
-				i++;
-				break;
-			case 1:
-				action =  m.group();
-				i++;
-				break;
-			case 2:
-				method =  m.group();
-				i++;
-				break;
-			case 3:
-				subMethod =  m.group();
-				i++;
-				break;
-			}
-				
+			groupList.add(m.group());
 		}
-		
+		Restful rf = matchRestful(groupList);
 	
 		
-		if ("/setting".equalsIgnoreCase(action) && "/info".equals(method)) {
+		if ("/setting".equalsIgnoreCase(rf.action) && "/info".equals(rf.method)) {
 			String auth = null;
 			SKServicer sk = null;
 			Token tk;
@@ -100,10 +94,14 @@ public class SKServicerSetting extends HttpServlet {
 						tk);
 			}
 			forwardSettingIndex(req, resp, sk, tk);
-		} else if ("/setting".equals(action) && "/update".equals(method)) {
+		} else if ("/setting".equals(rf.action) && "/update".equals(rf.method)) {
 			updateServicer(req, resp);
-		} else if ("/setting".equals(action) && "/cmplist".equals(method)) {
-			showCmpList(req, resp);
+		} else if ("/setting".equals(rf.action) && "/cmplist".equals(rf.method)) {
+			if  (rf.submethod == null) {
+				showCmpList(req, resp);
+			} else if ("/update".equals(rf.submethod)) {
+				ServiceFactory.getAPIService(ServiceFactory.API_CODE_SERVICER).service(req, resp);
+			}
 		}
 		
 	}
@@ -116,6 +114,7 @@ public class SKServicerSetting extends HttpServlet {
 		//Query
 		HttpSession sess = req.getSession(true);
 		sess.setAttribute("uid", sk.getId());
+		resp.addCookie(new Cookie("cp", req.getContextPath()));
 		resp.addCookie(new Cookie("uid", sk.getId()+""));
 		resp.addCookie(new Cookie("wwebsite", sk.getWebsite()));
 		resp.addCookie(new Cookie("logo", sk.getLogoURL()));
@@ -131,7 +130,46 @@ public class SKServicerSetting extends HttpServlet {
 		ServiceFactory.getAPIService(ServiceFactory.API_CODE_SERVICER).service(req, resp);
 	}
 	
-	private void showCmpList(HttpServletRequest req, HttpServletResponse resp) {
+	private void showCmpList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.getRequestDispatcher("/web/editor.html").forward(req, resp);
+	}
+	
+	
+	
+	private Restful matchRestful(List<String> group) {
+		Restful rf = new Restful();
+		int size = group.size();
+		if (size > CATEGORY_IDX) {
+			rf.category = group.get(CATEGORY_IDX);
+			rf.isExistCategory = true;
+		}
+		
+		if (size > CATEGORY_IDX + ACTION_OFFSET) {
+			rf.action = group.get(CATEGORY_IDX + ACTION_OFFSET);
+			rf.isExistAction = true;
+		}
+		if (size > CATEGORY_IDX + METHOD_OFFSET) {
+			rf.method = group.get(CATEGORY_IDX + METHOD_OFFSET);
+			rf.isExistMethod = true;
+		}
+		if (size > CATEGORY_IDX + SUB_METHOD_OFFSET) {
+			rf.submethod = group.get(CATEGORY_IDX + SUB_METHOD_OFFSET);
+			rf.isExistSubMethod = true;
+		}
+		return rf;
+	}
+	
+	
+	class Restful {
+		boolean isExistCategory;
+		String category;
+		boolean isExistAction;
+		String action;
+		boolean isExistMethod;
+		String method;
+		boolean isExistSubMethod;
+		String submethod;
+		String id;
 		
 	}
 }
