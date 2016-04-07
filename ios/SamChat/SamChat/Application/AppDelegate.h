@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ApplyViewController.h"
 #import "HomeViewController.h"
+#import "KYDrawerController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, EMChatManagerDelegate>
 {
@@ -17,5 +18,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) HomeViewController *homeController;
+@property (strong, nonatomic) KYDrawerController *drawViewController;
 
 @end

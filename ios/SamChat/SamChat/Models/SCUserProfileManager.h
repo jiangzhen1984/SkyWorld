@@ -18,6 +18,7 @@
 - (LoginUserInformation *)currentLoginUserInformation;
 //- (void)saveLoginUserInformation;
 - (BOOL)isCurrentUserLoginStatusOK;
+- (void)logOutCurrentUser;
 - (void)saveCurrentLoginUserInformationWithSkyWorldResponse:(NSDictionary *)response andOtherInfo:(NSDictionary *)otherInfo;
 - (void)updateCurrentLoginUserInformationWithEaseMobStatus:(NSInteger)status;
 - (void)updateCurrentLoginUserInformationWithEaseMobPushInfo:(NSDictionary *)info;

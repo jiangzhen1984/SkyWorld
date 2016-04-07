@@ -284,6 +284,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qaq-Qi-e1a">
                                 <rect key="frame" x="120" y="390" width="60" height="30"/>
                                 <state key="normal" title="退出登录"/>
+                                <connections>
+                                    <action selector="logout:" destination="eUE-cW-PZ6" eventType="touchUpInside" id="Uzp-XG-fNo"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlX-gL-6se">
                                 <rect key="frame" x="120" y="130" width="75" height="30"/>

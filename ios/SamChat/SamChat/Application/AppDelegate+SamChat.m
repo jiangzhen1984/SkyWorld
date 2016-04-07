@@ -10,7 +10,7 @@
 #import "LoginUserInformation.h"
 #import "ChatDemoHelper.h"
 #import "SCPushDispatcher.h"
-#import "KYDrawerController.h"
+
 #import "UserSettingViewController.h"
 
 @implementation AppDelegate (SamChat)
@@ -80,13 +80,15 @@
             self.homeController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
             //viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
             
-            viewController = [[KYDrawerController alloc] initWithDrawerDirection:KYDrawerControllerDrawerDirectionRight drawerWidth:250.0f];
-            ((KYDrawerController*)viewController).mainViewController =[[UINavigationController alloc] initWithRootViewController:self.homeController];
+            self.drawViewController = [[KYDrawerController alloc] initWithDrawerDirection:KYDrawerControllerDrawerDirectionRight drawerWidth:250.0f];
+            self.drawViewController.mainViewController =[[UINavigationController alloc] initWithRootViewController:self.homeController];
             
             UserSettingViewController *settingViewController = [storyBoard instantiateViewControllerWithIdentifier:@"UserSettingView"];
-            ((KYDrawerController*)viewController).drawerViewController = settingViewController;
+            self.drawViewController.drawerViewController = settingViewController;
+            viewController = self.drawViewController;
         }else{
-            viewController = self.homeController.navigationController;
+            //viewController = self.homeController.navigationController;
+            viewController = self.drawViewController;
         }
         [ChatDemoHelper shareHelper].mainVC = self.homeController;
         
@@ -97,6 +99,8 @@
         [[SCPushDispatcher sharedInstance] asyncWaitingPush];
         
     } else {
+        self.homeController = nil;
+        self.drawViewController = nil;
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoginCtrl" bundle:[NSBundle mainBundle]];
         viewController = [storyBoard instantiateViewControllerWithIdentifier:@"LoginNavController"];
     }

@@ -25,7 +25,7 @@
     self.imageViewAvatar.layer.cornerRadius = self.imageViewAvatar.frame.size.width/2;
     self.imageViewAvatar.clipsToBounds = YES;
     self.imageViewAvatar.userInteractionEnabled=YES;
-    UITapGestureRecognizer *imageTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setUserAvatar:)];
+    UITapGestureRecognizer *imageTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setUserAvatar)];
     [self.imageViewAvatar addGestureRecognizer:imageTap];
 }
 
@@ -41,6 +41,7 @@
     LoginUserInformation *currentLoginUserInformation = [SCUserProfileManager sharedInstance].currentLoginUserInformation;
     self.labelUserName.text = currentLoginUserInformation.username;
     NSURL *avatarUrl = [NSURL URLWithString:currentLoginUserInformation.imagefile];
+    DebugLog(@"avatar url: %@", avatarUrl);
     //[self.imageViewAvatar sd_setImageWithURL:avatarUrl];
 #warning change the placeholder image to the last image
     [self.imageViewAvatar sd_setImageWithURL:avatarUrl placeholderImage:[SCUtils createImageWithColor:[UIColor redColor]]];
@@ -60,12 +61,46 @@
     return _imagePicker;
 }
 
-
-- (IBAction)setUserAvatar:(id)sender
+#pragma mark - Action
+- (void)setUserAvatar
 {
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
+}
+
+- (IBAction)logout:(UIButton *)sender
+{
+    __weak typeof(self) weakSelf = self;
+    UIView *mainView = [[UIApplication sharedApplication].delegate window];
+    [self showHudInView:mainView hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient sharedClient] logout:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf hideHud];
+            if (error != nil) {
+                [weakSelf showHint:error.errorDescription];
+            }
+            else{
+//                [[ApplyViewController shareController] clear];
+                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                [manager GET:[SCSkyWorldAPI urlLogout]
+                  parameters:nil
+                    progress:^(NSProgress *downloadProgress){
+                    }
+                     success:^(NSURLSessionDataTask *task, id responseObject){
+                         if([responseObject isKindOfClass:[NSDictionary class]]) {
+                             DebugLog(@"%@", responseObject);
+                         }
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *error){
+                         DebugLog(@"Logout Error: %@", error);
+                     }];
+                [[SCUserProfileManager sharedInstance] logOutCurrentUser];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
+            }
+        });
+    });
 }
 
 #pragma mark - UIImagePickerControllerDelegate

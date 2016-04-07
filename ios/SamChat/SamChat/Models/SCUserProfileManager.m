@@ -100,6 +100,19 @@ static SCUserProfileManager *sharedInstance = nil;
     return status;
 }
 
+- (void)logOutCurrentUser
+{
+    NSManagedObjectContext *privateContext = [SCCoreDataManager sharedInstance].privateObjectContext;
+    [privateContext performBlockAndWait:^{
+        LoginUserInformation *currentLoginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
+                                                                                            inManagedObjectContext:privateContext];
+        currentLoginUserInformation.status = SC_LOGINUSER_NO_LOGIN;
+        currentLoginUserInformation.easemob_status = SC_LOGINUSER_NO_LOGIN;
+        currentLoginUserInformation.password = @"";
+        [privateContext save:NULL];
+    }];
+}
+
 - (void)saveCurrentLoginUserInformationWithSkyWorldResponse:(NSDictionary *)response andOtherInfo:(NSDictionary *)otherInfo
 {
     self.username = [response valueForKeyPath:SKYWORLD_USER_USERNAME];
@@ -125,7 +138,7 @@ static SCUserProfileManager *sharedInstance = nil;
             loginUserInformation.easemob_username = self.username;
         }
         if([userInfo valueForKeyPath:SKYWORLD_AVATAR_ORIGIN]){
-            loginUserInformation.imagefile = [self downloadAvatarFrom:[userInfo valueForKeyPath:SKYWORLD_AVATAR_ORIGIN]];
+            loginUserInformation.imagefile = [userInfo valueForKeyPath:SKYWORLD_AVATAR_ORIGIN];
         }
         if(userInfo[SKYWORLD_LASTUPDATE]){
             loginUserInformation.lastupdate = userInfo[SKYWORLD_LASTUPDATE];
@@ -184,19 +197,13 @@ static SCUserProfileManager *sharedInstance = nil;
             loginUserInformation.discription = info[SKYWORLD_DESC];
         }
         if([info valueForKeyPath:SKYWORLD_AVATAR_ORIGIN]){
-            loginUserInformation.imagefile = [self downloadAvatarFrom:[info valueForKeyPath:SKYWORLD_AVATAR_ORIGIN]];
+            loginUserInformation.imagefile = [info valueForKeyPath:SKYWORLD_AVATAR_ORIGIN];
         }
         if([info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME]){
             loginUserInformation.easemob_username = [info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
         }
         [privateContext save:NULL];
     }];
-}
-
-- (NSString *)downloadAvatarFrom:(NSString *)urlStr
-{
-#warning add image file download
-    return @"test";
 }
 
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion
