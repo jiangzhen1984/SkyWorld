@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LoginUserInformation : NSManagedObject
 
 + (LoginUserInformation *)loginUserInformationWithUserName:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context;
++ (void)updateImageFileWithString:(NSString *)url inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

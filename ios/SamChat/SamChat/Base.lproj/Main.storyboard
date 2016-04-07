@@ -110,16 +110,6 @@
                                     <action selector="cancleSearch:" destination="SOB-3i-awu" eventType="touchUpInside" id="Xu0-SH-nN0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TcX-mG-etn">
-                                <rect key="frame" x="20" y="28" width="77" height="30"/>
-                                <color key="backgroundColor" red="0.090196078430000007" green="0.48627450979999998" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Avatar">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="setUserAvatar:" destination="SOB-3i-awu" eventType="touchUpInside" id="PO4-OK-esA"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -252,18 +242,27 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YDl-OJ-XUy">
                                 <rect key="frame" x="20" y="0.0" width="580" height="108"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hbq-as-ThU">
-                                        <rect key="frame" x="180" y="69" width="44" height="30"/>
-                                        <state key="normal" title="Avatar">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZhW-bJ-GWm">
+                                        <rect key="frame" x="106" y="24" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="N6N-ec-Vwl"/>
+                                            <constraint firstAttribute="height" constant="60" id="m4S-iN-OSf"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgw-Dq-ok0">
+                                        <rect key="frame" x="106" y="87" width="60" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.078431372550000003" green="0.58823529409999997" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="hbq-as-ThU" firstAttribute="top" secondItem="YDl-OJ-XUy" secondAttribute="top" constant="69" id="7Ch-aB-jlz"/>
-                                    <constraint firstItem="hbq-as-ThU" firstAttribute="leading" secondItem="YDl-OJ-XUy" secondAttribute="leading" constant="180" id="LyY-rJ-hQt"/>
+                                    <constraint firstItem="ZhW-bJ-GWm" firstAttribute="leading" secondItem="YDl-OJ-XUy" secondAttribute="leading" constant="106" id="eHP-9j-vrw"/>
+                                    <constraint firstItem="wgw-Dq-ok0" firstAttribute="top" secondItem="ZhW-bJ-GWm" secondAttribute="bottom" constant="3" id="hCd-CL-IL1"/>
+                                    <constraint firstItem="wgw-Dq-ok0" firstAttribute="centerX" secondItem="ZhW-bJ-GWm" secondAttribute="centerX" id="oAz-Mx-NoO"/>
                                     <constraint firstAttribute="height" constant="108" id="r2z-3z-cuc"/>
+                                    <constraint firstItem="ZhW-bJ-GWm" firstAttribute="top" secondItem="YDl-OJ-XUy" secondAttribute="top" constant="24" id="zlX-n6-akl"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEq-yK-rWg">
@@ -310,6 +309,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="YDl-OJ-XUy" secondAttribute="trailing" constant="-20" id="xiW-GA-50j"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="imageViewAvatar" destination="ZhW-bJ-GWm" id="AN5-Pd-abt"/>
+                        <outlet property="labelUserName" destination="wgw-Dq-ok0" id="fAp-Lb-Fkq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b5F-Gr-DAF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

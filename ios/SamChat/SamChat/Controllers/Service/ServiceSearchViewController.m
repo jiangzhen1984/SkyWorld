@@ -318,21 +318,4 @@
 }
 
 
-- (IBAction)setUserAvatar:(id)sender
-{
-    UserSettingViewController *vc = [[UserSettingViewController alloc] init];
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    DebugLog(@"selectUserAvatar%@", [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypePhotoLibrary]);
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
-        DebugLog(@"selectUserAvatar in ...");
-        imagePickerController.sourceType =  UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePickerController.mediaTypes =[UIImagePickerController availableMediaTypesForSourceType:imagePickerController.sourceType];
-    }
-    imagePickerController.delegate = nil;
-    imagePickerController.allowsEditing = YES;
-    //[self presentModalViewController:imagePickerController animated:YES];
-     [self presentViewController:imagePickerController animated:YES completion:NULL];
-}
-
-
 @end

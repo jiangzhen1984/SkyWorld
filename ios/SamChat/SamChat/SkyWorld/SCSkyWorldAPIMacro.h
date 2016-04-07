@@ -74,6 +74,7 @@
 #define SKYWORLD_QUEST_QUEST_ID     @"quest.quest_id"
 #define SKYWORLD_ANS_ANSWER         @"ans.answer"
 #define SKYWORLD_ASKER_CELLPHONE    @"asker.cellphone"
+#define SKYWORLD_USER_AVATAR_ORIGIN @"user.avatar.origin"
 
 #pragma mark - Json Value Define
 #define SKYWORLD_REGISTER           @"register"

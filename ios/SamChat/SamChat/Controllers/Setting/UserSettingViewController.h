@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UserSettingViewController : UIViewController
-- (void)selectUserAvatar;
+
 @end
