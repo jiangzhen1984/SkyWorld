@@ -40,7 +40,7 @@
     <string name="send_verify_code">send veriy code</string>
     <string name="verify_code">input verify code</string>
     <string name="next_step">Next step</string>
-    <string name="agreement">has read and agree</string>
+    <string name="agreement">agree</string>
     <string name="sam_protocol">sam user protocol</string>
     <string name="sam_vendor_protocol">sam vendor protocol</string>
     <string name="sam_account">Account</string>
@@ -224,4 +224,5 @@
     <string name="female">female</string>
     <string name="nofill">none</string>
     <string name="store">store</string>
+    <string name="sweep">Add friend by sweep</string>
 </resources>

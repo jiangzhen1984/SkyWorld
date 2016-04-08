@@ -314,6 +314,10 @@ public class SWUserService extends BaseService {
 			t.commit();
 			servicer.setLastUpdate(cache.getLastUpdate());
 		}
+		
+		if (servicer.getAvatar() == null) {
+			servicer.setAvatar(queryAvatar(servicer, session));
+		}
 		session.close();
 		
 		CacheManager.getIntance().putUser(servicer.getId(), servicer);

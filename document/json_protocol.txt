@@ -41,6 +41,10 @@ Protocol Version: M16
               Update user data from when return user information
 Protocol Version: M17
               Update user query response return code, abandon -702, use count instead
+Protocol Version: M18
+              Update article query parameter
+Protocol Version: M19
+              Add Skservicer company information query
 
 
 =======================================Register JSON Protocol =====================================
@@ -390,6 +394,72 @@ token不存在：  {ret: -5}
 
 http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "relation", "token": "token"},"body":{"type" : [1/2/3], userid2: user2}}
 
+=======================================Skservier company infomation query JSON Protocol =====================================
+API: /api/1.0/UserAPI
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+Query :
+
+{ 
+   "header":
+   {
+      "action" : "skservicer-cmp-query",
+      "token"  : "token"
+   },
+   "body" :
+   { 
+       opt : [1], //by skservicer id
+       uid : id,
+   }
+}
+
+成功返回： 
+{
+    "ret":0,
+    "token":"95189457043652618",
+    "user":
+    {
+       "id"  : id,
+       "name":"138",
+       "cellphone":"1381196123",
+       "type":0,
+       "username":"138",
+       "avatar":
+       {
+          "origin": "http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png"
+       },
+       "easemob":
+       {
+           "username":"138"
+       },
+       "lastupdate":1454076248624,
+       // optional if user is servicer
+       "area"   : "area",
+       "location"   : "location",
+       "desc"   : "desc",
+   
+       cmp : [
+           {
+               "cmplogo"    : logo url,
+               "cmpwebsite" : company website url,
+               "cmpname"    : company name,
+               "cmpdesc"    : description,
+               "cmpphone"   : phone number,
+           }, 
+       ],
+
+    }
+}
+解析失败返回：  {ret: -1}  
+action参数不支持返回：  {ret: -2}  
+参数不满足返回：  {ret: -3}  
+token 格式不正确：  {ret: -4}  
+token不存在：  {ret: -5}  
+opt not support ：  {ret: -1201}  
+queryed user is not skervier：  {ret: -1202}  
+
+测试地址:
+http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "skservicer-cmp-query", "token" : "token id"}, "body" : { "opt" : 1, "uid" : uid}}
+
 =======================================Question JSON Protocol =====================================
 API: /api/1.0/QuestionAPI
 http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI
@@ -738,8 +808,8 @@ Article Query
     }, 
     "body":  
     {
-        "timestamp_end"  :  1455174572266,  //millisecons end
-        "timestamp_start":  1455178172266   //millisecons start
+        "timestamp_end"  :  [optional] 1455174572266,  //millisecons end
+        "timestamp_start":  [optional if does not input this, use server current timestamp] 1455178172265   //millisecons start
         "fetch_count"    :  count // optional  default is 15
         "qt"             :  [0/1] // 0 : for native 1 : for easemob contacts
     }

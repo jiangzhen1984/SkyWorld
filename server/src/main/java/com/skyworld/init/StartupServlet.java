@@ -36,15 +36,15 @@ public class StartupServlet extends GenericServlet {
 		super.init();
 		log.info("============server starting up=======");
 		ServiceFactory.getEaseMobService().start();
-		Class cls = ServiceFactory.class;
+		Class<ServiceFactory> cls = ServiceFactory.class;
 		Method[] ms = cls.getMethods();
 		for (Method m : ms) {
 			int i = m.getName().lastIndexOf("Service");
 			if (i != -1) {
 				try {
 					if (m.getGenericParameterTypes().length <= 0) {
-						m.invoke(null, null);
 						log.info("============server initialized  ==> " + m.getName());
+						m.invoke(null, null);
 					}
 				}catch (Exception e) {
 					// TODO Auto-generated catch block

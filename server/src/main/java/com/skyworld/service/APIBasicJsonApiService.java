@@ -17,6 +17,11 @@ import com.skyworld.cache.TokenFactory;
 import com.skyworld.service.resp.BasicResponse;
 import com.skyworld.service.resp.RTCodeResponse;
 
+/**
+ * FXIME add property check structure for optimize
+ * @author 28851274
+ *
+ */
 public abstract class APIBasicJsonApiService implements APIService {
 
 	protected Log log = LogFactory.getLog(this.getClass());

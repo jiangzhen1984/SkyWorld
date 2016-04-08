@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/default_bg"
+    android:background="@color/common_white"
     android:scrollbars="none">
   <LinearLayout
       android:layout_width="match_parent"
@@ -12,15 +12,15 @@
         
       <RelativeLayout
          android:layout_width="match_parent"
-         android:layout_height="match_parent">
-         
-         
+         android:layout_height="0dp"
+         android:layout_weight="0.5">
         
          <ImageView
     	    android:id="@+id/wall_photo"
         	android:layout_width="match_parent"
-        	android:layout_height="200dp"
+        	android:layout_height="match_parent"
         	android:layout_alignParentTop="true"
+        	android:layout_marginBottom="25dp"
         	android:contentDescription="@null"
         	android:scaleType="fitXY"
         	android:src="@drawable/photo_wall"/>
@@ -50,16 +50,20 @@
         	android:layout_width="50dp"
         	android:layout_height="50dp"
         	android:layout_alignParentRight="true"
-	        android:layout_marginTop="175dp"
+	        android:layout_alignParentBottom="true"
 	        android:layout_marginRight="@dimen/title_left_margin"
         	android:contentDescription="@null"
         	android:src="@drawable/em_default_avatar"/>
+    </RelativeLayout>
+    <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+         android:layout_weight="1">
     	
     	<LinearLayout
             android:id="@+id/username_layout"
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:layout_below="@id/avatar"
         	android:layout_marginTop="20dp"
         	android:orientation="horizontal">
         	
@@ -90,46 +94,13 @@
     	    android:layout_marginTop="10dp"
     	    android:background="@color/common_gray"/>
     	
-    	<LinearLayout
-            android:id="@+id/two_dimension_layout"
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_below="@id/username_view"
-        	android:layout_marginTop="10dp"
-        	android:orientation="horizontal">
-        	
-    	    <TextView 
-    	        android:layout_width="0dp"
-    	        android:layout_height="wrap_content"
-    	        android:layout_weight="1"
-    	        android:layout_marginLeft="@dimen/title_left_margin"
-    	        android:textColor="@color/common_bg_green"
-    	        android:text="@string/two_dimension"
-    	        android:textSize="18sp"/>
-    	    
-    	    <ImageView
-    	    	android:id="@+id/two_dimension"
-        		android:layout_width="30dp"
-        		android:layout_height="30dp"
-        		android:layout_marginRight="@dimen/title_left_margin"
-        		android:contentDescription="@null"
-        		android:src="@drawable/two_dimension"/>
-        	
-    	</LinearLayout>
     	
-    	<View 
-    	    android:id="@+id/two_dimension_view"
-    	    android:layout_width="match_parent"
-    	    android:layout_height="1dp"
-    	    android:layout_below="@id/two_dimension_layout"
-    	    android:layout_marginTop="10dp"
-    	    android:background="@color/common_gray"/>
     	
     	<RelativeLayout
             android:id="@+id/address_layout"
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:layout_below="@id/two_dimension_view"
+        	android:layout_below="@id/username_view"
         	android:layout_marginTop="10dp">
         	
     	    <TextView
@@ -243,10 +214,48 @@
     	    android:layout_height="1dp"
     	    android:layout_below="@id/hobby_layout"
     	    android:layout_marginTop="10dp"
-    	    android:background="@color/common_gray"/>
+    	    android:background="@color/common_gray"/> 
+    	    
+    	<LinearLayout
+            android:id="@+id/two_dimension_layout"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_below="@id/hobby_view"
+        	android:layout_marginTop="10dp"
+        	android:orientation="horizontal">
+        	
+    	    <TextView 
+    	        android:layout_width="0dp"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="1"
+    	        android:layout_marginLeft="@dimen/title_left_margin"
+    	        android:textColor="@color/common_bg_green"
+    	        android:text="@string/two_dimension"
+    	        android:textSize="18sp"/>
+    	    
+    	    <ImageView
+    	    	android:id="@+id/two_dimension"
+        		android:layout_width="30dp"
+        		android:layout_height="30dp"
+        		android:layout_marginRight="@dimen/title_left_margin"
+        		android:contentDescription="@null"
+        		android:src="@drawable/two_dimension"/>
+    	    
+    	</LinearLayout>
+    	
+    	<ImageView
+    	    android:id="@+id/two_dimension_pic"
+        	android:layout_width="200dp"
+        	android:layout_height="200dp"
+        	android:layout_below="@id/two_dimension_layout"
+        	android:layout_centerHorizontal="true"
+        	android:contentDescription="@null"/>
+    		
+      </RelativeLayout> 
+      
+      
     	
     	
-      </RelativeLayout>  
       
     
 

@@ -34,7 +34,9 @@ public class SearchListAdapter extends BaseAdapter{
 	private int list_type;
 	private Context mContext;
 	private LayoutInflater mInflater;
-	private int mCount = 15;
+	//private int mCount = 15;
+
+	private List<String> hotTopicArray=null;
 
 	private List<ReceivedAnswer> answerArray = new ArrayList<ReceivedAnswer>();
 	private List<readOrNot> isReadArray = new ArrayList<readOrNot>();
@@ -51,6 +53,14 @@ public class SearchListAdapter extends BaseAdapter{
 		public boolean get(){
 			return isRead;
 		}
+	}
+
+	public void setHotTopicArray(List<String> hotTopicArray){
+		this.hotTopicArray = hotTopicArray;
+	}
+
+	public List<String> getHotTopicArray(){
+		return hotTopicArray;
 	}
 
 	public void addAnswerInfo(ReceivedAnswer answer){
@@ -98,13 +108,17 @@ public class SearchListAdapter extends BaseAdapter{
 		list_type = LIST_TYPE_TOP_SEARCH;
 	}
 	
-	public void setCount(int count){
-		mCount = count;
-	}
+	//public void setCount(int count){
+	//	mCount = count;
+	//}
 	
 	@Override
 	public int getCount(){
-		return mCount;
+		if(list_type == LIST_TYPE_TOP_SEARCH){
+			return hotTopicArray.size();
+		}else{
+			return answerArray.size()+1;
+		}
 	}
 	
 	@Override
@@ -117,7 +131,7 @@ public class SearchListAdapter extends BaseAdapter{
 		if(list_type == LIST_TYPE_TOP_SEARCH){
 			return TYPE_TOPIC;
 		}else{
-			if(position+1 == mCount){
+			if(position+1 == getCount()){
 				return TYPE_FLAG;
 			}else{
 				return TYPE_ANSWER;
@@ -153,11 +167,7 @@ public class SearchListAdapter extends BaseAdapter{
 		
 		switch(viewType){
 		case TYPE_TOPIC:
-			if(position%5 ==0)	holder.search_info.setText("硅谷比较好的学区在哪里");
-			else if(position%5 == 1) holder.search_info.setText("女儿去美国 读高中,怎么样才能找到合适的寄宿家庭");
-			else if(position%5 == 2) holder.search_info.setText("如何得到医院的医疗补助");
-			else if(position%5 == 3) holder.search_info.setText("美国的一栋房产,每年要多少花费");
-			else if(position%5 == 4) holder.search_info.setText("想去cosco,没有会员卡怎么办");
+			holder.search_info.setText(hotTopicArray.get(position));
 		break;
 		case TYPE_ANSWER:
 			ReceivedAnswer info = answerArray.get(position);

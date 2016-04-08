@@ -3,9 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="pragma" content="no-cache" />
+
+
 <title>公司基本信息页面</title>
-<link href="../css/style.css" rel="stylesheet" type="text/css" />
-<link href="../css/public.css" rel="stylesheet" type="text/css" />
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/public.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -26,7 +33,7 @@
 			<div class="infonav">
 				<ul>
                     <div class="infonavitem"><li><a href="#" class="infonavactive">基本信息页面</a></li></div>
-					<div class="infonavitem"><li><a href="#" class="infonavinactive">信息目录页面</a></li></div>
+					<div class="infonavitem"><li><a href="/skservicer/setting/cmplist" class="infonavinactive">信息目录页面</a></li></div>
 					<div class="infonavitem"><li><a href="#" class="infonavinactive">信息细节页面</a></li></div>
 				</ul>
 			</div>
@@ -38,13 +45,14 @@
 
 
 <div class="main clear">
-<form action="#" method="post">
+<form action="#" method="post" id="g_form">
 	<div id="mainleft" class="fl">		
 		<table>
 			<tr>
 				<td>
 					<p class="infotitle">公司Logo</p>
 					<input type="image" id="c_logo" src="images/company_logo_test1.png" onclick="" class="infoheader">
+					<input type="file" id="g_logo" />
 				</td>
 			</tr>
 		</table>
@@ -83,7 +91,7 @@
 		<table>
 			<tr>
 				<td>
-				<p style="margin: 6px 0px 6px 50px;"><button type="button" class="phonebutton">提交</button></p>
+				<p style="margin: 6px 0px 6px 50px;"><button type="button" class="phonebutton" onclick="submit_update()">提交</button></p>
 				</td>
 			</tr>
 		</table>
@@ -139,11 +147,11 @@
 					      </tr>
 					      <tr>
 					        <td class="phonetdleft">信息提示</td>
-					        <td class="phonetdrightbtn"><img src="images/onoff.png" alt="onoff"/></td>
+					        <td class="phonetdrightbtn"><img src="../../web/images/onoff.png" alt="onoff"/></td>
 					      </tr>
 					      <tr>
 					        <td class="phonetdleft">关注</td>
-					        <td class="phonetdrightbtn"><img src="images/onoff.png" alt="onoff"/></td>
+					        <td class="phonetdrightbtn"><img src="../../web/images/onoff.png" alt="onoff"/></td>
 					      </tr>
 					    </table></td>
 					  </tr>
@@ -179,16 +187,23 @@
 		<p>©2016 Samchat Inc。 All Rights Reserved</p>
 	</div>
 </div>
-<script src="../js/jquery-latest.min.js" ></script>
-<script src="../js/jquery.cookie.js" ></script>
+<script src="../../js/jquery-latest.min.js" ></script>
+<script src="../../js/jquery.cookie.js" ></script>
 
 <script type="text/javascript">
+
+var g_id;
+var g_at;
+var g_cp;
 function g_init() {
+   var c_id   =  $.cookie("uid");
    var c_desc = $.cookie("desc");
    var c_name = $.cookie("name");
    var c_logo = $.cookie("logo");
    var c_website = $.cookie("wwebsite");
    var c_phone = $.cookie("phone");
+   var c_at = $.cookie("at");
+   var c_cp = $.cookie("cp");
    
    var c_name_tv = $("#c_cmp_name");
    var c_logo_iv = $("#c_logo");
@@ -196,19 +211,64 @@ function g_init() {
    var c_cmp_website_tv = $("#c_cmp_website");
    var c_cmp_phone_tv = $("#c_cmp_phone");
    
+    console.log("id:" + c_id);
    console.log(c_desc);
    console.log(c_name);
    console.log(c_logo);
    console.log(c_website);
    console.log(c_phone);
-   
+   console.log(c_at);
+    console.log(c_cp);
    
    c_name_tv.val(c_name);
    c_cmp_website_tv.val(c_website);
    c_cmp_desc_tv.val(c_desc);
    c_cmp_phone_tv.val(c_phone);
    
+   $.removeCookie("desc");
+   $.removeCookie("name");
+   $.removeCookie("logo");
+   $.removeCookie("wwebsite");
+   $.removeCookie("phone");
+   g_id = c_id;
+   g_at = c_at;
+   g_cp = c_cp;
+   
 }
+
+
+function submit_update() {
+   var c_id = g_id;
+   var c_at = g_at;
+   var c_name_tv = $("#c_cmp_name").val();
+   var c_logo_iv = $("#c_logo").val();
+   var c_cmp_desc_tv = $("#c_cmp_desc").val();
+   var c_cmp_website_tv = $("#c_cmp_website").val();
+   var c_cmp_phone_tv = $("#c_cmp_phone").val();
+  var fd = new FormData();
+  fd.append('file', $('#g_logo')[0].files[0]);
+
+   var d = { "header" :
+   				{token : c_at, action: "servicer-company-update"} ,
+   			 "body":
+   			    {opt:1, cmp_name : c_name_tv , cmp_desc: c_cmp_desc_tv, cmp_website: c_cmp_website_tv, cmp_phone:c_cmp_phone_tv}
+   		   };
+   var json = JSON.stringify(d);
+   console.log(json);
+   $.ajax({
+	  url: g_cp+"/skservicer/setting/update?data="+ json,
+	  data: fd,
+	  type : 'POST',
+	  enctype: 'multipart/form-data',
+	  processData: false,
+      contentType: false,
+	  success: function( data ) {
+	   console.log(data);
+	  }
+	});
+   
+}
+
  
  g_init();
 </script>

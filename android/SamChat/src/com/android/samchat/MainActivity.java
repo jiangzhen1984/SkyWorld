@@ -36,6 +36,7 @@ import com.easemob.easeui.ui.EaseContactListFragment.EaseContactListItemClickLis
 import com.easemob.easeui.ui.EaseConversationListFragment.EaseConversationListItemClickListener;
 import com.easemob.easeui.ui.EaseGroupRemoveListener;
 import com.easemob.easeui.utils.EaseUserUtils;
+import com.zijunlin.Zxing.Demo.CaptureActivity;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -94,6 +95,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	public static final int CONFIRM_ID_CROP_FINISHED=305;
 
 	public static final int CONFIRM_ID_INVITE_FRIEND_ACTIVITY_EXITED=306;
+
+	public static final int CONFIRM_ID_CAPTURE_ACTIVITY_EXITED=307;
 	
 
 	private int sInviteNum = 0;
@@ -154,6 +157,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	private LinearLayout mContact_layout;
 	private LinearLayout mInvite_friend_layout;
+	private LinearLayout mSweep_layout;
 	private LinearLayout mStart_group_layout;
 	private LinearLayout mSettings_layout;	
 	private LinearLayout mLogout_layout;
@@ -347,6 +351,14 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		});
 
+		mSweep_layout = (LinearLayout)menu.findViewById(R.id.sweep_layout); 
+		mSweep_layout.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				launchCaptureActivity();
+			}
+		});
+
 		mStart_group_layout = (LinearLayout)menu.findViewById(R.id.start_group_layout);
 		mStart_group_layout.setOnClickListener(new OnClickListener(){
 			@Override
@@ -537,6 +549,13 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		}
 	}
 
+	private void launchSendVerifyMsgActivity(String easemob_name){
+		Intent newIntent = new Intent(this,SendVerifyMsgActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP;;
+		newIntent.setFlags(intentFlags);
+		newIntent.putExtra("easemob_name", easemob_name);
+		startActivity(newIntent);
+	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
@@ -560,6 +579,14 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		}else if(requestCode ==  CONFIRM_ID_INVITE_FRIEND_ACTIVITY_EXITED){
 			isInviteFriendActivityLaunched = false;
 			sInviteNum = 0;
+		}else if(requestCode == CONFIRM_ID_CAPTURE_ACTIVITY_EXITED){
+			if(resultCode == RESULT_OK){
+			String easemob_name = data.getStringExtra("easemob_name");
+				if(easemob_name!=null){
+					launchSendVerifyMsgActivity(easemob_name);
+				}
+			}
+
 		}else if(requestCode == CONFIRM_ID_AVATAR_SELECTED){
 			if(resultCode == Activity.RESULT_OK){
 				if( data.hasExtra(MultiImageSelectorActivity.EXTRA_RESULT)) {
@@ -711,6 +738,13 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	private void exitProgram(){
 		exitProgrames();
+	}
+
+	private void launchCaptureActivity(){
+		Intent newIntent = new Intent(this,CaptureActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivityForResult(newIntent, CONFIRM_ID_CAPTURE_ACTIVITY_EXITED);
 	}
 
 	private void launchContactActivity(){

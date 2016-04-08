@@ -138,6 +138,40 @@
         android:layout_marginTop="5dp"/>
     
      <LinearLayout
+        android:id="@+id/sweep_layout"  
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+        
+      <ImageView
+      	 android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginRight="30dp"
+         android:layout_gravity="center_vertical"
+         android:contentDescription="@null"
+         android:src="@drawable/sam_setting_icon"/>
+    
+      <TextView
+        android:id="@+id/sweep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp"
+        android:text="@string/sweep"/>
+    
+    </LinearLayout>
+    
+    
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/listview_gray_devider"
+        android:layout_marginTop="5dp"/>
+    
+     <LinearLayout
         android:id="@+id/start_group_layout" 
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
@@ -169,6 +203,8 @@
         android:layout_height="1dp"
         android:background="@color/listview_gray_devider"
         android:layout_marginTop="5dp"/>
+    
+   
     
     <LinearLayout
         android:id="@+id/settings_layout"  
