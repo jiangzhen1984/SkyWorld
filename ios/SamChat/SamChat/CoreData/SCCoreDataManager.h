@@ -10,10 +10,11 @@
 
 @interface SCCoreDataManager : NSObject
 
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (readonly, strong, nonatomic) NSManagedObjectContext *privateObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+@property (readonly, strong, nonatomic) NSManagedObjectContext *mainObjectContext;
+@property (readonly, strong, nonatomic) NSManagedObjectContext *backgroundObjectContext;
 
 + (instancetype)sharedInstance;
 - (void)saveContext;

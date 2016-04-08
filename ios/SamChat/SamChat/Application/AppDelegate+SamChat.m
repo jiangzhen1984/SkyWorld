@@ -49,30 +49,9 @@
     UIViewController *viewController = nil;
     if(loginSuccess) {
         DebugLog(@"SAMCHAT_Token:%@", [SCUserProfileManager sharedInstance].token);
-        //-----------
-//        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-//        viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
-        //------------
         //加载申请通知的数据
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
-//        if (self.homeController == nil) {
-//            self.homeController = [[HomeViewController alloc] init];
-//            viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
-//        }else{
-//            viewController  = self.mainController.navigationController;
-//        }
-        
-//        [ChatDemoHelper shareHelper].mainVC = self.mainController;
-//        
-//        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
-//        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
-//        [[ChatDemoHelper shareHelper] asyncPushOptions];
-        //--------------
-        
-//        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-//        viewController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView2"];
-//        [ChatDemoHelper shareHelper].mainVC = self.homeController;
-        
+
         if(self.homeController == nil) {
             //self.homeController = [[HomeViewController alloc] init];
             //viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];

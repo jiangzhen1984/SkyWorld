@@ -41,7 +41,6 @@
     contactUser.location = userDictionary[SKYWORLD_LOCATION];
     contactUser.easemob_username = [userDictionary valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
     contactUser.lastupdate = userDictionary[SKYWORLD_LASTUPDATE];
-
     return contactUser;
 }
 

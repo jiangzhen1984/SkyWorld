@@ -13,5 +13,7 @@
 
 #define NOTIFICATION_GET_PUSH_MESSAGE       @"GetPushMessageNotification"
 
+#define NOTIFICATION_RECEIVED_NEW_QUESTION  @"ReceivedNewQuestionNotification"
+
 
 #endif /* NotificationMacro_h */

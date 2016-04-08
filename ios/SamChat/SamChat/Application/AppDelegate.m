@@ -69,6 +69,7 @@ didFinishLaunchingWithOptions:launchOptions
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+#warning add context saving
     [[SCCoreDataManager sharedInstance] saveContext];
 }
 

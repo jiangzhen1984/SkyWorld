@@ -38,7 +38,7 @@
     sendQuestion.whoSend = [LoginUserInformation loginUserInformationWithUserName:[SCUserProfileManager sharedInstance].username
                                                            inManagedObjectContext:context];
     
-    [context save:NULL];
+    [[SCCoreDataManager sharedInstance] saveContext];
     return sendQuestion;
 }
 

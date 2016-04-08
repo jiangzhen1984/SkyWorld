@@ -10,6 +10,7 @@
 #import "SCChatToolBar.h"
 #import "SendAnswer.h"
 #import "SCChatMessageCell.h"
+#import "ContactUser.h"
 
 @interface AnswerTheQuestionViewController () <SCChatToolbarDelegate, UITableViewDataSource, UITableViewDelegate>
 {
@@ -53,8 +54,9 @@
 
 - (void)loadAnswers
 {
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
     NSArray *matches = [SendAnswer loadCurrentUsersAnswersOfQuestionID:self.receivedQuestion.question_id
-                                                inManagedObjectContext:[SCCoreDataManager sharedInstance].managedObjectContext];
+                                                inManagedObjectContext:mainContext];
     self.answers = [NSMutableArray arrayWithArray:matches];
 }
 
@@ -88,8 +90,8 @@
                                  SEND_ANSWER_ANSWER:text,
                                  SEND_ANSWER_STATUS:SEND_ANSWER_SENDING,
                                  SEND_ANSWER_SENDTIME:[SCUtils currentTimeStamp]};
-    NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].managedObjectContext;
-    SendAnswer *sendAnswer = [SendAnswer sendAnswerWithInfo:answerInfo inManagedObjectContext:context];
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    SendAnswer *sendAnswer = [SendAnswer sendAnswerWithInfo:answerInfo inManagedObjectContext:mainContext];
     [self.answers addObject:sendAnswer];
     [self.tableView reloadData];
     
@@ -135,8 +137,9 @@
 - (void)updateAnswerOfIndex:(NSInteger)index withStatus:(NSNumber *)status
 {
     if((index >= 0) && (index < [self.answers count])){
+        NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
         [self.answers[index] updateStatus:status
-                   inManagedObjectContext:[SCCoreDataManager sharedInstance].managedObjectContext];
+                   inManagedObjectContext:mainContext];
     }
     [self.tableView reloadData];
 }
@@ -164,14 +167,16 @@
     UIImageView *avatar;
     if(indexPath.row == 0){
         avatar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 10, 50, 50)];
+
+        [avatar sd_setImageWithURL:[NSURL URLWithString:self.receivedQuestion.fromWho.imagefile]
+                  placeholderImage:[UIImage imageNamed:SC_CHAT_RECEIVER_DEFAULT_AVATAR]];
         [cell addSubview:avatar];
-        avatar.image = [SCUtils createImageWithColor:[UIColor greenColor]];
         [cell addSubview:[self bubbleView:self.receivedQuestion.question isLeft:YES withPosition:55]];
     }else{
-        
         avatar = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-70, 10, 50, 50)];
+        [avatar sd_setImageWithURL:[NSURL URLWithString:[SCUserProfileManager sharedInstance].currentLoginUserInformation.imagefile]
+                  placeholderImage:[UIImage imageNamed:SC_CHAT_SENDER_DEFAULT_AVATAR]];
         [cell addSubview:avatar];
-        avatar.image = [SCUtils createImageWithColor:[UIColor redColor]];
         [cell addSubview:[self bubbleView:((SendAnswer *)self.answers[indexPath.row-1]).answer isLeft:NO withPosition:65]];
     }
     return cell;

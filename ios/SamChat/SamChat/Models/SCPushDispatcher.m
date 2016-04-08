@@ -144,34 +144,18 @@ static SCPushDispatcher *sharedInstance = nil;
 #pragma mark - Receive New Answer
 - (void)receivedNewAnswer:(NSDictionary *)answer
 {
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
-    [privateContext performBlockAndWait:^{
+    NSManagedObjectContext *mainContext = [[SCCoreDataManager sharedInstance] mainObjectContext];
+    [mainContext performBlockAndWait:^{
         ReceivedAnswer *receivedAnswer = [ReceivedAnswer receivedAnswerWithSkyWorldInfo:answer
-                                    inManagedObjectContext:privateContext];
-        NSManagedObjectID *objId = [receivedAnswer objectID];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            ReceivedAnswer *answer = [[[SCCoreDataManager sharedInstance] managedObjectContext] existingObjectWithID:objId
-                                                                                      error:NULL];
-            if(answer){
-                [self.answerPushDelegate didReceiveNewAnswer:answer];
-            }
-        });
+                                                                 inManagedObjectContext:mainContext];
+        [self.answerPushDelegate didReceiveNewAnswer:receivedAnswer];
     }];
 }
 
 #pragma mark - Receive New Question
 - (void)receivedNewQuestion:(NSDictionary *)question
 {
-//    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
-//    [privateContext performBlockAndWait:^{
-//        [ReceivedQuestion receivedQuestionWithSkyWorldInfo:question
-//                                    inManagedObjectContext:privateContext];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.questionPushDelegate didReceiveNewQuestion:nil];
-//        });
-//    }];
-    
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].managedObjectContext;
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
     [mainContext performBlockAndWait:^{
         [ReceivedQuestion receivedQuestionWithSkyWorldInfo:question
                                     inManagedObjectContext:mainContext];

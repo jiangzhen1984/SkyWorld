@@ -32,8 +32,9 @@
         return _fetchedResultsController;
     }
     
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *receivedQuestionEntity = [NSEntityDescription entityForName:ENTITY_RECEIVED_QUESTION inManagedObjectContext:[SCCoreDataManager sharedInstance].managedObjectContext];
+    NSEntityDescription *receivedQuestionEntity = [NSEntityDescription entityForName:ENTITY_RECEIVED_QUESTION inManagedObjectContext:mainContext];
     [fetchRequest setEntity:receivedQuestionEntity];
     
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:RECEIVED_QUESTION_RECEIVEDTIME ascending:YES];
@@ -44,7 +45,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                    managedObjectContext:[SCCoreDataManager sharedInstance].managedObjectContext
+                                                                    managedObjectContext:mainContext
                                                                       sectionNameKeyPath:nil
                                                                                cacheName:nil];
     _fetchedResultsController.delegate = self;
@@ -99,7 +100,6 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    AnswerTheQuestionViewController *answerTheQuestionVC = [[SCUtils mainStoryBoard] instantiateViewControllerWithIdentifier:@"AnswerTheQuestionView"];
     AnswerTheQuestionViewController *answerTheQuestionVC = [[AnswerTheQuestionViewController alloc] init];
     answerTheQuestionVC.receivedQuestion = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [self.navigationController pushViewController:answerTheQuestionVC animated:YES];

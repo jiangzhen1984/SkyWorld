@@ -26,7 +26,7 @@
     
     receivedAnswer.fromWho = [ContactUser contactUserWithSkyWorldInfo:answerDictionary[SKYWORLD_SYSERVICER]
                                                inManagedObjectContext:context];
-    [context save:NULL];
+    [[SCCoreDataManager sharedInstance] saveContext];
     return receivedAnswer;
 }
 

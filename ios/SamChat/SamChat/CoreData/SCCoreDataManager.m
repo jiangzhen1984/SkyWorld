@@ -30,11 +30,10 @@ static SCCoreDataManager *sharedInstance = nil;
 }
 
 #pragma mark - Core Data stack
-
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize privateObjectContext = _privateObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize mainObjectContext = _mainObjectContext;
+@synthesize backgroundObjectContext = _backgroundObjectContext;
 
 - (NSURL *)applicationDocumentsDirectory {
     // The directory the application uses to store the Core Data store file. This code uses a directory named "SkyWorld.SamChat" in the application's documents directory.
@@ -79,49 +78,50 @@ static SCCoreDataManager *sharedInstance = nil;
     return _persistentStoreCoordinator;
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
+- (NSManagedObjectContext *)mainObjectContext {
     // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
-    if (_managedObjectContext != nil) {
-        return _managedObjectContext;
+    if (_mainObjectContext != nil) {
+        return _mainObjectContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (!coordinator) {
         return nil;
     }
-    _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-    return _managedObjectContext;
+    _mainObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    _mainObjectContext.parentContext = self.backgroundObjectContext;
+    return _mainObjectContext;
 }
 
-- (NSManagedObjectContext*)privateObjectContext
+- (NSManagedObjectContext*)backgroundObjectContext
 {
-    if(_privateObjectContext != nil) {
-        return _privateObjectContext;
+    if(_backgroundObjectContext != nil) {
+        return _backgroundObjectContext;
     }
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if(!coordinator) {
         return nil;
     }
-    _privateObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [_privateObjectContext setPersistentStoreCoordinator:coordinator];
-    return _privateObjectContext;
+    _backgroundObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    [_backgroundObjectContext setPersistentStoreCoordinator:coordinator];
+    return _backgroundObjectContext;
 }
 
 #pragma mark - Core Data Saving support
-
-- (void)saveContext {
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        NSError *error = nil;
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
+- (void)saveContext
+{
+    if([self.mainObjectContext hasChanges]){
+        [self.mainObjectContext performBlockAndWait:^{
+            [self.mainObjectContext save:NULL];
+        }];
+    }
+    if([self.backgroundObjectContext hasChanges]){
+        [self.backgroundObjectContext performBlock:^{
+            [self.backgroundObjectContext save:NULL];
+        }];
     }
 }
+
 
 
 @end

@@ -54,7 +54,7 @@
     receivedQuestion.fromWho = [ContactUser contactUserWithSkyWorldInfo:questionDictionary[SKYWORLD_ASKER]
                                                  inManagedObjectContext:context];
 
-    [context save:NULL];
+    [[SCCoreDataManager sharedInstance] saveContext];
     return receivedQuestion;
 }
 

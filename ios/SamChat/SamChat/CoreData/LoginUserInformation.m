@@ -33,12 +33,10 @@
 
 + (void)updateImageFileWithString:(NSString *)url inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    [context performBlockAndWait:^{
-        LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:[SCUserProfileManager sharedInstance].username
+    LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:[SCUserProfileManager sharedInstance].username
                                                                                      inManagedObjectContext:context];
-        loginUserInformation.imagefile = url;
-        [context save:NULL];
-    }];
+    loginUserInformation.imagefile = url;
+    [[SCCoreDataManager sharedInstance] saveContext];
 }
 
 

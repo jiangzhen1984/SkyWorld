@@ -34,7 +34,7 @@
     sendAnswer.sendtime = answerInfo[SEND_ANSWER_SENDTIME]?:[SCUtils currentTimeStamp];
     sendAnswer.whoSend = [LoginUserInformation loginUserInformationWithUserName:[SCUserProfileManager sharedInstance].username
                                                          inManagedObjectContext:context];
-    [context save:NULL];
+    [[SCCoreDataManager sharedInstance] saveContext];
     return sendAnswer;
 }
 
@@ -50,7 +50,7 @@
 - (void)updateStatus:(NSNumber *)status inManagedObjectContext:(NSManagedObjectContext *)context
 {
     self.status = status;
-    [context save:NULL];
+    [[SCCoreDataManager sharedInstance] saveContext];
 }
 
 - (SCChatMessageStatus)i_messageStatus

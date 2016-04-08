@@ -77,18 +77,12 @@ static SCUserProfileManager *sharedInstance = nil;
 {
     LoginUserInformation *currentLoginUserInformation = nil;
     if(self.username) {
-        NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] managedObjectContext];
+        NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].mainObjectContext;
         currentLoginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
                                                                       inManagedObjectContext:context];
     }
     return currentLoginUserInformation;
 }
-
-//- (void)saveLoginUserInformation
-//{
-//    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] managedObjectContext];
-//    [context save:NULL];
-//}
 
 - (BOOL)isCurrentUserLoginStatusOK
 {
@@ -102,14 +96,14 @@ static SCUserProfileManager *sharedInstance = nil;
 
 - (void)logOutCurrentUser
 {
-    NSManagedObjectContext *privateContext = [SCCoreDataManager sharedInstance].privateObjectContext;
-    [privateContext performBlockAndWait:^{
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
         LoginUserInformation *currentLoginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
-                                                                                            inManagedObjectContext:privateContext];
+                                                                                            inManagedObjectContext:mainContext];
         currentLoginUserInformation.status = SC_LOGINUSER_NO_LOGIN;
         currentLoginUserInformation.easemob_status = SC_LOGINUSER_NO_LOGIN;
         currentLoginUserInformation.password = @"";
-        [privateContext save:NULL];
+        [[SCCoreDataManager sharedInstance] saveContext];
     }];
 }
 
@@ -117,10 +111,11 @@ static SCUserProfileManager *sharedInstance = nil;
 {
     self.username = [response valueForKeyPath:SKYWORLD_USER_USERNAME];
     self.token = response[SKYWORLD_TOKEN];
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
-    [privateContext performBlockAndWait:^{
+    //NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
         LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
-                                                                                     inManagedObjectContext:privateContext];
+                                                                                     inManagedObjectContext:mainContext];
         NSDictionary *userInfo = response[SKYWORLD_USER];
         if(userInfo[SKYWORLD_AREA]){
             loginUserInformation.area = userInfo[SKYWORLD_AREA];
@@ -160,18 +155,18 @@ static SCUserProfileManager *sharedInstance = nil;
         if(userInfo[SKYWORLD_TYPE]){
             loginUserInformation.usertype = userInfo[SKYWORLD_TYPE];
         }
-        [privateContext save:NULL];
+        [[SCCoreDataManager sharedInstance] saveContext];
     }];
 }
 
 - (void)updateCurrentLoginUserInformationWithEaseMobStatus:(NSInteger)status
 {
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
-    [privateContext performBlockAndWait:^{
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
         LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
-                                                                                     inManagedObjectContext:privateContext];
+                                                                                     inManagedObjectContext:mainContext];
         loginUserInformation.easemob_status = [NSNumber numberWithInteger:status];
-        [privateContext save:NULL];
+        [[SCCoreDataManager sharedInstance] saveContext];
     }];
 }
 
@@ -180,10 +175,10 @@ static SCUserProfileManager *sharedInstance = nil;
     if((!info[SKYWORLD_USERNAME]) || (![info[SKYWORLD_USERNAME] isEqualToString:self.username])){
         return;
     }
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
-    [privateContext performBlockAndWait:^{
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
         LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
-                                                                                     inManagedObjectContext:privateContext];
+                                                                                     inManagedObjectContext:mainContext];
         if(info[SKYWORLD_CELLPHONE]){
             loginUserInformation.phonenumber = info[SKYWORLD_CELLPHONE];
         }
@@ -202,7 +197,7 @@ static SCUserProfileManager *sharedInstance = nil;
         if([info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME]){
             loginUserInformation.easemob_username = [info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
         }
-        [privateContext save:NULL];
+        [[SCCoreDataManager sharedInstance] saveContext];
     }];
 }
 
@@ -234,8 +229,10 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
             }
             return;
         }
-        //[[EMSDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:@[avatarUrlString]];
-        [LoginUserInformation updateImageFileWithString:avatarUrlString inManagedObjectContext:[SCCoreDataManager sharedInstance].managedObjectContext];
+        NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+        [mainContext performBlockAndWait:^{
+            [LoginUserInformation updateImageFileWithString:avatarUrlString inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+        }];
         if (completion){
             completion(true, nil);
         }

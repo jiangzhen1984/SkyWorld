@@ -150,9 +150,10 @@
     NSDictionary *questionInfo = @{SEND_QUESTION_QUESTION:self.currentQuestion,
                                    SEND_QUESTION_QUESTION_ID:[NSString stringWithFormat:@"%ld", self.currentQuestionID]};
     
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
-    [privateContext performBlockAndWait:^{
-        [SendQuestion sendQuestionWithInfo:questionInfo inManagedObjectContext:privateContext];
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
+        [SendQuestion sendQuestionWithInfo:questionInfo
+                    inManagedObjectContext:mainContext];
     }];
 }
 

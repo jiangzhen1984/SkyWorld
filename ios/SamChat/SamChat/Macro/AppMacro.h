@@ -36,4 +36,7 @@
 #define SC_MINIMUM_USERNAME_LENGTH      4
 #define SC_MINIMUM_PASSWORD_LENGTH      6
 
+#define SC_CHAT_RECEIVER_DEFAULT_AVATAR @"ReceivedAnswerDefaultAvatar"
+#define SC_CHAT_SENDER_DEFAULT_AVATAR   @"ReceivedAnswerDefaultAvatar"
+
 #endif /* AppMacro_h */

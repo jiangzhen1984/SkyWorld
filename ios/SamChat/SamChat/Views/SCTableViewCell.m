@@ -110,6 +110,8 @@ const CGFloat SCTableCellPadding = 10;
     self.titleLabel.text = ([_model.i_title length]>0)?_model.i_title:@"";
     self.detailLabel.text = ([_model.i_details length]>0)?_model.i_details:@"";
     self.timeLabel.text = ([_model.i_time length]>0)?_model.i_time:@"";
+    DebugLog(@"###avatar###:%@", _model.i_avatarURLPath);
+    [self.avatarView sd_setImageWithURL:[NSURL URLWithString:_model.i_avatarURLPath] placeholderImage:[UIImage imageNamed:@"ReceivedAnswerDefaultAvatar"]];
 }
 
 @end
