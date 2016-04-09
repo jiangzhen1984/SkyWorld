@@ -10,6 +10,7 @@
 
 @protocol SCLoginDelegate
 - (void)didLoginSuccess;
+@optional
 - (void)didLoginFailedWithError:(SCSkyWorldError *)error;
 @end
 
@@ -17,5 +18,6 @@
 @interface SCLoginModel : NSObject
 
 + (void)loginWithUsername:(NSString *)username password:(NSString *)password delegate:(id<SCLoginDelegate>) delegate;
++ (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password delegate:(id<SCLoginDelegate>) delegate;
 
 @end

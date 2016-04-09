@@ -12,14 +12,12 @@
 #import "MBProgressHUD.h"
 #import "SCUtils.h"
 #import "SCViewFactory.h"
+#import "SCSignupModel.h"
 
-@interface SignupSettingViewController ()
+@interface SignupSettingViewController () <SCSignupDelegate, SCLoginDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet UILabel *labelErrorTip;
-@property (nonatomic, copy) NSDictionary *registerInfo;
-
-@property (strong, nonatomic) MBProgressHUD *hud;
 @end
 
 @implementation SignupSettingViewController
@@ -40,8 +38,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [_hud hide:YES];
+    [self hideHud];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,94 +53,41 @@
     self.labelErrorTip.text = @"";
 }
 
-- (NSString *)generateSignUpUrlString
+#pragma mark - SCLoginDelegate
+- (void)didLoginSuccess
 {
-    self.registerInfo = @{SKYWORLD_CELLPHONE: self.cellphone,
-                          SKYWORLD_USERNAME: self.username.text,
-                          SKYWORLD_PWD: self.password.text,
-                          SKYWORLD_COUNTRY_CODE: [NSNumber numberWithInteger:[self.countryCode integerValue]],
-                          SKYWORLD_CONFIRM_PWD: self.password.text};
-    
-    NSString *urlString = [SCSkyWorldAPI urlRegisterWithCellphone:self.registerInfo[SKYWORLD_CELLPHONE]
-                                                      countryCode:self.registerInfo[SKYWORLD_COUNTRY_CODE]
-                                                         userName:self.registerInfo[SKYWORLD_USERNAME]
-                                                         passWord:self.registerInfo[SKYWORLD_PWD]];
-    return urlString;
+    [self hideHud];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
 }
 
+#pragma mark - SCSignupDelegate
+- (void)didSignupSuccess
+{
+    [self hideHud];
+    [self showHudInView:self.view hint:NSLocalizedString(@"siguplogin.ongoing", @"Signup Success, Is Login...")];
+}
+
+- (void)didSignupFailedWithError:(SCSkyWorldError *)error
+{
+    [self hideHud];
+    if(error.code == SCSkyWorldErrorUsernameOrPasswordAlreadyExist){
+        self.labelErrorTip.text = error.errorDescription;
+    }else{
+        [self showHint:error.errorDescription];
+    }
+}
+
+#pragma mark - Action
 - (IBAction)register:(UIButton *)sender
 {
-    _hud = [SCUtils createHUD];
-    _hud.labelText = @"正在注册";
-    _hud.userInteractionEnabled = NO;
+    [self showHudInView:self.view hint:NSLocalizedString(@"signup.ongoing", @"Is signup...")];
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    
-    [manager GET:[self generateSignUpUrlString]
-      parameters:nil
-        progress:^(NSProgress *downloadProgress){
-        }
-         success:^(NSURLSessionDataTask *task, id responseObject){
-             if([responseObject isKindOfClass:[NSDictionary class]]) {
-                 DebugLog(@"%@", responseObject);
-                 NSDictionary *response = responseObject;
-                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
-                 if(errorCode) {
-                     [self registerErrorWithErrorCode:errorCode];
-                     return;
-                 }
-                 [self registerSuccessWithResponse:response];
-                 [self loginEaseMobWithUsername:self.registerInfo[SKYWORLD_USERNAME] password:self.registerInfo[SKYWORLD_PWD]];
-             }
-         }
-         failure:^(NSURLSessionDataTask *task, NSError *error){
-             DebugLog(@"Error: %@", error);
-             _hud.labelText = task.response.description;
-             [_hud hide:YES afterDelay:1];
-         }];
-}
-
-- (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password
-{
-    __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient sharedClient] loginWithUsername:username
-                                                           password:password];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //            [weakself hideHud];
-            if (!error) {
-                DebugLog(@"EaseMob Login Success!");
-                //设置是否自动登录
-                [[EMClient sharedClient].options setIsAutoLogin:YES];
-                [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobStatus:SC_LOGINUSER_LOGIN];
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
-
-            } else {
-                DebugLog(@"EaseMob Login Failed! %@", error);
-                [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobStatus:SC_LOGINUSER_NO_LOGIN];
-            }
-        });
-    });
-}
-
-- (void)registerSuccessWithResponse:(NSDictionary *)response
-{
-    SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
-//    [userProfileManager saveCurrentLoginUserInfoWithServerResponse:response andOtherInfo:@{SKYWORLD_PWD:self.registerInfo[SKYWORLD_PWD]}];
-    [userProfileManager saveCurrentLoginUserInformationWithSkyWorldResponse:response
-                                                               andOtherInfo:@{SKYWORLD_PWD:self.registerInfo[SKYWORLD_PWD]}];
-}
-
-- (void)registerErrorWithErrorCode:(NSInteger)errorCode
-{
-    if(errorCode == SkyWorldUsernameOrPasswordAlreadyExisted) {
-        self.labelErrorTip.text = @"用户名或密码已经存在，请重新输入";
-        [_hud hide:YES];
-    } else {
-#warning Add details
-        _hud.labelText = [NSString stringWithFormat:@"错误代码：%ld", errorCode];
-        [_hud hide:YES afterDelay:1];
-    }
+    NSDictionary *registerInfo = @{SKYWORLD_CELLPHONE: self.cellphone,
+                                   SKYWORLD_USERNAME: self.username.text,
+                                   SKYWORLD_PWD: self.password.text,
+                                   SKYWORLD_COUNTRY_CODE: [NSNumber numberWithInteger:[self.countryCode integerValue]],
+                                   SKYWORLD_CONFIRM_PWD: self.password.text};
+    [[SamChatClient sharedInstance] signupWithUserinfoDictionary:registerInfo delegate:self];
 }
 
 - (IBAction)usernameDoneEditing:(id)sender

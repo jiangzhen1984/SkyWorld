@@ -41,4 +41,9 @@ static SamChatClient *sharedInstance = nil;
     [SCLoginModel loginWithUsername:username password:password delegate:delegate];
 }
 
+- (void)signupWithUserinfoDictionary:(NSDictionary *)info delegate:(id<SCSignupDelegate, SCLoginDelegate>) delegate
+{
+    [SCSignupModel signupWithUserinfoDictionary:info delegate:delegate];
+}
+
 @end

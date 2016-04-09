@@ -50,6 +50,7 @@
 {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO];
+    [self hideHud];
 }
 
 #pragma mark - User Interface Process
@@ -102,6 +103,7 @@
                                              delegate:self];
 }
 
+#pragma mark - SCLoginDelegate
 - (void)didLoginSuccess
 {
     [self hideHud];

@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "SCLoginModel.h"
+#import "SCSignupModel.h"
 
 @interface SamChatClient : NSObject
 
 + (instancetype)sharedInstance;
 
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password delegate:(id<SCLoginDelegate>) delegate;
+- (void)signupWithUserinfoDictionary:(NSDictionary *)info delegate:(id<SCSignupDelegate, SCLoginDelegate>) delegate;
 
 @end
