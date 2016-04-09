@@ -21,6 +21,7 @@
 #import "ProducerViewController.h"
 
 #import "WZLBadgeImport.h"
+#import "KYDrawerController.h"
 
 
 @interface HomeViewController () <SCUITabPagerDataSource, SCUITabPagerDelegate, UIAlertViewDelegate>
@@ -78,6 +79,12 @@
     [titleView sizeToFit];
     titleView.backgroundColor = [UIColor colorWithRed:((2) / 255.0) green:((168) / 255.0) blue:((244) / 255.0) alpha:1.0];
     self.navigationItem.titleView = titleView;
+    
+    
+    UIBarButtonItem *settingButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                   target:self
+                                                                                   action:@selector(drawerSetting)];
+    self.navigationItem.rightBarButtonItem = settingButton;
 }
 
 #pragma mark - Tab Pager Data Source
@@ -230,6 +237,12 @@ static NSString *kGroupName = @"GroupName";
 //        [_settingsVC refreshConfig];
 //    }
 //}
+
+- (void)drawerSetting
+{
+    KYDrawerController *drawerController = self.navigationController.parentViewController;
+    [drawerController setDrawerState:KYDrawerControllerDrawerStateOpened animated:YES];
+}
 
 #pragma mark - private
 

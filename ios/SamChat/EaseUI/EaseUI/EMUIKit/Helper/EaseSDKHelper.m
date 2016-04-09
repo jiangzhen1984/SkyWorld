@@ -116,7 +116,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
   
 #warning apns
     //注册apns
-//    [self _registerRemoteNotification];
+    [self _registerRemoteNotification];
     
     EMOptions *options = [EMOptions optionsWithAppkey:appkey];
 //    options.apnsCertName = apnsCertName;

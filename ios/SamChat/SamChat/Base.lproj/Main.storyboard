@@ -291,6 +291,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlX-gL-6se">
                                 <rect key="frame" x="120" y="130" width="75" height="30"/>
                                 <state key="normal" title="天际通讯录"/>
+                                <connections>
+                                    <action selector="contact:" destination="eUE-cW-PZ6" eventType="touchUpInside" id="mFf-Cw-N26"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

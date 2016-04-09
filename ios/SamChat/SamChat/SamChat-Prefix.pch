@@ -28,6 +28,10 @@
 
 #import "AFNetworking.h"
 
+#import "SCSkyWorldError.h"
+
+#import "SamChatClient.h"
+
 // easemob
 #import "ChatDemoUIDefine.h"
 #import "EMAlertView.h"

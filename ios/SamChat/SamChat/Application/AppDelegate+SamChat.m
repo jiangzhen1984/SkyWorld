@@ -63,8 +63,13 @@
             self.drawViewController.mainViewController =[[UINavigationController alloc] initWithRootViewController:self.homeController];
             
             UserSettingViewController *settingViewController = [storyBoard instantiateViewControllerWithIdentifier:@"UserSettingView"];
+
             self.drawViewController.drawerViewController = settingViewController;
-            viewController = self.drawViewController;
+            //viewController = self.drawViewController;
+            UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:self.drawViewController];
+            nvc.navigationBarHidden = YES;
+            viewController = nvc;
+            
         }else{
             //viewController = self.homeController.navigationController;
             viewController = self.drawViewController;

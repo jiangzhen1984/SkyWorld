@@ -55,6 +55,7 @@ didFinishLaunchingWithOptions:launchOptions
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    DebugLog(@"Remote Notification");
     if (_homeController) {
         [_homeController jumpToChatList];
     }
@@ -62,9 +63,15 @@ didFinishLaunchingWithOptions:launchOptions
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+    DebugLog(@"Local Notification");
     if (_homeController) {
         [_homeController didReceiveLocalNotification:notification];
     }
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

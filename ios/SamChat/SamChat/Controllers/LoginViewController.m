@@ -14,15 +14,12 @@
 #import "SCUtils.h"
 #import <sqlite3.h>
 
-@interface LoginViewController ()
+@interface LoginViewController () <SCLoginDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet UIButton *buttonShowPassword;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLogin;
 @property (weak, nonatomic) IBOutlet UILabel *labelErrorTip;
-@property (nonatomic, copy) NSDictionary *loginInfo;
-
-@property (strong, nonatomic) MBProgressHUD *hud;
 
 @end
 
@@ -53,7 +50,6 @@
 {
     [super viewWillDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO];
-    [_hud hide:YES];
 }
 
 #pragma mark - User Interface Process
@@ -95,138 +91,32 @@
     [self changeButtonShowPasswordStatus];
 }
 
-- (NSString *)generateLoginUrlString
-{
-    self.loginInfo = @{SKYWORLD_USERNAME: self.username.text,
-                           SKYWORLD_PWD: self.password.text};
-    return [SCSkyWorldAPI urlLoginWithUsername:self.loginInfo[SKYWORLD_USERNAME] passWord:self.loginInfo[SKYWORLD_PWD]];
-}
-
-
 - (IBAction)login:(UIButton *)sender
 {
     [self clearLabelErrorTip];
     
-    _hud = [SCUtils createHUD];
-    _hud.labelText = @"正在登录";
-    _hud.userInteractionEnabled = NO;
+    [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    
-    [manager GET:[self generateLoginUrlString]
-      parameters:nil
-        progress:^(NSProgress *downloadProgress){
-        }
-         success:^(NSURLSessionDataTask *task, id responseObject){
-             if([responseObject isKindOfClass:[NSDictionary class]]) {
-                 DebugLog(@"%@", responseObject);
-                 NSDictionary *response = responseObject;
-                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
-                 if(errorCode) {
-                     [self loginErrorWithErrorCode:errorCode];
-                     return;
-                 }
-                 [self loginSkyWorldSuccessWithResponse:response];
-                 [self loginEaseMobWithUsername:self.loginInfo[SKYWORLD_USERNAME] password:self.loginInfo[SKYWORLD_PWD]];
-             }
-         }
-         failure:^(NSURLSessionDataTask *task, NSError *error){
-             _hud.labelText = task.response.description;
-             [_hud hide:YES afterDelay:1];
-             DebugLog(@"Error: %@", error);
-         }];
+    [[SamChatClient sharedInstance] loginWithUsername:self.username.text
+                                             password:self.password.text
+                                             delegate:self];
 }
 
-- (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password
+- (void)didLoginSuccess
 {
-    __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient sharedClient] loginWithUsername:username
-                                                           password:password];
-        dispatch_async(dispatch_get_main_queue(), ^{
-//            [weakself hideHud];
-            if (!error) {
-                DebugLog(@"EaseMob Login Success!");
-                //设置是否自动登录
-                [[EMClient sharedClient].options setIsAutoLogin:YES];
-                [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobStatus:SC_LOGINUSER_LOGIN];
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
-/*
-                //获取数据库中数据
-                [MBProgressHUD showHUDAddedTo:weakself.view animated:YES];
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [[EMClient sharedClient] dataMigrationTo3];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
-                        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
-                        [[ChatDemoHelper shareHelper] asyncPushOptions];
-                        [MBProgressHUD hideAllHUDsForView:weakself.view animated:YES];
-                        //发送自动登陆状态通知
-                        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES];
-                        
-                        //保存最近一次登录用户名
-                        [weakself saveLastLoginUsername];
-                    });
-                });*/
-            } else {
-                DebugLog(@"EaseMob Login Failed! %@", error);
-                [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobStatus:SC_LOGINUSER_NO_LOGIN];
-                /*
-                switch (error.code)
-                {
-                      
-                        //                    case EMErrorNotFound:
-                        //                        TTAlertNoTitle(error.errorDescription);
-                        //                        break;
-                    case EMErrorNetworkUnavailable:
-                        TTAlertNoTitle(NSLocalizedString(@"error.connectNetworkFail", @"No network connection!"));
-                        break;
-                    case EMErrorServerNotReachable:
-                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!"));
-                        break;
-                    case EMErrorUserAuthenticationFailed:
-                        TTAlertNoTitle(error.errorDescription);
-                        break;
-                    case EMErrorServerTimeout:
-                        TTAlertNoTitle(NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!"));
-                        break;
-                    default:
-                        TTAlertNoTitle(NSLocalizedString(@"login.fail", @"Login failure"));
-                        break;
-                }*/
-            }
-        });
-    });
+    [self hideHud];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
 }
 
-
-- (void)loginSkyWorldSuccessWithResponse: (NSDictionary *)response
+- (void)didLoginFailedWithError:(SCSkyWorldError *)error
 {
-    SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
-//    [userProfileManager saveCurrentLoginUserInfoWithServerResponse:response
-//                                                      andOtherInfo:@{SKYWORLD_PWD:self.loginInfo[SKYWORLD_PWD]}];
-    [userProfileManager saveCurrentLoginUserInformationWithSkyWorldResponse:response
-                                                               andOtherInfo:@{SKYWORLD_PWD:self.loginInfo[SKYWORLD_PWD]}];
-}
-
-- (void)loginErrorWithErrorCode: (NSInteger)errorCode
-{
-    if(errorCode == SkyWorldUsernameOrPasswordError) {
-        self.labelErrorTip.text = @"用户名或密码错误，请重新输入";
-        [_hud hide:YES];
-    } else {
-#warning Add details
-        _hud.labelText = [NSString stringWithFormat:@"错误代码：%ld", errorCode];
-        [_hud hide:YES afterDelay:1];
-    }
+    [self hideHud];
     //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
-}
-
-- (NSString *)dataFilePath
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:@"data.sqlite"];
+    if(error.code == SCSkyWorldErrorUsernameOrPasswordWrong){
+        self.labelErrorTip.text = error.errorDescription;
+    }else{
+        [self showHint:error.errorDescription];
+    }
 }
 
 - (IBAction)usernameDoneEditing:(id)sender

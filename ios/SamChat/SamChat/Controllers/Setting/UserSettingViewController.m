@@ -7,6 +7,8 @@
 //
 
 #import "UserSettingViewController.h"
+#import "ContactListViewController.h"
+#import "KYDrawerController.h"
 
 @interface UserSettingViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -102,6 +104,15 @@
         });
     });
 }
+
+- (IBAction)contact:(UIButton *)sender
+{
+    ContactListViewController *contactListVC = [[ContactListViewController alloc] initWithNibName:nil bundle:nil];
+    DebugLog(@"navigation: %@", self.navigationController);
+    [self.navigationController pushViewController:contactListVC animated:YES];
+    //[(KYDrawerController *)[self parentViewController] setDrawerState:KYDrawerControllerDrawerStateClosed animated:YES];
+}
+
 
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
