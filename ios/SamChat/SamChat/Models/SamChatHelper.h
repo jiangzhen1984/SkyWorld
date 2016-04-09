@@ -7,8 +7,26 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SamchatClientDelegate.h"
+#import "HomeViewController.h"
+#import "ReceivedAnswer.h"
+#import "ReceivedQuestion.h"
 
-@interface SamChatHelper : NSObject <SamChatClientDelegate>
+@protocol SCQuestionPushDelegate
+- (void)didReceiveNewQuestion:(NSDictionary *)questionBody;
+@end
+
+@protocol SCAnswerPushDelegate
+- (void)didReceiveNewAnswer:(ReceivedAnswer *)answerBody;
+@end
+
+@interface SamChatHelper : NSObject <SCPushDelegate>
+
+@property (nonatomic, weak) id<SCQuestionPushDelegate> questionPushDelegate;
+@property (nonatomic, weak) id<SCAnswerPushDelegate> answerPushDelegate;
+
+@property (nonatomic, weak) HomeViewController *mainVC;
+
++ (instancetype)sharedInstance;
+- (void)asyncPush;
 
 @end

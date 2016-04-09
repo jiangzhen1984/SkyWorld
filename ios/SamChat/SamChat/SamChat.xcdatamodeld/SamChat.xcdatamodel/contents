@@ -29,6 +29,7 @@
         <attribute name="phonenumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="unique_id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="unreadquestioncount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="usertype" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="answers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SendAnswer" inverseName="whoSend" inverseEntity="SendAnswer" syncable="YES"/>
@@ -69,11 +70,11 @@
         <relationship name="whoSend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LoginUserInformation" inverseName="questions" inverseEntity="LoginUserInformation" syncable="YES"/>
     </entity>
     <elements>
-        <element name="LoginUserInformation" positionX="-56" positionY="-18" width="128" height="313"/>
         <element name="ContactUser" positionX="277" positionY="-19" width="128" height="223"/>
+        <element name="LoginUserInformation" positionX="-56" positionY="-18" width="128" height="330"/>
         <element name="ReceivedAnswer" positionX="448" positionY="68" width="128" height="103"/>
-        <element name="SendQuestion" positionX="106" positionY="-27" width="128" height="163"/>
         <element name="ReceivedQuestion" positionX="448" positionY="189" width="128" height="178"/>
         <element name="SendAnswer" positionX="108" positionY="252" width="128" height="118"/>
+        <element name="SendQuestion" positionX="106" positionY="-27" width="128" height="163"/>
     </elements>
 </model>

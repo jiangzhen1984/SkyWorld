@@ -344,6 +344,7 @@ static NSString *kGroupName = @"GroupName";
     for (EMConversation *conversation in conversations) {
         unreadCount += conversation.unreadMessagesCount;
     }
+    unreadCount += [[SCUserProfileManager sharedInstance].currentLoginUserInformation.unreadquestioncount integerValue];
     if (_chatListVC) {
         if (unreadCount > 0) {
             //_chatListVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
@@ -356,7 +357,6 @@ static NSString *kGroupName = @"GroupName";
     
     UIApplication *application = [UIApplication sharedApplication];
     [application setApplicationIconBadgeNumber:unreadCount];
-    DebugLog(@"unread");
 }
 
 - (void)setupUntreatedApplyCount

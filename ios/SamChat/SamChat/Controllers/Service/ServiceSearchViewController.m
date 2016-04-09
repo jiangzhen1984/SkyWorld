@@ -10,7 +10,6 @@
 #import "AFNetworking.h"
 #import "SCSkyWorldAPI.h"
 #import "SCConfig.h"
-#import "SCPushDispatcher.h"
 #import "SCTableViewCell.h"
 #import "ReceivedAnswer.h"
 #import "SendQuestion.h"
@@ -50,7 +49,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
-    [SCPushDispatcher sharedInstance].answerPushDelegate = self;
+    [SamChatHelper sharedInstance].answerPushDelegate = self;
     
     // for test
     [self.hotQuestions addObject:@"硅谷比较好的学区在哪儿？"];

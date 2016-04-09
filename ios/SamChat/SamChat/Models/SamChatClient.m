@@ -12,7 +12,6 @@ static SamChatClient *sharedInstance = nil;
 
 @interface SamChatClient ()
 
-
 @end
 
 @implementation SamChatClient
@@ -30,7 +29,6 @@ static SamChatClient *sharedInstance = nil;
 {
     self = [super init];
     if(self){
-        
     }
     return self;
 }
@@ -44,6 +42,20 @@ static SamChatClient *sharedInstance = nil;
 - (void)signupWithUserinfoDictionary:(NSDictionary *)info delegate:(id<SCSignupDelegate, SCLoginDelegate>) delegate
 {
     [SCSignupModel signupWithUserinfoDictionary:info delegate:delegate];
+}
+
+- (void)asyncWaitingPush
+{
+    [self.pushManager asyncWaitingPush];
+}
+
+#pragma mark - Lazy initialization
+- (SCPushManager *)pushManager
+{
+    if(_pushManager == nil){
+        _pushManager = [[SCPushManager alloc] init];
+    }
+    return _pushManager;
 }
 
 @end

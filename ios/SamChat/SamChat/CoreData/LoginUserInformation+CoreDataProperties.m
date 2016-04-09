@@ -2,7 +2,7 @@
 //  LoginUserInformation+CoreDataProperties.m
 //  SamChat
 //
-//  Created by HJ on 4/4/16.
+//  Created by HJ on 4/9/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -29,7 +29,8 @@
 @dynamic unique_id;
 @dynamic username;
 @dynamic usertype;
-@dynamic questions;
+@dynamic unreadquestioncount;
 @dynamic answers;
+@dynamic questions;
 
 @end

@@ -23,5 +23,8 @@
 - (void)updateCurrentLoginUserInformationWithEaseMobStatus:(NSInteger)status;
 - (void)updateCurrentLoginUserInformationWithEaseMobPushInfo:(NSDictionary *)info;
 
+- (void)updateCurrentLoginUserInformationWithUnreadQuestionCountAddOne;
+- (void)clearCurrentLoginUserInformationUnreadQuestionCount;
+
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion;
 @end

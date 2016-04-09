@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "SCUITabPagerViewController.h"
+#import "EMClientDelegate.h"
+#import "EMMessage.h"
 
 @interface HomeViewController : SCUITabPagerViewController
 {

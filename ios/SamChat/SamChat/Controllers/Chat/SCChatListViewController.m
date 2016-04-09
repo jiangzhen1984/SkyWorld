@@ -16,6 +16,11 @@
 #import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 
+#import "SCConversationCell.h"
+
+#import "UIView+WZLBadge.h"
+#import "SCBadgeImageView.h"
+
 @implementation EMConversation (search)
 
 //根据用户昵称,环信机器人名称,群名称进行搜索
@@ -58,6 +63,11 @@
     [self networkStateView];
     
     [self removeEmptyConversationsFromDB];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refresh)
+                                                 name:NOTIFICATION_RECEIVED_NEW_QUESTION
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -69,6 +79,11 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTIFICATION_RECEIVED_NEW_QUESTION object:self];
 }
 
 - (void)checkUserType
@@ -233,6 +248,17 @@
     return latestMessageTime;
 }
 
+- (void)showNumberBadgeWithValue:(NSInteger)number forView:(SCBadgeImageView *)view
+{
+    if (number == 0) {
+        view.showBadge = NO;
+    }
+    else{
+        view.showBadge = YES;
+        view.badge = number;
+    }
+}
+
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -241,15 +267,41 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    if(((self.tablecellExtCount == 1) && (indexPath.row == 0))
-       || ((self.tablecellExtCount == 2) && (indexPath.row == 1))){
-        cell = [[UITableViewCell alloc] init];
-        cell.textLabel.text = @"朋友圈";
-        return cell;
-    }else if((self.tablecellExtCount == 2) && (indexPath.row == 0)){
-        cell = [[UITableViewCell alloc] init];
-        cell.textLabel.text = @"天际问答";
+//    UITableViewCell *cell;
+//    if(((self.tablecellExtCount == 1) && (indexPath.row == 0))
+//       || ((self.tablecellExtCount == 2) && (indexPath.row == 1))){
+//        cell = [[UITableViewCell alloc] init];
+//        cell.textLabel.text = @"朋友圈";
+//        return cell;
+//    }else if((self.tablecellExtCount == 2) && (indexPath.row == 0)){
+//        cell = [[UITableViewCell alloc] init];
+//        cell.textLabel.text = @"天际问答";
+//        return cell;
+//    }
+    
+    if(indexPath.row < self.tablecellExtCount){
+        static NSString *cellIdentifier = @"SCConversationCellIdentifier";
+        SCConversationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if(cell == nil){
+            cell = [[SCConversationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        }
+        
+        if(((self.tablecellExtCount == 1) && (indexPath.row == 0))
+            || ((self.tablecellExtCount == 2) && (indexPath.row == 1))){
+            cell.titleLabel.text = @"朋友圈";
+            cell.detailLabel.text = @"last message";
+            cell.timeLabel.text = @"time";
+            cell.avatarView.image = [UIImage imageNamed:@"ReceivedAnswerDefaultAvatar"];
+            return cell;
+        }else if((self.tablecellExtCount == 2) && (indexPath.row == 0)){
+            cell.titleLabel.text = @"天际问答";
+            cell.detailLabel.text = @"last message";
+            cell.timeLabel.text = @"time";
+            cell.avatarView.image = [UIImage imageNamed:@"ReceivedAnswerDefaultAvatar"];
+            [self showNumberBadgeWithValue:[[SCUserProfileManager sharedInstance].currentLoginUserInformation.unreadquestioncount integerValue]
+                                   forView:cell.avatarView];
+            return cell;
+        }
         return cell;
     }
     
@@ -266,6 +318,9 @@
         return;
     }else if((self.tablecellExtCount == 2) && (indexPath.row == 0)){
         [self presentQuestionAndAnswerView];
+        [[SCUserProfileManager sharedInstance] clearCurrentLoginUserInformationUnreadQuestionCount];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"setupUnreadMessageCount" object:nil];
+        [self.tableView reloadData];
         return;
     }
     

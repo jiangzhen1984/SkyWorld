@@ -27,6 +27,7 @@
         loginUserInformation = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_LOGIN_USER_INFORMATION
                                              inManagedObjectContext:context];
         loginUserInformation.username = username;
+        loginUserInformation.unreadquestioncount = 0;
     }
     return loginUserInformation;
 }

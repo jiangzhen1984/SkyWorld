@@ -45,6 +45,7 @@
     if([questionDictionary[SKYWORLD_OPT] isEqualToNumber:@0]){ // new question
         receivedQuestion.status = RECEIVED_QUESTION_VALID;
         receivedQuestion.receivedtime = questionDictionary[SKYWORLD_DATETIME];
+        [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithUnreadQuestionCountAddOne];
     }else{ // cancel question
         receivedQuestion.status = RECEIVED_QUESTION_INVALID;
         receivedQuestion.canceledtime = questionDictionary[SKYWORLD_DATETIME];

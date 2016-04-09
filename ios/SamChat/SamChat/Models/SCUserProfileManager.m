@@ -201,6 +201,28 @@ static SCUserProfileManager *sharedInstance = nil;
     }];
 }
 
+- (void)updateCurrentLoginUserInformationWithUnreadQuestionCountAddOne
+{
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
+        LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
+                                                                                     inManagedObjectContext:mainContext];
+        loginUserInformation.unreadquestioncount = [NSNumber numberWithInteger:([loginUserInformation.unreadquestioncount integerValue]+1)];
+        //[[SCCoreDataManager sharedInstance] saveContext];
+    }];
+}
+
+- (void)clearCurrentLoginUserInformationUnreadQuestionCount
+{
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
+        LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
+                                                                                     inManagedObjectContext:mainContext];
+        loginUserInformation.unreadquestioncount = @0;
+        [[SCCoreDataManager sharedInstance] saveContext];
+    }];
+}
+
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion
 {
     UIImage *headImage = [SCUtils scalingAndCroppingImage:image ForSize:CGSizeMake(120.f, 120.f)];

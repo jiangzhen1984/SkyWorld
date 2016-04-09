@@ -9,7 +9,7 @@
 #import "AppDelegate+SamChat.h"
 #import "LoginUserInformation.h"
 #import "ChatDemoHelper.h"
-#import "SCPushDispatcher.h"
+#import "SamChatHelper.h"
 
 #import "UserSettingViewController.h"
 
@@ -80,7 +80,8 @@
         [[ChatDemoHelper shareHelper] asyncConversationFromDB];
         [[ChatDemoHelper shareHelper] asyncPushOptions];
         
-        [[SCPushDispatcher sharedInstance] asyncWaitingPush];
+        [SamChatHelper sharedInstance].mainVC = self.homeController;
+        [[SamChatHelper sharedInstance] asyncPush];
         
     } else {
         self.homeController = nil;

@@ -8,8 +8,8 @@
 
 #import "QuestionAndAnswerViewController.h"
 #import "ReceivedQuestion.h"
-#import "SCPushDispatcher.h"
 #import "AnswerTheQuestionViewController.h"
+#import "SamChatHelper.h"
 
 @interface QuestionAndAnswerViewController () <SCQuestionPushDelegate, NSFetchedResultsControllerDelegate>
 
@@ -22,7 +22,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [SCPushDispatcher sharedInstance].questionPushDelegate = self;
+    [SamChatHelper sharedInstance].questionPushDelegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[SCUserProfileManager sharedInstance] clearCurrentLoginUserInformationUnreadQuestionCount];
+    
 }
 
 #pragma mark - NSFetchedResultsController
