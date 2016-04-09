@@ -76,7 +76,7 @@ public class MineActivity extends Activity {
 		setContentView(R.layout.activity_mine);
 
 		mContext = getBaseContext();
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 
 		mBack_layout = (LinearLayout)findViewById(R.id.back_layout);
 		mWall_photo =  (ImageView)findViewById(R.id.wall_photo);

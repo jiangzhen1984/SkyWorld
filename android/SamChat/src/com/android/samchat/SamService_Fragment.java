@@ -21,8 +21,10 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.InputType;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -56,6 +59,8 @@ public class SamService_Fragment extends Fragment {
 	/*SamServiceFragement confirm*/
 	public static final int REQUST_CODE_CONFIRM_CANCEL_QUESTION = 11;
 	public static final int REQUST_CODE_BACK_FROM_SAMANSWERDETAILACTIVITY = 12;
+
+	public static final int HOT_TOPIC_MAX=20;
 	
 	private ListView mTopSearchList;
 	private Context mContext;
@@ -65,6 +70,7 @@ public class SamService_Fragment extends Fragment {
 	private ImageView mClear;
 	private TextView mCancel_search;
 	private TextView mHot_topic;
+	private AutoNormalSwipeRefreshLayout mSwipe_layout;
 
 	private EditText mSamservice_search_input_show;
 	private LinearLayout mSamservice_search_layout_show;
@@ -72,6 +78,9 @@ public class SamService_Fragment extends Fragment {
 
 	private String current_question;
 	private SamServiceType current_type;
+
+	private boolean isSendingQuestion=false;
+	private boolean isCancelingQuestion=false;
 
 	private SamProcessDialog mDialog;
 
@@ -93,7 +102,81 @@ public class SamService_Fragment extends Fragment {
 		"如何得到医院的医疗补助",
 		"美国的一栋房产,每年要多少花费",
 		"想去cosco,没有会员卡怎么办",
+		"硅谷比较好的学区在哪里",
+		"女儿去美国 读高中,怎么样才能找到合适的寄宿家庭",
+		"如何得到医院的医疗补助",
+		"美国的一栋房产,每年要多少花费",
+		"想去cosco,没有会员卡怎么办",
 	};
+
+	private List<String> dyanamicHotTopicArray = new ArrayList<String>();
+	private long query_time=0;
+
+	private List<String> showHotTopicArray = new ArrayList<String>();
+
+
+	private void queryHotTopic(){
+		SamService.getInstance().queryHotTopic(dyanamicHotTopicArray.size(), query_time, new SMCallBack(){
+			@Override
+			public void onSuccess(final Object obj) {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						HotTopicResult result = (HotTopicResult)obj;
+						dyanamicHotTopicArray.addAll(result.topics);
+						query_time = result.query_time;	
+
+						mSwipe_layout.setRefreshing(false);
+						showHotTopicArray.clear();
+						if(dyanamicHotTopicArray.size()<=HOT_TOPIC_MAX){
+							showHotTopicArray.addAll(dyanamicHotTopicArray);
+							for(int i=0;i<HOT_TOPIC_MAX-dyanamicHotTopicArray.size();i++){
+								showHotTopicArray.add(hotTopicArray.get(i));
+							}
+						}else{
+							for(int i=dyanamicHotTopicArray.size()-HOT_TOPIC_MAX;i<dyanamicHotTopicArray.size();i++){
+								showHotTopicArray.add(dyanamicHotTopicArray.get(i));
+							}
+						}
+
+						mAdpater.setHotTopicArray(showHotTopicArray);
+						mAdpater.notifyDataSetChanged();
+						
+					}
+				});
+			}
+
+			@Override
+			public void onFailed(int code) {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						mSwipe_layout.setRefreshing(false);
+						
+						Toast toast = Toast.makeText(getActivity(), R.string.cant_find_pictures, Toast.LENGTH_SHORT);
+						toast.setGravity(Gravity.CENTER, 0, 0);
+						toast.show();
+
+						
+					}
+				});
+			}
+
+			@Override
+			public void onError(int code) {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						mSwipe_layout.setRefreshing(false);
+						
+						Toast toast = Toast.makeText(getActivity(), R.string.cant_find_pictures, Toast.LENGTH_SHORT);
+						toast.setGravity(Gravity.CENTER, 0, 0);
+						toast.show();
+
+						
+					}
+				});
+			}
+
+		});
+	}
 	
 
 	
@@ -101,7 +184,7 @@ public class SamService_Fragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		if(rootView == null){
-			mDialog = new SamProcessDialog();
+			
 			SamLog.e(TAG, "onCreateView");
 			
 			rootView=inflater.inflate(R.layout.fragment_samservice, container,false);
@@ -116,6 +199,17 @@ public class SamService_Fragment extends Fragment {
 			mSearch = (EditText) rootView.findViewById(R.id.samservice_search_input);
 			mClear = (ImageView) rootView.findViewById(R.id.samservice_search_clear);
 			mHot_topic = (TextView) rootView.findViewById(R.id.hot_topic);
+			mSwipe_layout = (AutoNormalSwipeRefreshLayout)rootView.findViewById(R.id.swipe_layout);
+			mSwipe_layout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
+		                R.color.holo_orange_light, R.color.holo_red_light);
+			//下拉刷新
+			mSwipe_layout.setOnRefreshListener(new OnRefreshListener() {
+
+				@Override
+				public void onRefresh() {
+					queryHotTopic();					
+				}
+			});
 
 			mBanner_layout = (RelativeLayout)rootView.findViewById(R.id.banner_layout);
 
@@ -133,7 +227,10 @@ public class SamService_Fragment extends Fragment {
 			mCancel_search.setOnClickListener(new OnClickListener(){
 		    		@Override
 		    		public void onClick(View arg0) {
-		    			launchDialogActivityNeedConfirm(getString(R.string.reminder),getString(R.string.cancel_reminder));
+		    			if(!isCancelingQuestion){
+		    				launchDialogActivityNeedConfirm(getString(R.string.reminder),getString(R.string.cancel_reminder));
+						isCancelingQuestion = true;
+					}
 		    		}
 		    	
 			});
@@ -144,7 +241,7 @@ public class SamService_Fragment extends Fragment {
 					if (actionId==EditorInfo.IME_ACTION_SEARCH ||(event!=null&&event.getKeyCode()== KeyEvent.KEYCODE_ENTER)) { 
 						closeInputMethod();
 
-						if(current_type == SamServiceType.TOP_SEARCH){
+						if(!isSendingQuestion){
 							String question = mSearch.getText().toString().trim();
 							if(!question.equals("")){
 								/*send questions to server*/
@@ -152,6 +249,8 @@ public class SamService_Fragment extends Fragment {
 								if(mDialog!=null){
     									mDialog.launchProcessDialog(getActivity(),getString(R.string.question_publish_now));
     								}
+								isSendingQuestion = true;
+								mSwipe_layout.setEnabled(false);
 								publish_question(question);
 							}
 						}
@@ -254,7 +353,10 @@ public class SamService_Fragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
+		mDialog = new SamProcessDialog(getActivity());
 		SamLog.i(TAG, "onActivityCreated");
+
+		//queryHotTopic();
 
 	}
 	
@@ -346,12 +448,15 @@ public class SamService_Fragment extends Fragment {
 				//mAdpater.setCount(1);
 				mAdpater.notifyDataSetChanged();
 				/*store samobj*/
+				isSendingQuestion = false;
 	    		}else if(msg.arg1 == SamService.R_SEND_QUESTION_ERROR){
 	    			SamLog.i(TAG,"question send error ...");
 				if(mDialog!=null){
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
 				current_question = null;
+				isSendingQuestion = false;
+				mSwipe_layout.setEnabled(true);
 
 				launchDialogActivity(getString(R.string.question_publish_failed),getString(R.string.question_action_error_statement));
 	    		}else if(msg.arg1 == SamService.R_SEND_QUESTION_FAILED){
@@ -361,6 +466,8 @@ public class SamService_Fragment extends Fragment {
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
 				current_question = null;
+				isSendingQuestion = false;
+				mSwipe_layout.setEnabled(true);
 				launchDialogActivity(getString(R.string.question_publish_failed),getString(R.string.question_action_server_error_statement));				
 	    		}else{
 	    			SamLog.i(TAG,"impossible here ...");
@@ -368,6 +475,8 @@ public class SamService_Fragment extends Fragment {
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
 				current_question = null;
+				isSendingQuestion = false;
+				mSwipe_layout.setEnabled(true);
 				launchDialogActivity("Fatal Error","Close samchat!");
 	    		}
 	    		break;
@@ -378,6 +487,7 @@ public class SamService_Fragment extends Fragment {
 
 		case MSG_CANCEL_QUESTION_CALLBACK:
 		  	if(msg.arg1 == SamService.R_CANCEL_QUESTION_OK){
+				SamLog.i(TAG,"cancel question succeed ...");
 				if(mDialog!=null){
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
@@ -393,6 +503,9 @@ public class SamService_Fragment extends Fragment {
 				mCancel_search.setVisibility(View.GONE);
 				mHot_topic.setVisibility(View.VISIBLE);
 				back_to_topsearch();
+
+				isCancelingQuestion = false;
+				mSwipe_layout.setEnabled(true);
 				
 			}else if(msg.arg1 == SamService.R_CANCEL_QUESTION_FAILED){
 				SamLog.i(TAG,"cancel question failed ...");
@@ -401,18 +514,21 @@ public class SamService_Fragment extends Fragment {
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
 				launchDialogActivity(getString(R.string.question_cancel_failed),getString(R.string.question_action_server_error_statement));	
+				isCancelingQuestion = false;
 			}else if(msg.arg1 == SamService.R_CANCEL_QUESTION_ERROR){
 				SamLog.i(TAG,"question send error ...");
 				if(mDialog!=null){
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
-				launchDialogActivity(getString(R.string.question_cancel_failed),getString(R.string.question_action_error_statement));;
+				launchDialogActivity(getString(R.string.question_cancel_failed),getString(R.string.question_action_error_statement));
+				isCancelingQuestion = false;
 			}else{
 				SamLog.i(TAG,"impossible here ...");
 				if(mDialog!=null){
 	    				mDialog.dismissPrgoressDiglog();
 	    			}
 				launchDialogActivity("Fatal Error","Close samchat!");
+				isCancelingQuestion = false;
 			}
 	      }
 	    }
@@ -446,6 +562,7 @@ public class SamService_Fragment extends Fragment {
 				cancel_question_confirm_ok();
 			}else{
 				SamLog.e(TAG,"onActivityResult != 0");
+				isCancelingQuestion = false;
 				cancel_question_confirm_not_ok();
 			}
     	   
@@ -459,6 +576,7 @@ public class SamService_Fragment extends Fragment {
 		if(mDialog!=null){
     			mDialog.launchProcessDialog(getActivity(),getString(R.string.question_cancel_now));
     		}
+		
 		cancel_question();
 		
 		return;

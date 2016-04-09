@@ -225,4 +225,10 @@
     <string name="nofill">none</string>
     <string name="store">store</string>
     <string name="sweep">Add friend by sweep</string>
+    <string name="notification">new question is received</string>
+    <string name="notification_title">Sam Service</string>
+    <string name="notification_content">new question is received,please check in SamChat</string>
+    <string name="load_data">Loading data and keep network available&#8230;&#8230;&#8230;</string>
+    <string name="exiting">exiting app&#8230;&#8230;&#8230;</string>
+    <string name="exiting_user_conflict">exiting due to login on another phone</string>
 </resources>

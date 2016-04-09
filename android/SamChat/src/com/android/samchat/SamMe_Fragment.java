@@ -72,7 +72,6 @@ public class SamMe_Fragment extends Fragment{
 		SamLog.i(TAG, "onCreateView");
 		
 		if(rootView == null){
-			mDialog = new SamProcessDialog();
 			rootView = inflater.inflate(R.layout.fragment_me, container,false);
 			mMyname = (TextView)rootView.findViewById(R.id.myname);
 			mMyname.setText(SamService.getInstance().get_current_user().getusername());
@@ -167,6 +166,7 @@ public class SamMe_Fragment extends Fragment{
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 		SamLog.i(TAG, "onActivityCreated");
+		mDialog = new SamProcessDialog(getActivity());
 		LoginUser cuser = SamService.getInstance().get_current_user();
 		if(cuser.getUserType()> LoginUser.USER){
 			mUpgrade_spec.setText(getString(R.string.sam_gbdy));

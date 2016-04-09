@@ -136,7 +136,6 @@ public class EaseNotifier {
             sendNotification(message, false);
         } else {
             sendNotification(message, true);
-
         }
         
         viberateAndPlayTone(message);

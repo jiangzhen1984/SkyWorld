@@ -261,6 +261,10 @@ public class EaseMobHelper {
 		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_AVATAR_UPDATE));
 	}
 
+	public void sendQAActivityDestroyedBroadcast(){
+		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_QAACTIVITY_DESTROYED));
+	}
+
 
 	public class SamSettingsProvider implements EaseSettingsProvider{
 

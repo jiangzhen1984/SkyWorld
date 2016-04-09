@@ -7,6 +7,7 @@ public class SamCoreObj{
 
 	public CBObj refCBObj;
 	public int request_status;
+	public int retry_count=0;
 
 	public boolean isSignin(){
 		return (this instanceof SignInCoreObj);
@@ -62,6 +63,14 @@ public class SamCoreObj{
 
 	public boolean isQueryFollower(){
 		return (this instanceof QueryFollowerCoreObj);
+	}
+
+	public boolean isQueryPublicInfo(){
+		return (this instanceof QueryPublicInfoCoreObj);
+	}
+
+	public boolean isQueryHotTopic(){
+		return (this instanceof QueryHotTopicCoreObj);
 	}
 }
 

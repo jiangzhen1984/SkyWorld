@@ -41,7 +41,8 @@
         android:icon="@drawable/samchat"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name="skyworld">
+        android:name="skyworld"
+        android:launchMode="singleTop">
         
         <meta-data android:name="EASEMOB_APPKEY"  android:value="skyworld#skyworld" />
     	<!-- 声明sdk所需的service SDK核心功能-->
@@ -51,6 +52,7 @@
             android:name="com.android.samchat.SamLauncherActivity"
             android:screenOrientation="portrait"
             android:noHistory="true"
+            android:launchMode="singleTop"
             android:label="@string/app_name" 
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
             <intent-filter>

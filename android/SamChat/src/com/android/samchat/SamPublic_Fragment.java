@@ -27,6 +27,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -81,6 +83,35 @@ public class SamPublic_Fragment extends Fragment{
 		mAdapter.setCount(userArray.size());
 		mAdapter.notifyDataSetChanged();		
 	}
+
+
+
+	public void queryPublicSamInformation(long uid){
+		SamService.getInstance().queryPublicInfo(uid,new SMCallBack(){
+			@Override
+			public void onSuccess(final Object obj){
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {}
+				});
+			} 
+
+			@Override
+			public void onFailed(int code) {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {}
+				});
+			}
+
+			@Override
+			public void onError(int code) {
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {}
+				});
+			}
+
+		});
+
+	}
 			
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,7 +123,20 @@ public class SamPublic_Fragment extends Fragment{
 			mSampublic_list = (ListView)rootView.findViewById(R.id.sampublic_list);
 			mContext = getActivity().getBaseContext();
 			mAdapter = new PublicListAdapter(mContext);
-			mSampublic_list.setAdapter(mAdapter);			
+			mSampublic_list.setAdapter(mAdapter);
+
+			mSampublic_list.setOnItemClickListener(new OnItemClickListener(){   
+			@Override   
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				/*arg2 is postion*/
+				List<ContactUser> pubList = mAdapter.getPublicArray();
+				ContactUser cuser = pubList.get(arg2);
+				queryPublicSamInformation(cuser.getunique_id());
+				
+			}   
+               
+       	 }); 
+
 		}
 		return rootView;
 	}

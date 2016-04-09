@@ -41,15 +41,28 @@ import org.apache.http.message.BasicNameValuePair;
 import com.android.samchat.SamVendorInfo;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.LoginUser;
+import com.android.samservice.info.PublicInfo;
 import com.android.samservice.info.SendAnswer;
 
 public class HttpCommClient {
 	public static final String TAG="HttpCommClient";
+	/*
 	public static final String URL = "http://121.42.207.185/SkyWorld/api/1.0/UserAPI";
 	public static final String URL_QUESTION = "http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI";
 	public static final String PUSH_URL = "http://121.42.207.185/SkyWorld/push";
 	public static final String URL_AVATAR = "http://121.42.207.185/SkyWorld/api/1.0/UserAvatarAPI";
 	public static final String URL_ATICLE = "http://121.42.207.185/SkyWorld/api/1.0/ArticleApi";
+	*/
+
+	
+	public static final String URL = "http://139.129.57.77/sw/api/1.0/UserAPI";
+	public static final String URL_QUESTION = "http://139.129.57.77/sw/api/1.0/QuestionAPI";
+	public static final String PUSH_URL = "http://139.129.57.77/sw/push";
+	public static final String URL_AVATAR = "http://139.129.57.77/sw/api/1.0/UserAvatarAPI";
+	public static final String URL_ATICLE = "http://139.129.57.77/sw/api/1.0/ArticleApi";
+	public static final String URL_HOTTOPIC = "http://139.129.57.77/sw/api_1.0_HotTopicAPI.do";
+	
+	
 	public static final int CONNECTION_TIMEOUT = 20000;
 	public static final int HTTP_TIMEOUT = 10000;
 
@@ -69,7 +82,10 @@ public class HttpCommClient {
 
 	public List<ArticleInfo> ainfoList;
 
-	
+	public List<PublicInfo> pubinfoArray;
+
+	public List<String>hottopicArray;
+	public long hottopic_query_time;
 	
 	
 	HttpCommClient(){
@@ -83,6 +99,9 @@ public class HttpCommClient {
 		ainfo = new ArticleInfo();
 
 		ainfoList = new ArrayList<ArticleInfo>();
+		pubinfoArray = new ArrayList<PublicInfo>();
+		hottopicArray= new ArrayList<String>();
+		hottopic_query_time = 0;
 		
 
 		pushhttpclient = null;
@@ -1590,7 +1609,7 @@ public boolean uploadavatar(String filePath, String token){
 			SamLog.e(TAG,"featch_count:"+fetch_count);
 			//querya_body.putOpt("timestamp_end", ""+(System.currentTimeMillis()-30*24*60*60*1000L));
 
-			querya_body.putOpt("qt",0);
+			querya_body.putOpt("qt",1);
 			
 			JSONObject querya_data = new JSONObject();
 			querya_data.put("header", querya_header);
@@ -2100,6 +2119,186 @@ public boolean uploadavatar(String filePath, String token){
 						uiArray.add(ui);
 					}
 					
+				}
+				return true;
+			}else{
+				SamLog.e(TAG,"statusCode:" + statusCode);
+				return false;
+			}
+		}catch (JSONException e) {  
+			// TODO Auto-generated catch block  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
+		
+	}
+
+
+
+	public boolean queryPublicInfo(long uid,String token){
+		/*Construct sign up json data*/
+		try{
+			JSONObject header = new JSONObject();
+			header.putOpt("action", "skservicer-cmp-query");
+			header.putOpt("token",token);
+			
+			
+			JSONObject body = new JSONObject();
+			body.putOpt("opt", "1");
+			body.putOpt("uid", ""+uid);
+			
+			JSONObject data = new JSONObject();
+			data.put("header", header);
+			data.put("body", body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL + "?" + param;
+			
+			SamLog.i(TAG,url);
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());
+				SamLog.i(TAG,"rev:"+rev);
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				SamLog.i(TAG,"ret:"+ret);
+				if(ret == SamService.RET_QUERY_PUBLIC_INFO_SERVER_OK){
+					JSONObject jo = (JSONObject)  obj.getJSONObject("user");
+					ContactUser ui = new ContactUser();
+					ui.setunique_id(jo.getLong("id"));
+					ui.setphonenumber(jo.getString("cellphone"));
+					ui.setusertype(jo.getInt("type"));
+					ui.setusername(jo.getString("username"));
+					ui.setimagefile(getImageFilename(jo));
+					JSONObject easemobA = jo.getJSONObject("easemob");
+					ui.seteasemob_username(easemobA.getString("username"));
+					ui.setlastupdate(jo.getLong("lastupdate"));
+												
+					if(ui.getusertype() == LoginUser.MIDSERVER){
+						setAreaLocationDesc(ui,jo);
+					}						
+						
+					uiArray.add(ui);
+
+					JSONArray jsonArrayX = obj.getJSONArray("cmp");
+					for (int i = 0; i < jsonArrayX.length(); i++) {
+						JSONObject cmp = (JSONObject) jsonArrayX.get(i);
+						PublicInfo pubinfo = new PublicInfo();
+						pubinfo.setcmplogo(cmp.getString("cmplogo"));
+						pubinfo.setcmpwebsite(cmp.getString("cmpwebsite"));
+						pubinfo.setcmpname(cmp.getString("cmpname"));
+						pubinfo.setcmpdesc(cmp.getString("cmpdesc"));
+						pubinfo.setcmpphone(cmp.getString("cmpphone"));
+						pubinfo.setowner_unique_id(ui.getunique_id());
+						pubinfoArray.add(pubinfo);
+					}
+					
+				}
+				return true;
+			}else{
+				SamLog.e(TAG,"statusCode:" + statusCode);
+				return false;
+			}
+		}catch (JSONException e) {  
+			// TODO Auto-generated catch block  
+			e.printStackTrace();  
+			return false;
+        	}catch (ClientProtocolException e) {
+			SamLog.e(TAG,"ClientProtocolException");
+			e.printStackTrace(); 
+			return false;
+	    	} catch (IOException e) { 
+	    		SamLog.e(TAG,"IOException");
+	    		e.printStackTrace(); 
+	    		return false;
+	    	} catch (Exception e) { 
+	    		SamLog.e(TAG,"Exception");
+	    		e.printStackTrace(); 
+	    		return false;
+	   	 } 
+
+		
+	}
+
+
+
+	public boolean queryHotTopic(long cur_count,long update_time_pre,String token){
+		/*Construct sign up json data*/
+		try{
+			JSONObject header = new JSONObject();
+			header.putOpt("action", "query_topic_list");
+			header.putOpt("token",token);
+			
+			
+			JSONObject body = new JSONObject();
+			body.putOpt("opt_type", "0");
+			body.putOpt("topic_type", "0");
+			body.putOpt("cur_count", ""+cur_count);
+			body.putOpt("update_time_pre", ""+update_time_pre);
+			
+			JSONObject data = new JSONObject();
+			data.put("header", header);
+			data.put("body", body);
+			
+
+			List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
+			params.add(new BasicNameValuePair("data",data.toString()));
+			String param = URLEncodedUtils.format(params, "UTF-8"); 
+			
+			String url = URL_HOTTOPIC + "?" + param;
+			
+			SamLog.i(TAG,url);
+
+			HttpGet requestGet = new HttpGet(url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpParams http_params = client.getParams();
+			if(http_params==null){
+				http_params = new BasicHttpParams();
+			}
+			HttpConnectionParams.setConnectionTimeout(http_params, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(http_params, HTTP_TIMEOUT);
+			HttpResponse response = client.execute(requestGet);
+			statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode == HttpStatus.SC_OK ){
+				String rev = EntityUtils.toString(response.getEntity());
+				SamLog.i(TAG,"rev:"+rev);
+				JSONObject obj = new JSONObject(rev); 
+				ret = obj.getInt("ret");
+				SamLog.i(TAG,"ret:"+ret);
+				if(ret == SamService.RET_QUERY_HOT_TOPIC_SERVER_OK){
+					hottopic_query_time = obj.getLong("query_time");
+					JSONArray jsonArrayX = obj.getJSONArray("topics");
+					for (int i = 0; i < jsonArrayX.length(); i++) {
+						JSONObject jo = (JSONObject) jsonArrayX.get(i);
+						hottopicArray.add(jo.getString("name"));
+					}					
 				}
 				return true;
 			}else{

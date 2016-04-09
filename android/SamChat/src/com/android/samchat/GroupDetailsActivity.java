@@ -214,7 +214,7 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 									}
 								});
 								
-							} catch (EaseMobException e) {
+							} catch (Exception e) {
 								e.printStackTrace();
 								runOnUiThread(new Runnable() {
 									public void run() {

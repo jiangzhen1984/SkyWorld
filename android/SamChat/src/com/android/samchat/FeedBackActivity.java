@@ -37,7 +37,7 @@ public class FeedBackActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feedback);
 
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 
 		mBack =  (ImageView) findViewById(R.id.back);
 		mBack.setOnClickListener(new OnClickListener(){

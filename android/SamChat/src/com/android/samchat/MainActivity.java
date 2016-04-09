@@ -44,8 +44,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -84,6 +88,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	static final String EXIT_APP_CONFIRM = "com.android.samchat.exitapp";
 	static final String LOGOUT_CONFIRM = "com.android.samchat.logout";
 
+	private static final int NOTIFICATION_FLAG = 1; 
+
 
 	/*Slide menu confirm*/
 	public static final int CONFIRM_ID_EXITAPP = 301;
@@ -107,6 +113,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private final int ACTIVITY_TIMEOUT=2000;
 	private final int MSG_EXIT_ACTIVITY_TIMEOUT = 1;
 	public static final int MSG_LOGOUT_CALLBACK = 2;
+	public static final int MSG_LOADING_INIT_DATA = 3;
+	public static final int MSG_LOADING_INIT_DATA_FINISH = 4;
 	
 	
 	public static final int TAB_ID_SAMSERVICES=0;
@@ -195,6 +203,30 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private String versionName;
 	private Context mContext;
 
+
+	public void sendNotification(){
+		NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);  
+		Intent newIntent = new Intent(this,SamQAActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, newIntent, 0);
+		Notification notify = new Notification.Builder(this)  
+                    .setSmallIcon(R.drawable.notification)
+                    .setTicker(getString(R.string.notification)) 
+                    .setContentTitle(getString(R.string.notification_title))
+                    .setContentText(getString(R.string.notification_content))
+                    .setContentIntent(pendingIntent) 
+                    .getNotification();
+		
+		notify.flags |= Notification.FLAG_AUTO_CANCEL;  
+		manager.notify(NOTIFICATION_FLAG, notify);  
+	}
+
+	public void cancelNotification(){
+		NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);  
+		manager.cancel(NOTIFICATION_FLAG);
+	}
+
 	public void updateReminderIcon( final int id , final boolean show){
 		if(show)	{
 			if(getCurrentTab() != id){
@@ -279,7 +311,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 		initPage();
 
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 
 		// configure the SlidingMenu
         	menu = new SlidingMenu(this);
@@ -421,9 +453,14 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		GroupContactInfoDownLoadListener listener = new GroupContactInfoDownLoadListener();
 		EMGroupManager.getInstance().addGroupChangeListener(listener);
 
+
+		Message msg = mHandler.obtainMessage(MSG_LOADING_INIT_DATA);
+		mHandler.sendMessage(msg); 
+
 		asyncFollowListFromServer();
 		
-
+		asyncDismissLoadInitDataDialog();
+		
 	}
 
 
@@ -442,6 +479,29 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
        	}.start();
 	}
+
+	private boolean isLoadedFinished(){
+		return EaseMobHelper.getInstance().isContactsSyncedWithServer() 
+			& EaseMobHelper.getInstance().isGroupsSyncedWithServer()
+			& isSyncedFollowList;
+	}
+
+	private void asyncDismissLoadInitDataDialog(){
+		new Thread(){
+			@Override
+			public void run(){
+				while(!isLoadedFinished()){
+					SystemClock.sleep(2000);
+				}
+
+				Message msg = mHandler.obtainMessage(MSG_LOADING_INIT_DATA_FINISH);
+				mHandler.sendMessage(msg); 
+			}
+       	}.start();
+	}
+
+
+	
 
 	private void queryFollowList(){
 		
@@ -468,7 +528,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 						isSyncedFollowList = false;
 						isSyncingFollowList = false;
 						SamLog.e(TAG,"follower onFailed");
-						//asyncFollowListFromServer();
+						asyncFollowListFromServer();
 					}
 				});
 			}
@@ -480,7 +540,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 						isSyncedFollowList = false;
 						isSyncingFollowList = false;
 						SamLog.e(TAG,"follower onError");
-						//asyncFollowListFromServer();
+						asyncFollowListFromServer();
 					}
 				});
 			}
@@ -689,7 +749,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	private void logoutAccount(){
 		if(mDialog!=null){
-    			mDialog.launchProcessDialog(this,getString(R.string.question_publish_now));
+    			mDialog.launchProcessDialog(this,getString(R.string.logout));
     		}
 
 		EaseMobHelper.getInstance().logout(true,new EMCallBack() {
@@ -890,7 +950,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		{
 			EMMessage message = (EMMessage) event.getData();
 
-			EaseUI.getInstance().getNotifier().onNewMsg(message);
+			//EaseUI.getInstance().getNotifier().onNewMsg(message);
 
 			refreshUIWithMessage();
 
@@ -1049,7 +1109,6 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	@Override
 	protected void onPause() {
 	    super.onPause();
-	    //finish();
 	}
 	 
 	@Override
@@ -1061,10 +1120,12 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	protected void onDestroy(){
 		super.onDestroy();
 		SamLog.i(TAG,"MainActivity onDestroy!");
+		cancelNotification();
 		unregisterNetworkStatusReceiver();
 		unregisterBroadcastReceiver();
 		EMChatManager.getInstance().removeConnectionListener(connectionListener);
 		EaseMobHelper.getInstance().reset();
+
 	}
 	
 	@Override
@@ -1081,12 +1142,20 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	}
 
 	public void exitProgrames(){
+		if(mDialog!=null){
+			mDialog.launchProcessDialog(this,getString(R.string.exiting));
+		}
+		
 		SamService.getInstance().stopSamService();
+		if(mDialog!=null){
+			mDialog.dismissPrgoressDiglog();
+		}
+		
 		this.finish(); 
 	}
 
        
-    private void exit() { 
+    /*private void exit() { 
         if (!isExit) { 
             isExit = true; 
             Toast.makeText(getApplicationContext(), getString(R.string.exit_app_confirmation), 
@@ -1100,7 +1169,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
                
             this.finish(); 
         } 
-    } 
+    } */
     
 	Handler mHandler = new Handler() {
 		@Override
@@ -1126,6 +1195,20 @@ public class MainActivity extends IndicatorFragmentActivity implements
 					launchSignInActivity();
 				}
 				break;
+
+				case MSG_LOADING_INIT_DATA:
+					if(mDialog!=null){
+    						mDialog.launchProcessDialog(MainActivity.this,getString(R.string.load_data));
+    					}
+					break;
+
+				case MSG_LOADING_INIT_DATA_FINISH:
+					if(mDialog!=null){
+    						mDialog.dismissPrgoressDiglog();
+    					}
+					break;
+
+				
 	    		}
 		}
 	};
@@ -1137,7 +1220,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 				public void run() {
 					if (error == EMError.USER_REMOVED || error == EMError.CONNECTION_CONFLICT) {
 						if(mDialog!=null){
-    							mDialog.launchProcessDialog(MainActivity.this,getString(R.string.question_publish_now));
+    							mDialog.launchProcessDialog(MainActivity.this,getString(R.string.exiting_user_conflict));
     						}
 
 						EaseMobHelper.getInstance().reset();
@@ -1200,6 +1283,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(Constants.ACTION_CONTACT_CHANAGED);
 		intentFilter.addAction(Constants.ACTION_AVATAR_UPDATE);
+		intentFilter.addAction(Constants.ACTION_QAACTIVITY_DESTROYED);
+		
 
 		broadcastReceiver = new BroadcastReceiver() {
 			@Override
@@ -1230,7 +1315,10 @@ public class MainActivity extends IndicatorFragmentActivity implements
 							mAvatar.setImageBitmap(bp);
 						}
 					}
-				}	
+				}else if(intent.getAction().equals(Constants.ACTION_QAACTIVITY_DESTROYED)){
+					fragment_samchats.dismissBage();
+					updateReminderIcon(MainActivity.TAB_ID_SAMCHATS,false);
+				}
 				
 
 			}
