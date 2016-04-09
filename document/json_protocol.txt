@@ -53,7 +53,7 @@ Protocol Version: M20
 
 =======================================Register JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Register
 
 {
@@ -107,13 +107,13 @@ action参数不支持返回：  {ret: -2}
 内部错误：  {ret: -103}  
 
 测试地址：
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data= { "header": {"action" : "register"}, "body" : {"cellphone":"1381196123", "username" : "138", "pwd" : "a", "confirm_pwd" : "a", "country_code" : 86}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data= { "header": {"action" : "register"}, "body" : {"cellphone":"1381196123", "username" : "138", "pwd" : "a", "confirm_pwd" : "a", "country_code" : 86}}
 
 
 
 =======================================Login JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Login :
 
 { 
@@ -161,12 +161,12 @@ action参数不支持返回：  {ret: -2}
 用户或者密码错误返回：  {ret: -201}  
 
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "login"}, "body" : { "username" : "138", "pwd" : "a"}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "login"}, "body" : { "username" : "138", "pwd" : "a"}}
 
 
 =======================================Logout JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 logout协议：
 
 { 
@@ -187,13 +187,13 @@ action参数不支持返回：  {ret: -2}
 token 格式不正确：  {ret: -4}  
 token 不合法：  {ret: -401}  
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data= { "header": {"action" : "logout", "token": token}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data= { "header": {"action" : "logout", "token": token}}
 
 
 
 =======================================Upgrade JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Upgrade:
 
 {
@@ -247,12 +247,12 @@ token不存在：  {ret: -5}
 不合法的用户TOKEN :{ret : -502}
 用户已经升级过了 :{ret : -503}
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upgrade", "token": token},"body":{"area" : "area", "location" : " OR ", "desc" : "description"}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "upgrade", "token": token},"body":{"area" : "area", "location" : " OR ", "desc" : "description"}}
 
 
 =======================================Query JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 {
     "header":
     {
@@ -337,14 +337,14 @@ token不存在：  {ret: -5}
 opt不支持 :{ret : -701}  
 
 User Query:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 1, "param" : { "username" : "138"}}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 1, "param" : { "username" : "138"}}}
 
 User List Query
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 2, "param" : { "usernames" : ["138", "139"]}}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 2, "param" : { "usernames" : ["138", "139"]}}}
 
 =======================================Relation Query JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 {
     "header":
     {
@@ -396,11 +396,11 @@ action参数不支持返回：  {ret: -2}
 token 格式不正确：  {ret: -4}  
 token不存在：  {ret: -5}  
 
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "relation", "token": "token"},"body":{"type" : [1/2/3], userid2: user2}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "relation", "token": "token"},"body":{"type" : [1/2/3], userid2: user2}}
 
 =======================================Skservier company infomation query JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Query :
 
 { 
@@ -462,11 +462,11 @@ opt not support ：  {ret: -1201}
 queryed user is not skervier：  {ret: -1202}  
 
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "skservicer-cmp-query", "token" : "token id"}, "body" : { "opt" : 1, "uid" : uid}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "skservicer-cmp-query", "token" : "token id"}, "body" : { "opt" : 1, "uid" : uid}}
 
 =======================================Question JSON Protocol =====================================
 API: /api/1.0/QuestionAPI
-http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI
+http://139.129.57.77/sw/api/1.0/QuestionAPI
 Question:
 新问题：
 {
@@ -575,12 +575,12 @@ opt unsupported：  {ret: -301}
 内部错误：  {ret: -302}  
 没有该问题：  {ret: -303}  --> 针对取消， 结束问题时会返回该值
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI?data={"header": {"action": "question", "token":"95189486473904140"}, "body": { "opt":1, "question" :"aaa"}}
+http://139.129.57.77/sw/api/1.0/QuestionAPI?data={"header": {"action": "question", "token":"95189486473904140"}, "body": { "opt":1, "question" :"aaa"}}
 
 
 =======================================Answer JSON Protocol =====================================
 API: /api/1.0/QuestionAPI
-http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI
+http://139.129.57.77/sw/api/1.0/QuestionAPI
 Answer:
 
 {
@@ -605,11 +605,11 @@ token不存在：  {ret: -5}
 No Such Question：  {ret: -601}  
 Not Servicer：  {ret: -602}  
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI?data={"header": {"action": "answer", "token":"95056787646578688"}, "body": { "answer":"content", "question_id" : quid}}
+http://139.129.57.77/sw/api/1.0/QuestionAPI?data={"header": {"action": "answer", "token":"95056787646578688"}, "body": { "answer":"content", "question_id" : quid}}
 
 =======================================Follow JSON Protocol =====================================
 API: /api/1.0/UserApi
-http://121.42.207.185/SkyWorld/api/1.0/UserApi
+http://139.129.57.77/sw/api/1.0/UserApi
 Follow :
 
 { 
@@ -638,7 +638,7 @@ unsupport flag : {ret: -1002}
 
 =======================================Feedback JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Feedback协议：
 
 { 
@@ -658,13 +658,13 @@ Feedback协议：
 解析失败返回：  {ret: -1}
 action参数不支持返回：  {ret: -2}  
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={"header": {"action": "feedback", "token":"95056787646578688"}, "body": { "comment":"content"}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={"header": {"action": "feedback", "token":"95056787646578688"}, "body": { "comment":"content"}}
 
 
 
 =======================================Update UserAvatar Protocol =====================================
 API: /api/1.0/UserAvatarAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAvatarAPI
+http://139.129.57.77/sw/api/1.0/UserAvatarAPI
 This API only support POST and body must use multipart/form-data
 HTTP - parameter data: 
 ----------------------------------------------------------------------
@@ -698,12 +698,12 @@ token不存在：  {ret: -5}
 type not support：  {ret: -802}  
 头像size过大：  {ret: -803}  
 测试地址:
-http://121.42.207.185/SkyWorld/test.html
+http://139.129.57.77/sw/test.html
 
 
 =======================================Article Publish Protocol =====================================
 API: /api/1.0/ArticleApi
-http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+http://139.129.57.77/sw/api/1.0/ArticleApi
 This API only support POST and body must use multipart/form-data
 HTTP - parameter data: 
 ----------------------------------------------------------------------
@@ -734,7 +734,7 @@ handle stream failed：  {ret: -6}
 
 =======================================Article Recommend JSON Protocol =====================================
 API: /api/1.0/ArticleApi
-http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+http://139.129.57.77/sw/api/1.0/ArticleApi
 Recommend协议：
 
 { 
@@ -766,7 +766,7 @@ article not exist : { ret : -901}
 
 =======================================Article Comment JSON Protocol =====================================
 API: /api/1.0/ArticleApi
-http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+http://139.129.57.77/sw/api/1.0/ArticleApi
 Comment协议：
 
 { 
@@ -801,7 +801,7 @@ article not exist : { ret : -901}
 
 =======================================Article Query JSON Protocol =====================================
 API: /api/1.0/ArticleApi
-http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+http://139.129.57.77/sw/api/1.0/ArticleApi
 Article Query
 
 {
@@ -874,7 +874,7 @@ token不存在：  {ret: -5}
 
 ############################################################################################################
 Push Connect API:
-121.42.207.185/SkyWorld/push
+139.129.57.77/sw/push
 =======================================Push New Question JSON Protocol =====================================
 ############################################################################################################
 API : /push
