@@ -46,6 +46,10 @@ Protocol Version: M18
 Protocol Version: M19
               Add Skservicer company information query
 
+Protocol Version: M20 
+2016.04.07
+                                    新增“热点话题列表”查询协议              
+
 
 =======================================Register JSON Protocol =====================================
 API: /api/1.0/UserAPI
@@ -979,6 +983,38 @@ New Answer json:
             },
     }
 
+}
+
+http://139.129.57.77/sw/api_1.0_HotTopicAPI.do
+=======================================热点话题列表查询 JSON 协议 =====================================
+发送:
+{
+    "header": {
+        "action": "query_topic_list", 
+        "token": "token"
+    }, 
+    "body": {
+        "opt_type": 0,  // 0 向前翻, 1 向后翻
+        "topic_type": 0, // 0 所有, 1.房产,  2.学校......
+        "cur_count": 0, // opt_type = 1 时有效, 标示当前已经查询到的条数
+        "update_time_pre": 1460044580000 //微秒 第一次查询或最近一次上翻的时间对应返回的query_time，第一次查询时,为0
+    }
+}
+
+返回:
+{
+    "ret": 0, 
+    "topics": [
+        {
+            "topic_type": 1, 
+            "name": "房产"
+        }, 
+        {
+            "topic_type": 2, 
+            "name": "医疗"
+        }
+    ], 
+    "query_time": 1460081211000
 }
 
 
