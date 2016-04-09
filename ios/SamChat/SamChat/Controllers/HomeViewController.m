@@ -22,6 +22,14 @@
 
 #import "WZLBadgeImport.h"
 #import "KYDrawerController.h"
+#import "AnswerTheQuestionViewController.h"
+
+typedef enum{
+    HomeViewTabServiceSearch = 0,
+    HomeViewTabChatList,
+    HomeViewTabOfficalList,
+    HomeViewTabProducer
+}HomeViewTabss;
 
 
 @interface HomeViewController () <SCUITabPagerDataSource, SCUITabPagerDelegate, UIAlertViewDelegate>
@@ -97,16 +105,16 @@
 {
     UIViewController *viewController = nil;
     switch (index) {
-        case 0:
+        case HomeViewTabServiceSearch:
             viewController = self.serviceSearchVC;
             break;
-        case 1:
+        case HomeViewTabChatList:
             viewController = [ChatDemoHelper shareHelper].conversationListVC;
             break;
-        case 2:
+        case HomeViewTabOfficalList:
             viewController = self.officalListVC;
             break;
-        case 3:
+        case HomeViewTabProducer:
             viewController = self.producerVC;
             break;
         default:
@@ -547,11 +555,17 @@ static NSString *kGroupName = @"GroupName";
 - (void)didReceiveLocalNotification:(UILocalNotification *)notification
 {
     NSDictionary *userInfo = notification.userInfo;
+    if(userInfo && userInfo[LOCAL_NOTIFICATION_QUESTION_ID]){
+        NSInteger questionId =[userInfo[LOCAL_NOTIFICATION_QUESTION_ID] integerValue];
+        [self jumpToAnswerTheQuestionWithQuestionId:questionId];
+        return;
+    }
+    
     if (userInfo)
     {
         if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]]) {
-            //            ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
-            //            [chatController hideImagePicker];
+            // ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
+            //[chatController hideImagePicker];
         }
         
         NSArray *viewControllers = self.navigationController.viewControllers;
@@ -622,7 +636,23 @@ static NSString *kGroupName = @"GroupName";
     {
         [self.navigationController popToViewController:self animated:NO];
 //        [self setSelectedViewController:_chatListVC];
+        [self selectTabbarIndex:HomeViewTabChatList];
     }
+}
+
+- (void)jumpToAnswerTheQuestionWithQuestionId:(NSInteger)questionId
+{
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    ReceivedQuestion *receivedQuestion = nil;
+    receivedQuestion = [ReceivedQuestion receivedQuestionWithQuestionID:questionId inManagedObjectContext:mainContext];
+
+    if(receivedQuestion == nil){
+        return;
+    }
+#warning add viewcontrollers enumerate check
+    AnswerTheQuestionViewController *answerTheQuestionVC = [[AnswerTheQuestionViewController alloc] init];
+    answerTheQuestionVC.receivedQuestion = receivedQuestion;
+    [self.navigationController pushViewController:answerTheQuestionVC animated:YES];
 }
 
 @end

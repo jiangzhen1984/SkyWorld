@@ -95,13 +95,4 @@
 #define SKYWORLD_EASEMOB            @"easemob"
 
 
-typedef enum {
-    SkyWorldUsernameOrPasswordError = -201,
-    SkyWorldInternalError = -103,
-    SkyWorldPasswordMismatch = -102,
-    SkyWorldUsernameOrPasswordAlreadyExisted = -101,
-    SkyWorldActionParameterUnsupported = -2,
-    SkyWorldParseFailed = -1,
-} SKYWORLD_ERROR_CODE;
-
 #endif /* SCSkyWorldAPIMacro_h */

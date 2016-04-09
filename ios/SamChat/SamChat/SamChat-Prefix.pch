@@ -33,6 +33,9 @@
 #import "SamChatClient.h"
 #import "SamChatHelper.h"
 
+// Core Data
+#import "ContactUser.h"
+
 // easemob
 #import "ChatDemoUIDefine.h"
 #import "EMAlertView.h"

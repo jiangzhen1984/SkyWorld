@@ -106,10 +106,14 @@ static SamChatHelper *sharedInstance = nil;
 {
     NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
     [mainContext performBlockAndWait:^{
-        [ReceivedQuestion receivedQuestionWithSkyWorldInfo:question
+        ReceivedQuestion *receivedQuestion = [ReceivedQuestion receivedQuestionWithSkyWorldInfo:question
                                     inManagedObjectContext:mainContext];
-        [_mainVC setupUnreadMessageCount];
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RECEIVED_NEW_QUESTION object:nil];
+        if([receivedQuestion.status isEqualToNumber:RECEIVED_QUESTION_VALID]){ // new question
+            [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithUnreadQuestionCountAddOne];
+            [_mainVC setupUnreadMessageCount];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RECEIVED_NEW_QUESTION object:nil];
+            [self addNewQuestionLocalNotification:receivedQuestion];
+        }
     }];
 }
 
@@ -119,5 +123,17 @@ static SamChatHelper *sharedInstance = nil;
     [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobPushInfo:info];
 }
 
+- (void)addNewQuestionLocalNotification:(ReceivedQuestion *)receivedQuestion
+{
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = [NSDate date];
+    notification.alertBody = [NSString stringWithFormat:@"收到新的问题:%@(%@)",receivedQuestion.question, receivedQuestion.fromWho.username];
+    notification.alertAction = @"打开";
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    notification.soundName=UILocalNotificationDefaultSoundName;
+    notification.userInfo=@{LOCAL_NOTIFICATION_TYPE:LOCAL_NOTIFICATION_TYPE_NEW_QUESTION,
+                            LOCAL_NOTIFICATION_QUESTION_ID:receivedQuestion.question_id};
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+}
 
 @end
