@@ -14,7 +14,7 @@
 #import "SCViewFactory.h"
 #import "SCSignupModel.h"
 
-@interface SignupSettingViewController () <SCSignupDelegate, SCLoginDelegate>
+@interface SignupSettingViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet UILabel *labelErrorTip;
@@ -53,30 +53,6 @@
     self.labelErrorTip.text = @"";
 }
 
-#pragma mark - SCLoginDelegate
-- (void)didLoginSuccess
-{
-    [self hideHud];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
-}
-
-#pragma mark - SCSignupDelegate
-- (void)didSignupSuccess
-{
-    [self hideHud];
-    [self showHudInView:self.view hint:NSLocalizedString(@"siguplogin.ongoing", @"Signup Success, Is Login...")];
-}
-
-- (void)didSignupFailedWithError:(SCSkyWorldError *)error
-{
-    [self hideHud];
-    if(error.code == SCSkyWorldErrorUsernameOrPasswordAlreadyExist){
-        self.labelErrorTip.text = error.errorDescription;
-    }else{
-        [self showHint:error.errorDescription];
-    }
-}
-
 #pragma mark - Action
 - (IBAction)register:(UIButton *)sender
 {
@@ -87,7 +63,37 @@
                                    SKYWORLD_PWD: self.password.text,
                                    SKYWORLD_COUNTRY_CODE: [NSNumber numberWithInteger:[self.countryCode integerValue]],
                                    SKYWORLD_CONFIRM_PWD: self.password.text};
-    [[SamChatClient sharedInstance] signupWithUserinfoDictionary:registerInfo delegate:self];
+   // [[SamChatClient sharedInstance] signupWithUserinfoDictionary:registerInfo delegate:self];
+    NSString *username = self.username.text;
+    NSString *password = self.password.text;
+    __weak typeof(self) weakSelf = self;
+    [[SamChatClient sharedInstance] signupWithUserinfoDictionary:registerInfo
+        completion:^(BOOL success, SCSkyWorldError *error) {
+            [weakSelf hideHud];
+            if(success){
+              [weakSelf showHudInView:weakSelf.view hint:NSLocalizedString(@"siguplogin.ongoing", @"Signup Success, Is Login...")];
+              [[SamChatClient sharedInstance] loginWithUsername:username
+                   password:password
+                 completion:^(BOOL success, SCSkyWorldError *error) {
+                     [weakSelf hideHud];
+                     if(success){
+                         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
+                     }else{
+                         if(error.code == SCSkyWorldErrorUsernameOrPasswordWrong){
+                             weakSelf.labelErrorTip.text = error.errorDescription;
+                         }else{
+                             [weakSelf showHint:error.errorDescription];
+                         }
+                     }
+                 }];
+            }else{
+              if(error.code == SCSkyWorldErrorUsernameOrPasswordAlreadyExist){
+                  weakSelf.labelErrorTip.text = error.errorDescription;
+              }else{
+                  [weakSelf showHint:error.errorDescription];
+              }
+            }
+        }];
 }
 
 - (IBAction)usernameDoneEditing:(id)sender

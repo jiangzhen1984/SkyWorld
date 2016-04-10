@@ -10,11 +10,8 @@
 
 @implementation SCLoginModel
 
-+ (void)loginWithUsername:(NSString *)username password:(NSString *)password delegate:(nonnull id<SCLoginDelegate>) delegate
++ (void)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
-    if(delegate == nil){
-        return;
-    }
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:[SCSkyWorldAPI urlLoginWithUsername:username passWord:password]
       parameters:nil
@@ -24,22 +21,28 @@
                 NSDictionary *response = responseObject;
                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                 if(errorCode){
-                    [delegate didLoginFailedWithError:[SCSkyWorldError errorWithCode:errorCode]];
+                    if(completion){
+                        completion(false, [SCSkyWorldError errorWithCode:errorCode]);
+                    }
                 }else{
                     SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
                     [userProfileManager saveCurrentLoginUserInformationWithSkyWorldResponse:response
                                                                                andOtherInfo:@{SKYWORLD_PWD:password}];
-                    [SCLoginModel loginEaseMobWithUsername:username password:password delegate:delegate];
+                    [SCLoginModel loginEaseMobWithUsername:username password:password completion:completion];
                 }
             }else{
-                [delegate didLoginFailedWithError:[SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]];
+                if(completion){
+                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+                }
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [delegate didLoginFailedWithError:[SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]];
+            if(completion){
+                completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
+            }
         }];
 }
 
-+ (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password delegate:(id<SCLoginDelegate>) delegate
++ (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         EMError *error = [[EMClient sharedClient] loginWithUsername:username
@@ -67,24 +70,30 @@
                  [weakself saveLastLoginUsername];
                  });
                  });*/
-                [delegate didLoginSuccess];
+                if(completion){
+                    completion(true, nil);
+                }
             } else {
                 [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithEaseMobStatus:SC_LOGINUSER_NO_LOGIN];
-                 switch (error.code){
-                     case EMErrorNetworkUnavailable:
-                         [delegate didLoginFailedWithError:[SCSkyWorldError errorWithCode:SCSkyWorldErrorNetworkUnavailable]];
-                         break;
-                     case EMErrorServerTimeout:
-                     case EMErrorServerNotReachable:
-                         [delegate didLoginFailedWithError:[SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]];
-                         break;
-                     case EMErrorUserAuthenticationFailed:
-                         [delegate didLoginFailedWithError:[SCSkyWorldError errorWithCode:SCSkyWorldErrorUsernameOrPasswordWrong]];
-                         break;
-                     default:
-                         [delegate didLoginFailedWithError:[SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]];
-                         break;
-                 }
+                NSInteger errorCode = SCSkyWorldErrorUnknowError;
+                switch (error.code){
+                    case EMErrorNetworkUnavailable:
+                        errorCode = SCSkyWorldErrorNetworkUnavailable;
+                        break;
+                    case EMErrorServerTimeout:
+                    case EMErrorServerNotReachable:
+                        errorCode = SCSkyWorldErrorServerNotReachable;
+                        break;
+                    case EMErrorUserAuthenticationFailed:
+                        errorCode = SCSkyWorldErrorUsernameOrPasswordWrong;
+                        break;
+                    default:
+                        errorCode = SCSkyWorldErrorUnknowError;
+                        break;
+                }
+                if(completion){
+                    completion(false, [SCSkyWorldError errorWithCode:errorCode]);
+                }
             }
         });
     });

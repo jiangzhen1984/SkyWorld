@@ -8,16 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SCLoginDelegate
-- (void)didLoginSuccess;
-@optional
-- (void)didLoginFailedWithError:(SCSkyWorldError *)error;
-@end
-
-
 @interface SCLoginModel : NSObject
 
-+ (void)loginWithUsername:(NSString *)username password:(NSString *)password delegate:(id<SCLoginDelegate>) delegate;
-+ (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password delegate:(id<SCLoginDelegate>) delegate;
++ (void)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
++ (void)loginEaseMobWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "SamChatClient.h"
+#import "SCUserSettingModel.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -33,15 +34,19 @@ static SamChatClient *sharedInstance = nil;
     return self;
 }
 
-
-- (void)loginWithUsername:(NSString *)username password:(NSString *)password delegate:(id<SCLoginDelegate>) delegate
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
-    [SCLoginModel loginWithUsername:username password:password delegate:delegate];
+    [SCLoginModel loginWithUsername:username password:password completion:completion];
 }
 
-- (void)signupWithUserinfoDictionary:(NSDictionary *)info delegate:(id<SCSignupDelegate, SCLoginDelegate>) delegate
+- (void)signupWithUserinfoDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
-    [SCSignupModel signupWithUserinfoDictionary:info delegate:delegate];
+    [SCSignupModel signupWithUserinfoDictionary:info completion:completion];
+}
+
+- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCUserSettingModel uploadUserAvatarInBackground:image completion:completion];
 }
 
 - (void)asyncWaitingPush

@@ -28,9 +28,6 @@
 - (void)updateCurrentLoginUserInformationWithUnreadQuestionCountAddOne;
 - (void)clearCurrentLoginUserInformationUnreadQuestionCount;
 
-- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion;
-
-
 
 //- (void)updateUserProfileInBackground:(NSDictionary*)param
 //                           completion:(void (^)(BOOL success, NSError *error))completion;

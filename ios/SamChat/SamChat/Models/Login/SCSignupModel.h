@@ -9,13 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "SCLoginModel.h"
 
-@protocol SCSignupDelegate
-- (void)didSignupSuccess;
-- (void)didSignupFailedWithError:(SCSkyWorldError *)error;
-@end
-
 @interface SCSignupModel : NSObject
 
-+ (void)signupWithUserinfoDictionary:(NSDictionary *)info delegate:(id<SCSignupDelegate, SCLoginDelegate>) delegate;
++ (void)signupWithUserinfoDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
 @end

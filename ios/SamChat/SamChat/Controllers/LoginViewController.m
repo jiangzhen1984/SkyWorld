@@ -14,7 +14,7 @@
 #import "SCUtils.h"
 #import <sqlite3.h>
 
-@interface LoginViewController () <SCLoginDelegate>
+@interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet UIButton *buttonShowPassword;
@@ -97,29 +97,24 @@
     [self clearLabelErrorTip];
     
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
-    
+
+    __weak typeof(self) weakSelf = self;
     [[SamChatClient sharedInstance] loginWithUsername:self.username.text
                                              password:self.password.text
-                                             delegate:self];
+       completion:^(BOOL success, SCSkyWorldError *error) {
+           [weakSelf hideHud];
+           if(success){
+               [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
+           }else{
+               if(error.code == SCSkyWorldErrorUsernameOrPasswordWrong){
+                   weakSelf.labelErrorTip.text = error.errorDescription;
+               }else{
+                   [weakSelf showHint:error.errorDescription];
+               }
+           }
+       }];
 }
 
-#pragma mark - SCLoginDelegate
-- (void)didLoginSuccess
-{
-    [self hideHud];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
-}
-
-- (void)didLoginFailedWithError:(SCSkyWorldError *)error
-{
-    [self hideHud];
-    //[[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
-    if(error.code == SCSkyWorldErrorUsernameOrPasswordWrong){
-        self.labelErrorTip.text = error.errorDescription;
-    }else{
-        [self showHint:error.errorDescription];
-    }
-}
 
 - (IBAction)usernameDoneEditing:(id)sender
 {

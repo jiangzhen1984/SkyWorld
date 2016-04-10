@@ -10,11 +10,8 @@
 
 @implementation SCSignupModel
 
-+ (void)signupWithUserinfoDictionary:(NSDictionary *)info delegate:(id<SCSignupDelegate, SCLoginDelegate>) delegate
++ (void)signupWithUserinfoDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
-    if(delegate == nil){
-        return;
-    }
     NSString *urlString = [SCSkyWorldAPI urlRegisterWithCellphone:info[SKYWORLD_CELLPHONE]
                                                       countryCode:info[SKYWORLD_COUNTRY_CODE]
                                                          userName:info[SKYWORLD_USERNAME]
@@ -28,21 +25,26 @@
                 NSDictionary *response = responseObject;
                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                 if(errorCode) {
-                    [delegate didSignupFailedWithError:[SCSkyWorldError errorWithCode:errorCode]];
+                    if(completion){
+                        completion(false, [SCSkyWorldError errorWithCode:errorCode]);
+                    }
                 }else{
                     SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
                     [userProfileManager saveCurrentLoginUserInformationWithSkyWorldResponse:response
                                                                                andOtherInfo:@{SKYWORLD_PWD:info[SKYWORLD_PWD]}];
-                    [delegate didSignupSuccess];
-                    [SCLoginModel loginEaseMobWithUsername:info[SKYWORLD_USERNAME]
-                                                  password:info[SKYWORLD_PWD]
-                                                  delegate:delegate];
+                    if(completion){
+                        completion(true, nil);
+                    }
                 }
             }else{
-                [delegate didSignupFailedWithError:[SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]];
+                if(completion){
+                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+                }
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [delegate didSignupFailedWithError:[SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]];
+            if(completion){
+                completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
+            }
         }];
 }
 
