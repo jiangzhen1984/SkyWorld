@@ -1364,6 +1364,13 @@
 			name = Chat;
 			sourceTree = "<group>";
 		};
+		316F4E5F1CBA483E00B2F9A3 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Service;
+			sourceTree = "<group>";
+		};
 		3178FFE81CA5494500796D25 /* SkyWorld */ = {
 			isa = PBXGroup;
 			children = (
@@ -1577,6 +1584,7 @@
 		31F8E71F1CA3BA790049EE23 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				316F4E5F1CBA483E00B2F9A3 /* Service */,
 				316F4E5B1CBA414000B2F9A3 /* Chat */,
 				316F4E571CBA2BE000B2F9A3 /* Setting */,
 				316F4E351CB8EA5800B2F9A3 /* Push */,

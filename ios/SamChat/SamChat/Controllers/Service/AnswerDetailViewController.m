@@ -7,6 +7,7 @@
 //
 
 #import "AnswerDetailViewController.h"
+#import "ChatViewController.h"
 
 @interface AnswerDetailViewController ()
 
@@ -23,6 +24,22 @@
     
     self.labelQuestion.text = self.question;
     self.labelAnswer.text = self.answer.answer;
+}
+
+- (IBAction)chatNow:(UIButton *)sender
+{
+    NSString *nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:self.answer.fromWho.username];
+    ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:nickname conversationType:EMConversationTypeChat];
+    chatController.title = nickname;
+    [self.navigationController pushViewController:chatController animated:YES];
+}
+
+- (IBAction)addAsFriend:(UIButton *)sender
+{
+}
+
+- (IBAction)follow:(UIButton *)sender
+{
 }
 
 @end

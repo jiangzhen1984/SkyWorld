@@ -197,6 +197,36 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukJ-Fb-EEK">
+                                <rect key="frame" x="20" y="562" width="181.5" height="30"/>
+                                <color key="backgroundColor" red="0.078431372550000003" green="0.58823529409999997" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="现在就聊">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="chatNow:" destination="uaa-vQ-1kF" eventType="touchUpInside" id="pll-kh-iPf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bvc-rE-kry">
+                                <rect key="frame" x="398.5" y="562" width="181.5" height="30"/>
+                                <color key="backgroundColor" red="0.078431372550000003" green="0.58823529409999997" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="请您关注">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="follow:" destination="uaa-vQ-1kF" eventType="touchUpInside" id="6PM-yJ-XtZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Prl-cn-KFI">
+                                <rect key="frame" x="209.5" y="562" width="181" height="30"/>
+                                <color key="backgroundColor" red="0.078431372550000003" green="0.58823529409999997" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="加为好友">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addAsFriend:" destination="uaa-vQ-1kF" eventType="touchUpInside" id="xuT-6F-uFY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -204,13 +234,22 @@
                             <constraint firstItem="hfc-1j-b0f" firstAttribute="top" secondItem="JUC-wX-78h" secondAttribute="bottom" constant="26.5" id="0T4-Uz-g6b"/>
                             <constraint firstAttribute="leadingMargin" secondItem="4kJ-Nh-Mw8" secondAttribute="leading" id="6ig-M3-mhU"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hfc-1j-b0f" secondAttribute="trailing" id="7nG-J5-0kI"/>
+                            <constraint firstItem="Prl-cn-KFI" firstAttribute="leading" secondItem="ukJ-Fb-EEK" secondAttribute="trailing" constant="8" id="9fn-eN-Ugk"/>
                             <constraint firstAttribute="leadingMargin" secondItem="ZBR-JH-Ge6" secondAttribute="leading" id="Gef-7U-fHf"/>
                             <constraint firstItem="JUC-wX-78h" firstAttribute="leading" secondItem="ZBR-JH-Ge6" secondAttribute="trailing" constant="8" id="GtU-jn-29c"/>
                             <constraint firstItem="ZBR-JH-Ge6" firstAttribute="top" secondItem="hW6-n5-lEO" secondAttribute="bottom" constant="59" id="NSC-m9-5Gd"/>
                             <constraint firstItem="4kJ-Nh-Mw8" firstAttribute="top" secondItem="ZBR-JH-Ge6" secondAttribute="bottom" constant="26.5" id="Smk-LK-FCA"/>
                             <constraint firstItem="hfc-1j-b0f" firstAttribute="leading" secondItem="4kJ-Nh-Mw8" secondAttribute="trailing" constant="8" id="Tot-zK-NSD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bvc-rE-kry" secondAttribute="trailing" id="WK7-1n-qx8"/>
+                            <constraint firstItem="bvc-rE-kry" firstAttribute="leading" secondItem="Prl-cn-KFI" secondAttribute="trailing" constant="8" id="Zns-xy-DPG"/>
+                            <constraint firstItem="KGK-Ig-OG8" firstAttribute="top" secondItem="ukJ-Fb-EEK" secondAttribute="bottom" constant="8" id="azH-gw-rg6"/>
+                            <constraint firstItem="Prl-cn-KFI" firstAttribute="width" secondItem="ukJ-Fb-EEK" secondAttribute="width" id="eBK-hL-ase"/>
+                            <constraint firstItem="bvc-rE-kry" firstAttribute="width" secondItem="ukJ-Fb-EEK" secondAttribute="width" id="hzn-oS-8i8"/>
                             <constraint firstItem="hfc-1j-b0f" firstAttribute="leading" secondItem="JUC-wX-78h" secondAttribute="leading" id="iFQ-ar-Vpj"/>
+                            <constraint firstItem="bvc-rE-kry" firstAttribute="baseline" secondItem="Prl-cn-KFI" secondAttribute="baseline" id="n6Y-Vt-zJy"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="ukJ-Fb-EEK" secondAttribute="leading" id="oAQ-Zm-F0W"/>
                             <constraint firstItem="JUC-wX-78h" firstAttribute="baseline" secondItem="ZBR-JH-Ge6" secondAttribute="baseline" id="s26-L7-WWj"/>
+                            <constraint firstItem="Prl-cn-KFI" firstAttribute="baseline" secondItem="ukJ-Fb-EEK" secondAttribute="baseline" id="zfq-13-HpQ"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

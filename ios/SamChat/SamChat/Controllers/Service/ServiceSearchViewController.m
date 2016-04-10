@@ -123,7 +123,7 @@
                  NSDictionary *response = responseObject;
                  NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                  if(errorCode) {
-                     [self questionErrorWithErrorCode:errorCode];
+                     [self questionFailedWithErrorCode:errorCode];
                      return;
                  }
                  [self questionSuccessWithResponse:response];
@@ -135,7 +135,7 @@
 }
 
 
-- (void)questionErrorWithErrorCode:(NSInteger)errorCode
+- (void)questionFailedWithErrorCode:(NSInteger)errorCode
 {
     DebugLog(@"question error code: %ld", errorCode);
 }
@@ -179,11 +179,6 @@
 }
 
 #pragma mark - Table Data Source & Delegate
-//-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    return 1;
-//}
-
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(self.isSearching){
