@@ -9,7 +9,6 @@
 #import "ContactListSelectViewController.h"
 
 #import "ChatViewController.h"
-#import "UserProfileManager.h"
 
 @interface ContactListSelectViewController () <EMUserListViewControllerDelegate,EMUserListViewControllerDataSource>
 
@@ -91,10 +90,10 @@
 {
     id<IUserModel> model = nil;
     model = [[EaseUserModel alloc] initWithBuddy:buddy];
-    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
-    if (profileEntity) {
-        model.nickname= profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
-        model.avatarURLPath = profileEntity.imageUrl;
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
+    if(contactUser){
+        model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:contactUser.username];
+        model.avatarURLPath = contactUser.imagefile;
     }
     return model;
 }
@@ -104,10 +103,10 @@
 {
     id<IUserModel> model = nil;
     model = [self.dataArray objectAtIndex:indexPath.row];
-    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
-    if (profileEntity) {
-        model.nickname= profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
-        model.avatarURLPath = profileEntity.imageUrl;
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
+    if(contactUser){
+        model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:contactUser.username];
+        model.avatarURLPath = contactUser.imagefile;
     }
     return model;
 }

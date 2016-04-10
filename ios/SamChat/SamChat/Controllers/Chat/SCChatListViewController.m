@@ -13,7 +13,6 @@
 #import "ChatViewController.h"
 #import "RobotManager.h"
 #import "RobotChatViewController.h"
-#import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
 
 #import "SCConversationCell.h"
@@ -30,7 +29,7 @@
         if ([[RobotManager sharedInstance] isRobotWithUsername:self.conversationId]) {
             return [[RobotManager sharedInstance] getRobotNickWithUsername:self.conversationId];
         }
-        return [[UserProfileManager sharedInstance] getNickNameWithUsername:self.conversationId];
+        return [[SCUserProfileManager sharedInstance] getNickNameWithUsername:self.conversationId];
     } else if (self.type == EMConversationTypeGroupChat) {
         if ([self.ext objectForKey:@"subject"] || [self.ext objectForKey:@"isPublic"]) {
             return [self.ext objectForKey:@"subject"];
@@ -169,10 +168,11 @@
         if ([[RobotManager sharedInstance] isRobotWithUsername:conversation.conversationId]) {
             model.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
         } else {
-            UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:conversation.conversationId];
-            if (profileEntity) {
-                model.title = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
-                model.avatarURLPath = profileEntity.imageUrl;
+            NSString *username = conversation.conversationId;
+            ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username];
+            if(contactUser){
+                model.title = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:username];
+                model.avatarURLPath = contactUser.imagefile;
             }
         }
     } else if (model.conversation.type == EMConversationTypeGroupChat) {

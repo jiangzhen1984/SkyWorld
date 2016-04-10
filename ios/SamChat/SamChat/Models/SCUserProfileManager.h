@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ContactUser.h"
 
 @interface SCUserProfileManager : NSObject
 
 + (instancetype)sharedInstance;
 
+// 当前用户
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *token;
 
@@ -27,4 +29,25 @@
 - (void)clearCurrentLoginUserInformationUnreadQuestionCount;
 
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion;
+
+
+
+//- (void)updateUserProfileInBackground:(NSDictionary*)param
+//                           completion:(void (^)(BOOL success, NSError *error))completion;
+
+
+- (void)loadUserProfileInBackground:(NSArray*)usernames
+                       saveToLoacal:(BOOL)save
+                         completion:(void (^)(BOOL success, NSError *error))completion;
+
+- (void)loadUserProfileInBackgroundWithBuddy:(NSArray*)buddyList
+                                saveToLoacal:(BOOL)save
+                                  completion:(void (^)(BOOL success, NSError *error))completion;
+
+
+- (ContactUser *)getUserProfileByUsername:(NSString*)username;
+- (ContactUser *)getCurUserProfile;
+- (NSString*)getNickNameWithUsername:(NSString*)username;
+
+
 @end

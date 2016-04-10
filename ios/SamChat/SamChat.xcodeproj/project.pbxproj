@@ -251,7 +251,6 @@
 		31FAC6AB1CAAB7E30034A0CD /* ApplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6631CAAB7E30034A0CD /* ApplyViewController.m */; };
 		31FAC6AC1CAAB7E30034A0CD /* RealtimeSearchUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6651CAAB7E30034A0CD /* RealtimeSearchUtil.m */; };
 		31FAC6AD1CAAB7E30034A0CD /* InvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6681CAAB7E30034A0CD /* InvitationManager.m */; };
-		31FAC6AE1CAAB7E30034A0CD /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC66A1CAAB7E30034A0CD /* UserProfileManager.m */; };
 		31FAC6AF1CAAB7E30034A0CD /* EMLoginViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 31FAC66B1CAAB7E30034A0CD /* EMLoginViewController.strings */; };
 		31FAC6B01CAAB7E30034A0CD /* EMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC66E1CAAB7E30034A0CD /* EMLoginViewController.m */; };
 		31FAC6B11CAAB7E30034A0CD /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6701CAAB7E30034A0CD /* MainViewController.m */; };
@@ -817,8 +816,6 @@
 		31FAC6651CAAB7E30034A0CD /* RealtimeSearchUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealtimeSearchUtil.m; sourceTree = "<group>"; };
 		31FAC6671CAAB7E30034A0CD /* InvitationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationManager.h; sourceTree = "<group>"; };
 		31FAC6681CAAB7E30034A0CD /* InvitationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationManager.m; sourceTree = "<group>"; };
-		31FAC6691CAAB7E30034A0CD /* UserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileManager.h; sourceTree = "<group>"; };
-		31FAC66A1CAAB7E30034A0CD /* UserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileManager.m; sourceTree = "<group>"; };
 		31FAC66C1CAAB7E30034A0CD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EMLoginViewController.strings; sourceTree = "<group>"; };
 		31FAC66D1CAAB7E30034A0CD /* EMLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMLoginViewController.h; sourceTree = "<group>"; };
 		31FAC66E1CAAB7E30034A0CD /* EMLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMLoginViewController.m; sourceTree = "<group>"; };
@@ -2071,8 +2068,6 @@
 			children = (
 				31FAC6671CAAB7E30034A0CD /* InvitationManager.h */,
 				31FAC6681CAAB7E30034A0CD /* InvitationManager.m */,
-				31FAC6691CAAB7E30034A0CD /* UserProfileManager.h */,
-				31FAC66A1CAAB7E30034A0CD /* UserProfileManager.m */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -2559,7 +2554,6 @@
 				31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */,
 				31FAC5981CAAB3C50034A0CD /* EMRemarkImageView.m in Sources */,
 				31FAC58B1CAAB3C50034A0CD /* TTGlobalUICommon.m in Sources */,
-				31FAC6AE1CAAB7E30034A0CD /* UserProfileManager.m in Sources */,
 				316F4E341CB8CF3600B2F9A3 /* SCSignupModel.m in Sources */,
 				31FAC6A91CAAB7E30034A0CD /* AddFriendViewController.m in Sources */,
 				3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */,

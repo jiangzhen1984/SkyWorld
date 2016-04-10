@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (ContactUser *)contactUserWithSkyWorldInfo:(NSDictionary *)userDictionary inManagedObjectContext:(NSManagedObjectContext *)context;
 + (ContactUser *)contactUserWithLoginUserInformation:(LoginUserInformation *)loginUserInformation inManagedObjectContext:(NSManagedObjectContext *)context;
++ (ContactUser *)contactUserWithUsername:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

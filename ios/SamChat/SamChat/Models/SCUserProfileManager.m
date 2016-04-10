@@ -269,4 +269,96 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
 }];
 }
 
+- (void)updateUserProfileInBackground:(NSDictionary*)param
+                           completion:(void (^)(BOOL success, NSError *error))completion
+{
+}
+
+- (void)loadUserProfileInBackgroundWithBuddy:(NSArray*)buddyList
+                                saveToLoacal:(BOOL)save
+                                  completion:(void (^)(BOOL success, NSError *error))completion
+{
+    NSMutableArray *usernames = [NSMutableArray array];
+    for (NSString *buddy in buddyList)
+    {
+        if ([buddy length])
+        {
+            if (![self getUserProfileByUsername:buddy]) {
+                [usernames addObject:buddy];
+            }
+        }
+    }
+    if ([usernames count] == 0) {
+        if (completion) {
+            completion(YES,nil);
+        }
+        return;
+    }
+    [self loadUserProfileInBackground:usernames saveToLoacal:save completion:completion];
+}
+
+- (void)loadUserProfileInBackground:(NSArray*)usernames
+                       saveToLoacal:(BOOL)save
+                         completion:(void (^)(BOOL success, NSError *error))completion
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:[SCSkyWorldAPI urlQueryUserList:usernames]
+      parameters:nil
+        progress:^(NSProgress * _Nonnull downloadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            DebugLog(@"response:%@", responseObject);
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
+            if(errorCode){
+                if(completion){
+                    completion(NO, nil);
+                }
+            }else{
+                NSArray *users = response[SKYWORLD_USERS];
+                if(users){
+                    for(id user in users){
+                        if([user isKindOfClass:[NSDictionary class]]){
+                            [self saveUserToDatabase:user];
+                        }
+                    }
+                }
+                if(completion){
+                    completion(YES, nil);
+                }
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            DebugLog(@"errr:%@", error);
+            if(completion){
+                completion(NO, error);
+            }
+        }];
+}
+
+- (ContactUser *)getUserProfileByUsername:(NSString*)username
+{
+    ContactUser *contactUser = [ContactUser contactUserWithUsername:username inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+    [self loadUserProfileInBackground:@[username] saveToLoacal:YES completion:NULL];
+    return contactUser;
+}
+
+- (ContactUser*)getCurUserProfile
+{
+    return [self getUserProfileByUsername:self.username];
+}
+
+- (NSString*)getNickNameWithUsername:(NSString*)username
+{
+    return username;
+}
+
+#pragma mark - private
+- (void)saveUserToDatabase:(NSDictionary *)user
+{
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
+        [ContactUser contactUserWithSkyWorldInfo:user inManagedObjectContext:mainContext];
+        [[SCCoreDataManager sharedInstance] saveContext];
+    }];
+}
+
 @end

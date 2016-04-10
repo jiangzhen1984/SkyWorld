@@ -74,4 +74,20 @@
     return contactUser;
 }
 
++ (ContactUser *)contactUserWithUsername:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    ContactUser *contactUser = nil;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_CONTACT_USER];
+    
+    request.predicate = [NSPredicate predicateWithFormat:@"%K = %@",CONTACT_USER_USERNAME, username];
+    
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    if(matches && [matches count]){
+        contactUser = [matches firstObject];
+    }
+    return contactUser;
+}
+
+
 @end

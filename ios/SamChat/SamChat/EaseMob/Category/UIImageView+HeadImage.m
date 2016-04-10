@@ -13,8 +13,6 @@
 
 #import "UIImageView+HeadImage.h"
 
-#import "UserProfileManager.h"
-
 @implementation UIImageView (HeadImage)
 
 - (void)imageWithUsername:(NSString *)username placeholderImage:(UIImage*)placeholderImage
@@ -22,10 +20,10 @@
     if (placeholderImage == nil) {
         placeholderImage = [UIImage imageNamed:@"chatListCellHead"];
     }
-    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:username];
-    if (profileEntity) {
-        [self sd_setImageWithURL:[NSURL URLWithString:profileEntity.imageUrl] placeholderImage:placeholderImage];
-    } else {
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username];
+    if(contactUser){
+        [self sd_setImageWithURL:[NSURL URLWithString:contactUser.imagefile] placeholderImage:placeholderImage];
+    }else{
         [self sd_setImageWithURL:nil placeholderImage:placeholderImage];
     }
 }
@@ -36,18 +34,18 @@
 
 - (void)setTextWithUsername:(NSString *)username
 {
-    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:username];
-    if (profileEntity) {
-        if (profileEntity.nickname && profileEntity.nickname.length > 0) {
-            [self setText:profileEntity.nickname];
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username];
+    if(contactUser){
+        NSString *nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:username];
+        if(nickname.length > 0){
+            [self setText:nickname];
             [self setNeedsLayout];
-        } else {
+        }else{
             [self setText:username];
         }
-    } else {
+    }else{
         [self setText:username];
-    }
-    
+    }    
 }
 
 @end

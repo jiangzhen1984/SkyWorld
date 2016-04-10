@@ -11,12 +11,13 @@
 
 
 #define SKYWORLD_API_PREFIX             @"http://121.42.207.185/SkyWorld/api/1.0/"
+#define SKYWORLD_API_PUSH               @"http://121.42.207.185/SkyWorld/push"
+//#define SKYWORLD_API_PREFIX             @"http://139.129.57.77/sw/api/1.0/"
+//#define SKYWORLD_API_PUSH               @"http://139.129.57.77/sw/push"
 
 #define SKYWORLD_APITYPE_USERAPI        @"UserAPI"
 #define SKYWORLD_APITYPE_QUESTIONAPI    @"QuestionAPI"
 #define SKYWORLD_APITYPE_USERAVATARAPI  @"UserAvatarAPI"
-
-#define SKYWORLD_API_PUSH               @"http://121.42.207.185/SkyWorld/push"
 
 #pragma mark - Json Key Define
 #define SKYWORLD_HEADER         @"header"
@@ -66,6 +67,8 @@
 #define SKYWORLD_COMMENT        @"comment"
 
 #define SKYWORLD_SYSERVICER     @"syservicer"
+
+#define SKYWORLD_USERS          @"users"
 
 #pragma mark - Json Key Path
 #define SKYWORLD_USER_USERNAME      @"user.username"

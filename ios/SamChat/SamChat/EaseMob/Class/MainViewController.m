@@ -15,7 +15,6 @@
 #import "SettingsViewController.h"
 #import "ApplyViewController.h"
 #import "ChatViewController.h"
-#import "UserProfileManager.h"
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
 #import "ChatDemoHelper.h"
@@ -260,7 +259,7 @@ static NSString *kGroupName = @"GroupName";
                 break;
         }
         
-        NSString *title = [[UserProfileManager sharedInstance] getNickNameWithUsername:message.from];
+        NSString *title = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:message.from];
         if (message.chatType == EMChatTypeGroupChat) {
             NSArray *groupArray = [[EMClient sharedClient].groupManager getAllGroups];
             for (EMGroup *group in groupArray) {

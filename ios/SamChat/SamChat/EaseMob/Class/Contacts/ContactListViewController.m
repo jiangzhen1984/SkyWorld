@@ -16,16 +16,14 @@
 #import "ApplyViewController.h"
 #import "EMSearchBar.h"
 #import "EMSearchDisplayController.h"
-#import "UserProfileManager.h"
 #import "RealtimeSearchUtil.h"
-#import "UserProfileManager.h"
 
 @implementation NSString (search)
 
 //根据用户昵称进行搜索
 - (NSString*)showName
 {
-    return [[UserProfileManager sharedInstance] getNickNameWithUsername:self];
+    return [[SCUserProfileManager sharedInstance] getNickNameWithUsername:self];
 }
 
 @end
@@ -64,7 +62,7 @@
     self.tableView.frame = CGRectMake(0, self.searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.searchBar.frame.size.height);
     
     // 环信UIdemo中有用到Parse, 加载用户好友个人信息
-    [[UserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:NULL];
+    //[[UserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:NULL];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,7 +150,7 @@
             [weakSelf.searchController.searchBar endEditing:YES];
             ChatViewController *chatVC = [[ChatViewController alloc] initWithConversationChatter:buddy
                                                                                 conversationType:EMConversationTypeChat];
-            chatVC.title = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
+            chatVC.title = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:buddy];
             [weakSelf.navigationController pushViewController:chatVC animated:YES];
         }];
     }
@@ -216,11 +214,13 @@
     else{
         NSArray *userSection = [self.dataArray objectAtIndex:(indexPath.section - 1)];
         EaseUserModel *model = [userSection objectAtIndex:indexPath.row];
-        UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
-        if (profileEntity) {
-            model.avatarURLPath = profileEntity.imageUrl;
-            model.nickname = profileEntity.nickname == nil ? profileEntity.username : profileEntity.nickname;
+        NSString *username = model.buddy;
+        ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username];
+        if(contactUser){
+            model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:username];
+            model.avatarURLPath = contactUser.imagefile;
         }
+        
         cell.indexPath = indexPath;
         cell.delegate = self;
         cell.model = model;
@@ -454,9 +454,9 @@
         EaseUserModel *model = [[EaseUserModel alloc] initWithBuddy:buddy];
         if (model) {
             model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-            model.nickname = [[UserProfileManager sharedInstance] getNickNameWithUsername:buddy];
+            model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:buddy];
             
-            NSString *firstLetter = [EaseChineseToPinyin pinyinFromChineseString:[[UserProfileManager sharedInstance] getNickNameWithUsername:buddy]];
+            NSString *firstLetter = [EaseChineseToPinyin pinyinFromChineseString:[[SCUserProfileManager sharedInstance] getNickNameWithUsername:buddy]];
             NSInteger section = [indexCollation sectionForObject:[firstLetter substringToIndex:1] collationStringSelector:@selector(uppercaseString)];
             
             NSMutableArray *array = [sortedArray objectAtIndex:section];
@@ -569,6 +569,10 @@
             });
         }
         [weakself tableViewDidFinishTriggerHeader:YES reload:YES];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[SCUserProfileManager sharedInstance] loadUserProfileInBackgroundWithBuddy:self.contactsSource saveToLoacal:YES completion:NULL];
+        });
     });
 }
 
@@ -580,7 +584,6 @@
     [self.contactsSource removeAllObjects];
     
     NSArray *buddyList = [[EMClient sharedClient].contactManager getContactsFromDB];
-    
     for (NSString *buddy in buddyList) {
         [self.contactsSource addObject:buddy];
     }

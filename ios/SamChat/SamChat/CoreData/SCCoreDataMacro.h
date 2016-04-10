@@ -11,7 +11,7 @@
 
 #define ENTITY_CONTACT_USER             @"ContactUser"
 #define CONTACT_USER_UNIQUE_ID          @"unique_id"
-
+#define CONTACT_USER_USERNAME           @"username"
 
 #define ENTITY_LOGIN_USER_INFORMATION           @"LoginUserInformation"
 #define LOGIN_USER_INFORMATION_USERNAME         @"username"

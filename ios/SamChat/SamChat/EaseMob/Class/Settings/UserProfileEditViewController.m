@@ -13,7 +13,6 @@
 #import "UserProfileEditViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
-#import "UserProfileManager.h"
 #import "EditNicknameViewController.h"
 #import "UIImageView+HeadImage.h"
 
@@ -52,8 +51,8 @@
         _headImageView.frame = CGRectMake(20, 10, 60, 60);
         _headImageView.contentMode = UIViewContentModeScaleToFill;
     }
-    UserProfileEntity *user = [[UserProfileManager sharedInstance] getCurUserProfile];
-    [_headImageView imageWithUsername:user.username placeholderImage:nil];
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getCurUserProfile];
+    [_headImageView imageWithUsername:contactUser.username placeholderImage:nil];
     return _headImageView;
 }
 
@@ -62,8 +61,8 @@
     if (!_usernameLabel) {
         _usernameLabel = [[UILabel alloc] init];
         _usernameLabel.frame = CGRectMake(CGRectGetMaxX(_headImageView.frame) + 10.f, 10, 200, 20);
-        UserProfileEntity *user = [[UserProfileManager sharedInstance] getCurUserProfile];
-        _usernameLabel.text = user.username;
+        ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getCurUserProfile];
+        _usernameLabel.text = contactUser.username;
         _usernameLabel.textColor = [UIColor lightGrayColor];
     }
     return _usernameLabel;
@@ -108,12 +107,8 @@
         [cell.contentView addSubview:self.usernameLabel];
     } else if (indexPath.row == 1) {
         cell.textLabel.text = NSLocalizedString(@"setting.profileNickname", @"Nickname");
-        UserProfileEntity *entity = [[UserProfileManager sharedInstance] getCurUserProfile];
-        if (entity && entity.nickname.length>0) {
-            cell.detailTextLabel.text = entity.nickname;
-        } else {
-            cell.detailTextLabel.text = [[EMClient sharedClient] currentUsername];
-        }
+        ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getCurUserProfile];
+        cell.detailTextLabel.text= [[SCUserProfileManager sharedInstance] getNickNameWithUsername:contactUser.username];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;
@@ -149,17 +144,17 @@
         if(nameTextField.text.length > 0)
         {
             //设置推送设置
-            [self showHint:NSLocalizedString(@"setting.saving", "saving...")];
-            __weak typeof(self) weakSelf = self;
-            [[EMClient sharedClient] setApnsNickname:nameTextField.text];
-            [[UserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:nameTextField.text} completion:^(BOOL success, NSError *error) {
-                [self hideHud];
-                if (success) {
-                    [weakSelf.tableView reloadData];
-                } else {
-                    [self showHint:NSLocalizedString(@"setting.saveFailed", "save failed") yOffset:0];
-                }
-            }];
+//            [self showHint:NSLocalizedString(@"setting.saving", "saving...")];
+//            __weak typeof(self) weakSelf = self;
+//            [[EMClient sharedClient] setApnsNickname:nameTextField.text];
+//            [[SCUserProfileManager sharedInstance] updateUserProfileInBackground:@{kPARSE_HXUSER_NICKNAME:nameTextField.text} completion:^(BOOL success, NSError *error) {
+//                [self hideHud];
+//                if (success) {
+//                    [weakSelf.tableView reloadData];
+//                } else {
+//                    [self showHint:NSLocalizedString(@"setting.saveFailed", "save failed") yOffset:0];
+//                }
+//            }];
         }
     }
 }
@@ -168,27 +163,27 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [self hideHud];
-    [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"uploading...")];
-    
-    __weak typeof(self) weakSelf = self;
-    UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    if (orgImage) {
-        [[UserProfileManager sharedInstance] uploadUserHeadImageProfileInBackground:orgImage completion:^(BOOL success, NSError *error) {
-            [weakSelf hideHud];
-            if (success) {
-                UserProfileEntity *user = [[UserProfileManager sharedInstance] getCurUserProfile];
-                [weakSelf.headImageView imageWithUsername:user.username placeholderImage:orgImage];
-                [self showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
-            } else {
-                [self showHint:NSLocalizedString(@"setting.uploadFail", @"uploaded failed")];
-            }
-        }];
-    } else {
-        [self hideHud];
-        [self showHint:NSLocalizedString(@"setting.uploadFail", @"uploaded failed")];
-    }
+//    [self hideHud];
+//    [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"uploading...")];
+//    
+//    __weak typeof(self) weakSelf = self;
+//    UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
+//    [picker dismissViewControllerAnimated:YES completion:nil];
+//    if (orgImage) {
+//        [[SCUserProfileManager sharedInstance] uploadUserHeadImageProfileInBackground:orgImage completion:^(BOOL success, NSError *error) {
+//            [weakSelf hideHud];
+//            if (success) {
+//                ContactUser *user = [[SCUserProfileManager sharedInstance] getCurUserProfile];
+//                [weakSelf.headImageView imageWithUsername:user.username placeholderImage:orgImage];
+//                [self showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
+//            } else {
+//                [self showHint:NSLocalizedString(@"setting.uploadFail", @"uploaded failed")];
+//            }
+//        }];
+//    } else {
+//        [self hideHud];
+//        [self showHint:NSLocalizedString(@"setting.uploadFail", @"uploaded failed")];
+//    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

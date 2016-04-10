@@ -11,7 +11,6 @@
 #import "ChatGroupDetailViewController.h"
 #import "ChatroomDetailViewController.h"
 #import "UserProfileViewController.h"
-#import "UserProfileManager.h"
 #import "ContactListSelectViewController.h"
 #import "ChatDemoHelper.h"
 
@@ -171,10 +170,10 @@
     id<IMessageModel> model = nil;
     model = [[EaseMessageModel alloc] initWithMessage:message];
     model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-    UserProfileEntity *profileEntity = [[UserProfileManager sharedInstance] getUserProfileByUsername:model.nickname];
-    if (profileEntity) {
-        model.avatarURLPath = profileEntity.imageUrl;
-        model.nickname = profileEntity.nickname;
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.nickname];
+    if(contactUser){
+        model.avatarURLPath = contactUser.imagefile;
+        model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:model.nickname];
     }
     model.failImageName = @"imageDownloadFail";
     return model;
