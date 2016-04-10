@@ -50,5 +50,6 @@ typedef enum{
     // network error
     SCSkyWorldErrorNetworkUnavailable = 1,
     SCSkyWorldErrorServerNotReachable = 2,
-    SCSkyWorldErrorUnknowError = 3
+    SCSkyWorldErrorUnknowError = 3,
+    SCSkyWorldErrorLogoutError = 4,
 }SCSkyWorldErrorCode;

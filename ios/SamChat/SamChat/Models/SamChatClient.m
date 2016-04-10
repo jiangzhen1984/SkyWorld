@@ -49,6 +49,11 @@ static SamChatClient *sharedInstance = nil;
     [SCUserSettingModel uploadUserAvatarInBackground:image completion:completion];
 }
 
+- (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCUserSettingModel logoutWithCompletion:completion];
+}
+
 - (void)asyncWaitingPush
 {
     [self.pushManager asyncWaitingPush];

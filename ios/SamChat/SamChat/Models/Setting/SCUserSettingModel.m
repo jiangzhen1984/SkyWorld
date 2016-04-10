@@ -54,4 +54,38 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
 }];
 }
 
++ (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        EMError *error = [[EMClient sharedClient] logout:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(error != nil){
+                if(completion){
+                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorLogoutError]);
+                }
+            }else{
+                // [[ApplyViewController shareController] clear];
+                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                [manager GET:[SCSkyWorldAPI urlLogout]
+                  parameters:nil
+                    progress:^(NSProgress *downloadProgress){
+                    }
+                     success:^(NSURLSessionDataTask *task, id responseObject){
+                         if([responseObject isKindOfClass:[NSDictionary class]]) {
+                             DebugLog(@"%@", responseObject);
+                         }
+                     }
+                     failure:^(NSURLSessionDataTask *task, NSError *error){
+                         DebugLog(@"Logout Error: %@", error);
+                     }];
+                [[SCUserProfileManager sharedInstance] logOutCurrentUser];
+                if(completion){
+                    completion(true, nil);
+                }
+            }
+        });
+    });
+}
+
+
 @end

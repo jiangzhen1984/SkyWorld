@@ -129,6 +129,9 @@
         case SCSkyWorldErrorUnknowError: // = 3
             error.errorDescription = @"未知不错";
             break;
+        case SCSkyWorldErrorLogoutError: // = 4
+            error.errorDescription = @"退出失败";
+            break;
         default:
             error.errorDescription = @"未知错误2";
             break;

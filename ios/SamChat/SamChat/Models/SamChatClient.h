@@ -21,7 +21,7 @@
 - (void)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)signupWithUserinfoDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
-
+- (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)asyncWaitingPush;
 
 @end

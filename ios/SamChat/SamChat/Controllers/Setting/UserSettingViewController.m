@@ -76,33 +76,14 @@
     __weak typeof(self) weakSelf = self;
     UIView *mainView = [[UIApplication sharedApplication].delegate window];
     [self showHudInView:mainView hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient sharedClient] logout:YES];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf hideHud];
-            if (error != nil) {
-                [weakSelf showHint:error.errorDescription];
-            }
-            else{
-//                [[ApplyViewController shareController] clear];
-                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                [manager GET:[SCSkyWorldAPI urlLogout]
-                  parameters:nil
-                    progress:^(NSProgress *downloadProgress){
-                    }
-                     success:^(NSURLSessionDataTask *task, id responseObject){
-                         if([responseObject isKindOfClass:[NSDictionary class]]) {
-                             DebugLog(@"%@", responseObject);
-                         }
-                     }
-                     failure:^(NSURLSessionDataTask *task, NSError *error){
-                         DebugLog(@"Logout Error: %@", error);
-                     }];
-                [[SCUserProfileManager sharedInstance] logOutCurrentUser];
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
-            }
-        });
-    });
+    [[SamChatClient sharedInstance] logoutWithCompletion:^(BOOL success, SCSkyWorldError *error) {
+        [weakSelf hideHud];
+        if(success){
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
+        }else{
+            [weakSelf showHint:error.errorDescription];
+        }
+    }];
 }
 
 - (IBAction)contact:(UIButton *)sender
