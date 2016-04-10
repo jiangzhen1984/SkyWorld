@@ -49,6 +49,8 @@ Protocol Version: M19
 Protocol Version: M20 
 2016.04.07
                                     新增“热点话题列表”查询协议              
+Protocol Version: M21
+             Add Skservicer company item query API
 
 
 =======================================Register JSON Protocol =====================================
@@ -411,8 +413,9 @@ Query :
    },
    "body" :
    { 
-       opt : [1], //by skservicer id
-       uid : id,
+       opt : [1/2], 1:by skservicer id  2: query skservicer company item information
+       uid : id, 
+      page :  page no // this field only for opt 2
    }
 }
 
@@ -450,6 +453,17 @@ Query :
                "cmpphone"   : phone number,
            }, 
        ],
+  
+      // this field only for opt 2
+      cmpitem : [
+           {
+               "id"    : item id,
+               "title" :  title,
+               "con"   : content
+               "pic"   : pic url
+             "item-url": item url
+           },
+      ],
 
     }
 }
