@@ -187,6 +187,15 @@ public class SKServicer extends User {
 		return items;
 	}
 	
+	
+	private static SKServicer dummy;
+	public static SKServicer getDummy() {
+		if (dummy == null) {
+			dummy = new SKServicer();
+		}
+		return dummy;
+	}
+	
 	public class SKServicerCMPItem {
 		public long id;
 		

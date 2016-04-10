@@ -194,4 +194,16 @@ public class SWSKServicerService extends BaseService {
 		
 		return cmpItemList;
 	}
+	
+	
+	public SKServicerCMPItem querySKServicerCMPItem(SKServicer skervicer, long id) {
+		Session sess = openSession();
+		SWPServicerCompanyItem ci = (SWPServicerCompanyItem)sess.get(SWPServicerCompanyItem.class, id);
+		SKServicerCMPItem item =  null;
+		if (ci != null) {
+			item = skervicer.new SKServicerCMPItem(ci.getId(), ci.getTitle(), ci.getPic(), ci.getContent());
+		}
+		sess.close();
+		return item;
+	}
 }

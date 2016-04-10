@@ -20,6 +20,7 @@ import com.skyworld.cache.Token;
 import com.skyworld.cache.TokenFactory;
 import com.skyworld.service.ServiceFactory;
 import com.skyworld.service.dsf.SKServicer;
+import com.skyworld.service.dsf.SKServicer.SKServicerCMPItem;
 
 @MultipartConfig(maxFileSize=5 * 1024 *1024, maxRequestSize= 6 * 1024 *1024)
 public class SKServicerSetting extends HttpServlet {
@@ -31,6 +32,7 @@ public class SKServicerSetting extends HttpServlet {
 	private static final  int ACTION_OFFSET =  1;
 	private static final  int METHOD_OFFSET =  2;
 	private static final  int SUB_METHOD_OFFSET =  3;
+	private static final  int ID_OFFSET =  4;
 	
 	
 	
@@ -101,6 +103,11 @@ public class SKServicerSetting extends HttpServlet {
 				showCmpList(req, resp);
 			} else if ("/update".equals(rf.submethod)) {
 				ServiceFactory.getAPIService(ServiceFactory.API_CODE_SERVICER).service(req, resp);
+			} else if ("/view".equals(rf.submethod)) {
+				if (rf.isExistId) {
+					SKServicerCMPItem item = ServiceFactory.getESKServicerService().querySKServicerCMPItem(SKServicer.getDummy(), Long.parseLong(rf.id));
+					resp.getWriter().write(item.content);
+				}
 			}
 		}
 		
@@ -156,6 +163,10 @@ public class SKServicerSetting extends HttpServlet {
 			rf.submethod = group.get(CATEGORY_IDX + SUB_METHOD_OFFSET);
 			rf.isExistSubMethod = true;
 		}
+		if (size > CATEGORY_IDX + ID_OFFSET) {
+			rf.id = group.get(CATEGORY_IDX + ID_OFFSET);
+			rf.isExistId = true;
+		}
 		return rf;
 	}
 	
@@ -169,6 +180,7 @@ public class SKServicerSetting extends HttpServlet {
 		String method;
 		boolean isExistSubMethod;
 		String submethod;
+		boolean isExistId;
 		String id;
 		
 	}
