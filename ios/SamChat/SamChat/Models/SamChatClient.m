@@ -7,7 +7,10 @@
 //
 
 #import "SamChatClient.h"
+#import "SCLoginModel.h"
+#import "SCSignupModel.h"
 #import "SCUserSettingModel.h"
+#import "SCAnswerQuestionModel.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -54,10 +57,17 @@ static SamChatClient *sharedInstance = nil;
     [SCUserSettingModel logoutWithCompletion:completion];
 }
 
+- (void)sendAnswer:(NSString *)answer toQuestionID:(NSInteger)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCAnswerQuestionModel sendAnswer:answer toQuestionID:question_id completion:completion];
+}
+
 - (void)asyncWaitingPush
 {
     [self.pushManager asyncWaitingPush];
 }
+
+
 
 #pragma mark - Lazy initialization
 - (SCPushManager *)pushManager

@@ -97,41 +97,17 @@
     
     NSInteger currentIndex = [self.answers count] - 1;
     
-    NSString *urlString = [SCSkyWorldAPI urlAnswerQuestion:[self.receivedQuestion.question_id integerValue] withAnswer:text];
-
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:urlString
-      parameters:nil
-        progress:^(NSProgress *downloadProgress){
+    __weak typeof(self) weakSelf = self;
+    NSInteger questionId = [self.receivedQuestion.question_id integerValue];
+    [[SamChatClient sharedInstance] sendAnswer:text toQuestionID:questionId completion:^(BOOL success, SCSkyWorldError *error) {
+        if(success){
+            [weakSelf updateAnswerOfIndex:currentIndex withStatus:SEND_ANSWER_SENDSUCCEED];
+        }else{
+            [weakSelf updateAnswerOfIndex:currentIndex withStatus:SEND_ANSWER_SENDFAILED];
         }
-         success:^(NSURLSessionDataTask *task, id responseObject) {
-             if([responseObject isKindOfClass:[NSDictionary class]]) {
-                 //DebugLog(@"%@", responseObject);
-                 NSDictionary *response = responseObject;
-                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
-                 if(errorCode) {
-                     [self answerOfIndex:currentIndex FailedWithErrorCode:errorCode];
-                     return;
-                 }
-                 [self answerOfIndex:currentIndex SuccessWithResponse:response];
-             }
-         }
-         failure:^(NSURLSessionDataTask *task, NSError *error){
-             DebugLog(@"Error: %@", error);
-             [self answerOfIndex:currentIndex FailedWithErrorCode:0];
-         }];
-}
+        [weakSelf.tableView reloadData];
+    }];
 
-#pragma mark - Answer Process
-- (void)answerOfIndex:(NSInteger)index SuccessWithResponse:(NSDictionary *)response
-{
-    [self updateAnswerOfIndex:index withStatus:SEND_ANSWER_SENDSUCCEED];
-}
-
-- (void)answerOfIndex:(NSInteger)index FailedWithErrorCode:(NSInteger)errorCode
-{
-    DebugLog(@"failed: %ld", errorCode);
-    [self updateAnswerOfIndex:index withStatus:SEND_ANSWER_SENDFAILED];
 }
 
 - (void)updateAnswerOfIndex:(NSInteger)index withStatus:(NSNumber *)status

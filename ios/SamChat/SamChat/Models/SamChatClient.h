@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCLoginModel.h"
-#import "SCSignupModel.h"
-#import "SCPushManager.h"
 
+#import "SCPushManager.h"
 
 @interface SamChatClient : NSObject
 
@@ -22,6 +20,11 @@
 - (void)signupWithUserinfoDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
+- (void)sendAnswer:(NSString *)answer toQuestionID:(NSInteger)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
+
+
 - (void)asyncWaitingPush;
+
+
 
 @end
