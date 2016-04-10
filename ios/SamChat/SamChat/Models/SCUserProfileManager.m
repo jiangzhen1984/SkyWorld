@@ -155,6 +155,7 @@ static SCUserProfileManager *sharedInstance = nil;
         if(userInfo[SKYWORLD_TYPE]){
             loginUserInformation.usertype = userInfo[SKYWORLD_TYPE];
         }
+        [ContactUser contactUserWithLoginUserInformation:loginUserInformation inManagedObjectContext:mainContext];
         [[SCCoreDataManager sharedInstance] saveContext];
     }];
 }
@@ -197,6 +198,7 @@ static SCUserProfileManager *sharedInstance = nil;
         if([info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME]){
             loginUserInformation.easemob_username = [info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
         }
+        [ContactUser contactUserWithLoginUserInformation:loginUserInformation inManagedObjectContext:mainContext];
         [[SCCoreDataManager sharedInstance] saveContext];
     }];
 }

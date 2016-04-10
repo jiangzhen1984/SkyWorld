@@ -35,6 +35,7 @@
 
 // Core Data
 #import "ContactUser.h"
+#import "LoginUserInformation.h"
 
 // easemob
 #import "ChatDemoUIDefine.h"

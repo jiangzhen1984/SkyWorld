@@ -62,7 +62,10 @@
 
 //    [formatter setDateStyle:NSDateFormatterMediumStyle];
 //    [formatter setTimeStyle:NSDateFormatterShortStyle];
-    NSTimeInterval timeInterval = ((double)timestamp)/1000.0;
+    NSTimeInterval timeInterval = timestamp;
+    if(timeInterval > 140000000000){
+        timeInterval = timeInterval / 1000;
+    }
     NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timeInterval];
     [formatter setDateFormat:@"YYYY.MM.dd HH:mm"];
     NSString *str = [formatter stringFromDate:confromTimesp];

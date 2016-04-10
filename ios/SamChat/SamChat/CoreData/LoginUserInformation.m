@@ -37,6 +37,7 @@
     LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:[SCUserProfileManager sharedInstance].username
                                                                                      inManagedObjectContext:context];
     loginUserInformation.imagefile = url;
+    [ContactUser contactUserWithLoginUserInformation:loginUserInformation inManagedObjectContext:context];
     [[SCCoreDataManager sharedInstance] saveContext];
 }
 
