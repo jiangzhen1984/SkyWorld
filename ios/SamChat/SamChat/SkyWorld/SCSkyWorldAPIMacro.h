@@ -18,6 +18,7 @@
 #define SKYWORLD_APITYPE_USERAPI        @"UserAPI"
 #define SKYWORLD_APITYPE_QUESTIONAPI    @"QuestionAPI"
 #define SKYWORLD_APITYPE_USERAVATARAPI  @"UserAvatarAPI"
+#define SKYWORLD_APITYPE_ARTICLEAPI     @"ArticleApi"
 
 #pragma mark - Json Key Define
 #define SKYWORLD_HEADER         @"header"
@@ -69,6 +70,12 @@
 #define SKYWORLD_SYSERVICER     @"syservicer"
 
 #define SKYWORLD_USERS          @"users"
+
+#define SKYWORLD_ARTICLE_ID         @"article_id"
+#define SKYWORLD_TIMESTAMP_START    @"timestamp_start"
+#define SKYWORLD_TIMESTAMP_END      @"timestamp_end"
+#define SKYWORLD_FETCH_COUNT        @"fetch_count"
+#define SKYWORLD_QT                 @"qt"
 
 #pragma mark - Json Key Path
 #define SKYWORLD_USER_USERNAME      @"user.username"

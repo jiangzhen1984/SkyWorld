@@ -50,5 +50,16 @@
 #pragma mark - Update UserAvatar Protocol
 + (NSString *)urlUpdateUserAvatar;
 
+#pragma mark - Article Publish Protocol
++ (NSString *)urlArticlePublishWithComment:(NSString *)comment;
+
+#pragma mark - Article Recommend JSON Protocol
++ (NSString *)urlArticleRecommendWithArticleId:(NSNumber *)articleId flag:(BOOL)flag;
+
+#pragma mark - Article Comment JSON Protocol
++ (NSString *)urlArticleCommentWithArticleId:(NSNumber *)articleId comment:(NSString *)comment;
+
+#pragma mark - Article Query JSON Protocol
++ (NSString *)urlArticleQueryWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count type:(NSInteger)type;
 
 @end

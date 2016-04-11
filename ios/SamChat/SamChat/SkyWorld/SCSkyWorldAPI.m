@@ -490,4 +490,130 @@
     return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_USERAVATARAPI andData:data];
 }
 
+#pragma mark - Article Publish Protocol
+//API: /api/1.0/ArticleApi
+//http://139.129.57.77/sw/api/1.0/ArticleApi
+//This API only support POST and body must use multipart/form-data
+//HTTP - parameter data:
+//----------------------------------------------------------------------
+//{
+//    "header":
+//    {
+//        "action": "article-publish",
+//        "token": "95056787646578688"
+//    },
+//    "body":
+//    {
+//        "comment" : "conent"
+//    }
+//}
+//
+//http boundary   image data
++ (NSString *)urlArticlePublishWithComment:(NSString *)comment
+{
+    NSString *token = [SCUserProfileManager sharedInstance].token;
+    NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_ARTICLE_PUBLISH,
+                             SKYWORLD_TOKEN:token};
+    NSDictionary *body = @{SKYWORLD_COMMENT:comment};
+    NSDictionary *data = @{SKYWORLD_HEADER:header,
+                           SKYWORLD_BODY:body};
+    return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_ARTICLEAPI andData:data];
+}
+
+#pragma mark - Article Recommend JSON Protocol
+//API: /api/1.0/ArticleApi
+//http://139.129.57.77/sw/api/1.0/ArticleApi
+//Recommend协议：
+//
+//{
+//    "header":
+//    {
+//        "action" : "article-recommend",
+//        "token"  : "TOKEN-ID"
+//    },
+//    "body" :
+//    {
+//        "article_id" :  article id,
+//        "flag"       :  [true/false] //true for recommend , false for cancel
+//    }
+//}
++ (NSString *)urlArticleRecommendWithArticleId:(NSNumber *)articleId flag:(BOOL)flag
+{
+    NSString *token = [SCUserProfileManager sharedInstance].token;
+    NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_ARTICLE_RECOMMEND,
+                             SKYWORLD_TOKEN:token};
+    NSDictionary *body = @{SKYWORLD_ARTICLE_ID:articleId,
+                           SKYWORLD_FLAG:[NSNumber numberWithBool:flag]};
+    NSDictionary *data = @{SKYWORLD_HEADER:header,
+                           SKYWORLD_BODY:body};
+    return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_ARTICLEAPI andData:data];
+}
+
+#pragma mark - Article Comment JSON Protocol
+//API: /api/1.0/ArticleApi
+//http://139.129.57.77/sw/api/1.0/ArticleApi
+//Comment协议：
+//
+//{
+//    "header":
+//    {
+//        "action" : "article-comment",
+//        "token"  : "TOKEN-ID"
+//    },
+//    "body" :
+//    {
+//        "article_id" :  article id,
+//        "comment"    : conent
+//    }
+//}
++ (NSString *)urlArticleCommentWithArticleId:(NSNumber *)articleId comment:(NSString *)comment
+{
+    NSString *token = [SCUserProfileManager sharedInstance].token;
+    NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_ARTICLE_COMMENT,
+                             SKYWORLD_TOKEN:token};
+    NSDictionary *body = @{SKYWORLD_ARTICLE_ID:articleId,
+                           SKYWORLD_COMMENT:comment};
+    NSDictionary *data = @{SKYWORLD_HEADER:header,
+                           SKYWORLD_BODY:body};
+    return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_ARTICLEAPI andData:data];
+}
+
+#pragma mark - Article Query JSON Protocol
+//API: /api/1.0/ArticleApi
+//http://139.129.57.77/sw/api/1.0/ArticleApi
+//Article Query
+//
+//{
+//    "header":
+//    {
+//        "action" : "article-query",
+//        "token"  :  token id
+//    },
+//    "body":
+//    {
+//        "timestamp_end"  :  [optional] 1455174572266,  //millisecons end
+//        "timestamp_start":  [optional if does not input this, use server current timestamp] 1455178172265   //millisecons start
+//        "fetch_count"    :  count // optional  default is 15
+//        "qt"             :  [0/1] // 0 : for native 1 : for easemob contacts
+//    }
+//}
++ (NSString *)urlArticleQueryWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count type:(NSInteger)type
+{
+    NSInteger qt = 0;
+    if(type == 1){
+        qt = 1;
+    }
+    NSString *token = [SCUserProfileManager sharedInstance].token;
+    NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_ARTICLE_QUERY,
+                             SKYWORLD_TOKEN:token};
+    NSDictionary *body = @{SKYWORLD_TIMESTAMP_START:[NSNumber numberWithDouble:from],
+                           SKYWORLD_TIMESTAMP_END:[NSNumber numberWithDouble:to],
+                           SKYWORLD_FETCH_COUNT:[NSNumber numberWithInteger:count],
+                           SKYWORLD_QT:[NSNumber numberWithInteger:qt]};
+    NSDictionary *data = @{SKYWORLD_HEADER:header,
+                           SKYWORLD_BODY:body};
+    return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_ARTICLEAPI andData:data];
+}
+
+
 @end
