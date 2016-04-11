@@ -11,6 +11,7 @@
 #import "SCSignupModel.h"
 #import "SCUserSettingModel.h"
 #import "SCAnswerQuestionModel.h"
+#import "SCUserRelationModel.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -60,6 +61,11 @@ static SamChatClient *sharedInstance = nil;
 - (void)sendAnswer:(NSString *)answer toQuestionID:(NSInteger)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCAnswerQuestionModel sendAnswer:answer toQuestionID:question_id completion:completion];
+}
+
+- (void)makeFollow:(BOOL)flag withUser:(NSInteger)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCUserRelationModel makeFollow:flag withUser:userID completion:completion];
 }
 
 - (void)asyncWaitingPush

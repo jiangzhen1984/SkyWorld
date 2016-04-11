@@ -9,6 +9,7 @@
 #import "UserSettingViewController.h"
 #import "ContactListViewController.h"
 #import "KYDrawerController.h"
+#import "QRCodeScanViewController.h"
 
 @interface UserSettingViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -56,6 +57,8 @@
     if (_imagePicker == nil) {
         _imagePicker = [[UIImagePickerController alloc] init];
         _imagePicker.modalPresentationStyle= UIModalPresentationOverFullScreen;
+        _imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
         _imagePicker.allowsEditing = YES;
         _imagePicker.delegate = self;
     }
@@ -66,8 +69,6 @@
 #pragma mark - Action
 - (void)setUserAvatar
 {
-    self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
@@ -94,6 +95,11 @@
     //[(KYDrawerController *)[self parentViewController] setDrawerState:KYDrawerControllerDrawerStateClosed animated:YES];
 }
 
+- (IBAction)QRCodeScan:(UIButton *)sender
+{
+    QRCodeScanViewController *vc = [[SCUtils mainStoryBoard] instantiateViewControllerWithIdentifier:@"QRCodeScanView"];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info

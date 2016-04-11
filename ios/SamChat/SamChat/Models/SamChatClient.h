@@ -21,7 +21,7 @@
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)sendAnswer:(NSString *)answer toQuestionID:(NSInteger)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
-
+- (void)makeFollow:(BOOL)flag withUser:(NSInteger)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
 - (void)asyncWaitingPush;
 

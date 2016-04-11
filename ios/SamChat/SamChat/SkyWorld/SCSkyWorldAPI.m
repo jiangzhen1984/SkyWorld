@@ -421,7 +421,7 @@
 //        "both"    : [true/false]  true: make relationship for eachother, false only for request user
 //    }
 //}
-+ (NSString *)urlMakeFollow:(BOOL)flag WithUser:(NSInteger)userID bothSide:(BOOL)both
++ (NSString *)urlMakeFollow:(BOOL)flag withUser:(NSInteger)userID bothSide:(BOOL)both
 {
     NSString *token = [SCUserProfileManager sharedInstance].token;
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_FOLLOW,

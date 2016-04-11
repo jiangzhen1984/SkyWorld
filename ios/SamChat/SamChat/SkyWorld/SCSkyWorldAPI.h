@@ -42,7 +42,7 @@
 + (NSString *)urlAnswerQuestion:(NSInteger)questionID withAnswer:(NSString *)answer;
 
 #pragma mark - Follow JSON Protocol
-+ (NSString *)urlMakeFollow:(BOOL)flag WithUser:(NSInteger)userID bothSide:(BOOL)both;
++ (NSString *)urlMakeFollow:(BOOL)flag withUser:(NSInteger)userID bothSide:(BOOL)both;
 
 #pragma mark - Feedback JSON Protocol
 + (NSString *)urlFeedbackWithComment:(NSString *)comment;
