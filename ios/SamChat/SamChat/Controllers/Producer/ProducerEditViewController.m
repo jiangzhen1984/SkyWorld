@@ -50,42 +50,19 @@
         return;
     }
 
-    NSString *urlString = [SCSkyWorldAPI urlUpgradeWithArea:self.textViewArea.text
-                                                   location:self.textViewLocation.text
-                                                description:self.textViewDescription.text];
-
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:urlString
-      parameters:nil
-        progress:^(NSProgress *downloadProgress){
+    NSDictionary *info = @{SKYWORLD_AREA:self.textViewArea.text,
+                           SKYWORLD_LOCATION:self.textViewLocation.text,
+                           SKYWORLD_DESC:self.textViewDescription.text};
+    
+    __weak typeof(self) weakSelf = self;
+    [[SamChatClient sharedInstance] upgradeToProducerWithInformationDictionary:info completion:^(BOOL success, SCSkyWorldError *error) {
+        if(success){
+            [weakSelf showHint:@"成功升级为服务者"];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }else{
+            [weakSelf showHint:@"升级失败"];
         }
-         success:^(NSURLSessionDataTask *task, id responseObject) {
-             if([responseObject isKindOfClass:[NSDictionary class]]) {
-                 DebugLog(@"%@", responseObject);
-                 NSDictionary *response = responseObject;
-                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
-                 if(errorCode) {
-                     [self upgradeFailedWithErrorCode:errorCode];
-                     return;
-                 }
-                 [self upgradeSuccessWithResponse:response];
-             }
-         }
-         failure:^(NSURLSessionDataTask *task, NSError *error){
-             DebugLog(@"Error: %@", error);
-         }];
-}
-
-- (void)upgradeSuccessWithResponse:(NSDictionary *)response
-{
-    DebugLog(@"upgrade response %@", response);
-    [[SCUserProfileManager sharedInstance] saveCurrentLoginUserInformationWithSkyWorldResponse:response
-                                                                                  andOtherInfo:nil];
-}
-
-- (void)upgradeFailedWithErrorCode:(NSInteger)errorCode
-{
-    DebugLog(@"upgrade failed %ld", errorCode);
+    }];
 }
 
 @end

@@ -13,6 +13,7 @@
 #import "SCAnswerQuestionModel.h"
 #import "SCUserRelationModel.h"
 #import "SCArticleModel.h"
+#import "SCProducerModel.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -72,6 +73,12 @@ static SamChatClient *sharedInstance = nil;
 - (void)publishArticleWithImages:(NSArray *)images comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCArticleModel publishArticleWithImages:images comment:comment completion:completion];
+}
+
+
+- (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCProducerModel upgradeToProducerWithInformationDictionary:info completion:completion];
 }
 
 - (void)asyncWaitingPush

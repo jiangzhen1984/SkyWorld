@@ -182,6 +182,7 @@
 		31C1A7571CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7451CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m */; };
 		31C1A7581CBC7CF70010F6B4 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7471CBC7CF70010F6B4 /* UIImageView+WebCache.m */; };
 		31C1A7591CBC7CF70010F6B4 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7491CBC7CF70010F6B4 /* UIView+WebCacheOperation.m */; };
+		31C1A75D1CBC80EF0010F6B4 /* SCProducerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -842,6 +843,8 @@
 		31C1A7471CBC7CF70010F6B4 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		31C1A7481CBC7CF70010F6B4 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		31C1A7491CBC7CF70010F6B4 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
+		31C1A75B1CBC80EF0010F6B4 /* SCProducerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCProducerModel.h; path = Models/Producer/SCProducerModel.h; sourceTree = "<group>"; };
+		31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCProducerModel.m; path = Models/Producer/SCProducerModel.m; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -2146,6 +2149,15 @@
 			path = 3rdparty/SDWebImage;
 			sourceTree = "<group>";
 		};
+		31C1A75A1CBC80C40010F6B4 /* Producer */ = {
+			isa = PBXGroup;
+			children = (
+				31C1A75B1CBC80EF0010F6B4 /* SCProducerModel.h */,
+				31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */,
+			);
+			name = Producer;
+			sourceTree = "<group>";
+		};
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2169,6 +2181,7 @@
 		31F8E71F1CA3BA790049EE23 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				31C1A75A1CBC80C40010F6B4 /* Producer */,
 				316F4E671CBA64CB00B2F9A3 /* Article */,
 				316F4E631CBA5A6700B2F9A3 /* User */,
 				316F4E5F1CBA483E00B2F9A3 /* Service */,
@@ -3319,6 +3332,7 @@
 				31C1A7571CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m in Sources */,
 				31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */,
 				31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */,
+				31C1A75D1CBC80EF0010F6B4 /* SCProducerModel.m in Sources */,
 				31C1A6191CBB6BAC0010F6B4 /* NSAttributedString+MLLabel.m in Sources */,
 				31FAC6B41CAAB7E30034A0CD /* EMRotbotChatViewCell.m in Sources */,
 				31FAC5811CAAB3C50034A0CD /* EMGifImage.m in Sources */,
