@@ -25,7 +25,7 @@ import com.skyworld.service.dsf.SKServicer.SKServicerCMPItem;
 @MultipartConfig(maxFileSize=5 * 1024 *1024, maxRequestSize= 6 * 1024 *1024)
 public class SKServicerSetting extends HttpServlet {
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	
 	private static  int CATEGORY_IDX = 0;
 	private static final  int CONTEXT_OFFSET = 1;

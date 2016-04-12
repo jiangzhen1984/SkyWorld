@@ -52,6 +52,9 @@ Protocol Version: M20
 Protocol Version: M21
              Add Skservicer company item query API
 
+Protocol Version: M22
+             Add Skservicer web api
+
 
 =======================================Register JSON Protocol =====================================
 API: /api/1.0/UserAPI
@@ -1030,5 +1033,19 @@ http://139.129.57.77/sw/api_1.0_HotTopicAPI.do
     ], 
     "query_time": 1460081211000
 }
+
+
+
+=======================================Skservicer company update  =====================================
+Http header: Authorization : token
+http://139.129.57.77/sw/skservicer/setting/info
+
+=======================================Skservicer company item list  =====================================
+Http header: Authorization : token
+http://139.129.57.77/sw/skservicer/setting/cmplist
+
+=======================================Skservicer company item rich html view  =====================================
+Http header: Authorization : token
+http://139.129.57.77/sw/skservicer/setting/cmplist/view/{item id}
 
 
