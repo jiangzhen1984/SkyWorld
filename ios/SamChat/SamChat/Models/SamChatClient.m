@@ -60,6 +60,11 @@ static SamChatClient *sharedInstance = nil;
     [SCUserSettingModel logoutWithCompletion:completion];
 }
 
+- (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCUserSettingModel feedbackWithComment:comment completion:completion];
+}
+
 - (void)sendAnswer:(NSString *)answer toQuestionID:(NSInteger)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCAnswerQuestionModel sendAnswer:answer toQuestionID:question_id completion:completion];

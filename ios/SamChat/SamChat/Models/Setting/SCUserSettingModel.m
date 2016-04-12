@@ -91,5 +91,42 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
     });
 }
 
++ (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    if((comment==nil) || (comment.length<=0)){
+        // should check in controller
+        if(completion){
+            completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+        }
+        return;
+    }
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:[SCSkyWorldAPI urlFeedbackWithComment:comment]
+      parameters:nil
+        progress:^(NSProgress *downloadProgress) {
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if([responseObject isKindOfClass:[NSDictionary class]]){
+                NSDictionary *response = responseObject;
+                NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
+                if(errorCode){
+                    if(completion){
+                        completion(false, [SCSkyWorldError errorWithCode:errorCode]);
+                    }
+                }else{
+                    if(completion){
+                        completion(true, nil);
+                    }
+                }
+            }else{
+                if(completion){
+                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+                }
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            if(completion){
+                completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
+            }
+        }];
+}
 
 @end

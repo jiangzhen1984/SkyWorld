@@ -16,6 +16,7 @@
         if(completion){
             completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
         }
+        return;
     }
     NSString *urlString = [SCSkyWorldAPI urlAnswerQuestion:question_id withAnswer:answer];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];

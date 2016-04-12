@@ -13,4 +13,6 @@
 + (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 + (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
++ (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
+
 @end
