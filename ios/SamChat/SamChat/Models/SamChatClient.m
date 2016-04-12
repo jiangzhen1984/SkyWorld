@@ -12,6 +12,7 @@
 #import "SCUserSettingModel.h"
 #import "SCAnswerQuestionModel.h"
 #import "SCUserRelationModel.h"
+#import "SCArticleModel.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -66,6 +67,11 @@ static SamChatClient *sharedInstance = nil;
 - (void)makeFollow:(BOOL)flag withUser:(NSInteger)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCUserRelationModel makeFollow:flag withUser:userID completion:completion];
+}
+
+- (void)publishArticleWithImages:(NSArray *)images comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCArticleModel publishArticleWithImages:images comment:comment completion:completion];
 }
 
 - (void)asyncWaitingPush

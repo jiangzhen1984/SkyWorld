@@ -10,4 +10,6 @@
 
 @interface SCArticleModel : NSObject
 
++ (void)publishArticleWithImages:(NSArray *)images comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
+
 @end

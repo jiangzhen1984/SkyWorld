@@ -39,4 +39,9 @@
 #define SC_CHAT_RECEIVER_DEFAULT_AVATAR @"ReceivedAnswerDefaultAvatar"
 #define SC_CHAT_SENDER_DEFAULT_AVATAR   @"ReceivedAnswerDefaultAvatar"
 
+
+#define SC_ARTICLE_CELL_HIGHLIGHT_COLOR [UIColor colorWithRed:92/255.0 green:140/255.0 blue:193/255.0 alpha:1.0]
+
+#define SC_CHATTAB_STORYBOARD   [UIStoryboard storyboardWithName:@"ChatTab" bundle:[NSBundle mainBundle]]
+
 #endif /* AppMacro_h */

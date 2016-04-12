@@ -45,6 +45,10 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         if (completion){
             completion(true, nil);
         }
+    }else{
+        if(completion){
+            completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+        }
     }
 } failure:^(NSURLSessionDataTask *task, NSError *error) {
     DebugLog(@"avatar failed:%@", error);

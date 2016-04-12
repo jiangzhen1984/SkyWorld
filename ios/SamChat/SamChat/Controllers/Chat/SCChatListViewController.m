@@ -8,7 +8,7 @@
 
 #import "SCChatListViewController.h"
 #import "QuestionAndAnswerViewController.h"
-#import "SCArticleViewController.h"
+#import "SCArticleTableViewController.h"
 
 #import "ChatViewController.h"
 #import "RobotManager.h"
@@ -345,7 +345,8 @@
 
 - (void)presentArticleView
 {
-    SCArticleViewController *articleViewController = [[SCUtils mainStoryBoard] instantiateViewControllerWithIdentifier:@"ArticleView"];
+//    SCArticleViewController *articleViewController = [[SCUtils mainStoryBoard] instantiateViewControllerWithIdentifier:@"ArticleView"];
+    SCArticleTableViewController *articleViewController = [SC_CHATTAB_STORYBOARD instantiateViewControllerWithIdentifier:@"ArticleView"];
     [self.navigationController pushViewController:articleViewController animated:YES];
 }
 
