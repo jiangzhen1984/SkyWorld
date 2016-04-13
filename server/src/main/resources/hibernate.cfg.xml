@@ -49,6 +49,7 @@
 		<mapping class="com.skyworld.service.po.SWPServicerDesc" />
 		<mapping class="com.skyworld.service.po.SWPServicerCompanyDesc" />
 		<mapping class="com.skyworld.service.po.SWPServicerCompanyItem" />
+		<mapping class="com.skyworld.service.po.SWAppVersion" />
 		
 	</session-factory>
 

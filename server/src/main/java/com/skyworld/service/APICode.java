@@ -71,6 +71,9 @@ public class APICode {
 	
 	public static final int SKSERVICER_UPDATE_ERROR_NOT_SUPPORT_OPT = -1301;
 	
+	
+	public static final int VVERSION_QUERY_ERROR_NOT_SUPPORT_OPT = -1401;
+	
 }
 
 

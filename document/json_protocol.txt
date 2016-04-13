@@ -58,6 +58,9 @@ Protocol Version: M22
 Protocol Version: M23
              Add log collection api
 
+Protocol Version: M24
+             Add version api
+
 
 =======================================Register JSON Protocol =====================================
 API: /api/1.0/UserAPI
@@ -1058,6 +1061,47 @@ log data as http form multi-part data
 
 Success:  {ret: 0}
 stream handle failed：  {ret: -6}
+
+======================================= Version API  =====================================
+API: /api/1.0/SystemApi
+http://139.129.57.77/sw/api/1.0/SystemApi
+Version
+{
+    "header" :
+     {
+         "action" : "version"
+     },
+
+     "body" :
+     {
+        "opt"    [1/2]  1: for android  2: for ios
+     }
+}
+
+
+
+Success:  
+{
+    "ret" : 0
+    "android"  :
+    {
+           "number"  : version number integer,
+           "url"  : version package url,
+           "force"  : [true/false],
+           "type"  : type number,
+    },
+
+    "ios"  :
+    {
+           "number"  : version number integer,
+           "url"  : version package url,
+           "force"  : [true/false],
+           "type"  : type number,
+    }
+}
+opt not support：  {ret: -1401}
+
+
 
 =======================================Skservicer company update  =====================================
 Http header: Authorization : token
