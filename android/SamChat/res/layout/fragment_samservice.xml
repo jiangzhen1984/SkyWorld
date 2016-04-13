@@ -140,17 +140,25 @@
         	android:text="@string/samservice_top_serach_txt"
         	android:gravity="center"
         	android:background="@color/default_bg"/>
+    
+    <com.android.samchat.AutoNormalSwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_height="0dp"
+			android:layout_weight="1" 
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp">
+             
+		    <ListView
+	 			android:id="@+id/top_search_list"
+	 			android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:scrollbars="none"
+				android:divider="@color/listview_gray_devider" 
+				android:dividerHeight="1dp">
+			</ListView>
+	</com.android.samchat.AutoNormalSwipeRefreshLayout>
     	
-	<ListView
-	 		android:id="@+id/top_search_list"
-	 		android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1"
-			android:layout_marginTop="10dp"
-			android:scrollbars="none"
-			android:divider="@color/listview_gray_devider" 
-			android:dividerHeight="1dp">
-	</ListView>
+	
 		
 	<TextView
             android:id="@+id/cancel_search"

@@ -57,7 +57,7 @@ public class SamAnswerDetailActivity extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.activity_sam_answer_detail);
 
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 
 		mBack =  (ImageView) findViewById(R.id.back);
 		mBack.setOnClickListener(new OnClickListener(){

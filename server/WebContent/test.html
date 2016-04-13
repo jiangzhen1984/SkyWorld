@@ -39,5 +39,14 @@ article-query
 	<input name="data" value="" size="160" />
 	<input type="submit" />
 </form>
+
+<hr><br>
+log-upload
+<form method="post"   enctype="multipart/form-data" action="/SkyWorld/api/1.0/SystemApi" >
+	<input name="data" value='{"header" : { "action" : "log-collection"}, "body" : {}}' size="160" />
+	<input name="pic1" type="file" />
+	<input name="pic2" type="file" />
+	<input type="submit" />
+</form>
 </body>
 </html>

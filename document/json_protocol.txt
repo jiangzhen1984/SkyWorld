@@ -46,10 +46,22 @@ Protocol Version: M18
 Protocol Version: M19
               Add Skservicer company information query
 
+Protocol Version: M20 
+2016.04.07
+                                    新增“热点话题列表”查询协议              
+Protocol Version: M21
+             Add Skservicer company item query API
+
+Protocol Version: M22
+             Add Skservicer web api
+
+Protocol Version: M23
+             Add log collection api
+
 
 =======================================Register JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Register
 
 {
@@ -103,13 +115,13 @@ action参数不支持返回：  {ret: -2}
 内部错误：  {ret: -103}  
 
 测试地址：
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data= { "header": {"action" : "register"}, "body" : {"cellphone":"1381196123", "username" : "138", "pwd" : "a", "confirm_pwd" : "a", "country_code" : 86}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data= { "header": {"action" : "register"}, "body" : {"cellphone":"1381196123", "username" : "138", "pwd" : "a", "confirm_pwd" : "a", "country_code" : 86}}
 
 
 
 =======================================Login JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Login :
 
 { 
@@ -157,12 +169,12 @@ action参数不支持返回：  {ret: -2}
 用户或者密码错误返回：  {ret: -201}  
 
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "login"}, "body" : { "username" : "138", "pwd" : "a"}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "login"}, "body" : { "username" : "138", "pwd" : "a"}}
 
 
 =======================================Logout JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 logout协议：
 
 { 
@@ -183,13 +195,13 @@ action参数不支持返回：  {ret: -2}
 token 格式不正确：  {ret: -4}  
 token 不合法：  {ret: -401}  
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data= { "header": {"action" : "logout", "token": token}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data= { "header": {"action" : "logout", "token": token}}
 
 
 
 =======================================Upgrade JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Upgrade:
 
 {
@@ -243,12 +255,12 @@ token不存在：  {ret: -5}
 不合法的用户TOKEN :{ret : -502}
 用户已经升级过了 :{ret : -503}
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "upgrade", "token": token},"body":{"area" : "area", "location" : " OR ", "desc" : "description"}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "upgrade", "token": token},"body":{"area" : "area", "location" : " OR ", "desc" : "description"}}
 
 
 =======================================Query JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 {
     "header":
     {
@@ -333,14 +345,14 @@ token不存在：  {ret: -5}
 opt不支持 :{ret : -701}  
 
 User Query:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 1, "param" : { "username" : "138"}}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 1, "param" : { "username" : "138"}}}
 
 User List Query
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 2, "param" : { "usernames" : ["138", "139"]}}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "query", "token": "token-id"},"body":{"opt" : 2, "param" : { "usernames" : ["138", "139"]}}}
 
 =======================================Relation Query JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 {
     "header":
     {
@@ -392,11 +404,11 @@ action参数不支持返回：  {ret: -2}
 token 格式不正确：  {ret: -4}  
 token不存在：  {ret: -5}  
 
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "relation", "token": "token"},"body":{"type" : [1/2/3], userid2: user2}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "relation", "token": "token"},"body":{"type" : [1/2/3], userid2: user2}}
 
 =======================================Skservier company infomation query JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Query :
 
 { 
@@ -407,8 +419,9 @@ Query :
    },
    "body" :
    { 
-       opt : [1], //by skservicer id
-       uid : id,
+       opt : [1/2], 1:by skservicer id  2: query skservicer company item information
+       uid : id, 
+      page :  page no // this field only for opt 2
    }
 }
 
@@ -446,6 +459,17 @@ Query :
                "cmpphone"   : phone number,
            }, 
        ],
+  
+      // this field only for opt 2
+      cmpitem : [
+           {
+               "id"    : item id,
+               "title" :  title,
+               "con"   : content
+               "pic"   : pic url
+             "item-url": item url
+           },
+      ],
 
     }
 }
@@ -458,11 +482,11 @@ opt not support ：  {ret: -1201}
 queryed user is not skervier：  {ret: -1202}  
 
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={ "header": {"action" : "skservicer-cmp-query", "token" : "token id"}, "body" : { "opt" : 1, "uid" : uid}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={ "header": {"action" : "skservicer-cmp-query", "token" : "token id"}, "body" : { "opt" : 1, "uid" : uid}}
 
 =======================================Question JSON Protocol =====================================
 API: /api/1.0/QuestionAPI
-http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI
+http://139.129.57.77/sw/api/1.0/QuestionAPI
 Question:
 新问题：
 {
@@ -571,12 +595,12 @@ opt unsupported：  {ret: -301}
 内部错误：  {ret: -302}  
 没有该问题：  {ret: -303}  --> 针对取消， 结束问题时会返回该值
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI?data={"header": {"action": "question", "token":"95189486473904140"}, "body": { "opt":1, "question" :"aaa"}}
+http://139.129.57.77/sw/api/1.0/QuestionAPI?data={"header": {"action": "question", "token":"95189486473904140"}, "body": { "opt":1, "question" :"aaa"}}
 
 
 =======================================Answer JSON Protocol =====================================
 API: /api/1.0/QuestionAPI
-http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI
+http://139.129.57.77/sw/api/1.0/QuestionAPI
 Answer:
 
 {
@@ -601,11 +625,11 @@ token不存在：  {ret: -5}
 No Such Question：  {ret: -601}  
 Not Servicer：  {ret: -602}  
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI?data={"header": {"action": "answer", "token":"95056787646578688"}, "body": { "answer":"content", "question_id" : quid}}
+http://139.129.57.77/sw/api/1.0/QuestionAPI?data={"header": {"action": "answer", "token":"95056787646578688"}, "body": { "answer":"content", "question_id" : quid}}
 
 =======================================Follow JSON Protocol =====================================
 API: /api/1.0/UserApi
-http://121.42.207.185/SkyWorld/api/1.0/UserApi
+http://139.129.57.77/sw/api/1.0/UserApi
 Follow :
 
 { 
@@ -634,7 +658,7 @@ unsupport flag : {ret: -1002}
 
 =======================================Feedback JSON Protocol =====================================
 API: /api/1.0/UserAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI
+http://139.129.57.77/sw/api/1.0/UserAPI
 Feedback协议：
 
 { 
@@ -654,13 +678,13 @@ Feedback协议：
 解析失败返回：  {ret: -1}
 action参数不支持返回：  {ret: -2}  
 测试地址:
-http://121.42.207.185/SkyWorld/api/1.0/UserAPI?data={"header": {"action": "feedback", "token":"95056787646578688"}, "body": { "comment":"content"}}
+http://139.129.57.77/sw/api/1.0/UserAPI?data={"header": {"action": "feedback", "token":"95056787646578688"}, "body": { "comment":"content"}}
 
 
 
 =======================================Update UserAvatar Protocol =====================================
 API: /api/1.0/UserAvatarAPI
-http://121.42.207.185/SkyWorld/api/1.0/UserAvatarAPI
+http://139.129.57.77/sw/api/1.0/UserAvatarAPI
 This API only support POST and body must use multipart/form-data
 HTTP - parameter data: 
 ----------------------------------------------------------------------
@@ -694,12 +718,12 @@ token不存在：  {ret: -5}
 type not support：  {ret: -802}  
 头像size过大：  {ret: -803}  
 测试地址:
-http://121.42.207.185/SkyWorld/test.html
+http://139.129.57.77/sw/test.html
 
 
 =======================================Article Publish Protocol =====================================
 API: /api/1.0/ArticleApi
-http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+http://139.129.57.77/sw/api/1.0/ArticleApi
 This API only support POST and body must use multipart/form-data
 HTTP - parameter data: 
 ----------------------------------------------------------------------
@@ -730,7 +754,7 @@ handle stream failed：  {ret: -6}
 
 =======================================Article Recommend JSON Protocol =====================================
 API: /api/1.0/ArticleApi
-http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+http://139.129.57.77/sw/api/1.0/ArticleApi
 Recommend协议：
 
 { 
@@ -762,7 +786,7 @@ article not exist : { ret : -901}
 
 =======================================Article Comment JSON Protocol =====================================
 API: /api/1.0/ArticleApi
-http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+http://139.129.57.77/sw/api/1.0/ArticleApi
 Comment协议：
 
 { 
@@ -797,7 +821,7 @@ article not exist : { ret : -901}
 
 =======================================Article Query JSON Protocol =====================================
 API: /api/1.0/ArticleApi
-http://121.42.207.185/SkyWorld/api/1.0/ArticleApi
+http://139.129.57.77/sw/api/1.0/ArticleApi
 Article Query
 
 {
@@ -870,7 +894,7 @@ token不存在：  {ret: -5}
 
 ############################################################################################################
 Push Connect API:
-121.42.207.185/SkyWorld/push
+139.129.57.77/sw/push
 =======================================Push New Question JSON Protocol =====================================
 ############################################################################################################
 API : /push
@@ -980,5 +1004,71 @@ New Answer json:
     }
 
 }
+
+http://139.129.57.77/sw/api_1.0_HotTopicAPI.do
+=======================================热点话题列表查询 JSON 协议 =====================================
+发送:
+{
+    "header": {
+        "action": "query_topic_list", 
+        "token": "token"
+    }, 
+    "body": {
+        "opt_type": 0,  // 0 向前翻, 1 向后翻
+        "topic_type": 0, // 0 所有, 1.房产,  2.学校......
+        "cur_count": 0, // opt_type = 1 时有效, 标示当前已经查询到的条数
+        "update_time_pre": 1460044580000 //微秒 第一次查询或最近一次上翻的时间对应返回的query_time，第一次查询时,为0
+    }
+}
+
+返回:
+{
+    "ret": 0, 
+    "topics": [
+        {
+            "topic_type": 1, 
+            "name": "房产"
+        }, 
+        {
+            "topic_type": 2, 
+            "name": "医疗"
+        }
+    ], 
+    "query_time": 1460081211000
+}
+
+
+======================================= Log Collection API  =====================================
+API: /api/1.0/SystemApi
+http://139.129.57.77/sw/api/1.0/SystemApi
+Log Upload
+{
+    "header" :
+     {
+         "action" : "log-collection"
+     },
+
+     "body" :
+     {
+     }
+}
+
+log data as http form multi-part data 
+
+
+Success:  {ret: 0}
+stream handle failed：  {ret: -6}
+
+=======================================Skservicer company update  =====================================
+Http header: Authorization : token
+http://139.129.57.77/sw/skservicer/setting/info
+
+=======================================Skservicer company item list  =====================================
+Http header: Authorization : token
+http://139.129.57.77/sw/skservicer/setting/cmplist
+
+=======================================Skservicer company item rich html view  =====================================
+Http header: Authorization : token
+http://139.129.57.77/sw/skservicer/setting/cmplist/view/{item id}
 
 

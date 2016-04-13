@@ -48,6 +48,9 @@ public class SamService{
     public static final int MAX_PASSWORD_LENGTH = 32;
     public static final int SAMSERVICE_HANDLE_TIMEOUT=10000;
     public static final int SAMSERVICE_PUSH_HANDLE_RECONNECT_TIMEOUT=60000;
+
+
+    public static final int RETRY_MAX = 3;
 	
     public static final String FINISH_ALL_SIGN_ACTVITY = "com.android.sam.finishAllSign";
     public static final String EASEMOBNAMEGOT = "com.android.sam.easemobnamegot";
@@ -304,7 +307,46 @@ public class SamService{
 	public static final int RET_QUERY_FOLLOWER_SERVER_TOKEN_FORMAT_ERROR = -4;
 	public static final int RET_QUERY_FOLLOWER_SERVER_TOKEN_INVALID = -5;
 	public static final int RET_QUERY_FOLLOWER_SERVER_NO_ANY_DATA = -702;
-	
+
+
+    public static final int MSG_QUERY_PUBLIC_INFO = 14;
+	//query public followed
+    	public static final int R_QUERY_PUBLIC_INFO_OK=0;
+    	public static final int R_QUERY_PUBLIC_INFO_ERROR=1;
+    	public static final int R_QUERY_PUBLIC_INFO_FAILED=2;
+
+	public static final int R_QUERY_PUBLIC_INFO_ERROR_TOKEN_FILE_EXCEPTION = 0;
+	public static final int R_QUERY_PUBLIC_INFO_ERROR_TOKEN_FILE_NULL = 1;
+	public static final int R_QUERY_PUBLIC_INFO_ERROR_HTTP_EXCEPTION = 2;
+	public static final int R_QUERY_PUBLIC_INFO_ERROR_TIMEOUT = 3;
+
+	public static final int RET_QUERY_PUBLIC_INFO_SERVER_OK = 0;
+	public static final int RET_QUERY_PUBLIC_INFO_SERVER_HTTP_FAILED = -1;//parse http failed
+	public static final int RET_QUERY_PUBLIC_INFO_SERVER_ACTION_NOT_SUPPORT = -2;
+	public static final int RET_QUERY_PUBLIC_INFO_SERVER_PARAM_NOT_SUPPORT = -3;
+	public static final int RET_QUERY_PUBLIC_INFO_SERVER_TOKEN_FORMAT_ERROR = -4;
+	public static final int RET_QUERY_PUBLIC_INFO_SERVER_TOKEN_INVALID = -5;
+	public static final int RET_QUERY_PUBLIC_INFO_SERVER_OPT_NOT_SUPPORT = -1201;
+	public static final int RET_QUERY_PUBLIC_INFO_SERVER_USER_NOT_PUBLIC = -1202;
+
+
+    public static final int MSG_QUERY_HOT_TOPIC = 15;
+	//query hot topic
+    	public static final int R_QUERY_HOT_TOPIC_OK=0;
+    	public static final int R_QUERY_HOT_TOPIC_ERROR=1;
+    	public static final int R_QUERY_HOT_TOPIC_FAILED=2;
+
+	public static final int R_QUERY_HOT_TOPIC_ERROR_TOKEN_FILE_EXCEPTION = 0;
+	public static final int R_QUERY_HOT_TOPIC_ERROR_TOKEN_FILE_NULL = 1;
+	public static final int R_QUERY_HOT_TOPIC_ERROR_HTTP_EXCEPTION = 2;
+	public static final int R_QUERY_HOT_TOPIC_ERROR_TIMEOUT = 3;
+
+	public static final int RET_QUERY_HOT_TOPIC_SERVER_OK = 0;
+	public static final int RET_QUERY_HOT_TOPIC_SERVER_HTTP_FAILED = -1;//parse http failed
+	public static final int RET_QUERY_HOT_TOPIC_SERVER_ACTION_NOT_SUPPORT = -2;
+	public static final int RET_QUERY_HOT_TOPIC_SERVER_PARAM_NOT_SUPPORT = -3;
+	public static final int RET_QUERY_HOT_TOPIC_SERVER_TOKEN_FORMAT_ERROR = -4;
+	public static final int RET_QUERY_HOT_TOPIC_SERVER_TOKEN_INVALID = -5;
 
 	public static final int MSG_PUSH_MSG_GOTANSWER = 0;
 	public static final int MSG_PUSH_MSG_PUSHSERVERSHUTDOWN = 1;	
@@ -315,6 +357,7 @@ public class SamService{
 	private static SamService mSamService;
 	private static Context mContext;
 	private static Object pushLock = new Object();
+	private Object stopLock = new Object();
 
 	private HandlerThread mHandlerTimeOutThread;
 	private SamServiceTimeOutHandler mHandlerTimeOutHandler;
@@ -375,8 +418,16 @@ public class SamService{
 	current_question_id = null;
 		
     	sam_cache_path = mContext.getExternalCacheDir().getAbsolutePath();
+	if(mContext.getExternalCacheDir()!=null){
+		sam_cache_path = mContext.getExternalCacheDir().getAbsolutePath();
+	}else{
+		sam_download_path = mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+	}
+
+	
     	
     	sam_download_path = mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+
     	
     	SamLog.e(TAG,"sam_cache_path:"+sam_cache_path);
     	SamLog.e(TAG,"sam_download_path:"+sam_download_path);
@@ -439,11 +490,34 @@ public class SamService{
 	mWaitThread = null;
     	
     }
+
+	private void waitStopLock(){
+		synchronized (stopLock){
+			try {
+				stopLock.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    		}
+	}
+
+	private void notifyStopLock(){
+		synchronized (stopLock){
+			try {
+				stopLock.notify();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    		}
+	}
     
 	public void stopSamService(){
 		
-		if(mWaitThread!=null)
+		if(mWaitThread!=null){
 			mWaitThread.StopThread();
+			waitStopLock();
+			
+		}
 
 		/*remove all msg in mSamServiceHandler*/
 		mSamServiceHandler.removeMessages(MSG_AUTOLOGIN_CALLBACK);
@@ -594,6 +668,12 @@ public class SamService{
 						}else if(samobj.isQueryFollower()){
 							cbobj.smcb.onError(R_QUERY_FOLLOWER_ERROR_TIMEOUT);
 							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isQueryFollower");
+						}else if(samobj.isQueryPublicInfo()){
+							cbobj.smcb.onError(R_QUERY_PUBLIC_INFO_ERROR_TIMEOUT);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isQueryPublicInfo");
+						}else if(samobj.isQueryHotTopic()){
+							cbobj.smcb.onError(R_QUERY_HOT_TOPIC_ERROR_TIMEOUT);
+							SamLog.e(TAG, "SamServiceTimeOut Happened for msg isQueryHotTopic");
 						}
 					}
 
@@ -672,6 +752,14 @@ public class SamService{
 			do_query_follower((SamCoreObj)msg.obj);
 			break;
 
+		case MSG_QUERY_PUBLIC_INFO:
+			do_query_public((SamCoreObj)msg.obj);
+			break;
+
+		case MSG_QUERY_HOT_TOPIC:
+			do_query_hot_topic((SamCoreObj)msg.obj);
+			break;
+
 		case MSG_AUTOLOGIN_CALLBACK:
 		{
 			if(msg.arg1 == SignService.R_AUTO_SIGN_IN_OK){
@@ -723,6 +811,10 @@ public class SamService{
 					}
 				}else if(samobj.isQueryFollower()){
 					queryFollowList(cbobj.smcb);
+				}else if(samobj.isQueryPublicInfo()){
+					queryPublicInfo(((QueryPublicInfoCoreObj)samobj).uid, cbobj.smcb);
+				}else if(samobj.isQueryHotTopic()){
+					queryHotTopic(((QueryHotTopicCoreObj)samobj).cur_count,((QueryHotTopicCoreObj)samobj).update_time_pre, cbobj.smcb);
 				}
 			}else{
 				SamCoreObj samobj = (SamCoreObj)msg.obj;
@@ -776,6 +868,10 @@ public class SamService{
 					cbobj.smcb.onError(R_FOLLOW_ERROR_TOKEN_FILE_NULL);
 				}else if(samobj.isQueryFollower()){
 					cbobj.smcb.onError(R_QUERY_FOLLOWER_ERROR_TOKEN_FILE_NULL);
+				}else if(samobj.isQueryPublicInfo()){
+					cbobj.smcb.onError(R_QUERY_PUBLIC_INFO_ERROR_TOKEN_FILE_NULL);
+				}else if(samobj.isQueryHotTopic()){
+					cbobj.smcb.onError(R_QUERY_HOT_TOPIC_ERROR_TOKEN_FILE_NULL);
 				}
 				
 			}
@@ -938,6 +1034,9 @@ public class SamService{
 					}
 
 					dao.add_update_ReceivedQuestion_db(rq);
+					if(phinfoq.opt == 0){
+						dao.clearReceviedQuestion_db(phinfoq.datetime - 1*60*60*1000L);
+					}
 					Message msg1 = sq_hndl.obtainMessage(msgid, null);
 					sq_hndl.sendMessage(msg1);
 					
@@ -1198,6 +1297,24 @@ public class SamService{
 		startTimeOut(samobj);
 	}
 
+	public void queryPublicInfo(long uid,SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj samobj = new QueryPublicInfoCoreObj(uid,obj);
+		Message msg = mSamServiceHandler.obtainMessage(MSG_QUERY_PUBLIC_INFO,samobj);
+		mSamServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+
+	}
+
+	public void queryHotTopic(long cur_count,long update_time_pre,SMCallBack SMcb){
+		CBObj obj = new CBObj(SMcb);
+		SamCoreObj samobj = new QueryHotTopicCoreObj(cur_count,update_time_pre,obj);
+		Message msg = mSamServiceHandler.obtainMessage(MSG_QUERY_HOT_TOPIC,samobj);
+		mSamServiceHandler.sendMessage(msg);
+		startTimeOut(samobj);
+
+	}
+
 	
 
 	private String getShortPicName(String url_thumb) {
@@ -1277,6 +1394,200 @@ public class SamService{
 		}else{
 			SamLog.e(TAG,shortImg+" is not in FS");
 		}*/
+	}
+
+
+	private void do_query_hot_topic(SamCoreObj samobj){
+		CBObj cbobj = samobj.refCBObj;
+		QueryHotTopicCoreObj qhtobj = (QueryHotTopicCoreObj)samobj;
+
+		String token = get_current_token();
+		if(token == null){
+			SamLog.e(TAG, "token is null in do_query_hot_topic, should never run to here");
+			cbobj.smcb.onError(R_QUERY_HOT_TOPIC_ERROR_TOKEN_FILE_NULL);
+			return;
+		}
+
+		HttpCommClient hcc = new HttpCommClient();
+		if(hcc.queryHotTopic(qhtobj.cur_count,qhtobj.update_time_pre,token)){
+			if(hcc.ret == RET_QUERY_HOT_TOPIC_SERVER_OK){
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				HotTopicResult result = new HotTopicResult(hcc.hottopic_query_time,hcc.hottopicArray);
+				
+				cbobj.smcb.onSuccess((Object)result);
+				
+			}else if(hcc.ret == RET_QUERY_HOT_TOPIC_SERVER_TOKEN_INVALID){
+				SamLog.e(TAG,"query hot topic TOKEN INVALIDE!");
+				/*auto sign in*/
+				SignService.getInstance().attemptAutoSignIn(mSamServiceHandler, MSG_AUTOLOGIN_CALLBACK,samobj);
+			}else{
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
+
+			}
+		}else{
+			boolean continue_run = true;
+			cancelTimeOut(samobj);
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+
+			cbobj.smcb.onError(R_QUERY_HOT_TOPIC_ERROR_HTTP_EXCEPTION);
+		}
+
+		
+	}
+
+
+
+	private void do_query_public(SamCoreObj samobj){
+		CBObj cbobj = samobj.refCBObj;
+		QueryPublicInfoCoreObj qpiobj = (QueryPublicInfoCoreObj)samobj;
+
+		String token = get_current_token();
+		if(token == null){
+			SamLog.e(TAG, "token is null in do_query_public, should never run to here");
+			cbobj.smcb.onError(R_QUERY_PUBLIC_INFO_ERROR_TOKEN_FILE_NULL);
+			return;
+		}
+
+		HttpCommClient hcc = new HttpCommClient();
+		if(hcc.queryPublicInfo(qpiobj.uid,token)){
+			if(hcc.ret == RET_QUERY_PUBLIC_INFO_SERVER_OK){
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				ContactUser userdb=null;
+				boolean need_update = false;
+				ContactUser cuser = hcc.uiArray.size()>1?hcc.uiArray.get(0):null;
+
+				if(cuser!=null){
+					need_update = false;
+					userdb = dao.query_ContactUser_db_by_username(cuser.getusername());
+					if(userdb == null){
+						need_update = true;
+					}else if(userdb!=null && userdb.getlastupdate()!=cuser.getlastupdate()){
+						need_update = true;
+					} 
+
+					if(need_update){
+						dao.add_update_ContactUser_db(cuser);
+					}
+
+					if(cuser.imagefile!=null){
+						String shortImg = getShortImgName(cuser.imagefile);
+						if(shortImg != null){
+							AvatarRecord rd = dao.query_AvatarRecord_db_by_username(cuser.getusername());
+							if(rd == null || rd.getavatarname()==null){
+								downloadAvatar(hcc, cuser.imagefile,cuser.phonenumber,cuser.username);
+							}else if(!rd.getavatarname().equals(shortImg)){
+								downloadAvatar(hcc, cuser.imagefile,cuser.phonenumber,cuser.username);
+							}else if(!dao.isAvatarExistedInFS(shortImg)){
+								downloadAvatar(hcc, cuser.imagefile,cuser.phonenumber,cuser.username);
+							}
+						}
+						
+					}
+				}
+
+				PublicInfo pub = hcc.pubinfoArray.get(0);
+				PublicInfo rd = null;
+				if((rd = dao.query_PublicInfo_db(pub.getowner_unique_id())) == null){
+					rd = new PublicInfo();
+					rd.setcmpdesc(pub.getcmpdesc());
+					rd.setcmplogo(pub.getcmplogo());
+					rd.setcmpname(pub.getcmpname());
+					rd.setcmpphone(pub.getcmpphone());
+					rd.setcmpwebsite(pub.getcmpwebsite());
+					rd.setowner_unique_id(pub.getowner_unique_id());
+					dao.add_PublicInfo_db(rd);
+				}else{
+					rd.setcmpdesc(pub.getcmpdesc());
+					rd.setcmplogo(pub.getcmplogo());
+					rd.setcmpname(pub.getcmpname());
+					rd.setcmpphone(pub.getcmpphone());
+					rd.setcmpwebsite(pub.getcmpwebsite());
+					rd.setowner_unique_id(pub.getowner_unique_id());
+					dao.update_PublicInfo_db(rd.getid(), rd);
+
+				}
+				
+				cbobj.smcb.onSuccess((Object)hcc.pubinfoArray);
+				
+			}else if(hcc.ret == RET_QUERY_PUBLIC_INFO_SERVER_TOKEN_INVALID){
+				SamLog.e(TAG,"query public TOKEN INVALIDE!");
+				/*auto sign in*/
+				SignService.getInstance().attemptAutoSignIn(mSamServiceHandler, MSG_AUTOLOGIN_CALLBACK,samobj);
+			}else{
+				cancelTimeOut(samobj);
+				boolean continue_run = true;
+				synchronized(samobj){
+					if(samobj.request_status == SamCoreObj.STATUS_INIT){
+						samobj.request_status = SamCoreObj.STATUS_DONE;
+					}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+						continue_run = false;
+					}
+				}
+
+				if(!continue_run) return;
+
+				cbobj.smcb.onFailed(hcc.ret);
+
+			}
+		}else{
+			boolean continue_run = true;
+			cancelTimeOut(samobj);
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+
+			cbobj.smcb.onError(R_QUERY_PUBLIC_INFO_ERROR_HTTP_EXCEPTION);
+		}
+
+		
 	}
 
 	private void do_query_follower(SamCoreObj samobj){
@@ -2565,8 +2876,10 @@ public class SamService{
 		@Override  
 		public void run() {  
 			hcc = new HttpCommClient();
-			networkAvaliable = NetworkMonitor.isNetworkAvailable();
+			
 			while(run){
+				networkAvaliable = NetworkMonitor.isNetworkAvailable();
+				
 				if(!networkAvaliable){
 					/*pending wait thread to power save*/
 					cancelHeartTimeOut();
@@ -2575,7 +2888,7 @@ public class SamService{
 				/*connect to server*/
 				if(current_token == null){
 					SamLog.e(TAG,"WaitThread: current token is null");
-					SystemClock.sleep(5000);
+					run = false;
 					continue;
 				}
 
@@ -2637,6 +2950,8 @@ public class SamService{
 			}
 
 			SamLog.e(TAG,"WaitThread exit !!!!");
+
+			notifyStopLock();
     		} 
 
 		public void StopThread(){

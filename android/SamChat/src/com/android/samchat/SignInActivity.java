@@ -67,6 +67,8 @@ public class SignInActivity extends Activity {
 	
 	private SamProcessDialog mDialog;
 
+	private boolean isSigning=false;
+
 	EMCallBack EMcb = new EMCallBack() {//»Øµ÷
 		@Override
 		public void onSuccess() {
@@ -79,8 +81,10 @@ public class SignInActivity extends Activity {
 					user.seteasemob_status(LoginUser.ACTIVE);
 					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.ACTIVE);
 					if(mDialog!=null){
+						SamLog.i("test","dismiss dialog in sign in activity EMcb onSuccess");
 						mDialog.dismissPrgoressDiglog();
 					}
+					isSigning = false;
 					launchMainActivity();
 				}
 			});
@@ -94,16 +98,24 @@ public class SignInActivity extends Activity {
 		@Override
 		public void onError(int code, String message) {
 			SamLog.ship(TAG,"login easemob failed code:"+code+ " message:" + message);
-			LoginUser user = SamService.getInstance().get_current_user();
-			user.seteasemob_status(LoginUser.INACTIVE);
-			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);
+			runOnUiThread(new Runnable() {
+				public void run() {
+					LoginUser user = SamService.getInstance().get_current_user();
+					user.seteasemob_status(LoginUser.INACTIVE);
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);
 			
-			if(mDialog!=null){
-				mDialog.dismissPrgoressDiglog();
-			}
-			//launchMainActivity();
-			setErrorPop(getString(R.string.sign_in_failed_reason_others));
-			invalideAllLoginRecord();
+					if(mDialog!=null){
+						SamLog.i("test","dismiss dialog in sign in activity EMcb onError");
+						mDialog.dismissPrgoressDiglog();
+					}
+
+					isSigning = false;
+					//launchMainActivity();
+					setErrorPop(getString(R.string.sign_in_failed_reason_others));
+					invalideAllLoginRecord();
+				}
+			});
+			
 		}
 	};
 
@@ -228,7 +240,7 @@ public class SignInActivity extends Activity {
 		mUsername.addTextChangedListener(UN_TextWatcher);
 		mPassword.addTextChangedListener(PW_TextWatcher);
 	    
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 		    
 		/*launch sign up activity*/
 		mSignup.setOnClickListener(new OnClickListener(){
@@ -244,6 +256,10 @@ public class SignInActivity extends Activity {
 		mLayout_signin.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
+				if(isSigning){
+					return;
+				}
+				
 				clearErrorPop();
 				if(!NetworkMonitor.isNetworkAvailable()){
 					launchDialogActivity(getString(R.string.nw_illegal_title),getString(R.string.network_status_no));
@@ -272,6 +288,8 @@ public class SignInActivity extends Activity {
     			mDialog.launchProcessDialog(SignInActivity.this,getString(R.string.sign_in_now));
     		}
 
+		isSigning = true;
+
 		SignService.getInstance().SignIn(username,password,new SMCallBack(){
 			@Override
 			public void onSuccess(final Object obj) {
@@ -298,8 +316,11 @@ public class SignInActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						if(mDialog!=null){
+							SamLog.i("test","dismiss dialog in sign in activity onFailed");
 	    	    					mDialog.dismissPrgoressDiglog();
 	    	    				}
+
+						isSigning = false;
 						
 	            				if(code == SignService.RET_SI_FROM_SERVER_UP_ERROR){
 			            			setErrorPop(getString(R.string.sign_in_failed_reason_unpd));
@@ -315,8 +336,11 @@ public class SignInActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						if(mDialog!=null){
+							SamLog.i("test","dismiss dialog in sign in activity onError");
     							mDialog.dismissPrgoressDiglog();
     						}
+
+						isSigning = false;
 
 						if(code ==SignService.R_SIGN_IN_TIMEOUT){
 							setErrorPop(getString(R.string.sign_in_timeout_statement));

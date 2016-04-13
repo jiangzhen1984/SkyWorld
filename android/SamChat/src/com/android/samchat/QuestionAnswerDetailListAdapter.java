@@ -179,7 +179,7 @@ public class QuestionAnswerDetailListAdapter extends BaseAdapter{
 					getReceivedQuestion().setresponse(ReceivedQuestion.RESPONSED);
 					SamService.getInstance().getDao().add_update_ReceivedQuestion_db(getReceivedQuestion());
 				}else{
-					SamLog.e(TAG,"Send Answer status: send_others,shoudl never run here");
+					SamLog.e(TAG,"Send Answer status: send_others,never run here");
 					holder.processimage.clearAnimation(); 
 					holder.processimage.setVisibility(View.INVISIBLE);
 				}

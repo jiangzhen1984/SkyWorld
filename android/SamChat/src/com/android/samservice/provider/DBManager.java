@@ -581,6 +581,13 @@ public class DBManager
 		return question;
 	}
 
+	public void clearReceivedQuestion(String receiverusername,long datetime){
+		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION ;
+
+		db.delete(table, "receiverusername=? and receivedtime<?", new String[]{receiverusername,""+datetime});		
+
+	}
+
 
 	private long fetchPlacesCount(String table) {
 		String sql = "SELECT COUNT(*) FROM " + table;
@@ -595,7 +602,7 @@ public class DBManager
 		List<ReceivedQuestion> ReceivedQuestionArray = new ArrayList<ReceivedQuestion>();
 		ReceivedQuestion question = null;
 
-		Cursor c = db.query(table,null,"receiverusername=? and status=?",new String[]{receiverusername,""+ReceivedQuestion.ACTIVE},null,null,null);
+		Cursor c = db.query(table,null,"receiverusername=?",new String[]{receiverusername},null,null,null);
 		while(c.moveToNext()){
 			question = new ReceivedQuestion();
 			question.id = c.getLong(c.getColumnIndex("id"));
@@ -1568,6 +1575,72 @@ public class DBManager
 
 		db.delete(table, "username=? and owner_unique_id=?", new String[]{username,""+owner_unique_id});
 	}
+
+
+
+
+	public long addPublicInfo(PublicInfo record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_PUBLIC_INFO;
+		//id(primary) | owner_unique_id | cmplogo | cmpwebsite | cmpname | cmpdesc | cmpphone
+		ContentValues cv = new ContentValues();
+		cv.put("owner_unique_id",record.owner_unique_id);
+		cv.put("cmplogo",record.cmplogo);
+		cv.put("cmpwebsite",record.cmpwebsite);
+		cv.put("cmpname",record.cmpname);
+		cv.put("cmpdesc",record.cmpdesc);
+		cv.put("cmpphone",record.cmpphone);
+		
+		return db.insert(table,null,cv);
+	}
+
+	public long updatePublicInfo(long id, PublicInfo record)
+	{
+		String table = DatabaseHelper.TABLE_NAME_PUBLIC_INFO;
+
+		ContentValues cv = new ContentValues();
+		cv.put("owner_unique_id",record.owner_unique_id);
+		cv.put("cmplogo",record.cmplogo);
+		cv.put("cmpwebsite",record.cmpwebsite);
+		cv.put("cmpname",record.cmpname);
+		cv.put("cmpdesc",record.cmpdesc);
+		cv.put("cmpphone",record.cmpphone);
+		
+
+		String whereClause = "id=?";
+		String [] whereArgs = {""+id+""};
+
+		return db.update(table,cv,whereClause,whereArgs);
+	}
+
+	public PublicInfo queryPublicInfo(long owner_unique_id){
+		String table = DatabaseHelper.TABLE_NAME_PUBLIC_INFO ;
+
+		PublicInfo record = null;
+
+		Cursor c = db.query(table,null,"owner_unique_id=?",new String[]{""+owner_unique_id},null,null,null);
+
+		if(c.getCount()>1){
+			SamLog.e(TAG, "Fatal Error for query public by name");
+			throw new RuntimeException("Fatal Error for query public by name!");
+		}
+
+		while(c.moveToNext()){
+			record = new PublicInfo();
+			record.id = c.getLong(c.getColumnIndex("id"));
+			record.owner_unique_id = c.getLong(c.getColumnIndex("owner_unique_id"));
+			record.cmplogo= c.getString(c.getColumnIndex("cmplogo"));
+			record.cmpwebsite = c.getString(c.getColumnIndex("cmpwebsite"));
+			record.cmpname = c.getString(c.getColumnIndex("cmpname"));
+			record.cmpdesc = c.getString(c.getColumnIndex("cmpdesc"));
+			record.cmpphone = c.getString(c.getColumnIndex("cmpphone"));
+		}
+
+		c.close();
+
+		return record;
+	}
+
 
 
     /**

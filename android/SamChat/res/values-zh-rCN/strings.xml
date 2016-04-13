@@ -232,4 +232,10 @@
     <string name="nofill">未填写</string>
     <string name="store">保存</string>
     <string name="sweep">扫一扫加好友</string>
+    <string name="notification">收到新问题,请即时回答</string>
+    <string name="notification_title">天际服务</string>
+    <string name="notification_content">收到新问题,请去天际查看</string>
+    <string name="load_data">正在加载数据请确保网络连接正确&#8230;&#8230;&#8230;</string>
+    <string name="exiting">正在退出&#8230;&#8230;&#8230;</string>
+    <string name="exiting_user_conflict">正在退出帐号在另一台机器登陆</string>
 </resources>

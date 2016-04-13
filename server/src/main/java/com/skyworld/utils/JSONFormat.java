@@ -89,6 +89,7 @@ public class JSONFormat {
 			a.put("title", it.title);
 			a.put("con", it.content);
 			a.put("pic", it.pic);
+			a.put("item-url", GlobalConstants.HOME_HTTP+"/" +GlobalConstants.HOME_HOST+"/skservicer/setting/cmplist/view/"+it.id);
 			cmpJ.put(a);
 		}
 	}

@@ -63,7 +63,7 @@ public class UserInfoActivity extends Activity {
 			return;
 		}
 
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 
 		mWall_photo = (ImageView)findViewById(R.id.wall_photo);
 		mAvatar = (ImageView)findViewById(R.id.avatar); 

@@ -75,7 +75,7 @@ public class NewFriendActivity extends Activity {
 
 		
 
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 
 		setContentView(R.layout.activity_new_friend);
 		mContext = getBaseContext();

@@ -14,13 +14,50 @@
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
-    
-    <filter>
-        <filter-name>SSOFilter</filter-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:spring/applicationContext*.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:spring/servlet-config.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>SSOFilter</filter-name>
 		<filter-class>com.skyworld.web.SSOFilter</filter-class>
-    </filter>
-    
-    <filter-mapping>
+	</filter>
+
+	<filter-mapping>
 		<filter-name>SSOFilter</filter-name>
 		<url-pattern>/skservicer/*</url-pattern>
 	</filter-mapping>
@@ -52,12 +89,18 @@
 		<servlet-class>com.skyworld.api.UserAvatarApi</servlet-class>
 	</servlet>
 
-	
+
 	<servlet>
 		<servlet-name>ArticleApi</servlet-name>
 		<servlet-class>com.skyworld.api.ArticleApi</servlet-class>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>SystemApi</servlet-name>
+		<servlet-class>com.skyworld.api.SystemApi</servlet-class>
+	</servlet>
+	
+
 	<servlet-mapping>
 		<servlet-name>UserAPI</servlet-name>
 		<url-pattern>/api/1.0/UserAPI</url-pattern>
@@ -72,8 +115,8 @@
 		<servlet-name>UserAvatarAPI</servlet-name>
 		<url-pattern>/api/1.0/UserAvatarAPI</url-pattern>
 	</servlet-mapping>
-	
-		<servlet-mapping>
+
+	<servlet-mapping>
 		<servlet-name>ArticleApi</servlet-name>
 		<url-pattern>/api/1.0/ArticleApi</url-pattern>
 	</servlet-mapping>
@@ -84,13 +127,19 @@
 	</servlet-mapping>
 	
 	
+	<servlet-mapping>
+		<servlet-name>SystemApi</servlet-name>
+		<url-pattern>/api/1.0/SystemApi</url-pattern>
+	</servlet-mapping>
+
+
 	<!-- web -->
-	
+
 	<servlet>
 		<servlet-name>SKServicer</servlet-name>
 		<servlet-class>com.skyworld.web.SKServicerSetting</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>SKServicer</servlet-name>
 		<url-pattern>/skservicer/setting/info</url-pattern>

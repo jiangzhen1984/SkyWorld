@@ -3,6 +3,7 @@ package com.android.samchat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
 import com.android.samservice.info.ReceivedQuestion;
@@ -117,6 +118,8 @@ public class SamQAActivity extends Activity {
 		super.onDestroy();
 		this.setResult(1);
 		SamLog.e(TAG,"QA activity destroy and send broadcast");
+
+		EaseMobHelper.getInstance().sendQAActivityDestroyedBroadcast();
 		
 		//Intent intent = new Intent();
 		//intent.setAction(SamChats_Fragment.HIDE_QA_BADGE);

@@ -213,6 +213,12 @@ public class SamDBDao{
 		}
 	}
 
+	public void clearReceviedQuestion_db(long datetime){
+		synchronized(dbLock){
+			dbHandle.clearReceivedQuestion(SamService.getInstance().get_current_user().getusername(),datetime);
+		}
+	}
+
 	public long add_SendAnswer_db(SendAnswer answer){
 		synchronized(dbLock){
 				return dbHandle.addSendAnswer(answer);
@@ -594,6 +600,25 @@ public class SamDBDao{
 	public List<FollowerRecord> query_FollowerRecord_db(long owner_unique_id){
 		synchronized(dbLock){
 				return dbHandle.queryFollowerRecord(owner_unique_id);
+		}
+	}
+
+
+	public long add_PublicInfo_db(PublicInfo record){
+		synchronized(dbLock){
+				return dbHandle.addPublicInfo(record);
+		}
+	}
+
+	public long update_PublicInfo_db(long id,PublicInfo record){
+		synchronized(dbLock){
+				return dbHandle.updatePublicInfo( id,  record) ;
+		}
+	}
+
+	public PublicInfo query_PublicInfo_db(long owner_unique_id){
+		synchronized(dbLock){
+				return dbHandle.queryPublicInfo(owner_unique_id);
 		}
 	}
 

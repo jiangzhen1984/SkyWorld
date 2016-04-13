@@ -87,6 +87,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	*/
 	public static final String TABLE_NAME_FOLLOWER = "FollowerTable";
 
+	/*
+	id(primary) | owner_unique_id | cmplogo | cmpwebsite | cmpname | cmpdesc | cmpphone
+	*/
+	public static final String TABLE_NAME_PUBLIC_INFO = "PublicInfoTable";
+
     // 构造函数，调用父类SQLiteOpenHelper的构造函数
     public DatabaseHelper(Context context, String name, CursorFactory factory,
             int version, DatabaseErrorHandler errorHandler)
@@ -352,6 +357,23 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		// 执行创建表的SQL语句
         	db.execSQL(sBuffer.toString());
 
+	}
+
+	private void createPublicInfoTable(SQLiteDatabase db){
+	/*
+	id(primary) | owner_unique_id | cmplogo | cmpwebsite | cmpname | cmpdesc | cmpphone
+	*/
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("CREATE TABLE [" + TABLE_NAME_PUBLIC_INFO+ "] (");
+		sBuffer.append("[id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, ");
+		sBuffer.append("[owner_unique_id] INTEGER ,");
+        	sBuffer.append("[cmplogo] TEXT ,");
+		sBuffer.append("[cmpwebsite] TEXT ,");
+		sBuffer.append("[cmpname] TEXT ,");
+		sBuffer.append("[cmpdesc] TEXT ,");
+		sBuffer.append("[cmpphone] TEXT )");
+		// 执行创建表的SQL语句
+        db.execSQL(sBuffer.toString());
 	}
 
     // 继承SQLiteOpenHelper类,必须要覆写的三个方法：onCreate(),onUpgrade(),onOpen()

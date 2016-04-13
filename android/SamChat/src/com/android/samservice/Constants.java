@@ -23,6 +23,11 @@ public class Constants extends EaseConstant{
 	public static final String ACCOUNT_REMOVED = "account_removed";
 
 	public static final String ACTION_AVATAR_UPDATE = "action_avatar_update";
-	
+
+	public static final String ACTION_QAACTIVITY_DESTROYED = "qa_activity_destroyed";
+
+
+
+
 }
 

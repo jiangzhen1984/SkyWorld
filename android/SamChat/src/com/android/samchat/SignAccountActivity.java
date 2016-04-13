@@ -46,7 +46,7 @@ public class SignAccountActivity extends Activity {
 	public static final int  MSG_EASEMOB_NAME_GOT_TIMEOUT = 3;
 	public static final int MSG_CHECK_UP_UNIQUE=4;
 
-	public static final int SAM_SIGNUP_TIMEOUT=20000;
+	public static final int SAM_SIGNUP_TIMEOUT=60000;
 	public static final int CHECK_UP_UNIQUE_TIMEOUT=2000;
 
 	private boolean available_checkbox=true;
@@ -101,17 +101,23 @@ public class SignAccountActivity extends Activity {
 		@Override
 		public void onError(int code, String message) {
 			SamLog.ship(TAG,"login easemob failed code:"+code+ " message:" + message);
-			LoginUser user = SamService.getInstance().get_current_user();
-			user.seteasemob_status(LoginUser.INACTIVE);
-			SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);
+			runOnUiThread(new Runnable() {
+				public void run() {
+					
+					LoginUser user = SamService.getInstance().get_current_user();
+					user.seteasemob_status(LoginUser.INACTIVE);
+					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.INACTIVE);
 
-			if(mDialog!=null){
-				mDialog.dismissPrgoressDiglog();
-			}
+					if(mDialog!=null){
+						mDialog.dismissPrgoressDiglog();
+					}
 			
-			//launchMainActivity();
-			setErrorPop(getString(R.string.sign_up_succeed_but_sign_in_failed));
-			invalideAllLoginRecord();
+					//launchMainActivity();
+					setErrorPop(getString(R.string.sign_up_succeed_but_sign_in_failed));
+					SamService.getInstance().stopSamService();
+					invalideAllLoginRecord();
+				}
+			});
 		}
 	};
 
@@ -330,7 +336,7 @@ public class SignAccountActivity extends Activity {
 	    mLayout_signup.setEnabled(false);
 	    mLayout_signup.setClickable(false);
 	    
-	    mDialog = new SamProcessDialog();
+	    mDialog = new SamProcessDialog(this);
 
            cellphone = getIntent().getStringExtra(Constants.CELLPHONE_NUMBER);
            country_code = getIntent().getStringExtra(Constants.COUNTRY_CODE);	   

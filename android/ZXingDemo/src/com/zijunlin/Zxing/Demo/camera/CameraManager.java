@@ -158,9 +158,9 @@ public final class CameraManager {
    */
   public void startPreview() {
     if (camera != null && !previewing) {
-      /*SAM_BEGIN*/		
+      /*SAMC_BEGIN(change preview to portrait)*/		
 	camera.setDisplayOrientation(90);
-      /*SAM_END*/
+      /*SAMC_END(change preview to portrait)*/	
       camera.startPreview();
       previewing = true;
     }

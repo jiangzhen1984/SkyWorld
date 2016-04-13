@@ -67,7 +67,7 @@ public class FGCommentsActivity extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.activity_fg_comments);
 
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 
 		mContext = getBaseContext();
 

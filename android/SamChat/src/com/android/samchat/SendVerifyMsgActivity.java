@@ -52,7 +52,7 @@ public class SendVerifyMsgActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 	
 		setContentView(R.layout.activity_send_verify_msg);
 		mContext = getBaseContext();

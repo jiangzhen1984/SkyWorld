@@ -43,6 +43,13 @@ public abstract class APIBasicJsonApiService implements APIService {
 			writeResponse(new RTCodeResponse(APICode.REQUEST_PARAMETER_NOT_STISFIED), req, resp);
 			return;
 		}
+		// xcl 2016-4-7  调用具体实现类的service方法
+		BasicResponse response = null;
+		if((response = service(root)) != null){
+			writeResponse(response, req, resp);
+			return;
+		}
+		//
 		String action = header.getString("action");
 		APIBasicJsonApiService hanldeService = mapping.get(action);
 		log.info(" action ==>   " + action+"    servicer===>" + hanldeService);

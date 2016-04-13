@@ -41,7 +41,6 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 	private BadgeView unread_question_bage;
 	static int i = 0;
 	private View rootView;
-	private SamProcessDialog mDialog;
 	private LinearLayout mSamQA_layout;
 	private RelativeLayout mSamQA_relativelayout;
 	private RelativeLayout mUn_read_question_num_layout;
@@ -64,7 +63,7 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 		SamLog.e(TAG,"onCreateView");
 		if(rootView == null){
 			SamLog.e(TAG,"run again");
-			mDialog = new SamProcessDialog();
+			
 		
 			rootView = inflater.inflate(R.layout.fragment_chats, container,false);
 			mSamQA_layout = (LinearLayout)rootView.findViewById(R.id.samQA_layout);
@@ -171,6 +170,14 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 	}
 
 
+
+	public void dismissBage(){
+		un_read_question_num = 0;
+		isQAActivityLaunched = false;
+		hideBage();
+	}
+
+
 	private void update_questions_newq( ){
 		if(isQAActivityLaunched){
 			launchQAActivity();
@@ -180,6 +187,8 @@ public class SamChats_Fragment extends EaseConversationListFragment {
 		}
 
 		((MainActivity)getActivity()).updateReminderIcon(MainActivity.TAB_ID_SAMCHATS,true);
+
+		((MainActivity)getActivity()).sendNotification();
 	
 	}
 

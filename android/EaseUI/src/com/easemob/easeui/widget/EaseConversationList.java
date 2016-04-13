@@ -178,9 +178,15 @@ public class EaseConversationList extends ListView {
     }
     
     public void refresh() {
-        conversationList = loadConversationsWithRecentChat();
-
-        handler.sendEmptyMessage(MSG_REFRESH_ADAPTER_DATA);
+	/*SAMC_BEGIN(Change adapter content and call Notify imemdiately)*/
+	if (adapter != null) {
+              conversationList.clear();
+              conversationList.addAll(loadConversationsWithRecentChat());
+              adapter.notifyDataSetChanged();
+       }
+	//conversationList = loadConversationsWithRecentChat();
+       //handler.sendEmptyMessage(MSG_REFRESH_ADAPTER_DATA);
+       /*SAMC_END(Change adapter content and call Notify imemdiately)*/
     }
     
     public void filter(CharSequence str) {

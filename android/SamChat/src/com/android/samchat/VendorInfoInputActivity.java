@@ -67,7 +67,7 @@ public class VendorInfoInputActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vendor_info_input);
-		mDialog = new SamProcessDialog();
+		mDialog = new SamProcessDialog(this);
 
 		mContext = getBaseContext();
 

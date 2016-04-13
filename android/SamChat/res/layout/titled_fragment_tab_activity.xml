@@ -51,19 +51,8 @@
         </RelativeLayout>
 
     </LinearLayout>
-
-    <com.android.samchat.TitleIndicator
-        android:id="@+id/pagerindicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/common_bg_green"
-        app:footerColor="@color/tab_indicator_text_selected"
-        app:footerLineHeight="2dp"
-        app:footerTriangleHeight="3.0dp"
-        app:textColor="@drawable/tab_indicator_text"
-        app:textSizeNormal="@dimen/common_text_size_middle_2"
-        app:textSizeSelected="@dimen/common_text_size_middle_2" />
-
+    
+    
     <!-- Don't set background for ViewPager. It doesn't work because of page margin -->
 
     <com.android.samchat.ViewPagerCompat
@@ -72,5 +61,21 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:duplicateParentState="true" />
+    
+    <!-- app:footerColor="@color/tab_indicator_text_selected" -->
+    
+    <com.android.samchat.TitleIndicator
+        android:id="@+id/pagerindicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/common_bg_green"
+        app:footerColor="@color/common_bg_green"
+        app:footerLineHeight="2dp"
+        app:footerTriangleHeight="3.0dp"
+        app:textColor="@drawable/tab_indicator_text"
+        app:textSizeNormal="@dimen/common_text_size_middle_2"
+        app:textSizeSelected="@dimen/common_text_size_middle_2" />
+    
+    
 
 </LinearLayout>

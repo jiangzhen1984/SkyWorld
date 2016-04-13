@@ -1,15 +1,19 @@
 package com.android.samchat;
 
+import com.android.samservice.SamLog;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 
 public class SamProcessDialog {
 	private ProgressDialog mProgressDialog;
+
+	public SamProcessDialog(Activity activity_owner){
+		mProgressDialog = new ProgressDialog(activity_owner);
+	}
 	
 	public void launchProcessDialog (Activity activity_owner,String msg)
 	{
-	
-		mProgressDialog = new ProgressDialog(activity_owner);
 		// 设置mProgressDialog风格
 		mProgressDialog.setProgress(ProgressDialog.STYLE_SPINNER);//圆形
 		mProgressDialog.setProgress(ProgressDialog.STYLE_HORIZONTAL);//水平
@@ -31,8 +35,6 @@ public class SamProcessDialog {
 	
 	public void dismissPrgoressDiglog()
 	{
-		if(mProgressDialog!=null){
-			mProgressDialog.dismiss();
-		}
+		mProgressDialog.dismiss();
 	}
 }
