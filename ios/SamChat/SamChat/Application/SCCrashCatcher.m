@@ -17,7 +17,7 @@ void uncaughtExceptionHandler(NSException *exception)
     NSString *name = [exception name];
     NSString *exceptionInfo = [NSString stringWithFormat:@"Exception reason：%@\nException name：%@\nException stack：%@",name, reason, stackArray];
     
-    NSString *crashLog = [NSString stringWithFormat:@"CrashTime:%@\n%@\n%@",
+    NSString *crashLog = [NSString stringWithFormat:@"%@\n%@\n%@",
                           [SCCrashCatcher crashTime],
                           [SCCrashCatcher appInformation],
                           exceptionInfo];
@@ -29,7 +29,7 @@ void uncaughtExceptionHandler(NSException *exception)
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"YYYY.MM.dd HH:mm"];
-    return [formatter stringFromDate:[NSDate date]];
+    return [NSString stringWithFormat:@"CrashTime:%@\n",[formatter stringFromDate:[NSDate date]]];
 }
 
 + (NSString *)appInformation
