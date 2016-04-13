@@ -380,20 +380,36 @@
                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O2P-Qg-yYp">
-                                <rect key="frame" x="148" y="311" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="已阅读并同意" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zM4-9V-nGG">
-                                <rect key="frame" x="233" y="311" width="90" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRg-gc-gLg">
-                                <rect key="frame" x="337" y="311" width="120" height="30"/>
-                                <state key="normal" title="《天际用户协议》"/>
-                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qhe-Jc-eUo">
+                                <rect key="frame" x="150" y="305" width="300" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O2P-Qg-yYp">
+                                        <rect key="frame" x="8" y="7" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已阅读并同意" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zM4-9V-nGG">
+                                        <rect key="frame" x="62" y="13" width="90" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iRg-gc-gLg">
+                                        <rect key="frame" x="160" y="7" width="120" height="30"/>
+                                        <state key="normal" title="《天际用户协议》"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="iRg-gc-gLg" firstAttribute="centerY" secondItem="Qhe-Jc-eUo" secondAttribute="centerY" id="GCo-t8-qOl"/>
+                                    <constraint firstAttribute="trailing" secondItem="iRg-gc-gLg" secondAttribute="trailing" constant="20" id="KY3-hD-dg9"/>
+                                    <constraint firstItem="O2P-Qg-yYp" firstAttribute="centerY" secondItem="Qhe-Jc-eUo" secondAttribute="centerY" id="LRw-oY-cKR"/>
+                                    <constraint firstItem="zM4-9V-nGG" firstAttribute="centerY" secondItem="Qhe-Jc-eUo" secondAttribute="centerY" id="Nxe-5G-w0l"/>
+                                    <constraint firstAttribute="height" constant="44" id="UhO-4g-GBK"/>
+                                    <constraint firstItem="O2P-Qg-yYp" firstAttribute="leading" secondItem="Qhe-Jc-eUo" secondAttribute="leading" constant="8" id="fFn-gA-UbJ"/>
+                                    <constraint firstItem="iRg-gc-gLg" firstAttribute="leading" secondItem="zM4-9V-nGG" secondAttribute="trailing" constant="8" id="kKC-K6-l3T"/>
+                                    <constraint firstItem="zM4-9V-nGG" firstAttribute="leading" secondItem="O2P-Qg-yYp" secondAttribute="trailing" constant="8" id="zNc-Wg-snt"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -403,8 +419,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="n4K-5P-tNd" secondAttribute="trailing" id="SSy-Zp-jCl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="u8e-Be-5by" secondAttribute="trailing" id="UGw-V8-sQc"/>
                             <constraint firstAttribute="leadingMargin" secondItem="n4K-5P-tNd" secondAttribute="leading" id="X0h-K0-fBw"/>
+                            <constraint firstItem="Qhe-Jc-eUo" firstAttribute="top" secondItem="r0k-RM-Lxd" secondAttribute="bottom" constant="2" id="Ydq-7l-Odm"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ojv-Sg-k9f" secondAttribute="trailing" id="aEV-n5-Ll0"/>
                             <constraint firstAttribute="leadingMargin" secondItem="u8e-Be-5by" secondAttribute="leading" id="cpS-mJ-ZRQ"/>
+                            <constraint firstItem="Qhe-Jc-eUo" firstAttribute="centerX" secondItem="Smr-7E-n3K" secondAttribute="centerX" id="ert-PY-9Ml"/>
                             <constraint firstItem="o4b-6r-L9m" firstAttribute="top" secondItem="u8e-Be-5by" secondAttribute="bottom" constant="14" id="fIu-cl-Ovi"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Ojv-Sg-k9f" secondAttribute="leading" id="fU1-I2-PLP"/>
                             <constraint firstItem="Ojv-Sg-k9f" firstAttribute="top" secondItem="n4K-5P-tNd" secondAttribute="bottom" constant="5" id="l1l-gT-kAg"/>

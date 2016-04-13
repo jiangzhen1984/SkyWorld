@@ -88,6 +88,8 @@
 
 #define SKYWORLD_NAME               @"name"
 
+#define SKYWORLD_ARTICLES           @"articles"
+
 
 #pragma mark - Json Key Path
 #define SKYWORLD_USER_USERNAME      @"user.username"

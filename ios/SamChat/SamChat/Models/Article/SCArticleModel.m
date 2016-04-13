@@ -24,6 +24,9 @@
     [manager POST:[SCSkyWorldAPI urlArticlePublishWithComment:comment]
        parameters:nil
 constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    if(count == 0){
+        [formData appendPartWithFormData:[NSData data] name:@"none"];
+    }
     for (int i=0; i<count; i++) {
         id image = images[i];
         if([image isKindOfClass:[UIImage class]]){
@@ -45,7 +48,7 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSDictionary *response = responseObject;
         NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
         NSArray *pics = [response valueForKeyPath:SKYWORLD_ARTICLE_PICS];
-        if((errorCode) || (pics==nil) || ([pics count]<=0)){
+        if((errorCode) || (pics==nil)){
             if(completion){
                 completion(false, [SCSkyWorldError errorWithCode:errorCode]);
             }
@@ -67,6 +70,44 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     }
 }];
 
+}
+
++ (void)queryArticleWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count completion:(void (^)(BOOL success, NSArray *articles, SCSkyWorldError *error))completion
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSString *urlString = [SCSkyWorldAPI urlArticleQueryWithTimeFrom:from
+                                                                  to:to
+                                                               count:count
+                                                                type:1]; // 0: for native; 1: for easemob contacts
+    DebugLog(@"url: %@", urlString);
+    [manager GET:urlString
+      parameters:nil
+        progress:^(NSProgress * _Nonnull downloadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            DebugLog(@"responseObject: %@", responseObject);
+            if([responseObject isKindOfClass:[NSDictionary class]]){
+                NSDictionary *response = responseObject;
+                NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
+                if(errorCode){
+                    if(completion){
+                        completion(false, nil, [SCSkyWorldError errorWithCode:errorCode]);
+                    }
+                }else{
+                    NSArray *articles = response[SKYWORLD_ARTICLES];
+                    if(completion){
+                        completion(true, articles, nil);
+                    }
+                }
+            }else{
+                if(completion){
+                    completion(false, nil, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+                }
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            if(completion){
+                completion(false, nil, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
+            }
+        }];
 }
 
 @end

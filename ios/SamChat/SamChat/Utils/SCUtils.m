@@ -45,8 +45,9 @@
 {
     // only logintime
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
-    int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue] * 1000;
-    //DebugLog(@"time: %lld", timestamp);
+    //int64_t timestamp = [[NSNumber numberWithDouble:timeInterval] longLongValue] * 1000;
+    int64_t timestamp = timeInterval * 1000;
+    DebugLog(@"time: %lld", timestamp);
     return [NSNumber numberWithLongLong:timestamp];
 }
 

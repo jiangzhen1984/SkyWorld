@@ -13,6 +13,7 @@
 #import "SCUtils.h"
 #import "SCViewFactory.h"
 #import "SCSignupModel.h"
+#import "UIView+SDAutoLayout.h"
 
 @interface SignupSettingViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *username;

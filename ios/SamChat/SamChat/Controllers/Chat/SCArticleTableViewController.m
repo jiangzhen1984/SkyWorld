@@ -103,6 +103,7 @@ static CGFloat textFieldH = 40;
         }];
         [self.tableView.superview addSubview:_refreshHeader];
     }
+    [self asyncQueryArticlesFromServer];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -118,6 +119,24 @@ static CGFloat textFieldH = 40;
     [_textField removeFromSuperview];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark - Query Articles
+- (void)asyncQueryArticlesFromServer
+{
+    
+    NSTimeInterval fromtime = [[NSDate date] timeIntervalSince1970] * 1000 - 1000000000;
+    NSTimeInterval totime = [[NSDate date] timeIntervalSince1970] * 1000;
+    [[SamChatClient sharedInstance] queryArticleWithTimeFrom:fromtime
+                                                          to:totime
+                                                       count:15
+                                                  completion:^(BOOL success, NSArray *articles, SCSkyWorldError *error) {
+                                                      if(success){
+                                                          DebugLog(@"Articles: %@", articles);
+                                                      }else{
+                                                      }
+                                                  }];
+}
+
 
 - (void)setupTextField
 {
