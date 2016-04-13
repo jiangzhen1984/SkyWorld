@@ -37,7 +37,7 @@
 
 + (NSString *)generateUrlStringWithType:(NSString *)type andData:(NSDictionary *)data
 {
-    NSString *urlStr;
+    NSString *urlStr = SKYWORLD_API_PREFIX;
 #warning add errorhandler
     if([NSJSONSerialization isValidJSONObject:data]) {
         NSError *error;
@@ -615,5 +615,44 @@
     return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_ARTICLEAPI andData:data];
 }
 
+#pragma mark - Topic Query JSON Protocol
+//http://139.129.57.77/sw/api_1.0_HotTopicAPI.do
+//=======================================热点话题列表查询 JSON 协议 =====================================
+//发送:
+//{
+//    "header": {
+//        "action": "query_topic_list",
+//        "token": "token"
+//    },
+//    "body": {
+//        "opt_type": 0,  // 0 向前翻, 1 向后翻
+//        "topic_type": 0, // 0 所有, 1.房产,  2.学校......
+//        "cur_count": 0, // opt_type = 1 时有效, 标示当前已经查询到的条数
+//        "update_time_pre": 1460044580000 //微秒 第一次查询或最近一次上翻的时间对应返回的query_time，第一次查询时,为0
+//    }
+//}
++ (NSString *)urlQueryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType currentCount:(NSInteger)curCount updateTimePre:(NSTimeInterval)time
+{
+    NSString *token = [SCUserProfileManager sharedInstance].token;
+    NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUERY_TOPIC_LIST,
+                             SKYWORLD_TOKEN:token};
+    NSDictionary *body = @{SKYWORLD_OPT_TYPE:[NSNumber numberWithInteger:optType],
+                           SKYWORLD_TOPIC_TYPE:[NSNumber numberWithInteger:topicType],
+                           SKYWORLD_CUR_COUNT:[NSNumber numberWithInteger:curCount],
+                           SKYWORLD_UPDATE_TIME_PRE:[NSNumber numberWithDouble:time]};
+    NSDictionary *data = @{SKYWORLD_HEADER:header,
+                           SKYWORLD_BODY:body};
+    NSString *urlString = SKYWORLD_API_PREFIX;
+    if([NSJSONSerialization isValidJSONObject:data]) {
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data
+                                                           options:NSJSONWritingPrettyPrinted
+                                                             error:&error];
+        NSString *json = [[NSString alloc] initWithData:jsonData
+                                               encoding:NSUTF8StringEncoding];
+        urlString = [NSString stringWithFormat:@"%@?data=%@", SKYWORLD_API_HOTTOPICAPI, json];
+    }
+    return [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+}
 
 @end

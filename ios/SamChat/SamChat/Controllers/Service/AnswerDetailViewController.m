@@ -41,13 +41,12 @@
 - (IBAction)follow:(UIButton *)sender
 {
     NSInteger userId = [self.answer.fromWho.unique_id integerValue];
-    __weak typeof(self) weakSelf = self;
     [[SamChatClient sharedInstance] makeFollow:YES withUser:userId
                                     completion:^(BOOL success, SCSkyWorldError *error) {
                                         if(success){
-                                            [weakSelf showHint:@"关注成功"];
+                                            [self showHint:@"关注成功"];
                                         }else{
-                                            [weakSelf showHint:@"关注失败"];
+                                            [self showHint:@"关注失败"];
                                         }
                                     }];
 }

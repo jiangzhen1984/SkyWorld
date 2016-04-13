@@ -14,6 +14,10 @@
         <relationship name="answers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReceivedAnswer" inverseName="fromWho" inverseEntity="ReceivedAnswer" syncable="YES"/>
         <relationship name="questions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReceivedQuestion" inverseName="fromWho" inverseEntity="ReceivedQuestion" syncable="YES"/>
     </entity>
+    <entity name="HotTopic" representedClassName="HotTopic" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="LoginUserInformation" representedClassName="LoginUserInformation" syncable="YES">
         <attribute name="area" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="countrycode" optional="YES" attributeType="String" syncable="YES"/>
@@ -76,5 +80,6 @@
         <element name="ReceivedQuestion" positionX="448" positionY="189" width="128" height="178"/>
         <element name="SendAnswer" positionX="108" positionY="252" width="128" height="118"/>
         <element name="SendQuestion" positionX="106" positionY="-27" width="128" height="163"/>
+        <element name="HotTopic" positionX="144" positionY="117" width="128" height="75"/>
     </elements>
 </model>

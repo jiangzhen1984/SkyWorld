@@ -74,15 +74,14 @@
 
 - (IBAction)logout:(UIButton *)sender
 {
-    __weak typeof(self) weakSelf = self;
     UIView *mainView = [[UIApplication sharedApplication].delegate window];
     [self showHudInView:mainView hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
     [[SamChatClient sharedInstance] logoutWithCompletion:^(BOOL success, SCSkyWorldError *error) {
-        [weakSelf hideHud];
+        [self hideHud];
         if(success){
             [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
         }else{
-            [weakSelf showHint:error.errorDescription];
+            [self showHint:error.errorDescription];
         }
     }];
 }
@@ -108,19 +107,18 @@
     UIView *mainView = [[UIApplication sharedApplication].delegate window];
     [self showHudInView:mainView hint:NSLocalizedString(@"setting.uploading", @"uploading...")];
     
-    __weak typeof(self) weakSelf = self;
     UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
     [picker dismissViewControllerAnimated:YES completion:nil];
     if (orgImage) {
         [[SamChatClient sharedInstance] uploadUserAvatarInBackground:orgImage completion:^(BOOL success, SCSkyWorldError *error) {
-            [weakSelf hideHud];
+            [self hideHud];
             if(success){
                 NSURL *avatarUrl = [NSURL URLWithString:[SCUserProfileManager sharedInstance].currentLoginUserInformation.imagefile];
-                [weakSelf.imageViewAvatar sd_setImageWithURL:avatarUrl placeholderImage:weakSelf.imageViewAvatar.image];
+                [self.imageViewAvatar sd_setImageWithURL:avatarUrl placeholderImage:self.imageViewAvatar.image];
                 
-                [weakSelf showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
+                [self showHint:NSLocalizedString(@"setting.uploadSuccess", @"uploaded successfully")];
             }else{
-                [weakSelf showHint:NSLocalizedString(@"setting.uploadFail", @"uploaded failed")];
+                [self showHint:NSLocalizedString(@"setting.uploadFail", @"uploaded failed")];
             }
         }];
     } else {

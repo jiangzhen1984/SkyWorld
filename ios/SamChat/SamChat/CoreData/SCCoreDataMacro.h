@@ -54,5 +54,7 @@
 #define SEND_ANSWER_SENDSUCCEED             @1
 #define SEND_ANSWER_SENDFAILED              @2
 
+#define ENTITY_HOT_TOPIC                    @"HotTopic"
+#define HOT_TOPIC_TYPE                      @"type"
 
 #endif /* SCCoreDataMacro_h */

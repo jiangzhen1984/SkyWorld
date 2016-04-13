@@ -158,16 +158,15 @@ static CGFloat textFieldH = 40;
     UIView *mainView = [[UIApplication sharedApplication].delegate window];
     [self showHudInView:mainView hint:@"正在发布..."];
     
-    __weak typeof(self) weakSelf = self;
     UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
     [picker dismissViewControllerAnimated:YES completion:nil];
     if (orgImage) {
         [[SamChatClient sharedInstance] publishArticleWithImages:@[orgImage] comment:@"comment test" completion:^(BOOL success, SCSkyWorldError *error) {
-            [weakSelf hideHud];
+            [self hideHud];
             if(success){
-                [weakSelf showHint:@"发布成功"];
+                [self showHint:@"发布成功"];
             }else{
-                [weakSelf showHint:@"发布失败"];
+                [self showHint:@"发布失败"];
             }
         }];
     } else {

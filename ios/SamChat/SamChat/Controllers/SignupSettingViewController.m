@@ -66,31 +66,30 @@
    // [[SamChatClient sharedInstance] signupWithUserinfoDictionary:registerInfo delegate:self];
     NSString *username = self.username.text;
     NSString *password = self.password.text;
-    __weak typeof(self) weakSelf = self;
     [[SamChatClient sharedInstance] signupWithUserinfoDictionary:registerInfo
         completion:^(BOOL success, SCSkyWorldError *error) {
-            [weakSelf hideHud];
+            [self hideHud];
             if(success){
-              [weakSelf showHudInView:weakSelf.view hint:NSLocalizedString(@"siguplogin.ongoing", @"Signup Success, Is Login...")];
+              [self showHudInView:self.view hint:NSLocalizedString(@"siguplogin.ongoing", @"Signup Success, Is Login...")];
               [[SamChatClient sharedInstance] loginWithUsername:username
                    password:password
                  completion:^(BOOL success, SCSkyWorldError *error) {
-                     [weakSelf hideHud];
+                     [self hideHud];
                      if(success){
                          [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
                      }else{
                          if(error.code == SCSkyWorldErrorUsernameOrPasswordWrong){
-                             weakSelf.labelErrorTip.text = error.errorDescription;
+                             self.labelErrorTip.text = error.errorDescription;
                          }else{
-                             [weakSelf showHint:error.errorDescription];
+                             [self showHint:error.errorDescription];
                          }
                      }
                  }];
             }else{
               if(error.code == SCSkyWorldErrorUsernameOrPasswordAlreadyExist){
-                  weakSelf.labelErrorTip.text = error.errorDescription;
+                  self.labelErrorTip.text = error.errorDescription;
               }else{
-                  [weakSelf showHint:error.errorDescription];
+                  [self showHint:error.errorDescription];
               }
             }
         }];

@@ -10,10 +10,11 @@
 #define SCSkyWorldAPIMacro_h
 
 
-#define SKYWORLD_API_PREFIX             @"http://121.42.207.185/SkyWorld/api/1.0/"
-#define SKYWORLD_API_PUSH               @"http://121.42.207.185/SkyWorld/push"
-//#define SKYWORLD_API_PREFIX             @"http://139.129.57.77/sw/api/1.0/"
-//#define SKYWORLD_API_PUSH               @"http://139.129.57.77/sw/push"
+//#define SKYWORLD_API_PREFIX             @"http://121.42.207.185/SkyWorld/api/1.0/"
+//#define SKYWORLD_API_PUSH               @"http://121.42.207.185/SkyWorld/push"
+#define SKYWORLD_API_HOTTOPICAPI        @"http://139.129.57.77/sw/api_1.0_HotTopicAPI.do"
+#define SKYWORLD_API_PREFIX             @"http://139.129.57.77/sw/api/1.0/"
+#define SKYWORLD_API_PUSH               @"http://139.129.57.77/sw/push"
 
 #define SKYWORLD_APITYPE_USERAPI        @"UserAPI"
 #define SKYWORLD_APITYPE_QUESTIONAPI    @"QuestionAPI"
@@ -77,6 +78,17 @@
 #define SKYWORLD_FETCH_COUNT        @"fetch_count"
 #define SKYWORLD_QT                 @"qt"
 
+#define SKYWORLD_OPT_TYPE           @"opt_type"
+#define SKYWORLD_TOPIC_TYPE         @"topic_type"
+#define SKYWORLD_CUR_COUNT          @"cur_count"
+#define SKYWORLD_UPDATE_TIME_PRE    @"update_time_pre"
+
+#define SKYWORLD_TOPICS             @"topics"
+#define SKYWORLD_QUERY_TIME         @"query_time"
+
+#define SKYWORLD_NAME               @"name"
+
+
 #pragma mark - Json Key Path
 #define SKYWORLD_USER_USERNAME      @"user.username"
 #define SKYWORLD_EASEMOB_USERNAME   @"easemob.username"
@@ -104,6 +116,7 @@
 #define SKYWORLD_ARTICLE_COMMENT    @"article-comment"
 #define SKYWORLD_ARTICLE_QUERY      @"article-query"
 #define SKYWORLD_EASEMOB            @"easemob"
+#define SKYWORLD_QUERY_TOPIC_LIST   @"query_topic_list"
 
 
 #endif /* SCSkyWorldAPIMacro_h */

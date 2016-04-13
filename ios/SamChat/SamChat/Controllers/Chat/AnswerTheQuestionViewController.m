@@ -97,15 +97,14 @@
     
     NSInteger currentIndex = [self.answers count] - 1;
     
-    __weak typeof(self) weakSelf = self;
     NSInteger questionId = [self.receivedQuestion.question_id integerValue];
     [[SamChatClient sharedInstance] sendAnswer:text toQuestionID:questionId completion:^(BOOL success, SCSkyWorldError *error) {
         if(success){
-            [weakSelf updateAnswerOfIndex:currentIndex withStatus:SEND_ANSWER_SENDSUCCEED];
+            [self updateAnswerOfIndex:currentIndex withStatus:SEND_ANSWER_SENDSUCCEED];
         }else{
-            [weakSelf updateAnswerOfIndex:currentIndex withStatus:SEND_ANSWER_SENDFAILED];
+            [self updateAnswerOfIndex:currentIndex withStatus:SEND_ANSWER_SENDFAILED];
         }
-        [weakSelf.tableView reloadData];
+        [self.tableView reloadData];
     }];
 
 }

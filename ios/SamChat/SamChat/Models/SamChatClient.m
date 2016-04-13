@@ -15,9 +15,13 @@
 #import "SCArticleModel.h"
 #import "SCProducerModel.h"
 
+#import "SCServiceSearchModel.h"
+
 static SamChatClient *sharedInstance = nil;
 
 @interface SamChatClient ()
+
+@property (nonatomic, strong) SCServiceSearchModel *serviceSearchModel;
 
 @end
 
@@ -36,6 +40,8 @@ static SamChatClient *sharedInstance = nil;
 {
     self = [super init];
     if(self){
+        _serviceSearchModel = [SCServiceSearchModel new];
+        [_serviceSearchModel resetModel];
     }
     return self;
 }
@@ -84,6 +90,14 @@ static SamChatClient *sharedInstance = nil;
 - (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCProducerModel upgradeToProducerWithInformationDictionary:info completion:completion];
+}
+
+- (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType reset:(BOOL)flag completion:(void (^)(BOOL success, NSArray *topics, SCSkyWorldError *error))completion
+{
+    if(flag){
+        [self.serviceSearchModel resetModel];
+    }
+    [self.serviceSearchModel queryTopicListWithOptType:optType topicType:topicType completion:completion];
 }
 
 - (void)asyncWaitingPush

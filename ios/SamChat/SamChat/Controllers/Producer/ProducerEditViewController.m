@@ -54,13 +54,12 @@
                            SKYWORLD_LOCATION:self.textViewLocation.text,
                            SKYWORLD_DESC:self.textViewDescription.text};
     
-    __weak typeof(self) weakSelf = self;
     [[SamChatClient sharedInstance] upgradeToProducerWithInformationDictionary:info completion:^(BOOL success, SCSkyWorldError *error) {
         if(success){
-            [weakSelf showHint:@"成功升级为服务者"];
-            [weakSelf.navigationController popViewControllerAnimated:YES];
+            [self showHint:@"成功升级为服务者"];
+            [self.navigationController popViewControllerAnimated:YES];
         }else{
-            [weakSelf showHint:@"升级失败"];
+            [self showHint:@"升级失败"];
         }
     }];
 }

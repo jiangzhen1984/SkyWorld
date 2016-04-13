@@ -98,18 +98,17 @@
     
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
 
-    __weak typeof(self) weakSelf = self;
     [[SamChatClient sharedInstance] loginWithUsername:self.username.text
                                              password:self.password.text
        completion:^(BOOL success, SCSkyWorldError *error) {
-           [weakSelf hideHud];
+           [self hideHud];
            if(success){
                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
            }else{
                if(error.code == SCSkyWorldErrorUsernameOrPasswordWrong){
-                   weakSelf.labelErrorTip.text = error.errorDescription;
+                   self.labelErrorTip.text = error.errorDescription;
                }else{
-                   [weakSelf showHint:error.errorDescription];
+                   [self showHint:error.errorDescription];
                }
            }
        }];

@@ -183,6 +183,13 @@
 		31C1A7581CBC7CF70010F6B4 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7471CBC7CF70010F6B4 /* UIImageView+WebCache.m */; };
 		31C1A7591CBC7CF70010F6B4 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7491CBC7CF70010F6B4 /* UIView+WebCacheOperation.m */; };
 		31C1A75D1CBC80EF0010F6B4 /* SCProducerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */; };
+		31C1A7601CBCA3C40010F6B4 /* SCServiceSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A75F1CBCA3C40010F6B4 /* SCServiceSearchModel.m */; };
+		31C1A7641CBCBB3F0010F6B4 /* SCRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7631CBCBB3F0010F6B4 /* SCRefreshFooter.m */; };
+		31C1A7681CBCBCE80010F6B4 /* SCHotTopicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7671CBCBCE80010F6B4 /* SCHotTopicView.m */; };
+		31C1A76B1CBCDFDB0010F6B4 /* SCRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A76A1CBCDFDB0010F6B4 /* SCRefreshHeader.m */; };
+		31C1A7701CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A76D1CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.m */; };
+		31C1A7711CBCE8AF0010F6B4 /* HotTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A76F1CBCE8AF0010F6B4 /* HotTopic.m */; };
+		31C1A7741CBD261A0010F6B4 /* SCReceivedAnswerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7731CBD261A0010F6B4 /* SCReceivedAnswerView.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -845,6 +852,20 @@
 		31C1A7491CBC7CF70010F6B4 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		31C1A75B1CBC80EF0010F6B4 /* SCProducerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCProducerModel.h; path = Models/Producer/SCProducerModel.h; sourceTree = "<group>"; };
 		31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCProducerModel.m; path = Models/Producer/SCProducerModel.m; sourceTree = "<group>"; };
+		31C1A75E1CBCA3C40010F6B4 /* SCServiceSearchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCServiceSearchModel.h; path = Models/Service/SCServiceSearchModel.h; sourceTree = "<group>"; };
+		31C1A75F1CBCA3C40010F6B4 /* SCServiceSearchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCServiceSearchModel.m; path = Models/Service/SCServiceSearchModel.m; sourceTree = "<group>"; };
+		31C1A7621CBCBB3F0010F6B4 /* SCRefreshFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCRefreshFooter.h; path = Views/Custom/SCRefreshFooter.h; sourceTree = "<group>"; };
+		31C1A7631CBCBB3F0010F6B4 /* SCRefreshFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCRefreshFooter.m; path = Views/Custom/SCRefreshFooter.m; sourceTree = "<group>"; };
+		31C1A7661CBCBCE80010F6B4 /* SCHotTopicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHotTopicView.h; path = Views/Service/SCHotTopicView.h; sourceTree = "<group>"; };
+		31C1A7671CBCBCE80010F6B4 /* SCHotTopicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHotTopicView.m; path = Views/Service/SCHotTopicView.m; sourceTree = "<group>"; };
+		31C1A7691CBCDFDB0010F6B4 /* SCRefreshHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCRefreshHeader.h; path = Views/Custom/SCRefreshHeader.h; sourceTree = "<group>"; };
+		31C1A76A1CBCDFDB0010F6B4 /* SCRefreshHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCRefreshHeader.m; path = Views/Custom/SCRefreshHeader.m; sourceTree = "<group>"; };
+		31C1A76C1CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HotTopic+CoreDataProperties.h"; path = "CoreData/HotTopic+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31C1A76D1CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HotTopic+CoreDataProperties.m"; path = "CoreData/HotTopic+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31C1A76E1CBCE8AF0010F6B4 /* HotTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HotTopic.h; path = CoreData/HotTopic.h; sourceTree = "<group>"; };
+		31C1A76F1CBCE8AF0010F6B4 /* HotTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HotTopic.m; path = CoreData/HotTopic.m; sourceTree = "<group>"; };
+		31C1A7721CBD261A0010F6B4 /* SCReceivedAnswerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCReceivedAnswerView.h; path = Views/Service/SCReceivedAnswerView.h; sourceTree = "<group>"; };
+		31C1A7731CBD261A0010F6B4 /* SCReceivedAnswerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCReceivedAnswerView.m; path = Views/Service/SCReceivedAnswerView.m; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -1595,6 +1616,8 @@
 		316F4E5F1CBA483E00B2F9A3 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				31C1A75E1CBCA3C40010F6B4 /* SCServiceSearchModel.h */,
+				31C1A75F1CBCA3C40010F6B4 /* SCServiceSearchModel.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -1697,9 +1720,13 @@
 		317C2D451CA8E3410035A14E /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				31B3C9431CB257B200CDB105 /* SCCoreDataMacro.h */,
 				31B3C92C1CB214B600CDB105 /* SCCoreDataManager.h */,
 				31B3C92D1CB214B600CDB105 /* SCCoreDataManager.m */,
-				31B3C9431CB257B200CDB105 /* SCCoreDataMacro.h */,
+				31C1A76C1CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.h */,
+				31C1A76D1CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.m */,
+				31C1A76E1CBCE8AF0010F6B4 /* HotTopic.h */,
+				31C1A76F1CBCE8AF0010F6B4 /* HotTopic.m */,
 				31B3C91C1CB214B600CDB105 /* ContactUser.h */,
 				31B3C91D1CB214B600CDB105 /* ContactUser.m */,
 				31B3C91E1CB214B600CDB105 /* ContactUser+CoreDataProperties.h */,
@@ -1742,6 +1769,8 @@
 		3183D06E1CA690150088FD67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				31C1A7651CBCBC6A0010F6B4 /* Service */,
+				31C1A7611CBCB8950010F6B4 /* Custom */,
 				31C1A5E41CBB69820010F6B4 /* ArticleView */,
 				31C1A5D71CBB65D10010F6B4 /* BaseView */,
 				31C1A5D31CBB64A20010F6B4 /* SimpleCell */,
@@ -2156,6 +2185,28 @@
 				31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */,
 			);
 			name = Producer;
+			sourceTree = "<group>";
+		};
+		31C1A7611CBCB8950010F6B4 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				31C1A7621CBCBB3F0010F6B4 /* SCRefreshFooter.h */,
+				31C1A7631CBCBB3F0010F6B4 /* SCRefreshFooter.m */,
+				31C1A7691CBCDFDB0010F6B4 /* SCRefreshHeader.h */,
+				31C1A76A1CBCDFDB0010F6B4 /* SCRefreshHeader.m */,
+			);
+			name = Custom;
+			sourceTree = "<group>";
+		};
+		31C1A7651CBCBC6A0010F6B4 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				31C1A7661CBCBCE80010F6B4 /* SCHotTopicView.h */,
+				31C1A7671CBCBCE80010F6B4 /* SCHotTopicView.m */,
+				31C1A7721CBD261A0010F6B4 /* SCReceivedAnswerView.h */,
+				31C1A7731CBD261A0010F6B4 /* SCReceivedAnswerView.m */,
+			);
+			name = Service;
 			sourceTree = "<group>";
 		};
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
@@ -3199,6 +3250,7 @@
 				31B3C9371CB214B600CDB105 /* ContactUser+CoreDataProperties.m in Sources */,
 				31FAC6AB1CAAB7E30034A0CD /* ApplyViewController.m in Sources */,
 				31B3C93A1CB214B600CDB105 /* ReceivedAnswer.m in Sources */,
+				31C1A76B1CBCDFDB0010F6B4 /* SCRefreshHeader.m in Sources */,
 				31B3C93B1CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m in Sources */,
 				31C1A63B1CBB6F300010F6B4 /* SCArticlePhotoContainerView.m in Sources */,
 				31FAC6B11CAAB7E30034A0CD /* MainViewController.m in Sources */,
@@ -3239,6 +3291,7 @@
 				31BDF47D1CB6007C00EDCED0 /* SCChatMessageCell.m in Sources */,
 				31C1A74F1CBC7CF70010F6B4 /* SDWebImageDownloader.m in Sources */,
 				31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */,
+				31C1A7711CBCE8AF0010F6B4 /* HotTopic.m in Sources */,
 				31C1A7581CBC7CF70010F6B4 /* UIImageView+WebCache.m in Sources */,
 				31BDF47A1CB5FBD500EDCED0 /* SCBubbleView.m in Sources */,
 				31FAC6AA1CAAB7E30034A0CD /* ApplyFriendCell.m in Sources */,
@@ -3253,12 +3306,14 @@
 				31C1A61B1CBB6BAC0010F6B4 /* NSString+MLLabel.m in Sources */,
 				3159D9941CAE6A8C00212DAB /* OfficalListTableViewController.m in Sources */,
 				31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */,
+				31C1A7741CBD261A0010F6B4 /* SCReceivedAnswerView.m in Sources */,
 				31C1A61A1CBB6BAC0010F6B4 /* NSMutableAttributedString+MLLabel.m in Sources */,
 				316F4E5A1CBA2CDB00B2F9A3 /* SCUserSettingModel.m in Sources */,
 				316F4E661CBA5A9600B2F9A3 /* SCUserRelationModel.m in Sources */,
 				31FAC5981CAAB3C50034A0CD /* EMRemarkImageView.m in Sources */,
 				31C1A7561CBC7CF70010F6B4 /* UIImage+WebP.m in Sources */,
 				31FAC58B1CAAB3C50034A0CD /* TTGlobalUICommon.m in Sources */,
+				31C1A7681CBCBCE80010F6B4 /* SCHotTopicView.m in Sources */,
 				31C1A61C1CBB6BAC0010F6B4 /* MLExpressionManager.m in Sources */,
 				316F4E5E1CBA417300B2F9A3 /* SCAnswerQuestionModel.m in Sources */,
 				316F4E341CB8CF3600B2F9A3 /* SCSignupModel.m in Sources */,
@@ -3293,6 +3348,7 @@
 				31FAC69A1CAAB7E30034A0CD /* ContactSelectionViewController.m in Sources */,
 				31FAC5881CAAB3C50034A0CD /* SRRefreshView.m in Sources */,
 				31C1A61D1CBB6BAC0010F6B4 /* MLTextAttachment.m in Sources */,
+				31C1A7701CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.m in Sources */,
 				31FAC6A31CAAB7E30034A0CD /* ChatroomDetailViewController.m in Sources */,
 				31C1A6331CBB6E0E0010F6B4 /* SCArticleTableHeaderView.m in Sources */,
 				31FAC6951CAAB7E30034A0CD /* CallViewController.m in Sources */,
@@ -3309,6 +3365,7 @@
 				31B3C9601CB3CB4600CDB105 /* AnswerTheQuestionViewController.m in Sources */,
 				31FAC7881CAE3A0B0034A0CD /* SCUITabPagerViewController.m in Sources */,
 				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,
+				31C1A7641CBCBB3F0010F6B4 /* SCRefreshFooter.m in Sources */,
 				31FAC6A51CAAB7E30034A0CD /* MyChatroomListViewController.m in Sources */,
 				31FAC69E1CAAB7E30034A0CD /* GroupListViewController.m in Sources */,
 				3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */,
@@ -3331,6 +3388,7 @@
 				31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */,
 				31C1A7571CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m in Sources */,
 				31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */,
+				31C1A7601CBCA3C40010F6B4 /* SCServiceSearchModel.m in Sources */,
 				31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */,
 				31C1A75D1CBC80EF0010F6B4 /* SCProducerModel.m in Sources */,
 				31C1A6191CBB6BAC0010F6B4 /* NSAttributedString+MLLabel.m in Sources */,

@@ -62,4 +62,7 @@
 #pragma mark - Article Query JSON Protocol
 + (NSString *)urlArticleQueryWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count type:(NSInteger)type;
 
+#pragma mark - Topic Query JSON Protocol
++ (NSString *)urlQueryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType currentCount:(NSInteger)curCount updateTimePre:(NSTimeInterval)time;
+
 @end
