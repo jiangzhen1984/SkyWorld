@@ -29,7 +29,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    //NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     
 //    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
 //        [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
@@ -47,7 +47,7 @@
 didFinishLaunchingWithOptions:launchOptions
                       appkey:@"skyworld#skyworld"
                 apnsCertName:apnsCertName
-                 otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
+                 otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:NO]}];
 
     DebugLog(@"%@",NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]);
     [self samchatApplication:application didFinishLaunchingWithOptions:launchOptions];

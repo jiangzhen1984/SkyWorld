@@ -19,6 +19,8 @@
 
 #import "UIView+SDAutoLayout.h"
 
+#import "SCArticlePublishViewController.h"
+
 #define kTimeLineTableViewCellId @"SDTimeLineCell"
 
 static CGFloat textFieldH = 40;
@@ -148,7 +150,9 @@ static CGFloat textFieldH = 40;
 #pragma mark - Action
 - (void)cameraButtonClicked
 {
-    [self presentViewController:self.imagePicker animated:YES completion:NULL];
+    //[self presentViewController:self.imagePicker animated:YES completion:NULL];
+    SCArticlePublishViewController *articlePublishVC = [[SCArticlePublishViewController alloc] init];
+    [self.navigationController pushViewController:articlePublishVC animated:YES];
 }
 
 #pragma mark - UIImagePickerControllerDelegate

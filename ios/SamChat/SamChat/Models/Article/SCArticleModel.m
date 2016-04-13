@@ -8,7 +8,7 @@
 
 #import "SCArticleModel.h"
 
-#define MAX_ARTICLE_IMAGE_COUNT 9
+
 
 @implementation SCArticleModel
 
@@ -27,13 +27,14 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     for (int i=0; i<count; i++) {
         id image = images[i];
         if([image isKindOfClass:[UIImage class]]){
-            UIImage *scalImage = [SCUtils scalingAndCroppingImage:image ForSize:CGSizeMake(120.f, 120.f)];
+            //UIImage *scalImage = [SCUtils scalingAndCroppingImage:image ForSize:CGSizeMake(120.f, 120.f)];
+            UIImage *scalImage = image;
             NSData *imageData;
-            if (UIImagePNGRepresentation(scalImage)) {
-                imageData = UIImagePNGRepresentation(scalImage);
-            }else {
-                imageData = UIImageJPEGRepresentation(scalImage, 1.0);
-            }
+//            if (UIImagePNGRepresentation(scalImage)) {
+//                imageData = UIImagePNGRepresentation(scalImage);
+//            }else {
+                imageData = UIImageJPEGRepresentation(scalImage, 1.0); // size smaller
+//            }
             [formData appendPartWithFormData:imageData name:[NSString stringWithFormat:@"%d", i]];
         }
     }

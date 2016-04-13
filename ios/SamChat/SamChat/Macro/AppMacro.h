@@ -44,4 +44,8 @@
 
 #define SC_CHATTAB_STORYBOARD   [UIStoryboard storyboardWithName:@"ChatTab" bundle:[NSBundle mainBundle]]
 
+#define SC_SCREEN_WIHTH         [UIScreen mainScreen].bounds.size.width
+
+#define MAX_ARTICLE_IMAGE_COUNT 9
+
 #endif /* AppMacro_h */
