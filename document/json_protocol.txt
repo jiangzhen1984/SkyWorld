@@ -55,6 +55,9 @@ Protocol Version: M21
 Protocol Version: M22
              Add Skservicer web api
 
+Protocol Version: M23
+             Add log collection api
+
 
 =======================================Register JSON Protocol =====================================
 API: /api/1.0/UserAPI
@@ -1035,6 +1038,26 @@ http://139.129.57.77/sw/api_1.0_HotTopicAPI.do
 }
 
 
+======================================= Log Collection API  =====================================
+API: /api/1.0/SystemApi
+http://139.129.57.77/sw/api/1.0/SystemApi
+Log Upload
+{
+    "header" :
+     {
+         "action" : "log-collection"
+     },
+
+     "body" :
+     {
+     }
+}
+
+log data as http form multi-part data 
+
+
+Success:  {ret: 0}
+stream handle failed：  {ret: -6}
 
 =======================================Skservicer company update  =====================================
 Http header: Authorization : token

@@ -13,6 +13,7 @@ import com.skyworld.service.skservicer.APICmpQueryService;
 import com.skyworld.service.skservicer.APIServicerCompanyUpdateService;
 import com.skyworld.service.skservicer.APIUpgradeService;
 import com.skyworld.service.system.APIFeedbackService;
+import com.skyworld.service.system.APILogCollection;
 import com.skyworld.service.user.APILoginService;
 import com.skyworld.service.user.APILogoutService;
 import com.skyworld.service.user.APIQueryService;
@@ -29,7 +30,8 @@ public class ServiceFactory {
 	public static final int API_CODE_USER_QUESTION = 3;
 	public static final int API_CODE_ARTICLE = 4;
 	public static final int API_CODE_SERVICER = 5;
-	public static final int API_MAX = API_CODE_SERVICER + 1;
+	public static final int API_CODE_SYSTEM = 6;
+	public static final int API_MAX = API_CODE_SYSTEM + 1;
 	
 	private static SWUserService eUserService;
 	
@@ -153,6 +155,9 @@ public class ServiceFactory {
 		
 		mApiService[API_CODE_SERVICER] =  new APIJsonPartDispatchService();
 		((APIJsonPartDispatchService)mApiService[API_CODE_SERVICER]).addActionMapping("servicer-company-update", new APIServicerCompanyUpdateService());
+		
+		mApiService[API_CODE_SYSTEM] =  new APIJsonPartDispatchService();
+		((APIJsonPartDispatchService)mApiService[API_CODE_SYSTEM]).addActionMapping("log-collection", new APILogCollection());
 	}
 	
 	

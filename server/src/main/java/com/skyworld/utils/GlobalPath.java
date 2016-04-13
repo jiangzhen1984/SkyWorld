@@ -57,6 +57,9 @@ public class GlobalPath {
 	}
 
 	
+	public static String getLogCollectionPath() {
+		return getSubHome(GlobalConstants.LOG_COLLECTION_CONTEXT);
+	}
 	
 	
 	public static String getSubHome(String context) {

@@ -24,6 +24,8 @@ public class GlobalConstants {
 	public static String SKSERVICER_HOST = HOME_HTTP +":/"+ HOME_HOST + "/" + SKSERVICER_CONTEXT;
 	
 	
+	public static String LOG_COLLECTION_CONTEXT = "collection/";
+	
 	
 	public static void initHost(String host) {
 		HOME_HOST = host;
