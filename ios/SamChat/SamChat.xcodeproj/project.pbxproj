@@ -190,6 +190,7 @@
 		31C1A7701CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A76D1CBCE8AF0010F6B4 /* HotTopic+CoreDataProperties.m */; };
 		31C1A7711CBCE8AF0010F6B4 /* HotTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A76F1CBCE8AF0010F6B4 /* HotTopic.m */; };
 		31C1A7741CBD261A0010F6B4 /* SCReceivedAnswerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7731CBD261A0010F6B4 /* SCReceivedAnswerView.m */; };
+		31C1A7771CBDEE1E0010F6B4 /* SCCrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7761CBDEE1E0010F6B4 /* SCCrashCatcher.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -866,6 +867,8 @@
 		31C1A76F1CBCE8AF0010F6B4 /* HotTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HotTopic.m; path = CoreData/HotTopic.m; sourceTree = "<group>"; };
 		31C1A7721CBD261A0010F6B4 /* SCReceivedAnswerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCReceivedAnswerView.h; path = Views/Service/SCReceivedAnswerView.h; sourceTree = "<group>"; };
 		31C1A7731CBD261A0010F6B4 /* SCReceivedAnswerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCReceivedAnswerView.m; path = Views/Service/SCReceivedAnswerView.m; sourceTree = "<group>"; };
+		31C1A7751CBDEE1E0010F6B4 /* SCCrashCatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCCrashCatcher.h; path = Application/SCCrashCatcher.h; sourceTree = "<group>"; };
+		31C1A7761CBDEE1E0010F6B4 /* SCCrashCatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCCrashCatcher.m; path = Application/SCCrashCatcher.m; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -1762,6 +1765,8 @@
 				31B3C90B1CB209B100CDB105 /* AppDelegate.m */,
 				317C2D4E1CA90A1E0035A14E /* AppDelegate+SamChat.h */,
 				317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */,
+				31C1A7751CBDEE1E0010F6B4 /* SCCrashCatcher.h */,
+				31C1A7761CBDEE1E0010F6B4 /* SCCrashCatcher.m */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -3280,6 +3285,7 @@
 				31FAC5801CAAB3C50034A0CD /* EMAlertView.m in Sources */,
 				31FAC69C1CAAB7E30034A0CD /* CreateGroupViewController.m in Sources */,
 				3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */,
+				31C1A7771CBDEE1E0010F6B4 /* SCCrashCatcher.m in Sources */,
 				31BDF48B1CB6420700EDCED0 /* KYDrawerController.m in Sources */,
 				31C1A6221CBB6BAC0010F6B4 /* MLLinkLabel.m in Sources */,
 				31C1A5EF1CBB6AEE0010F6B4 /* SCArticleCellCommentView.m in Sources */,

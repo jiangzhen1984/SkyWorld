@@ -13,6 +13,7 @@
 #import "AppDelegate+EaseMob.h"
 #import "AppDelegate+SamChat.h"
 
+#import "SCCrashCatcher.h"
 
 @interface AppDelegate ()
 
@@ -28,12 +29,16 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    
 //    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
 //        [[UINavigationBar appearance] setBarTintColor:RGBACOLOR(30, 167, 252, 1)];
 //        [[UINavigationBar appearance] setTitleTextAttributes:
 //         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
 //    }
-    
+    id test;
+    test = self;
+    [test makeKeyAndVisible];
 #warning 初始化环信SDK，详细内容在AppDelegate+EaseMob.m 文件中
 #warning SDK注册 APNS文件的名字, 需要与后台上传证书时的名字一一对应
     NSString *apnsCertName = nil;
