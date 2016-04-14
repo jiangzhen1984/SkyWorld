@@ -93,7 +93,7 @@ static SCCoreDataManager *sharedInstance = nil;
     return _mainObjectContext;
 }
 
-- (NSManagedObjectContext*)backgroundObjectContext
+- (NSManagedObjectContext *)backgroundObjectContext
 {
     if(_backgroundObjectContext != nil) {
         return _backgroundObjectContext;
@@ -105,6 +105,13 @@ static SCCoreDataManager *sharedInstance = nil;
     _backgroundObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     [_backgroundObjectContext setPersistentStoreCoordinator:coordinator];
     return _backgroundObjectContext;
+}
+
+- (NSManagedObjectContext *)privateChildObjectContextOfmainContext
+{
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    context.parentContext = self.mainObjectContext;
+    return context;
 }
 
 #pragma mark - Core Data Saving support

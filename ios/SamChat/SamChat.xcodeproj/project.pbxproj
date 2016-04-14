@@ -204,6 +204,14 @@
 		31C1A79F1CBE2ED70010F6B4 /* QBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7911CBE2ED70010F6B4 /* QBImagePickerController.m */; };
 		31C1A7A01CBE2ED70010F6B4 /* QBVideoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7931CBE2ED70010F6B4 /* QBVideoIconView.m */; };
 		31C1A7A11CBE2ED70010F6B4 /* QBVideoIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7951CBE2ED70010F6B4 /* QBVideoIndicatorView.m */; };
+		31C1A7B21CBF46420010F6B4 /* SCArticleComment+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7A31CBF46420010F6B4 /* SCArticleComment+CoreDataProperties.m */; };
+		31C1A7B31CBF46420010F6B4 /* SCArticleComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7A51CBF46420010F6B4 /* SCArticleComment.m */; };
+		31C1A7B41CBF46420010F6B4 /* SCArticle+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7A71CBF46420010F6B4 /* SCArticle+CoreDataProperties.m */; };
+		31C1A7B51CBF46420010F6B4 /* SCArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7A91CBF46420010F6B4 /* SCArticle.m */; };
+		31C1A7B61CBF46420010F6B4 /* SCArticlePicture+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7AB1CBF46420010F6B4 /* SCArticlePicture+CoreDataProperties.m */; };
+		31C1A7B71CBF46420010F6B4 /* SCArticlePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7AD1CBF46420010F6B4 /* SCArticlePicture.m */; };
+		31C1A7B81CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7AF1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m */; };
+		31C1A7B91CBF46420010F6B4 /* SCArticleRecommend.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7B11CBF46420010F6B4 /* SCArticleRecommend.m */; };
 		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
 		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
 		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
@@ -909,6 +917,22 @@
 		31C1A7941CBE2ED70010F6B4 /* QBVideoIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBVideoIndicatorView.h; sourceTree = "<group>"; };
 		31C1A7951CBE2ED70010F6B4 /* QBVideoIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBVideoIndicatorView.m; sourceTree = "<group>"; };
 		31C1A7961CBE2ED70010F6B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/QBImagePicker.strings"; sourceTree = "<group>"; };
+		31C1A7A21CBF46420010F6B4 /* SCArticleComment+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCArticleComment+CoreDataProperties.h"; path = "CoreData/SCArticleComment+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31C1A7A31CBF46420010F6B4 /* SCArticleComment+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCArticleComment+CoreDataProperties.m"; path = "CoreData/SCArticleComment+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31C1A7A41CBF46420010F6B4 /* SCArticleComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCArticleComment.h; path = CoreData/SCArticleComment.h; sourceTree = "<group>"; };
+		31C1A7A51CBF46420010F6B4 /* SCArticleComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCArticleComment.m; path = CoreData/SCArticleComment.m; sourceTree = "<group>"; };
+		31C1A7A61CBF46420010F6B4 /* SCArticle+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCArticle+CoreDataProperties.h"; path = "CoreData/SCArticle+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31C1A7A71CBF46420010F6B4 /* SCArticle+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCArticle+CoreDataProperties.m"; path = "CoreData/SCArticle+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31C1A7A81CBF46420010F6B4 /* SCArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCArticle.h; path = CoreData/SCArticle.h; sourceTree = "<group>"; };
+		31C1A7A91CBF46420010F6B4 /* SCArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCArticle.m; path = CoreData/SCArticle.m; sourceTree = "<group>"; };
+		31C1A7AA1CBF46420010F6B4 /* SCArticlePicture+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCArticlePicture+CoreDataProperties.h"; path = "CoreData/SCArticlePicture+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31C1A7AB1CBF46420010F6B4 /* SCArticlePicture+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCArticlePicture+CoreDataProperties.m"; path = "CoreData/SCArticlePicture+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31C1A7AC1CBF46420010F6B4 /* SCArticlePicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCArticlePicture.h; path = CoreData/SCArticlePicture.h; sourceTree = "<group>"; };
+		31C1A7AD1CBF46420010F6B4 /* SCArticlePicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCArticlePicture.m; path = CoreData/SCArticlePicture.m; sourceTree = "<group>"; };
+		31C1A7AE1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCArticleRecommend+CoreDataProperties.h"; path = "CoreData/SCArticleRecommend+CoreDataProperties.h"; sourceTree = "<group>"; };
+		31C1A7AF1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCArticleRecommend+CoreDataProperties.m"; path = "CoreData/SCArticleRecommend+CoreDataProperties.m"; sourceTree = "<group>"; };
+		31C1A7B01CBF46420010F6B4 /* SCArticleRecommend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCArticleRecommend.h; path = CoreData/SCArticleRecommend.h; sourceTree = "<group>"; };
+		31C1A7B11CBF46420010F6B4 /* SCArticleRecommend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCArticleRecommend.m; path = CoreData/SCArticleRecommend.m; sourceTree = "<group>"; };
 		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
@@ -1764,6 +1788,7 @@
 		317C2D451CA8E3410035A14E /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				31C1A7BA1CBF479F0010F6B4 /* Article */,
 				31B3C9431CB257B200CDB105 /* SCCoreDataMacro.h */,
 				31B3C92C1CB214B600CDB105 /* SCCoreDataManager.h */,
 				31B3C92D1CB214B600CDB105 /* SCCoreDataManager.m */,
@@ -2283,6 +2308,29 @@
 			);
 			name = QBImagePicker;
 			path = 3rdparty/QBImagePicker;
+			sourceTree = "<group>";
+		};
+		31C1A7BA1CBF479F0010F6B4 /* Article */ = {
+			isa = PBXGroup;
+			children = (
+				31C1A7A21CBF46420010F6B4 /* SCArticleComment+CoreDataProperties.h */,
+				31C1A7A31CBF46420010F6B4 /* SCArticleComment+CoreDataProperties.m */,
+				31C1A7A41CBF46420010F6B4 /* SCArticleComment.h */,
+				31C1A7A51CBF46420010F6B4 /* SCArticleComment.m */,
+				31C1A7A61CBF46420010F6B4 /* SCArticle+CoreDataProperties.h */,
+				31C1A7A71CBF46420010F6B4 /* SCArticle+CoreDataProperties.m */,
+				31C1A7A81CBF46420010F6B4 /* SCArticle.h */,
+				31C1A7A91CBF46420010F6B4 /* SCArticle.m */,
+				31C1A7AA1CBF46420010F6B4 /* SCArticlePicture+CoreDataProperties.h */,
+				31C1A7AB1CBF46420010F6B4 /* SCArticlePicture+CoreDataProperties.m */,
+				31C1A7AC1CBF46420010F6B4 /* SCArticlePicture.h */,
+				31C1A7AD1CBF46420010F6B4 /* SCArticlePicture.m */,
+				31C1A7AE1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.h */,
+				31C1A7AF1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m */,
+				31C1A7B01CBF46420010F6B4 /* SCArticleRecommend.h */,
+				31C1A7B11CBF46420010F6B4 /* SCArticleRecommend.m */,
+			);
+			name = Article;
 			sourceTree = "<group>";
 		};
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
@@ -3386,6 +3434,7 @@
 				31C1A6181CBB6BAC0010F6B4 /* MLEmojiLabel.m in Sources */,
 				316F4E271CB89E4300B2F9A3 /* SamChatClient.m in Sources */,
 				31C1A74C1CBC7CF70010F6B4 /* SDImageCache.m in Sources */,
+				31C1A7B21CBF46420010F6B4 /* SCArticleComment+CoreDataProperties.m in Sources */,
 				31C1A7A01CBE2ED70010F6B4 /* QBVideoIconView.m in Sources */,
 				31C1A6241CBB6BAC0010F6B4 /* README.md in Sources */,
 				31FAC6BB1CAAB7E30034A0CD /* EditNicknameViewController.m in Sources */,
@@ -3398,6 +3447,7 @@
 				31C1A7741CBD261A0010F6B4 /* SCReceivedAnswerView.m in Sources */,
 				31C1A61A1CBB6BAC0010F6B4 /* NSMutableAttributedString+MLLabel.m in Sources */,
 				316F4E5A1CBA2CDB00B2F9A3 /* SCUserSettingModel.m in Sources */,
+				31C1A7B51CBF46420010F6B4 /* SCArticle.m in Sources */,
 				316F4E661CBA5A9600B2F9A3 /* SCUserRelationModel.m in Sources */,
 				31FAC5981CAAB3C50034A0CD /* EMRemarkImageView.m in Sources */,
 				31C1A7561CBC7CF70010F6B4 /* UIImage+WebP.m in Sources */,
@@ -3427,11 +3477,14 @@
 				31B3C9381CB214B600CDB105 /* LoginUserInformation.m in Sources */,
 				3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */,
 				316F4E3B1CB8EF4500B2F9A3 /* SCPushManager.m in Sources */,
+				31C1A7B61CBF46420010F6B4 /* SCArticlePicture+CoreDataProperties.m in Sources */,
 				31FAC6A11CAAB7E30034A0CD /* PublicGroupDetailViewController.m in Sources */,
 				31FAC7261CAC032E0034A0CD /* HomeViewController.m in Sources */,
 				31C1A7501CBC7CF70010F6B4 /* SDWebImageDownloaderOperation.m in Sources */,
+				31C1A7B81CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m in Sources */,
 				31FAC5991CAAB3C50034A0CD /* BaseViewController.m in Sources */,
 				31B3C94A1CB28BD200CDB105 /* UserSettingViewController.m in Sources */,
+				31C1A7B91CBF46420010F6B4 /* SCArticleRecommend.m in Sources */,
 				31FAC6B71CAAB7E30034A0CD /* RobotManager.m in Sources */,
 				311BC62F1CA37B19006B4707 /* main.m in Sources */,
 				31B3C93F1CB214B600CDB105 /* SendAnswer.m in Sources */,
@@ -3452,6 +3505,7 @@
 				31FAC7851CAE39410034A0CD /* SCUITabView.m in Sources */,
 				31FAC6971CAAB7E30034A0CD /* ChatViewController.m in Sources */,
 				31FAC59B1CAAB3C50034A0CD /* EMNavigationController.m in Sources */,
+				31C1A7B31CBF46420010F6B4 /* SCArticleComment.m in Sources */,
 				31B3C9601CB3CB4600CDB105 /* AnswerTheQuestionViewController.m in Sources */,
 				31FAC7881CAE3A0B0034A0CD /* SCUITabPagerViewController.m in Sources */,
 				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,
@@ -3480,6 +3534,7 @@
 				31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */,
 				31C1A7571CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m in Sources */,
 				31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */,
+				31C1A7B41CBF46420010F6B4 /* SCArticle+CoreDataProperties.m in Sources */,
 				31C1A7601CBCA3C40010F6B4 /* SCServiceSearchModel.m in Sources */,
 				31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */,
 				31C1A75D1CBC80EF0010F6B4 /* SCProducerModel.m in Sources */,
@@ -3494,6 +3549,7 @@
 				31C1A61E1CBB6BAC0010F6B4 /* NSAttributedString+MLExpression.m in Sources */,
 				31FAC69B1CAAB7E30034A0CD /* ContactView.m in Sources */,
 				31C1A74B1CBC7CF70010F6B4 /* NSData+ImageContentType.m in Sources */,
+				31C1A7B71CBF46420010F6B4 /* SCArticlePicture.m in Sources */,
 				31C1A79F1CBE2ED70010F6B4 /* QBImagePickerController.m in Sources */,
 				31FAC5891CAAB3C50034A0CD /* SRSlimeView.m in Sources */,
 				31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */,

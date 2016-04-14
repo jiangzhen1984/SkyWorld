@@ -19,5 +19,6 @@
 + (instancetype)sharedInstance;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+- (NSManagedObjectContext *)privateChildObjectContextOfmainContext;
 
 @end

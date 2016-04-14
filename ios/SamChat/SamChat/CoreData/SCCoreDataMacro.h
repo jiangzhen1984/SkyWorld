@@ -57,4 +57,14 @@
 #define ENTITY_HOT_TOPIC                    @"HotTopic"
 #define HOT_TOPIC_TYPE                      @"type"
 
+#define ENTITY_SCARTICLE                    @"SCArticle"
+#define SCARTICLE_FG_ID                     @"fg_id"
+#define SCARTICLE_TIMESTAMP                 @"timestamp"
+
+#define ENTITY_SCARTICLECOMMENT             @"SCArticleComment"
+
+#define ENTITY_SCARTICLERECOMMEND           @"SCArticleRecommend"
+
+#define ENTITY_SCARTICLEPICTURE             @"SCArticlePicture"
+
 #endif /* SCCoreDataMacro_h */

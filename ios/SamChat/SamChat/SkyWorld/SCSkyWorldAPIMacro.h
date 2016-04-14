@@ -89,7 +89,15 @@
 #define SKYWORLD_NAME               @"name"
 
 #define SKYWORLD_ARTICLES           @"articles"
-
+#define SKYWORLD_TIMESTAMP          @"timestamp"
+#define SKYWORLD_STATUS             @"status"
+#define SKYWORLD_COMMENT            @"comment"
+#define SKYWORLD_PUBLISHER          @"publisher"
+#define SKYWORLD_PICS               @"pics"
+#define SKYWORLD_URL                @"url"
+#define SKYWORLD_RECOMMENDS         @"recommends"
+#define SKYWORLD_CONTENT            @"content"
+#define SKYWORLD_COMMENTS           @"comments"
 
 #pragma mark - Json Key Path
 #define SKYWORLD_USER_USERNAME      @"user.username"
@@ -100,6 +108,7 @@
 #define SKYWORLD_ASKER_CELLPHONE    @"asker.cellphone"
 #define SKYWORLD_USER_AVATAR_ORIGIN @"user.avatar.origin"
 #define SKYWORLD_ARTICLE_PICS       @"article.pics"
+#define SKYWORLD_USER_CELLPHONE     @"user.cellphone"
 
 #pragma mark - Json Value Define
 #define SKYWORLD_REGISTER           @"register"

@@ -14,13 +14,10 @@
 #import "SCArticleCell.h"
 
 #import "SCArticleCellModel.h"
-
 #import "UITableView+SDAutoTableViewCellHeight.h"
-
 #import "UIView+SDAutoLayout.h"
-
 #import "SCArticlePublishViewController.h"
-
+#import "SCArticle.h"
 #define kTimeLineTableViewCellId @"SDTimeLineCell"
 
 static CGFloat textFieldH = 40;
@@ -32,7 +29,6 @@ static CGFloat textFieldH = 40;
 @end
 
 @implementation SCArticleTableViewController
-
 {
     SCArticleRefreshFooter *_refreshFooter;
     SCArticleRefreshHeader *_refreshHeader;
@@ -40,6 +36,8 @@ static CGFloat textFieldH = 40;
     UITextField *_textField;
     CGFloat _totalKeybordHeight;
     NSIndexPath *_currentEditingIndexthPath;
+    
+    NSInteger lastFetchTime;
 }
 
 - (void)viewDidLoad
@@ -103,7 +101,7 @@ static CGFloat textFieldH = 40;
         }];
         [self.tableView.superview addSubview:_refreshHeader];
     }
-    //[self asyncQueryArticlesFromServer];
+    [self asyncQueryArticlesFromServer];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -120,6 +118,7 @@ static CGFloat textFieldH = 40;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#define ARTICLE_FETCH_ONCE_COUNT        15
 #pragma mark - Query Articles
 - (void)asyncQueryArticlesFromServer
 {
@@ -128,13 +127,30 @@ static CGFloat textFieldH = 40;
     NSTimeInterval totime = [[NSDate date] timeIntervalSince1970] * 1000;
     [[SamChatClient sharedInstance] queryArticleWithTimeFrom:fromtime
                                                           to:totime
-                                                       count:15
+                                                       count:ARTICLE_FETCH_ONCE_COUNT
                                                   completion:^(BOOL success, NSArray *articles, SCSkyWorldError *error) {
                                                       if(success){
                                                           DebugLog(@"Articles: %@", articles);
+                                                          [self updateArticles:articles];
                                                       }else{
                                                       }
                                                   }];
+}
+
+- (void)updateArticles:(NSArray *)articles
+{
+    [SCArticle asyncInsertArticlesWithSkyWorldInfo:articles completion:^(BOOL success) {
+        if(success){
+            NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+            [mainContext performBlockAndWait:^{
+                NSArray *scarticles = [SCArticle loadArticlesEarlierThan:[[NSDate date] timeIntervalSince1970] * 1000
+                                          maxCount:ARTICLE_FETCH_ONCE_COUNT
+                            inManagedObjectContext:mainContext];
+                DebugLog(@"articles from db: %@", scarticles);
+            }];
+        }
+    }];
+    
 }
 
 
