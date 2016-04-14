@@ -103,7 +103,7 @@ static CGFloat textFieldH = 40;
         }];
         [self.tableView.superview addSubview:_refreshHeader];
     }
-    [self asyncQueryArticlesFromServer];
+    //[self asyncQueryArticlesFromServer];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -124,7 +124,7 @@ static CGFloat textFieldH = 40;
 - (void)asyncQueryArticlesFromServer
 {
     
-    NSTimeInterval fromtime = [[NSDate date] timeIntervalSince1970] * 1000 - 1000000000;
+    NSTimeInterval fromtime = [[NSDate date] timeIntervalSince1970] * 1000;
     NSTimeInterval totime = [[NSDate date] timeIntervalSince1970] * 1000;
     [[SamChatClient sharedInstance] queryArticleWithTimeFrom:fromtime
                                                           to:totime

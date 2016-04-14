@@ -607,7 +607,7 @@
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_ARTICLE_QUERY,
                              SKYWORLD_TOKEN:token};
     NSDictionary *body = @{SKYWORLD_TIMESTAMP_START:[NSNumber numberWithInteger:(int64_t)from],
-                           SKYWORLD_TIMESTAMP_END:[NSNumber numberWithInteger:(int64_t)to],
+                           //SKYWORLD_TIMESTAMP_END:[NSNumber numberWithInteger:(int64_t)to],
                            SKYWORLD_FETCH_COUNT:[NSNumber numberWithInteger:count],
                            SKYWORLD_QT:[NSNumber numberWithInteger:qt]};
     NSDictionary *data = @{SKYWORLD_HEADER:header,

@@ -125,4 +125,25 @@
     return newImage;
 }
 
++ (UIImage *)scaleImage:(UIImage *)sourceImage toMaxSize:(NSInteger)maxsize
+{
+    UIImage *newImage = sourceImage;
+    CGSize newSize = CGSizeMake(sourceImage.size.width, sourceImage.size.height);
+    CGFloat heightScale = newSize.height / maxsize;
+    CGFloat widthScale = newSize.width / maxsize;
+    
+    if((heightScale>1.0) || (widthScale>1.0)){
+        if(widthScale > heightScale){
+            newSize = CGSizeMake(sourceImage.size.width / widthScale, sourceImage.size.height / widthScale);
+        }else{
+            newSize = CGSizeMake(sourceImage.size.width / heightScale, sourceImage.size.height / heightScale);
+        }
+        UIGraphicsBeginImageContext(newSize);
+        [sourceImage drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+        newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    return newImage;
+}
+
 @end

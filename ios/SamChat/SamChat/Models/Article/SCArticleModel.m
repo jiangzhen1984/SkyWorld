@@ -31,14 +31,22 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         id image = images[i];
         if([image isKindOfClass:[UIImage class]]){
             //UIImage *scalImage = [SCUtils scalingAndCroppingImage:image ForSize:CGSizeMake(120.f, 120.f)];
-            UIImage *scalImage = image;
-            NSData *imageData;
+            UIImage *scaleImage = image;
+            
+            NSData *imageData = UIImageJPEGRepresentation(scaleImage,1.0);
+            NSUInteger sizeOriginKB = [imageData length] / 1024;
+            if (sizeOriginKB > 200) { // 200KB max
+                imageData = UIImageJPEGRepresentation(scaleImage,0.50);
+            }
 //            if (UIImagePNGRepresentation(scalImage)) {
 //                imageData = UIImagePNGRepresentation(scalImage);
 //            }else {
-                imageData = UIImageJPEGRepresentation(scalImage, 1.0); // size smaller
+//                imageData = UIImageJPEGRepresentation(scalImage, 1.0); // size smaller
 //            }
-            [formData appendPartWithFormData:imageData name:[NSString stringWithFormat:@"%d", i]];
+            [formData appendPartWithFileData:imageData
+                                        name:[NSString stringWithFormat:@"file%d", i]
+                                    fileName:[NSString stringWithFormat:@"image%d", i]
+                                    mimeType:@"image/jpeg"];
         }
     }
 } progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -78,7 +86,7 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     NSString *urlString = [SCSkyWorldAPI urlArticleQueryWithTimeFrom:from
                                                                   to:to
                                                                count:count
-                                                                type:1]; // 0: for native; 1: for easemob contacts
+                                                                type:0]; // 0: for native; 1: for easemob contacts
     DebugLog(@"url: %@", urlString);
     [manager GET:urlString
       parameters:nil

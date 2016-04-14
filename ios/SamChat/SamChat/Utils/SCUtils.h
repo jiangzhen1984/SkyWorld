@@ -21,5 +21,6 @@
 + (NSString *)convertToDateStringWithTimeStamp:(NSInteger)timestamp;
 + (UIStoryboard *)mainStoryBoard;
 + (UIImage*)scalingAndCroppingImage:(UIImage*)sourceImage ForSize:(CGSize)targetSize;
++ (UIImage *)scaleImage:(UIImage *)sourceImage toMaxSize:(NSInteger)maxsize;
 
 @end

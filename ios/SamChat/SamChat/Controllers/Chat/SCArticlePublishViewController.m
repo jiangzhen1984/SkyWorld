@@ -211,6 +211,7 @@
             [assetsLibrary assetForURL:url
                            resultBlock:^(ALAsset *asset) {
                                image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+                               image = [SCUtils scaleImage:image toMaxSize:1024];
                                DebugLog(@"image asset%@", image);
                                dispatch_semaphore_signal(sema);
                            } failureBlock:^(NSError *error) {
@@ -219,7 +220,9 @@
                                dispatch_semaphore_signal(sema);
                            }];
             dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
-            [imageArray addObject:image];
+            if(image){
+                [imageArray addObject:image];
+            }
             DebugLog(@"image array%@", imageArray);
         }
         dispatch_async(dispatch_get_main_queue(), ^{

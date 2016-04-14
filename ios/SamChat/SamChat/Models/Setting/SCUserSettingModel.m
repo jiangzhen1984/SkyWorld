@@ -24,7 +24,11 @@
     [manager POST:[SCSkyWorldAPI urlUpdateUserAvatar]
        parameters:nil
 constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-    [formData appendPartWithFormData:imageData name:@"avatarimage"];
+    //[formData appendPartWithFormData:imageData name:@"avatarimage"];
+    [formData appendPartWithFileData:imageData
+                                name:@"image0"
+                            fileName:@"avatarImage"
+                            mimeType:@"image/jpeg"];
 } progress:^(NSProgress *uploadProgress) {
 } success:^(NSURLSessionDataTask *task, id responseObject) {
     if([responseObject isKindOfClass:[NSDictionary class]]) {
