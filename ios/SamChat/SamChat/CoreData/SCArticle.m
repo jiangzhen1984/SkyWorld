@@ -73,6 +73,7 @@
         [SCArticle insertArticlesWithSkyWorldInfo:articleArray inManagedObjectContext:privateContext];
         [privateContext save:NULL];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [[SCCoreDataManager sharedInstance] saveContext];
             completion(true);
         });
     }];

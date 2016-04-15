@@ -7,14 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCArticle.h"
 @class SCArticleCellLikeItemModel, SCArticleCellCommentItemModel;
 
 @interface SCArticleCellModel : NSObject
 
-@property (nonatomic, copy) NSString *iconName;
+@property (nonatomic, copy) NSString *avatarUrl;
+@property (nonatomic, strong) UIImage *avatarImageDefault;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *msgContent;
-@property (nonatomic, strong) NSArray *picNamesArray;
+@property (nonatomic, copy) NSString *time;
+@property (nonatomic, strong) NSArray *picUrlsArray;
 
 @property (nonatomic, strong) NSArray<SCArticleCellLikeItemModel *> *likeItemsArray;
 @property (nonatomic, strong) NSArray<SCArticleCellCommentItemModel *> *commentItemsArray;
@@ -23,6 +26,7 @@
 
 @property (nonatomic, assign, readonly) BOOL shouldShowMoreButton;
 
+- (instancetype)initWithSCArticle:(SCArticle *)article;
 
 @end
 

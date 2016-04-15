@@ -66,5 +66,8 @@
 #define ENTITY_SCARTICLERECOMMEND           @"SCArticleRecommend"
 
 #define ENTITY_SCARTICLEPICTURE             @"SCArticlePicture"
+#define SCARTICLEPICTURE_FG_ID              @"fg_id"
+#define SCARTICLEPICTURE_SEQUENCE           @"sequence"
+
 
 #endif /* SCCoreDataMacro_h */

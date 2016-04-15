@@ -53,7 +53,8 @@ static CGFloat textFieldH = 40;
     
     self.edgesForExtendedLayout = UIRectEdgeTop;
     
-    [self.dataArray addObjectsFromArray:[self creatModelsWithCount:10]];
+    //[self.dataArray addObjectsFromArray:[self creatModelsWithCount:10]];
+    [self fetchArticlesFromDBWithRefreshFlag:YES];
     
     __weak typeof(self) weakSelf = self;
     
@@ -63,9 +64,10 @@ static CGFloat textFieldH = 40;
     __weak typeof(_refreshFooter) weakRefreshFooter = _refreshFooter;
     [_refreshFooter addToScrollView:self.tableView refreshOpration:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf.dataArray addObjectsFromArray:[weakSelf creatModelsWithCount:10]];
-            [weakSelf.tableView reloadData];
-            [weakRefreshFooter endRefreshing];
+            //[weakSelf.dataArray addObjectsFromArray:[weakSelf creatModelsWithCount:10]];
+            [weakSelf asyncQueryArticlesFromServerWithRefreshFlag:NO];
+            //[weakSelf.tableView reloadData];
+            //[weakRefreshFooter endRefreshing];
         });
     }];
     
@@ -83,7 +85,6 @@ static CGFloat textFieldH = 40;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     if (!_refreshHeader.superview) {
         
         _refreshHeader = [SCArticleRefreshHeader refreshHeaderWithCenter:CGPointMake(40, 45)];
@@ -92,16 +93,17 @@ static CGFloat textFieldH = 40;
         __weak typeof(self) weakSelf = self;
         [_refreshHeader setRefreshingBlock:^{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                weakSelf.dataArray = [[weakSelf creatModelsWithCount:10] mutableCopy];
-                [weakHeader endRefreshing];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.tableView reloadData];
-                });
+                [weakSelf asyncQueryArticlesFromServerWithRefreshFlag:YES];
+                //weakSelf.dataArray = [[weakSelf creatModelsWithCount:10] mutableCopy];
+//                [weakHeader endRefreshing];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [weakSelf.tableView reloadData];
+//                });
             });
         }];
         [self.tableView.superview addSubview:_refreshHeader];
     }
-    [self asyncQueryArticlesFromServer];
+    [self asyncQueryArticlesFromServerWithRefreshFlag:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -120,37 +122,77 @@ static CGFloat textFieldH = 40;
 
 #define ARTICLE_FETCH_ONCE_COUNT        15
 #pragma mark - Query Articles
-- (void)asyncQueryArticlesFromServer
+- (void)asyncQueryArticlesFromServerWithRefreshFlag:(BOOL)refreshFlag
 {
-    
-    NSTimeInterval fromtime = [[NSDate date] timeIntervalSince1970] * 1000;
-    NSTimeInterval totime = [[NSDate date] timeIntervalSince1970] * 1000;
+    NSTimeInterval fromtime = lastFetchTime;
+    NSTimeInterval totime = [[NSDate date] timeIntervalSince1970] * 1000; // disable inside
+    if(refreshFlag){
+        fromtime = [[NSDate date] timeIntervalSince1970] * 1000;
+    }
     [[SamChatClient sharedInstance] queryArticleWithTimeFrom:fromtime
                                                           to:totime
                                                        count:ARTICLE_FETCH_ONCE_COUNT
                                                   completion:^(BOOL success, NSArray *articles, SCSkyWorldError *error) {
                                                       if(success){
                                                           DebugLog(@"Articles: %@", articles);
-                                                          [self updateArticles:articles];
+                                                          [self updateArticles:articles withFreshFlag:refreshFlag];
                                                       }else{
+                                                          //[self showHint:@"服务器错误"];
+                                                          [self endRefreshing];
                                                       }
                                                   }];
 }
 
-- (void)updateArticles:(NSArray *)articles
+- (void)updateArticles:(NSArray *)articles withFreshFlag:(BOOL)refreshFlag
 {
     [SCArticle asyncInsertArticlesWithSkyWorldInfo:articles completion:^(BOOL success) {
         if(success){
-            NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-            [mainContext performBlockAndWait:^{
-                NSArray *scarticles = [SCArticle loadArticlesEarlierThan:[[NSDate date] timeIntervalSince1970] * 1000
-                                          maxCount:ARTICLE_FETCH_ONCE_COUNT
-                            inManagedObjectContext:mainContext];
-                DebugLog(@"articles from db: %@", scarticles);
-            }];
+            [self fetchArticlesFromDBWithRefreshFlag:refreshFlag];
+        }else{
+            [self endRefreshing];
         }
     }];
-    
+}
+
+- (void)fetchArticlesFromDBWithRefreshFlag:(BOOL)refreshFlag
+{
+    if(refreshFlag){
+        [self.dataArray removeAllObjects];
+        lastFetchTime = [[NSDate date] timeIntervalSince1970] * 1000;
+    }
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
+        NSArray *scarticles = [SCArticle loadArticlesEarlierThan:lastFetchTime
+                                                        maxCount:ARTICLE_FETCH_ONCE_COUNT
+                                          inManagedObjectContext:mainContext];
+        if(scarticles){
+            lastFetchTime = [((SCArticle *)[scarticles lastObject]).timestamp integerValue];
+        }else{
+            lastFetchTime = 0;
+        }
+        DebugLog(@"articles from db: %@, \nlastfetchtime:%ld", scarticles, lastFetchTime);
+        [self.dataArray addObjectsFromArray:[self createCellModelArrayWithArticleArray:scarticles]];
+    }];
+    [self.tableView reloadData];
+    [self endRefreshing];
+}
+
+- (void)endRefreshing
+{
+    [_refreshFooter endRefreshing];
+    [_refreshHeader endRefreshing];
+}
+
+- (NSArray *)createCellModelArrayWithArticleArray:(NSArray *)articles
+{
+    NSMutableArray *cellmodelArray = [[NSMutableArray alloc] init];
+    for (SCArticle *article in articles) {
+        SCArticleCellModel *cellmodel = [[SCArticleCellModel alloc] initWithSCArticle:article];
+        if(cellmodel){
+            [cellmodelArray addObject:cellmodel];
+        }
+    }
+    return cellmodelArray;
 }
 
 
@@ -219,100 +261,8 @@ static CGFloat textFieldH = 40;
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - testmodel
 
-- (NSArray *)creatModelsWithCount:(NSInteger)count
-{
-    NSArray *iconImageNamesArray = @[@"icon0.jpg",
-                                     @"icon1.jpg",
-                                     @"icon2.jpg",
-                                     @"icon3.jpg",
-                                     @"icon4.jpg",
-                                     ];
-    
-    NSArray *namesArray = @[@"name1",
-                            @"name2",
-                            @"name3",
-                            @"name4",
-                            @"name5"];
-    
-    NSArray *textArray = @[@"text1",
-                           @"text2",
-                           @"text3",
-                           @"text4",
-                           @"text5"
-                           ];
-    
-    NSArray *commentsArray = @[@"comment1",
-                               @"comment2",
-                               @"comment3",
-                               @"comment4",
-                               @"comment5",
-                               @"comment6",
-                               @"comment7",
-                               @"comment8",
-                               @"comment9",
-                               @"comment10",
-                               @"comment11",
-                               @"comment12",
-                               @"comment13"];
-    
-    NSArray *picImageNamesArray = @[ @"pic0.jpg",
-                                     @"pic1.jpg",
-                                     @"pic2.jpg",
-                                     @"pic3.jpg",
-                                     @"pic4.jpg",
-                                     @"pic5.jpg",
-                                     @"pic6.jpg",
-                                     @"pic7.jpg",
-                                     @"pic8.jpg"
-                                     ];
-    NSMutableArray *resArr = [NSMutableArray new];
-    
-    for (int i = 0; i < count; i++) {
-        int iconRandomIndex = arc4random_uniform(5);
-        int nameRandomIndex = arc4random_uniform(5);
-        int contentRandomIndex = arc4random_uniform(5);
-        
-        SCArticleCellModel *model = [SCArticleCellModel new];
-        model.iconName = iconImageNamesArray[iconRandomIndex];
-        model.name = namesArray[nameRandomIndex];
-        model.msgContent = textArray[contentRandomIndex];
-        
-        
-        // 模拟“随机图片”
-        int random = arc4random_uniform(6);
-        
-        NSMutableArray *temp = [NSMutableArray new];
-        for (int i = 0; i < random; i++) {
-            int randomIndex = arc4random_uniform(9);
-            [temp addObject:picImageNamesArray[randomIndex]];
-        }
-        if (temp.count) {
-            model.picNamesArray = [temp copy];
-        }
-        
-        int commentRandom = arc4random_uniform(3);
-        NSMutableArray *tempComments = [NSMutableArray new];
-        for (int i = 0; i < commentRandom; i++) {
-            SCArticleCellCommentItemModel *commentItemModel = [SCArticleCellCommentItemModel new];
-            int index = arc4random_uniform((int)namesArray.count);
-            commentItemModel.firstUserName = namesArray[index];
-            commentItemModel.firstUserId = @"666";
-            if (arc4random_uniform(10) < 5) {
-                commentItemModel.secondUserName = namesArray[arc4random_uniform((int)namesArray.count)];
-                commentItemModel.secondUserId = @"888";
-            }
-            commentItemModel.commentString = commentsArray[arc4random_uniform((int)commentsArray.count)];
-            [tempComments addObject:commentItemModel];
-        }
-        model.commentItemsArray = [tempComments copy];
-        
-        [resArr addObject:model];
-    }
-    return [resArr copy];
-}
-
+#pragma mark table delegate and data sources
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.dataArray.count;
@@ -333,10 +283,7 @@ static CGFloat textFieldH = 40;
     }
     
     ////// 此步设置用于实现cell的frame缓存，可以让tableview滑动更加流畅 //////
-    
     [cell useCellFrameCacheWithIndexPath:indexPath tableView:tableView];
-    
-    ///////////////////////////////////////////////////////////////////////
     
     cell.model = self.dataArray[indexPath.row];
     return cell;
@@ -459,5 +406,6 @@ static CGFloat textFieldH = 40;
         [self adjustTableViewToFitKeyboard];
     }
 }
+
 
 @end

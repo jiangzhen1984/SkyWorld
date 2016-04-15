@@ -7,7 +7,7 @@
 //
 
 #import "SCArticleModel.h"
-
+#import "SCArticle.h"
 
 
 @implementation SCArticleModel
@@ -55,13 +55,16 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         DebugLog(@"publish article success:%@", responseObject);
         NSDictionary *response = responseObject;
         NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
-        NSArray *pics = [response valueForKeyPath:SKYWORLD_ARTICLE_PICS];
-        if((errorCode) || (pics==nil)){
+        if(errorCode){
             if(completion){
                 completion(false, [SCSkyWorldError errorWithCode:errorCode]);
             }
         }else{
-#warning save article to database
+            NSDictionary *articleDictionary = response[SKYWORLD_ARTICLE];
+            NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+            [mainContext performBlockAndWait:^{
+                [SCArticle insertArticlesWithSkyWorldInfo:@[articleDictionary] inManagedObjectContext:mainContext];
+            }];
             if (completion){
                 completion(true, nil);
             }

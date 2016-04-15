@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SCArticle : NSManagedObject
 
++ (void)insertArticlesWithSkyWorldInfo:(NSArray *)articleArray inManagedObjectContext:(NSManagedObjectContext *)context;
 + (void)asyncInsertArticlesWithSkyWorldInfo:(NSArray *)articleArray completion:(void (^)(BOOL success))completion;
 + (NSArray *)loadArticlesEarlierThan:(NSInteger)timeline maxCount:(NSInteger)count inManagedObjectContext:(NSManagedObjectContext *)context;
 

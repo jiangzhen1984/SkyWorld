@@ -35,7 +35,14 @@
     //[context save:NULL];
 }
 
-
++ (NSArray *)loadArticlePicturesWithArticleId:(NSInteger)fg_id inManagedObjecContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLEPICTURE];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLEPICTURE_FG_ID, fg_id];
+    request.fetchLimit = 9;
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SCARTICLEPICTURE_SEQUENCE ascending:YES]];
+    return [context executeFetchRequest:request error:NULL];
+}
 
 
 

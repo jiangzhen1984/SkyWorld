@@ -136,6 +136,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     
     _timeLabel.sd_layout
     .leftEqualToView(_contentLabel)
+    .rightSpaceToView(_operationButton, 5)
     .topSpaceToView(_picContainerView, margin)
     .heightIs(15)
     .autoHeightRatio(0);
@@ -173,12 +174,12 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     
     _shouldOpenContentLabel = NO;
     
-    _iconView.image = [UIImage imageNamed:model.iconName];
+    [_iconView sd_setImageWithURL:[NSURL URLWithString:_model.avatarUrl] placeholderImage:_model.avatarImageDefault];
     _nameLable.text = model.name;
     // 防止单行文本label在重用时宽度计算不准的问题
     [_nameLable sizeToFit];
     _contentLabel.text = model.msgContent;
-    _picContainerView.picPathStringsArray = model.picNamesArray;
+    _picContainerView.picPathStringsArray = model.picUrlsArray;
     
     if (model.shouldShowMoreButton) { // 如果文字高度超过60
         _moreButton.sd_layout.heightIs(20);
@@ -196,7 +197,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     }
     
     CGFloat picContainerTopMargin = 0;
-    if (model.picNamesArray.count) {
+    if (model.picUrlsArray.count) {
         picContainerTopMargin = 10;
     }
     _picContainerView.sd_layout.topSpaceToView(_moreButton, picContainerTopMargin);
@@ -217,7 +218,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     
     [self setupAutoHeightWithBottomView:bottomView bottomMargin:15];
     
-    _timeLabel.text = @"1分钟前";
+    _timeLabel.text = _model.time;
 }
 
 - (void)setFrame:(CGRect)frame

@@ -88,6 +88,7 @@
 
 #define SKYWORLD_NAME               @"name"
 
+#define SKYWORLD_ARTICLE            @"article"
 #define SKYWORLD_ARTICLES           @"articles"
 #define SKYWORLD_TIMESTAMP          @"timestamp"
 #define SKYWORLD_STATUS             @"status"
