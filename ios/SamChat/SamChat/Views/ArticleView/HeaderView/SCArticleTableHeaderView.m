@@ -34,7 +34,8 @@
     
     _iconView = [UIImageView new];
     //_iconView.image = [UIImage imageNamed:@"picon.jpg"];
-    [_iconView sd_setImageWithURL:[NSURL URLWithString:[[SCUserProfileManager sharedInstance] currentLoginUserInformation].imagefile]];
+    [_iconView sd_setImageWithURL:[NSURL URLWithString:[[SCUserProfileManager sharedInstance] currentLoginUserInformation].imagefile]
+                 placeholderImage:[UIImage imageNamed:@"UserAvatarDefault"]];
     _iconView.layer.borderColor = [UIColor whiteColor].CGColor;
     _iconView.layer.borderWidth = 3;
     [self addSubview:_iconView];

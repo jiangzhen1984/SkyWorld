@@ -215,7 +215,7 @@
         NSArray *userSection = [self.dataArray objectAtIndex:(indexPath.section - 1)];
         EaseUserModel *model = [userSection objectAtIndex:indexPath.row];
         NSString *username = model.buddy;
-        ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username];
+        ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username updateFlag:true];
         if(contactUser){
             model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:username];
             model.avatarURLPath = contactUser.imagefile;

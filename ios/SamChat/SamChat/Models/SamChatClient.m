@@ -86,9 +86,19 @@ static SamChatClient *sharedInstance = nil;
     [SCArticleModel publishArticleWithImages:images comment:comment completion:completion];
 }
 
-- (void)queryArticleWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count completion:(void (^)(BOOL success, NSArray *articles, SCSkyWorldError *error))completion
+- (void)queryArticleWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCArticleModel queryArticleWithTimeFrom:from to:to count:count completion:completion];
+}
+
+- (void)recommendArticleWithId:(NSNumber *)articleId flag:(BOOL)flag completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCArticleModel recommendArticleWithId:articleId flag:flag completion:completion];
+}
+
+- (void)commentArticleWithId:(NSNumber *)articleId comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    [SCArticleModel commentArticleWithId:articleId comment:comment completion:completion];
 }
 
 - (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion

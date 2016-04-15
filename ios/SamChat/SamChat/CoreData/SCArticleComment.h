@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SCArticleComment : NSManagedObject
 
 + (void)updateArticleRecommendsWithCommentsArray:(NSArray *)commentsArray articleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context;
++ (NSArray *)loadArticleCommentsWithArticleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

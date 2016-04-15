@@ -97,8 +97,10 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
     if (keyPath != kSCBaseRefreshViewObserveKeyPath) return;
-    
-    if (self.scrollView.contentOffset.y > self.scrollView.contentSize.height - self.scrollView.height && self.refreshState != SCArticleRefreshViewStateRefreshing) {
+//    if (self.scrollView.contentOffset.y > self.scrollView.contentSize.height - self.scrollView.height && self.refreshState != SCArticleRefreshViewStateRefreshing)
+    if ((self.scrollView.contentOffset.y > self.scrollView.contentSize.height - self.scrollView.height)
+        && (self.scrollView.contentSize.height >= self.scrollView.height)
+        && (self.refreshState != SCArticleRefreshViewStateRefreshing)){
         self.frame = CGRectMake(0, self.scrollView.contentSize.height, self.scrollView.width, kSCArticleRefreshFooterHeight);
         self.hidden = NO;
         self.refreshState = SCArticleRefreshViewStateRefreshing;

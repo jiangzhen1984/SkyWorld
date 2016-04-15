@@ -8,6 +8,8 @@
 
 #import "SCArticleCellModel.h"
 #import "SCArticlePicture.h"
+#import "SCArticleRecommend.h"
+#import "SCArticleComment.h"
 #import <UIKit/UIKit.h>
 
 extern const CGFloat contentLabelFontSize;
@@ -30,6 +32,9 @@ extern CGFloat maxContentLabelHeight;
     if(self){
         self.article = article;
         _msgContent = article.comment;
+    }
+    if(self.article == nil){
+        return nil;
     }
     return self;
 }
@@ -66,7 +71,7 @@ extern CGFloat maxContentLabelHeight;
 
 - (NSString *)avatarUrl
 {
-    return [[SCUserProfileManager sharedInstance] getUserProfileByUsername:self.name].imagefile;
+    return [[SCUserProfileManager sharedInstance] getUserProfileByUsername:self.name updateFlag:false].imagefile;
 }
 
 - (UIImage *)avatarImageDefault
@@ -84,6 +89,11 @@ extern CGFloat maxContentLabelHeight;
     return self.article.publish_username;
 }
 
+- (NSNumber *)articleId
+{
+    return self.article.fg_id;
+}
+
 // urls
 - (NSArray *)picUrlsArray
 {
@@ -99,12 +109,38 @@ extern CGFloat maxContentLabelHeight;
 
 - (NSArray<SCArticleCellLikeItemModel *> *)likeItemsArray
 {
-    return nil;
+    if(_likeItemsArray == nil){
+        NSMutableArray *likes = [[NSMutableArray alloc] init];
+        // should be main thread
+        NSArray *scarticleRecommends = [SCArticleRecommend loadArticleRecommendsWithArticleId:[self.article.fg_id integerValue]
+                                        inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+        for (SCArticleRecommend *recommend in scarticleRecommends) {
+            SCArticleCellLikeItemModel *likeModel = [[SCArticleCellLikeItemModel alloc] init];
+            likeModel.userName = recommend.recommender_username;
+#warning id or cellphone
+            [likes addObject:likeModel];
+        }
+        _likeItemsArray = likes;
+    }
+    return _likeItemsArray;
 }
 
 - (NSArray<SCArticleCellCommentItemModel *> *)commentItemsArray
 {
-    return nil;
+    if(_commentItemsArray == nil){
+        NSMutableArray *comments = [[NSMutableArray alloc] init];
+        NSArray *scarticleComments = [SCArticleComment loadArticleCommentsWithArticleId:[self.article.fg_id integerValue]
+                                                                 inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+        for (SCArticleComment *comment in scarticleComments) {
+            SCArticleCellCommentItemModel *commentModel = [[SCArticleCellCommentItemModel alloc] init];
+            commentModel.commentString = comment.content;
+            commentModel.firstUserName = comment.commenter_username;
+            commentModel.firstUserId = comment.commenter_phonenumber;
+            [comments addObject:commentModel];
+        }
+        _commentItemsArray = comments;
+    }
+    return _commentItemsArray;
 }
 
 

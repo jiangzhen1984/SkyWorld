@@ -25,8 +25,8 @@
                                                                                inManagedObjectContext:context];
         scarticleComment.timestamp = commentDictionary[SKYWORLD_TIMESTAMP];
         scarticleComment.content = commentDictionary[SKYWORLD_CONTENT];
-#warning add usename or change to user id
-        scarticleComment.commenter_username = @"";
+#warning change to user id ?
+        scarticleComment.commenter_username = [commentDictionary valueForKeyPath:SKYWORLD_USER_USERNAME];
         scarticleComment.commenter_phonenumber = [commentDictionary valueForKeyPath:SKYWORLD_USER_CELLPHONE];
         scarticleComment.fg_id = [NSNumber numberWithInteger:articleId];
     }
@@ -36,6 +36,7 @@
 + (void)clearArticleCommentsWithArticleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLECOMMENT];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLECOMMENT_FG_ID, articleId];
     [request setIncludesPropertyValues:NO]; //only fetch the managedObjectID
     NSError *error;
     NSArray *articleComments = [context executeFetchRequest:request error:&error];
@@ -54,6 +55,14 @@
     [SCArticleComment insertArticleCommentsWithCommentsArray:commentsArray
                                                    articleId:articleId
                                       inManagedObjectContext:context];
+}
+
++ (NSArray *)loadArticleCommentsWithArticleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLECOMMENT];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLECOMMENT_FG_ID,articleId];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SCARTICLECOMMENT_TIMESTAMP ascending:YES]];
+    return [context executeFetchRequest:request error:NULL];
 }
 
 

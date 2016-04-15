@@ -41,8 +41,9 @@
                                 saveToLoacal:(BOOL)save
                                   completion:(void (^)(BOOL success, NSError *error))completion;
 
-
-- (ContactUser *)getUserProfileByUsername:(NSString*)username;
+- (ContactUser *)getUserProfileByUsername:(NSString *)username updateFlag:(BOOL)updateFlag;
+//- (ContactUser *)getUserProfileByUsername:(NSString*)username;
+- (void)updateUserProfileByUsername:(NSString *)username lastupdate:(NSInteger)lastupdate;
 - (ContactUser *)getCurUserProfile;
 - (NSString*)getNickNameWithUsername:(NSString*)username;
 

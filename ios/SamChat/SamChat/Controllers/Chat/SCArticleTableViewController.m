@@ -64,10 +64,7 @@ static CGFloat textFieldH = 40;
     __weak typeof(_refreshFooter) weakRefreshFooter = _refreshFooter;
     [_refreshFooter addToScrollView:self.tableView refreshOpration:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            //[weakSelf.dataArray addObjectsFromArray:[weakSelf creatModelsWithCount:10]];
             [weakSelf asyncQueryArticlesFromServerWithRefreshFlag:NO];
-            //[weakSelf.tableView reloadData];
-            //[weakRefreshFooter endRefreshing];
         });
     }];
     
@@ -94,11 +91,6 @@ static CGFloat textFieldH = 40;
         [_refreshHeader setRefreshingBlock:^{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [weakSelf asyncQueryArticlesFromServerWithRefreshFlag:YES];
-                //weakSelf.dataArray = [[weakSelf creatModelsWithCount:10] mutableCopy];
-//                [weakHeader endRefreshing];
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [weakSelf.tableView reloadData];
-//                });
             });
         }];
         [self.tableView.superview addSubview:_refreshHeader];
@@ -124,6 +116,10 @@ static CGFloat textFieldH = 40;
 #pragma mark - Query Articles
 - (void)asyncQueryArticlesFromServerWithRefreshFlag:(BOOL)refreshFlag
 {
+    if((refreshFlag==false) && (lastFetchTime==0)){
+        [self endRefreshing];
+        return; // no more articles
+    }
     NSTimeInterval fromtime = lastFetchTime;
     NSTimeInterval totime = [[NSDate date] timeIntervalSince1970] * 1000; // disable inside
     if(refreshFlag){
@@ -132,26 +128,14 @@ static CGFloat textFieldH = 40;
     [[SamChatClient sharedInstance] queryArticleWithTimeFrom:fromtime
                                                           to:totime
                                                        count:ARTICLE_FETCH_ONCE_COUNT
-                                                  completion:^(BOOL success, NSArray *articles, SCSkyWorldError *error) {
+                                                  completion:^(BOOL success, SCSkyWorldError *error) {
                                                       if(success){
-                                                          DebugLog(@"Articles: %@", articles);
-                                                          [self updateArticles:articles withFreshFlag:refreshFlag];
+                                                          [self fetchArticlesFromDBWithRefreshFlag:refreshFlag];
                                                       }else{
                                                           //[self showHint:@"服务器错误"];
                                                           [self endRefreshing];
                                                       }
                                                   }];
-}
-
-- (void)updateArticles:(NSArray *)articles withFreshFlag:(BOOL)refreshFlag
-{
-    [SCArticle asyncInsertArticlesWithSkyWorldInfo:articles completion:^(BOOL success) {
-        if(success){
-            [self fetchArticlesFromDBWithRefreshFlag:refreshFlag];
-        }else{
-            [self endRefreshing];
-        }
-    }];
 }
 
 - (void)fetchArticlesFromDBWithRefreshFlag:(BOOL)refreshFlag
@@ -323,7 +307,7 @@ static CGFloat textFieldH = 40;
 
 #pragma mark - SCArticleCellDelegate
 
-- (void)didClickcCommentButtonInCell:(UITableViewCell *)cell
+- (void)didClickcCommentButtonInCell:(SCArticleCell *)cell
 {
     [_textField becomeFirstResponder];
     _currentEditingIndexthPath = [self.tableView indexPathForCell:cell];
@@ -332,9 +316,19 @@ static CGFloat textFieldH = 40;
     
 }
 
-- (void)didClickLickButtonInCell:(UITableViewCell *)cell
+- (void)didClickLickButtonInCell:(SCArticleCell *)cell
 {
-    
+    _currentEditingIndexthPath = [self.tableView indexPathForCell:cell];
+    [[SamChatClient sharedInstance] recommendArticleWithId:cell.model.articleId
+                                                      flag:true
+                                                completion:^(BOOL success, SCSkyWorldError *error) {
+                                                    if(success){
+                                                        DebugLog(@"recommend success");
+                                                        [self reloadArticleAtIndexPath:_currentEditingIndexthPath];
+                                                    }else{
+                                                        DebugLog(@"recommend failed: %@", error);
+                                                    }
+                                                }];
 }
 
 
@@ -354,6 +348,18 @@ static CGFloat textFieldH = 40;
     [self.tableView setContentOffset:offset animated:YES];
 }
 
+- (void)reloadArticleAtIndexPath:(NSIndexPath *)indexPath
+{
+    SCArticleCellModel *oldCellModel = self.dataArray[indexPath.row];
+    SCArticle *article = [SCArticle queryArticleWithArticleId:oldCellModel.articleId
+                                       inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+    SCArticleCellModel *cellmodel = [[SCArticleCellModel alloc] initWithSCArticle:article];
+    if(cellmodel){
+        [self.dataArray replaceObjectAtIndex:indexPath.row withObject:cellmodel];
+        [self.tableView reloadRowsAtIndexPaths:@[_currentEditingIndexthPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -362,21 +368,18 @@ static CGFloat textFieldH = 40;
         [_textField resignFirstResponder];
         
         SCArticleCellModel *model = self.dataArray[_currentEditingIndexthPath.row];
-        NSMutableArray *temp = [NSMutableArray new];
-        [temp addObjectsFromArray:model.commentItemsArray];
         
-        SCArticleCellCommentItemModel *commentItemModel = [SCArticleCellCommentItemModel new];
-        commentItemModel.firstUserName = @"firstusername";
-        commentItemModel.commentString = textField.text;
-        commentItemModel.firstUserId = @"11111";
-        [temp addObject:commentItemModel];
-        
-        model.commentItemsArray = [temp copy];
-        
-        [self.tableView reloadRowsAtIndexPaths:@[_currentEditingIndexthPath] withRowAnimation:UITableViewRowAnimationNone];
-        
-        _textField.text = @"";
-        
+        [[SamChatClient sharedInstance] commentArticleWithId:model.articleId
+                                                     comment:_textField.text
+                                                  completion:^(BOOL success, SCSkyWorldError *error) {
+                                                      if(success){
+                                                          DebugLog(@"comment success");
+                                                          [self reloadArticleAtIndexPath:_currentEditingIndexthPath];
+                                                          _textField.text = @"";
+                                                      }else{
+                                                          DebugLog(@"comment failed:%@", error);
+                                                      }
+                                                  }];
         return YES;
     }
     return NO;

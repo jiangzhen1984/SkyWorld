@@ -20,7 +20,7 @@
 
 @property (nonatomic, strong) UIImageView *bgImageView;
 
-@property (nonatomic, strong) UILabel *likeLabel;
+@property (nonatomic, strong) MLLinkLabel *likeLabel;
 @property (nonatomic, strong) UIView *likeLableBottomLine;
 
 @property (nonatomic, strong) NSMutableArray *commentLabelsArray;
@@ -45,11 +45,14 @@
     _bgImageView.image = bgImage;
     [self addSubview:_bgImageView];
     
-    _likeLabel = [UILabel new];
+    _likeLabel = [MLLinkLabel new];
+    _likeLabel.numberOfLines = 0;
+    _likeLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _likeLabel.font = [UIFont systemFontOfSize:14];
     [self addSubview:_likeLabel];
     
     _likeLableBottomLine = [UIView new];
-    _likeLableBottomLine.backgroundColor = [UIColor lightGrayColor];
+    _likeLableBottomLine.backgroundColor = SC_RGB(225, 225, 225);
     [self addSubview:_likeLableBottomLine];
     
     _bgImageView.sd_layout.spaceToSuperView(UIEdgeInsetsMake(0, 0, 0, 0));
@@ -94,7 +97,6 @@
     [_likeLabel sd_clearAutoLayoutSettings];
     _likeLabel.frame = CGRectZero;
     
-    
     if (self.commentLabelsArray.count) {
         [self.commentLabelsArray enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
             [label sd_clearAutoLayoutSettings];
@@ -104,14 +106,24 @@
     
     CGFloat margin = 5;
     
+    _likeLabel.attributedText = [self generateAttributedStringWithLikeItemArray:self.likeItemsArray];
+  
     if (likeItemsArray.count) {
         _likeLabel.sd_layout
         .leftSpaceToView(self, 0)
         .rightSpaceToView(self, 0)
-        .topSpaceToView(self, margin)
+        .topSpaceToView(self, margin*2)
         .autoHeightRatio(0);
         
         _likeLabel.isAttributedContent = YES;
+    }
+
+    if(likeItemsArray.count && self.commentLabelsArray.count){
+        _likeLableBottomLine.sd_layout
+        .leftSpaceToView(self, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(_likeLabel, margin)
+        .heightIs(1);
     }
     
     UIView *lastTopView = _likeLabel;
@@ -148,6 +160,36 @@
     if (model.secondUserName) {
         [attString setAttributes:@{NSForegroundColorAttributeName : highLightColor, NSLinkAttributeName : model.secondUserId} range:[text rangeOfString:model.secondUserName]];
     }
+    return attString;
+}
+
+- (NSMutableAttributedString *)generateAttributedStringWithLikeItemArray:(NSArray *)likeItemsArray
+{
+    SCArticleCellLikeItemModel *likeModel;
+    UIColor *highLightColor = [UIColor blueColor];
+    NSMutableAttributedString *attComma = [[NSMutableAttributedString alloc] initWithString:@","];
+    
+    NSMutableAttributedString *attString;
+    attString = [[NSMutableAttributedString alloc] initWithString:@" ♡ "];
+    NSString *username;
+    if(likeItemsArray && (likeItemsArray.count > 0)){
+        likeModel = likeItemsArray[0];
+        username = likeModel.userName;
+        NSMutableAttributedString *attStringTemp = [[NSMutableAttributedString alloc] initWithString:username];
+        [attStringTemp setAttributes:@{NSForegroundColorAttributeName : highLightColor, NSLinkAttributeName :username}
+                           range:NSMakeRange(0,username.length)];
+        [attString appendAttributedString:attStringTemp];
+    }
+    for (int i=1; i<likeItemsArray.count; i++) {
+        [attString appendAttributedString:attComma];
+        likeModel = likeItemsArray[i];
+        username = likeModel.userName;
+        NSMutableAttributedString *attStringTemp = [[NSMutableAttributedString alloc] initWithString:username];
+        [attStringTemp setAttributes:@{NSForegroundColorAttributeName : highLightColor, NSLinkAttributeName :username}
+                           range:NSMakeRange(0,username.length)];
+        [attString appendAttributedString:attStringTemp];
+    }
+    
     return attString;
 }
 

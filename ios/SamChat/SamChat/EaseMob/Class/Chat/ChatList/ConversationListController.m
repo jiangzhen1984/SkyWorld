@@ -215,7 +215,7 @@
             model.title = [[RobotManager sharedInstance] getRobotNickWithUsername:conversation.conversationId];
         } else {
             NSString *username = conversation.conversationId;
-            ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username];
+            ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username updateFlag:false];
             if(contactUser){
                 model.title = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:username];
                 model.avatarURLPath = contactUser.imagefile;

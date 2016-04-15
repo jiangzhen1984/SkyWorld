@@ -20,7 +20,7 @@
     if (placeholderImage == nil) {
         placeholderImage = [UIImage imageNamed:@"chatListCellHead"];
     }
-    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username];
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username updateFlag:false];
     if(contactUser){
         [self sd_setImageWithURL:[NSURL URLWithString:contactUser.imagefile] placeholderImage:placeholderImage];
     }else{
@@ -34,7 +34,7 @@
 
 - (void)setTextWithUsername:(NSString *)username
 {
-    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username];
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:username updateFlag:false];
     if(contactUser){
         NSString *nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:username];
         if(nickname.length > 0){

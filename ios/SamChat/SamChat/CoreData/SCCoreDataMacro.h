@@ -60,10 +60,14 @@
 #define ENTITY_SCARTICLE                    @"SCArticle"
 #define SCARTICLE_FG_ID                     @"fg_id"
 #define SCARTICLE_TIMESTAMP                 @"timestamp"
+#define SCARTICLE_OWNER_USERNAME            @"owner_username"
 
 #define ENTITY_SCARTICLECOMMENT             @"SCArticleComment"
+#define SCARTICLECOMMENT_FG_ID              @"fg_id"
+#define SCARTICLECOMMENT_TIMESTAMP          @"timestamp"
 
 #define ENTITY_SCARTICLERECOMMEND           @"SCArticleRecommend"
+#define SCARTICLERECOMMEND_FG_ID            @"fg_id"
 
 #define ENTITY_SCARTICLEPICTURE             @"SCArticlePicture"
 #define SCARTICLEPICTURE_FG_ID              @"fg_id"

@@ -40,6 +40,7 @@
     contactUser.location = userDictionary[SKYWORLD_LOCATION];
     contactUser.easemob_username = [userDictionary valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
     contactUser.lastupdate = userDictionary[SKYWORLD_LASTUPDATE];
+    //contactUser.lastupdate = [NSNumber numberWithLongLong:(long long)([[NSDate date] timeIntervalSince1970InMilliSecond])];
     return contactUser;
 }
 
@@ -71,6 +72,7 @@
     contactUser.location = loginUserInformation.location;
     contactUser.easemob_username = loginUserInformation.easemob_username;
     contactUser.lastupdate = loginUserInformation.lastupdate;
+    //contactUser.lastupdate = [NSNumber numberWithLongLong:(long long)([[NSDate date] timeIntervalSince1970InMilliSecond])];
     return contactUser;
 }
 

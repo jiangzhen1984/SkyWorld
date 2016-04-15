@@ -139,4 +139,10 @@
     return error;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"Code: %d, Error: %@", _code, _errorDescription];
+
+}
+
 @end

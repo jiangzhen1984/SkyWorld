@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class SCArticleCell;
 @protocol SCArticleCellDelegate <NSObject>
 
-- (void)didClickLickButtonInCell:(UITableViewCell *)cell;
-- (void)didClickcCommentButtonInCell:(UITableViewCell *)cell;
+- (void)didClickLickButtonInCell:(SCArticleCell *)cell;
+- (void)didClickcCommentButtonInCell:(SCArticleCell *)cell;
 
 @end
 

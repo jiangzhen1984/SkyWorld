@@ -26,6 +26,7 @@
 
 @property (nonatomic, assign, readonly) BOOL shouldShowMoreButton;
 
+@property (nonatomic, assign, readonly) NSNumber *articleId;
 - (instancetype)initWithSCArticle:(SCArticle *)article;
 
 @end

@@ -90,7 +90,7 @@
 {
     id<IUserModel> model = nil;
     model = [[EaseUserModel alloc] initWithBuddy:buddy];
-    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.buddy updateFlag:true];
     if(contactUser){
         model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:contactUser.username];
         model.avatarURLPath = contactUser.imagefile;
@@ -103,7 +103,7 @@
 {
     id<IUserModel> model = nil;
     model = [self.dataArray objectAtIndex:indexPath.row];
-    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.buddy];
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.buddy updateFlag:true];
     if(contactUser){
         model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:contactUser.username];
         model.avatarURLPath = contactUser.imagefile;

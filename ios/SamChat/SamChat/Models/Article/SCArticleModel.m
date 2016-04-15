@@ -9,7 +9,6 @@
 #import "SCArticleModel.h"
 #import "SCArticle.h"
 
-
 @implementation SCArticleModel
 
 + (void)publishArticleWithImages:(NSArray *)images comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
@@ -83,7 +82,7 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
 
 }
 
-+ (void)queryArticleWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count completion:(void (^)(BOOL success, NSArray *articles, SCSkyWorldError *error))completion
++ (void)queryArticleWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSString *urlString = [SCSkyWorldAPI urlArticleQueryWithTimeFrom:from
@@ -95,28 +94,110 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
       parameters:nil
         progress:^(NSProgress * _Nonnull downloadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            DebugLog(@"responseObject: %@", responseObject);
+            //DebugLog(@"responseObject: %@", responseObject);
             if([responseObject isKindOfClass:[NSDictionary class]]){
                 NSDictionary *response = responseObject;
                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                 if(errorCode){
                     if(completion){
-                        completion(false, nil, [SCSkyWorldError errorWithCode:errorCode]);
+                        completion(false, [SCSkyWorldError errorWithCode:errorCode]);
                     }
                 }else{
                     NSArray *articles = response[SKYWORLD_ARTICLES];
-                    if(completion){
-                        completion(true, articles, nil);
-                    }
+                    [SCArticle asyncInsertArticlesWithSkyWorldInfo:articles completion:^(BOOL success) {
+                        if(completion){
+                            completion(true, nil);
+                        }
+                    }];
                 }
             }else{
                 if(completion){
-                    completion(false, nil, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
                 }
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             if(completion){
-                completion(false, nil, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
+                completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
+            }
+        }];
+}
+
++ (void)recommendArticleWithId:(NSNumber *)articleId flag:(BOOL)flag completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSString *urlString = [SCSkyWorldAPI urlArticleRecommendWithArticleId:articleId flag:flag];
+    [manager GET:urlString
+      parameters:nil
+        progress:^(NSProgress * _Nonnull downloadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            //DebugLog(@"responseObject: %@", responseObject);
+            if([responseObject isKindOfClass:[NSDictionary class]]){
+                NSDictionary *response = responseObject;
+                NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
+                if(errorCode){
+                    if(completion){
+                        completion(false, [SCSkyWorldError errorWithCode:errorCode]);
+                    }
+                }else{
+                    NSDictionary *articleDictionary = response[SKYWORLD_ARTICLE];
+                    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+                    [mainContext performBlockAndWait:^{
+                        [SCArticle insertArticlesWithSkyWorldInfo:@[articleDictionary]
+                                           inManagedObjectContext:mainContext];
+                        [[SCCoreDataManager sharedInstance] saveContext];
+                    }];
+                    if(completion){
+                        completion(true, nil);
+                    }
+                }
+            }else{
+                if(completion){
+                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+                }
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            if(completion){
+                completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
+            }
+        }];
+}
+
++ (void)commentArticleWithId:(NSNumber *)articleId comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSString *urlString = [SCSkyWorldAPI urlArticleCommentWithArticleId:articleId comment:comment];
+    [manager GET:urlString
+      parameters:nil
+        progress:^(NSProgress * _Nonnull downloadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            //DebugLog(@"responseObject: %@", responseObject);
+            if([responseObject isKindOfClass:[NSDictionary class]]){
+                NSDictionary *response = responseObject;
+                NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
+                if(errorCode){
+                    if(completion){
+                        completion(false, [SCSkyWorldError errorWithCode:errorCode]);
+                    }
+                }else{
+                    NSDictionary *articleDictionary = response[SKYWORLD_ARTICLE];
+                    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+                    [mainContext performBlockAndWait:^{
+                        [SCArticle insertArticlesWithSkyWorldInfo:@[articleDictionary]
+                                           inManagedObjectContext:mainContext];
+                        [[SCCoreDataManager sharedInstance] saveContext];
+                    }];
+                    if(completion){
+                        completion(true, nil);
+                    }
+                }
+            }else{
+                if(completion){
+                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
+                }
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            if(completion){
+                completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
             }
         }];
 }

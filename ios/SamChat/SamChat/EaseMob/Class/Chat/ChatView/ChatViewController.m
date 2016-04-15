@@ -170,7 +170,7 @@
     id<IMessageModel> model = nil;
     model = [[EaseMessageModel alloc] initWithMessage:message];
     model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
-    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.nickname];
+    ContactUser *contactUser = [[SCUserProfileManager sharedInstance] getUserProfileByUsername:model.nickname updateFlag:false];
     if(contactUser){
         model.avatarURLPath = contactUser.imagefile;
         model.nickname = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:model.nickname];

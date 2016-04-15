@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)insertArticlesWithSkyWorldInfo:(NSArray *)articleArray inManagedObjectContext:(NSManagedObjectContext *)context;
 + (void)asyncInsertArticlesWithSkyWorldInfo:(NSArray *)articleArray completion:(void (^)(BOOL success))completion;
 + (NSArray *)loadArticlesEarlierThan:(NSInteger)timeline maxCount:(NSInteger)count inManagedObjectContext:(NSManagedObjectContext *)context;
++ (SCArticle *)queryArticleWithArticleId:(NSNumber *)ariticleId inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

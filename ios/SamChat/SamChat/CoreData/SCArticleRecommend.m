@@ -25,9 +25,9 @@
         SCArticleRecommend *scarticleRecommend = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_SCARTICLERECOMMEND
                                                                            inManagedObjectContext:context];
         
-#warning add username timestamp
+#warning add timestamp
         scarticleRecommend.timestamp = @0;
-        scarticleRecommend.recommender_username = @"";
+        scarticleRecommend.recommender_username = recommendDictionary[SKYWORLD_USERNAME];
         scarticleRecommend.recommender_phonenumber = recommendDictionary[SKYWORLD_CELLPHONE];
         scarticleRecommend.fg_id = [NSNumber numberWithInteger:articleId];
     }
@@ -37,6 +37,7 @@
 + (void)clearArticleRecommendsWithArticleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLERECOMMEND];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLERECOMMEND_FG_ID, articleId];
     [request setIncludesPropertyValues:NO]; //only fetch the managedObjectID
     NSError *error;
     NSArray *articleRecommends = [context executeFetchRequest:request error:&error];
@@ -55,6 +56,14 @@
     [SCArticleRecommend insertArticleRecommendsWithRecommendsArray:recommendsArray
                                                          articleId:articleId
                                             inManagedObjectContext:context];
+}
+
++ (NSArray *)loadArticleRecommendsWithArticleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLERECOMMEND];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLERECOMMEND_FG_ID,articleId];
+    //request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SCARTICLE_TIMESTAMP ascending:NO]];
+    return [context executeFetchRequest:request error:NULL];
 }
  
 @end

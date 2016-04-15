@@ -40,6 +40,8 @@
             if(publisher){
                 scarticle.publish_username = publisher[SKYWORLD_USERNAME];
                 scarticle.publisher_phonenumber = publisher[SKYWORLD_CELLPHONE];
+                [[SCUserProfileManager sharedInstance] updateUserProfileByUsername:scarticle.publish_username
+                                                                        lastupdate:[publisher[SKYWORLD_LASTUPDATE] integerValue]];
             }
             // insert pics
             NSArray *pics = articleDictionary[SKYWORLD_PICS];
@@ -47,6 +49,8 @@
                                                        articleId:fg_id
                                           inManagedObjectContext:context];
         }
+        scarticle.owner_username = [SCUserProfileManager sharedInstance].username;
+        scarticle.owner_phonenumber = [SCUserProfileManager sharedInstance].currentLoginUserInformation.phonenumber;
         
         scarticle.status = articleDictionary[SKYWORLD_STATUS];
         
@@ -82,10 +86,17 @@
 + (NSArray *)loadArticlesEarlierThan:(NSInteger)timeline maxCount:(NSInteger)count inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLE];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K < %ld",SCARTICLE_TIMESTAMP, timeline];
+    request.predicate = [NSPredicate predicateWithFormat:@"(%K == %@) AND (%K < %ld)",SCARTICLE_OWNER_USERNAME,[SCUserProfileManager sharedInstance].username, SCARTICLE_TIMESTAMP, timeline];
     request.fetchLimit = count;
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SCARTICLE_TIMESTAMP ascending:NO]];
     return [context executeFetchRequest:request error:NULL];
+}
+
++ (SCArticle *)queryArticleWithArticleId:(NSNumber *)ariticleId inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLE];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLE_FG_ID, [ariticleId integerValue]];
+    return [[context executeFetchRequest:request error:NULL] firstObject];
 }
 
 @end

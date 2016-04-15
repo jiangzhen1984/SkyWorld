@@ -234,7 +234,7 @@ static SCUserProfileManager *sharedInstance = nil;
     {
         if ([buddy length])
         {
-            if (![self getUserProfileByUsername:buddy]) {
+            if (![self getUserProfileByUsername:buddy updateFlag:false]) {
                 [usernames addObject:buddy];
             }
         }
@@ -285,16 +285,30 @@ static SCUserProfileManager *sharedInstance = nil;
         }];
 }
 
-- (ContactUser *)getUserProfileByUsername:(NSString*)username
+- (ContactUser *)getUserProfileByUsername:(NSString *)username updateFlag:(BOOL)updateFlag
 {
     ContactUser *contactUser = [ContactUser contactUserWithUsername:username inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
-    [self loadUserProfileInBackground:@[username] saveToLoacal:YES completion:NULL];
+    if((contactUser == nil) || (updateFlag)){
+        [self loadUserProfileInBackground:@[username] saveToLoacal:YES completion:NULL];
+    }
     return contactUser;
+}
+
+- (void)updateUserProfileByUsername:(NSString *)username lastupdate:(NSInteger)lastupdate
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ContactUser *contactUser = [ContactUser contactUserWithUsername:username inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+        if((contactUser == nil) || ([contactUser.lastupdate integerValue] != lastupdate)){
+            [self loadUserProfileInBackground:@[username]
+                                 saveToLoacal:YES
+                                   completion:NULL];
+        }
+    });
 }
 
 - (ContactUser*)getCurUserProfile
 {
-    return [self getUserProfileByUsername:self.username];
+    return [self getUserProfileByUsername:self.username updateFlag:false];
 }
 
 - (NSString*)getNickNameWithUsername:(NSString*)username
