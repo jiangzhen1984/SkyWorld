@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.android.samchat.R;
 import com.android.samchat.easemobdemo.EaseMobHelper;
@@ -23,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -55,6 +59,8 @@ public class SamVendor_Fragment extends Fragment{
 	private TextView mMy_business;
 	private TextView mIntroduction;
 	private TextView mLocation;
+
+	private TextView mMainpage;
 		
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +104,15 @@ public class SamVendor_Fragment extends Fragment{
 		    		public void onClick(View arg0) {
 		    			LoginUser cuser = SamService.getInstance().get_current_user();
 		    			launchVendorInfoInputActivity(cuser.area,cuser.location,cuser.description);
+		    		}
+			});
+
+
+			mMainpage =  (TextView)rootView.findViewById(R.id.mainpage);
+			mMainpage.setOnClickListener(new OnClickListener(){
+		    		@Override
+		    		public void onClick(View arg0) {
+		    			launchVendorWebView();
 		    		}
 			});
 			
@@ -224,6 +239,14 @@ public class SamVendor_Fragment extends Fragment{
 		newIntent.setFlags(intentFlags);
 
 		startActivityForResult(newIntent, REQUST_CODE_CONFIRM_INPUT_NEW);
+	}
+
+	private void launchVendorWebView(){
+		Intent newIntent = new Intent(getActivity(),WebActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+
+		startActivity(newIntent);
 	}
 	
 }

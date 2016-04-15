@@ -231,4 +231,6 @@
     <string name="load_data">Loading data and keep network available&#8230;&#8230;&#8230;</string>
     <string name="exiting">exiting app&#8230;&#8230;&#8230;</string>
     <string name="exiting_user_conflict">exiting due to login on another phone</string>
+    
+    <string name="updateapp">Upate App</string>
 </resources>
