@@ -33,16 +33,16 @@
 
 #pragma mark - Question JSON Protocol
 + (NSString *)urlNewQuestionWithQuestion: (NSString *)question;
-+ (NSString *)urlCancleQuestionWithQuestionID:(NSInteger)questionID;
-+ (NSString *)urlEndQuestionWithQuestionID:(NSInteger)questionID;
-+ (NSString *)urlQueryQuestionWithQuestionID:(NSInteger)questionID;
-+ (NSString *)urlQueryQuestionWithAskerID:(NSInteger)askerID;
++ (NSString *)urlCancleQuestionWithQuestionID:(NSString *)questionID;
++ (NSString *)urlEndQuestionWithQuestionID:(NSString *)questionID;
++ (NSString *)urlQueryQuestionWithQuestionID:(NSString *)questionID;
++ (NSString *)urlQueryQuestionWithAskerID:(NSNumber *)askerID;
 
 #pragma mark - Answer JSON Protocol
-+ (NSString *)urlAnswerQuestion:(NSInteger)questionID withAnswer:(NSString *)answer;
++ (NSString *)urlAnswerQuestion:(NSString *)questionID withAnswer:(NSString *)answer;
 
 #pragma mark - Follow JSON Protocol
-+ (NSString *)urlMakeFollow:(BOOL)flag withUser:(NSInteger)userID bothSide:(BOOL)both;
++ (NSString *)urlMakeFollow:(BOOL)flag withUser:(NSNumber *)userID bothSide:(BOOL)both;
 
 #pragma mark - Feedback JSON Protocol
 + (NSString *)urlFeedbackWithComment:(NSString *)comment;

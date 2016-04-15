@@ -15,10 +15,10 @@
 + (ContactUser *)contactUserWithSkyWorldInfo:(NSDictionary *)userDictionary inManagedObjectContext:(NSManagedObjectContext *)context
 {
     ContactUser *contactUser = nil;
-    NSInteger unique_id = [userDictionary[SKYWORLD_ID] integerValue];
+
+    NSNumber *unique_id = userDictionary[SKYWORLD_ID] ;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_CONTACT_USER];
-    
-    request.predicate = [NSPredicate predicateWithFormat:@"%K = %ld",CONTACT_USER_UNIQUE_ID, unique_id];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",CONTACT_USER_UNIQUE_ID, unique_id];
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
@@ -40,17 +40,16 @@
     contactUser.location = userDictionary[SKYWORLD_LOCATION];
     contactUser.easemob_username = [userDictionary valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
     contactUser.lastupdate = userDictionary[SKYWORLD_LASTUPDATE];
-    //contactUser.lastupdate = [NSNumber numberWithLongLong:(long long)([[NSDate date] timeIntervalSince1970InMilliSecond])];
     return contactUser;
 }
 
 + (ContactUser *)contactUserWithLoginUserInformation:(LoginUserInformation *)loginUserInformation inManagedObjectContext:(NSManagedObjectContext *)context
 {
     ContactUser *contactUser = nil;
-    NSInteger unique_id = [loginUserInformation.unique_id integerValue];
+    NSNumber *unique_id = loginUserInformation.unique_id;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_CONTACT_USER];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"%K = %ld",CONTACT_USER_UNIQUE_ID, unique_id];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",CONTACT_USER_UNIQUE_ID, unique_id];
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
@@ -61,7 +60,7 @@
     }else{
         contactUser = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_CONTACT_USER
                                                     inManagedObjectContext:context];
-        contactUser.unique_id = [NSNumber numberWithInteger:unique_id];
+        contactUser.unique_id = unique_id;
     }
     contactUser.username = loginUserInformation.username;
     contactUser.phonenumber = loginUserInformation.phonenumber;
@@ -72,7 +71,6 @@
     contactUser.location = loginUserInformation.location;
     contactUser.easemob_username = loginUserInformation.easemob_username;
     contactUser.lastupdate = loginUserInformation.lastupdate;
-    //contactUser.lastupdate = [NSNumber numberWithLongLong:(long long)([[NSDate date] timeIntervalSince1970InMilliSecond])];
     return contactUser;
 }
 
@@ -81,7 +79,7 @@
     ContactUser *contactUser = nil;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_CONTACT_USER];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"%K = %@",CONTACT_USER_USERNAME, username];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",CONTACT_USER_USERNAME, username];
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];

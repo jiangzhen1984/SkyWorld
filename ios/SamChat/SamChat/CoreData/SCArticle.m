@@ -21,9 +21,9 @@
         }
         SCArticle *scarticle = nil;
         NSDictionary *articleDictionary = article;
-        NSInteger fg_id = [articleDictionary[SKYWORLD_ID] integerValue];
+        NSNumber *fg_id = articleDictionary[SKYWORLD_ID];
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLE];
-        request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLE_FG_ID, fg_id];
+        request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",SCARTICLE_FG_ID, fg_id];
         NSError *error;
         NSArray *matches = [context executeFetchRequest:request error:&error];
         if(matches && [matches count]){
@@ -31,7 +31,7 @@
         }else{
             scarticle = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_SCARTICLE
                                                       inManagedObjectContext:context];
-            scarticle.fg_id = [NSNumber numberWithInteger:fg_id];
+            scarticle.fg_id = fg_id;
             scarticle.timestamp = articleDictionary[SKYWORLD_TIMESTAMP];
             scarticle.status = articleDictionary[SKYWORLD_STATUS];
             scarticle.comment = articleDictionary[SKYWORLD_COMMENT] ?:@"";
@@ -83,10 +83,10 @@
     }];
 }
 
-+ (NSArray *)loadArticlesEarlierThan:(NSInteger)timeline maxCount:(NSInteger)count inManagedObjectContext:(NSManagedObjectContext *)context
++ (NSArray *)loadArticlesEarlierThan:(NSTimeInterval)timeline maxCount:(NSInteger)count inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLE];
-    request.predicate = [NSPredicate predicateWithFormat:@"(%K == %@) AND (%K < %ld)",SCARTICLE_OWNER_USERNAME,[SCUserProfileManager sharedInstance].username, SCARTICLE_TIMESTAMP, timeline];
+    request.predicate = [NSPredicate predicateWithFormat:@"(%K == %@) AND (%K < %lld)",SCARTICLE_OWNER_USERNAME,[SCUserProfileManager sharedInstance].username, SCARTICLE_TIMESTAMP, [[NSNumber numberWithDouble:timeline] longLongValue]];
     request.fetchLimit = count;
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SCARTICLE_TIMESTAMP ascending:NO]];
     return [context executeFetchRequest:request error:NULL];
@@ -95,7 +95,7 @@
 + (SCArticle *)queryArticleWithArticleId:(NSNumber *)ariticleId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLE];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLE_FG_ID, [ariticleId integerValue]];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",SCARTICLE_FG_ID, ariticleId];
     return [[context executeFetchRequest:request error:NULL] firstObject];
 }
 

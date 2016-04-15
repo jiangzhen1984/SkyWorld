@@ -11,7 +11,7 @@
 
 @implementation SCArticlePicture
 
-+ (void)insertArticlePicturesWithPicsArray:(NSArray *)picsArray articleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
++ (void)insertArticlePicturesWithPicsArray:(NSArray *)picsArray articleId:(NSNumber *)articleId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     if(picsArray == nil){
         return;
@@ -30,15 +30,15 @@
         scarticlePicture.url_original = [NSString stringWithFormat:@"%@%@",SKYWORLD_API_ADDRESS,picDictionary[SKYWORLD_URL]];
         scarticlePicture.sequence = [NSNumber numberWithInt:i];
         i++;
-        scarticlePicture.fg_id = [NSNumber numberWithInteger:articleId];
+        scarticlePicture.fg_id = articleId;
     }
     //[context save:NULL];
 }
 
-+ (NSArray *)loadArticlePicturesWithArticleId:(NSInteger)fg_id inManagedObjecContext:(NSManagedObjectContext *)context
++ (NSArray *)loadArticlePicturesWithArticleId:(NSNumber *)articleId inManagedObjecContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLEPICTURE];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLEPICTURE_FG_ID, fg_id];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",SCARTICLEPICTURE_FG_ID, articleId];
     request.fetchLimit = 9;
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SCARTICLEPICTURE_SEQUENCE ascending:YES]];
     return [context executeFetchRequest:request error:NULL];

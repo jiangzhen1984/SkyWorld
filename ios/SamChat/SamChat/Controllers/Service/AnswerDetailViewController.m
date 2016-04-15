@@ -40,8 +40,8 @@
 
 - (IBAction)follow:(UIButton *)sender
 {
-    NSInteger userId = [self.answer.fromWho.unique_id integerValue];
-    [[SamChatClient sharedInstance] makeFollow:YES withUser:userId
+    [[SamChatClient sharedInstance] makeFollow:YES
+                                      withUser:self.answer.fromWho.unique_id
                                     completion:^(BOOL success, SCSkyWorldError *error) {
                                         if(success){
                                             [self showHint:@"关注成功"];

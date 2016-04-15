@@ -20,7 +20,7 @@
     DebugLog(@"MyThead: %@", [NSThread currentThread]);
     ReceivedAnswer *receivedAnswer = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_RECEIVED_ANSWER
                                                                    inManagedObjectContext:context];
-    receivedAnswer.question_id = [NSString stringWithFormat:@"%ld",[[answerDictionary valueForKeyPath:SKYWORLD_QUEST_QUEST_ID] integerValue]];
+    receivedAnswer.question_id = [NSString stringWithFormat:@"%@", [answerDictionary valueForKeyPath:SKYWORLD_QUEST_QUEST_ID]];
     receivedAnswer.answer = [answerDictionary valueForKeyPath:SKYWORLD_ANS_ANSWER];
     receivedAnswer.receivedtime = [SCUtils currentTimeStamp];
     
@@ -42,8 +42,7 @@
 
 - (NSString *)i_time
 {
-    //return [NSString stringWithFormat:@"%ld",[self.receivedtime integerValue]];
-    return [SCUtils convertToDateStringWithTimeStamp:[self.receivedtime integerValue]];
+    return [SCUtils convertToDateStringWithTimeStamp:[self.receivedtime longLongValue]];
 }
 
 - (NSString *)i_avatarURLPath

@@ -19,8 +19,6 @@
 + (SendAnswer *)sendAnswerWithInfo:(NSDictionary *)answerInfo inManagedObjectContext:(NSManagedObjectContext *)context
 {
     SendAnswer *sendAnswer = nil;
-    DebugLog(@"answerInfo:%@", answerInfo);
-    
     NSString *question_id = answerInfo[SEND_ANSWER_QUESTION_ID];
     if(!answerInfo[SEND_ANSWER_QUESTION_ID]){
         return nil;
@@ -41,7 +39,7 @@
 + (NSArray *)loadCurrentUsersAnswersOfQuestionID:(NSString *)question_id inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SEND_ANSWER];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K = %@ AND %K=%@", SEND_ANSWER_QUESTION_ID, question_id, SEND_ANSWER_WHOSEND_USERNAM, [SCUserProfileManager sharedInstance].username];
+    request.predicate = [NSPredicate predicateWithFormat:@"(%K==%@) AND (%K==%@)", SEND_ANSWER_QUESTION_ID, question_id, SEND_ANSWER_WHOSEND_USERNAM, [SCUserProfileManager sharedInstance].username];
     
     NSError *error;
     return [context executeFetchRequest:request error:&error];

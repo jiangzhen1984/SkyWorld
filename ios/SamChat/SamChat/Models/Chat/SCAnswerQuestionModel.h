@@ -10,7 +10,7 @@
 
 @interface SCAnswerQuestionModel : NSObject
 
-+ (void)sendAnswer:(NSString *)answer toQuestionID:(NSInteger)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
++ (void)sendAnswer:(NSString *)answer toQuestionID:(NSString *)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
 
 @end

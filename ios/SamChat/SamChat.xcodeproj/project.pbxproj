@@ -99,8 +99,6 @@
 		31C1A6201CBB6BAC0010F6B4 /* MLLabelLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A60B1CBB6BAC0010F6B4 /* MLLabelLayoutManager.m */; };
 		31C1A6211CBB6BAC0010F6B4 /* MLLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A60D1CBB6BAC0010F6B4 /* MLLabel.m */; };
 		31C1A6221CBB6BAC0010F6B4 /* MLLinkLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A60F1CBB6BAC0010F6B4 /* MLLinkLabel.m */; };
-		31C1A6231CBB6BAC0010F6B4 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 31C1A6101CBB6BAC0010F6B4 /* LICENSE */; };
-		31C1A6241CBB6BAC0010F6B4 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A6111CBB6BAC0010F6B4 /* README.md */; };
 		31C1A6251CBB6BAC0010F6B4 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A6141CBB6BAC0010F6B4 /* TTTAttributedLabel.m */; };
 		31C1A62B1CBB6BB60010F6B4 /* UITableView+SDAutoTableViewCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A6281CBB6BB60010F6B4 /* UITableView+SDAutoTableViewCellHeight.m */; };
 		31C1A62C1CBB6BB60010F6B4 /* UIView+SDAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A62A1CBB6BB60010F6B4 /* UIView+SDAutoLayout.m */; };
@@ -714,8 +712,6 @@
 		31C1A60D1CBB6BAC0010F6B4 /* MLLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLLabel.m; sourceTree = "<group>"; };
 		31C1A60E1CBB6BAC0010F6B4 /* MLLinkLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLLinkLabel.h; sourceTree = "<group>"; };
 		31C1A60F1CBB6BAC0010F6B4 /* MLLinkLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLLinkLabel.m; sourceTree = "<group>"; };
-		31C1A6101CBB6BAC0010F6B4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		31C1A6111CBB6BAC0010F6B4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		31C1A6131CBB6BAC0010F6B4 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		31C1A6141CBB6BAC0010F6B4 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		31C1A6271CBB6BB60010F6B4 /* UITableView+SDAutoTableViewCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SDAutoTableViewCellHeight.h"; sourceTree = "<group>"; };
@@ -1900,8 +1896,6 @@
 			isa = PBXGroup;
 			children = (
 				31C1A5F71CBB6BAC0010F6B4 /* Classes */,
-				31C1A6101CBB6BAC0010F6B4 /* LICENSE */,
-				31C1A6111CBB6BAC0010F6B4 /* README.md */,
 			);
 			path = MLLabel;
 			sourceTree = "<group>";
@@ -2980,7 +2974,6 @@
 				31FAC5B01CAAB3C50034A0CD /* chat_location_annotation_someone.png in Resources */,
 				31FAC5CD1CAAB3C50034A0CD /* icon_007_cover.png in Resources */,
 				31FAC5A01CAAB3C50034A0CD /* 29.png in Resources */,
-				31C1A6231CBB6BAC0010F6B4 /* LICENSE in Resources */,
 				31FAC5D61CAAB3C50034A0CD /* icon_019.gif in Resources */,
 				31FAC5DA1CAAB3C50034A0CD /* icon_021.gif in Resources */,
 				31FAC60B1CAAB3C50034A0CD /* tabbarBackground@2x.png in Resources */,
@@ -3244,7 +3237,6 @@
 				31C1A74C1CBC7CF70010F6B4 /* SDImageCache.m in Sources */,
 				31C1A7B21CBF46420010F6B4 /* SCArticleComment+CoreDataProperties.m in Sources */,
 				31C1A7A01CBE2ED70010F6B4 /* QBVideoIconView.m in Sources */,
-				31C1A6241CBB6BAC0010F6B4 /* README.md in Sources */,
 				31FAC6BB1CAAB7E30034A0CD /* EditNicknameViewController.m in Sources */,
 				31FAC6A71CAAB7E30034A0CD /* ContactListViewController.m in Sources */,
 				31FAC6AC1CAAB7E30034A0CD /* RealtimeSearchUtil.m in Sources */,

@@ -71,12 +71,12 @@ static SamChatClient *sharedInstance = nil;
     [SCUserSettingModel feedbackWithComment:comment completion:completion];
 }
 
-- (void)sendAnswer:(NSString *)answer toQuestionID:(NSInteger)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)sendAnswer:(NSString *)answer toQuestionID:(NSString *)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCAnswerQuestionModel sendAnswer:answer toQuestionID:question_id completion:completion];
 }
 
-- (void)makeFollow:(BOOL)flag withUser:(NSInteger)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCUserRelationModel makeFollow:flag withUser:userID completion:completion];
 }

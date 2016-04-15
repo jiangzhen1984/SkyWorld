@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ReceivedQuestion : NSManagedObject  <ISCChatMessageModel, ISCTableCellModel>
 @property (nonatomic) CGFloat i_cellHeight;
 + (ReceivedQuestion *)receivedQuestionWithSkyWorldInfo:(NSDictionary *)questionDictionary inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSInteger)questionId inManagedObjectContext:(NSManagedObjectContext *)context;
++ (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

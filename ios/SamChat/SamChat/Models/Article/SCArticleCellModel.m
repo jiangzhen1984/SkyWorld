@@ -98,7 +98,7 @@ extern CGFloat maxContentLabelHeight;
 - (NSArray *)picUrlsArray
 {
     NSManagedObjectContext *mainContext = [[SCCoreDataManager sharedInstance] mainObjectContext];
-    NSArray *articlePictureArray = [SCArticlePicture loadArticlePicturesWithArticleId:[self.article.fg_id integerValue]
+    NSArray *articlePictureArray = [SCArticlePicture loadArticlePicturesWithArticleId:self.article.fg_id
                                                                 inManagedObjecContext:mainContext];
     NSMutableArray *picUrls = [[NSMutableArray alloc] init];
     for (SCArticlePicture *articlePicture in articlePictureArray) {
@@ -112,7 +112,7 @@ extern CGFloat maxContentLabelHeight;
     if(_likeItemsArray == nil){
         NSMutableArray *likes = [[NSMutableArray alloc] init];
         // should be main thread
-        NSArray *scarticleRecommends = [SCArticleRecommend loadArticleRecommendsWithArticleId:[self.article.fg_id integerValue]
+        NSArray *scarticleRecommends = [SCArticleRecommend loadArticleRecommendsWithArticleId:self.article.fg_id
                                         inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
         for (SCArticleRecommend *recommend in scarticleRecommends) {
             SCArticleCellLikeItemModel *likeModel = [[SCArticleCellLikeItemModel alloc] init];
@@ -129,7 +129,7 @@ extern CGFloat maxContentLabelHeight;
 {
     if(_commentItemsArray == nil){
         NSMutableArray *comments = [[NSMutableArray alloc] init];
-        NSArray *scarticleComments = [SCArticleComment loadArticleCommentsWithArticleId:[self.article.fg_id integerValue]
+        NSArray *scarticleComments = [SCArticleComment loadArticleCommentsWithArticleId:self.article.fg_id
                                                                  inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
         for (SCArticleComment *comment in scarticleComments) {
             SCArticleCellCommentItemModel *commentModel = [[SCArticleCellCommentItemModel alloc] init];

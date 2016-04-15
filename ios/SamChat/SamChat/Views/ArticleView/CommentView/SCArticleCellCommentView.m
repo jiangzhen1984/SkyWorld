@@ -47,7 +47,7 @@
     
     _likeLabel = [MLLinkLabel new];
     _likeLabel.numberOfLines = 0;
-    _likeLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _likeLabel.lineBreakMode = NSLineBreakByCharWrapping;
     _likeLabel.font = [UIFont systemFontOfSize:14];
     [self addSubview:_likeLabel];
     

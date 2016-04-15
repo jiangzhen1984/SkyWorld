@@ -555,8 +555,7 @@ static NSString *kGroupName = @"GroupName";
 {
     NSDictionary *userInfo = notification.userInfo;
     if(userInfo && userInfo[LOCAL_NOTIFICATION_QUESTION_ID]){
-        NSInteger questionId =[userInfo[LOCAL_NOTIFICATION_QUESTION_ID] integerValue];
-        [self jumpToAnswerTheQuestionWithQuestionId:questionId];
+        [self jumpToAnswerTheQuestionWithQuestionId:[NSString stringWithFormat:@"%@", userInfo[LOCAL_NOTIFICATION_QUESTION_ID]]];
         return;
     }
     
@@ -639,7 +638,7 @@ static NSString *kGroupName = @"GroupName";
     }
 }
 
-- (void)jumpToAnswerTheQuestionWithQuestionId:(NSInteger)questionId
+- (void)jumpToAnswerTheQuestionWithQuestionId:(NSString *)questionId
 {
     NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
     ReceivedQuestion *receivedQuestion = nil;

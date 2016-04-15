@@ -15,7 +15,7 @@
 {
     LoginUserInformation *loginUserInformation = nil;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_LOGIN_USER_INFORMATION];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K = %@", LOGIN_USER_INFORMATION_USERNAME, username];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", LOGIN_USER_INFORMATION_USERNAME, username];
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];

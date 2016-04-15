@@ -18,7 +18,7 @@
 + (UIImage *)createImageWithColor:(UIColor *) color;
 + (void)presentHomeViewFromViewController:(UIViewController *)viewContoller;
 + (NSNumber *)currentTimeStamp;
-+ (NSString *)convertToDateStringWithTimeStamp:(NSInteger)timestamp;
++ (NSString *)convertToDateStringWithTimeStamp:(NSTimeInterval)timestamp;
 + (UIStoryboard *)mainStoryBoard;
 + (UIImage*)scalingAndCroppingImage:(UIImage*)sourceImage ForSize:(CGSize)targetSize;
 + (UIImage *)scaleImage:(UIImage *)sourceImage toMaxSize:(NSInteger)maxsize;

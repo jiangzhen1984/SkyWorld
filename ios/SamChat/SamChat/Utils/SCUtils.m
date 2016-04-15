@@ -56,18 +56,17 @@
 //    return [NSDate dateWithTimeIntervalSince1970:timeStamp];
 //}
 
-+ (NSString *)convertToDateStringWithTimeStamp:(NSInteger)timestamp
++ (NSString *)convertToDateStringWithTimeStamp:(NSTimeInterval)timestamp
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setLocale:[NSLocale currentLocale]];
 
 //    [formatter setDateStyle:NSDateFormatterMediumStyle];
 //    [formatter setTimeStyle:NSDateFormatterShortStyle];
-    NSTimeInterval timeInterval = timestamp;
-    if(timeInterval > 140000000000){
-        timeInterval = timeInterval / 1000;
+    if(timestamp > 140000000000){
+        timestamp = timestamp / 1000;
     }
-    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timestamp];
     [formatter setDateFormat:@"YYYY.MM.dd HH:mm"];
     NSString *str = [formatter stringFromDate:confromTimesp];
     return str;

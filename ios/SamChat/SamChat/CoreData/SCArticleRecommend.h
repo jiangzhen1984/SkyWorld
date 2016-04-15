@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SCArticleRecommend : NSManagedObject
 
-+ (void)updateArticleRecommendsWithRecommendsArray:(NSArray *)recommendsArray articleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (NSArray *)loadArticleRecommendsWithArticleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context;
++ (void)updateArticleRecommendsWithRecommendsArray:(NSArray *)recommendsArray articleId:(NSNumber *)articleId inManagedObjectContext:(NSManagedObjectContext *)context;
++ (NSArray *)loadArticleRecommendsWithArticleId:(NSNumber *)articleId inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

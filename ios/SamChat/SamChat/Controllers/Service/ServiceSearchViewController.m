@@ -30,7 +30,7 @@
 
 @property (nonatomic, strong) NSLayoutConstraint *searchBarTopSpaceConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *hotTopicTopSpaceConstraint;
-@property (nonatomic, assign) NSInteger currentQuestionID;
+@property (nonatomic, assign) NSString *currentQuestionID;
 @property (nonatomic, copy) NSString *currentQuestion;
 @property (nonatomic, assign) BOOL isSearching;
 
@@ -242,12 +242,13 @@
 
 - (void)questionSuccessWithResponse:(NSDictionary *)response
 {
-    NSNumber *questionid = response[SKYWORLD_QUESTION_ID];
-    self.currentQuestionID = [questionid integerValue];
+    self.currentQuestionID = [response[SKYWORLD_QUESTION_ID] stringValue];
+#warning dddddddddddddddddddd
+    DebugLog(@"0000000000000000000000000:%@", self.currentQuestionID);
     self.isSearching = true;
     
     NSDictionary *questionInfo = @{SEND_QUESTION_QUESTION:self.currentQuestion,
-                                   SEND_QUESTION_QUESTION_ID:[NSString stringWithFormat:@"%ld", self.currentQuestionID]};
+                                   SEND_QUESTION_QUESTION_ID:self.currentQuestionID};
     
     NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
     [mainContext performBlockAndWait:^{
@@ -361,7 +362,7 @@
 #pragma mark - SCAnswerPushDelegate
 - (void)didReceiveNewAnswer:(ReceivedAnswer *)answer
 {
-    if([answer.question_id isEqualToString:[NSString stringWithFormat:@"%ld", self.currentQuestionID]]){
+    if([answer.question_id isEqualToString:self.currentQuestionID]){
         [self.answers addObject:answer];
         [self.receivedAnswerTableView reloadData];
     }

@@ -18,7 +18,7 @@
     NSString *question_id = questionInfo[SEND_QUESTION_QUESTION_ID];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SEND_QUESTION];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"%K = %@",SEND_QUESTION_QUESTION_ID, question_id];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",SEND_QUESTION_QUESTION_ID, question_id];
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];

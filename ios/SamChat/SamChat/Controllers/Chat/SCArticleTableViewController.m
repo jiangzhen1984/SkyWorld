@@ -37,7 +37,7 @@ static CGFloat textFieldH = 40;
     CGFloat _totalKeybordHeight;
     NSIndexPath *_currentEditingIndexthPath;
     
-    NSInteger lastFetchTime;
+    NSTimeInterval lastFetchTime;
 }
 
 - (void)viewDidLoad
@@ -61,7 +61,7 @@ static CGFloat textFieldH = 40;
     
     // 上拉加载
     _refreshFooter = [SCArticleRefreshFooter refreshFooterWithRefreshingText:@"正在加载数据..."];
-    __weak typeof(_refreshFooter) weakRefreshFooter = _refreshFooter;
+//    __weak typeof(_refreshFooter) weakRefreshFooter = _refreshFooter;
     [_refreshFooter addToScrollView:self.tableView refreshOpration:^{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf asyncQueryArticlesFromServerWithRefreshFlag:NO];
@@ -86,7 +86,7 @@ static CGFloat textFieldH = 40;
         
         _refreshHeader = [SCArticleRefreshHeader refreshHeaderWithCenter:CGPointMake(40, 45)];
         _refreshHeader.scrollView = self.tableView;
-        __weak typeof(_refreshHeader) weakHeader = _refreshHeader;
+//        __weak typeof(_refreshHeader) weakHeader = _refreshHeader;
         __weak typeof(self) weakSelf = self;
         [_refreshHeader setRefreshingBlock:^{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -154,7 +154,7 @@ static CGFloat textFieldH = 40;
         }else{
             lastFetchTime = 0;
         }
-        DebugLog(@"articles from db: %@, \nlastfetchtime:%ld", scarticles, lastFetchTime);
+        DebugLog(@"articles from db: %@, \nlastfetchtime:%lld", scarticles, [[NSNumber numberWithDouble:lastFetchTime] longLongValue]);
         [self.dataArray addObjectsFromArray:[self createCellModelArrayWithArticleArray:scarticles]];
     }];
     [self.tableView reloadData];

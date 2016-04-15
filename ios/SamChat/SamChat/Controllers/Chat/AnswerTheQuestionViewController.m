@@ -97,8 +97,9 @@
     
     NSInteger currentIndex = [self.answers count] - 1;
     
-    NSInteger questionId = [self.receivedQuestion.question_id integerValue];
-    [[SamChatClient sharedInstance] sendAnswer:text toQuestionID:questionId completion:^(BOOL success, SCSkyWorldError *error) {
+    [[SamChatClient sharedInstance] sendAnswer:text
+                                  toQuestionID:self.receivedQuestion.question_id
+                                    completion:^(BOOL success, SCSkyWorldError *error) {
         if(success){
             [self updateAnswerOfIndex:currentIndex withStatus:SEND_ANSWER_SENDSUCCEED];
         }else{

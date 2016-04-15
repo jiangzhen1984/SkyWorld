@@ -21,13 +21,10 @@
 {
     LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:[SCUserProfileManager sharedInstance].username
                                                                                         inManagedObjectContext:context];
-    DebugLog(@"MyThead: %@", [NSThread currentThread]);
     ReceivedQuestion *receivedQuestion = nil;
-    
-    NSInteger quest_id = [questionDictionary[SKYWORLD_QUEST_ID] integerValue];
+    NSString *quest_id = [NSString stringWithFormat:@"%@", questionDictionary[SKYWORLD_QUEST_ID]];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_RECEIVED_QUESTION];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K = %@", RECEIVED_QUESTION_QUESTION_ID, [NSString stringWithFormat:@"%ld", quest_id]];
-    
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", RECEIVED_QUESTION_QUESTION_ID, quest_id];
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
     if((!matches) || error || ([matches count] > 1)){
@@ -37,7 +34,7 @@
     }else{
         receivedQuestion = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_RECEIVED_QUESTION
                                                         inManagedObjectContext:context];
-        receivedQuestion.question_id = [NSString stringWithFormat:@"%ld", quest_id];
+        receivedQuestion.question_id = quest_id;
         receivedQuestion.response = RECEIVED_QUESTION_NOTRESPONSED;
     }
     receivedQuestion.question = questionDictionary[SKYWORLD_QUEST];
@@ -58,11 +55,11 @@
     return receivedQuestion;
 }
 
-+ (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSInteger)questionId inManagedObjectContext:(NSManagedObjectContext *)context
++ (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     ReceivedQuestion *receivedQuestion = nil;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_RECEIVED_QUESTION];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K = %@", RECEIVED_QUESTION_QUESTION_ID, [NSString stringWithFormat:@"%ld", questionId]];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", RECEIVED_QUESTION_QUESTION_ID, questionId];
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
     if(matches && [matches count]){

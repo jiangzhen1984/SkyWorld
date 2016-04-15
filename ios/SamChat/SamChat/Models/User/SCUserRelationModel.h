@@ -10,6 +10,6 @@
 
 @interface SCUserRelationModel : NSObject
 
-+ (void)makeFollow:(BOOL)flag withUser:(NSInteger)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
++ (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
 @end

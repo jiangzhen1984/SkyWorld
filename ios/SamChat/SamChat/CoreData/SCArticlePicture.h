@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SCArticlePicture : NSManagedObject
 
-+ (void)insertArticlePicturesWithPicsArray:(NSArray *)picsArray articleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (NSArray *)loadArticlePicturesWithArticleId:(NSInteger)fg_id inManagedObjecContext:(NSManagedObjectContext *)context;
++ (void)insertArticlePicturesWithPicsArray:(NSArray *)picsArray articleId:(NSNumber *)articleId inManagedObjectContext:(NSManagedObjectContext *)context;
++ (NSArray *)loadArticlePicturesWithArticleId:(NSNumber *)articleId inManagedObjecContext:(NSManagedObjectContext *)context;
 
 @end
 

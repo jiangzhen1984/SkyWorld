@@ -11,7 +11,7 @@
 
 @implementation SCArticleRecommend
 
-+ (void)insertArticleRecommendsWithRecommendsArray:(NSArray *)recommendsArray articleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
++ (void)insertArticleRecommendsWithRecommendsArray:(NSArray *)recommendsArray articleId:(NSNumber *)articleId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     if(recommendsArray == nil){
         return;
@@ -29,15 +29,15 @@
         scarticleRecommend.timestamp = @0;
         scarticleRecommend.recommender_username = recommendDictionary[SKYWORLD_USERNAME];
         scarticleRecommend.recommender_phonenumber = recommendDictionary[SKYWORLD_CELLPHONE];
-        scarticleRecommend.fg_id = [NSNumber numberWithInteger:articleId];
+        scarticleRecommend.fg_id = articleId;
     }
     //[context save:NULL];
 }
 
-+ (void)clearArticleRecommendsWithArticleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
++ (void)clearArticleRecommendsWithArticleId:(NSNumber *)articleId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLERECOMMEND];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLERECOMMEND_FG_ID, articleId];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",SCARTICLERECOMMEND_FG_ID, articleId];
     [request setIncludesPropertyValues:NO]; //only fetch the managedObjectID
     NSError *error;
     NSArray *articleRecommends = [context executeFetchRequest:request error:&error];
@@ -49,7 +49,7 @@
     }
 }
 
-+ (void)updateArticleRecommendsWithRecommendsArray:(NSArray *)recommendsArray articleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
++ (void)updateArticleRecommendsWithRecommendsArray:(NSArray *)recommendsArray articleId:(NSNumber *)articleId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     [SCArticleRecommend clearArticleRecommendsWithArticleId:articleId
                                      inManagedObjectContext:context];
@@ -58,10 +58,10 @@
                                             inManagedObjectContext:context];
 }
 
-+ (NSArray *)loadArticleRecommendsWithArticleId:(NSInteger)articleId inManagedObjectContext:(NSManagedObjectContext *)context
++ (NSArray *)loadArticleRecommendsWithArticleId:(NSNumber *)articleId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SCARTICLERECOMMEND];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K == %ld",SCARTICLERECOMMEND_FG_ID,articleId];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",SCARTICLERECOMMEND_FG_ID,articleId];
     //request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SCARTICLE_TIMESTAMP ascending:NO]];
     return [context executeFetchRequest:request error:NULL];
 }

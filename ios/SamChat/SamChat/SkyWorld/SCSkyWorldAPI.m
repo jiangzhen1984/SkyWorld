@@ -296,13 +296,13 @@
 //        "question_id" : question_id
 //    }
 //}
-+ (NSString *)urlCancleQuestionWithQuestionID:(NSInteger)questionID
++ (NSString *)urlCancleQuestionWithQuestionID:(NSString *)questionID
 {
     NSString *token = [SCUserProfileManager sharedInstance].token;
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUESTION,
                              SKYWORLD_TOKEN:token};
     NSDictionary *body = @{SKYWORLD_OPT:@2,
-                           SKYWORLD_QUESTION_ID:[NSNumber numberWithInteger:questionID]};
+                           SKYWORLD_QUESTION_ID:questionID};
     NSDictionary *data = @{SKYWORLD_HEADER:header,
                            SKYWORLD_BODY:body};
     return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_QUESTIONAPI andData:data];
@@ -321,13 +321,13 @@
 //        "question_id" : question_id
 //    }
 //}
-+ (NSString *)urlEndQuestionWithQuestionID:(NSInteger)questionID
++ (NSString *)urlEndQuestionWithQuestionID:(NSString *)questionID
 {
     NSString *token = [SCUserProfileManager sharedInstance].token;
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUESTION,
                              SKYWORLD_TOKEN:token};
     NSDictionary *body = @{SKYWORLD_OPT:@3,
-                           SKYWORLD_QUESTION_ID:[NSNumber numberWithInteger:questionID]};
+                           SKYWORLD_QUESTION_ID:questionID};
     NSDictionary *data = @{SKYWORLD_HEADER:header,
                            SKYWORLD_BODY:body};
     return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_QUESTIONAPI andData:data];
@@ -348,27 +348,27 @@
 //        "asker_id"     : asker id // this paramter only for act is 2
 //    }
 //}
-+ (NSString *)urlQueryQuestionWithQuestionID:(NSInteger)questionID
++ (NSString *)urlQueryQuestionWithQuestionID:(NSString *)questionID
 {
     NSString *token = [SCUserProfileManager sharedInstance].token;
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUESTION,
                              SKYWORLD_TOKEN:token};
     NSDictionary *body = @{SKYWORLD_OPT:@4,
                            SKYWORLD_ACT:@1,
-                           SKYWORLD_QUESTION_ID:[NSNumber numberWithInteger:questionID]};
+                           SKYWORLD_QUESTION_ID:questionID};
     NSDictionary *data = @{SKYWORLD_HEADER:header,
                            SKYWORLD_BODY:body};
     return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_QUESTIONAPI andData:data];
 }
 
-+ (NSString *)urlQueryQuestionWithAskerID:(NSInteger)askerID
++ (NSString *)urlQueryQuestionWithAskerID:(NSNumber *)askerID
 {
     NSString *token = [SCUserProfileManager sharedInstance].token;
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUESTION,
                              SKYWORLD_TOKEN:token};
     NSDictionary *body = @{SKYWORLD_OPT:@4,
                            SKYWORLD_ACT:@2,
-                           SKYWORLD_QUESTION_ID:[NSNumber numberWithInteger:askerID]};
+                           SKYWORLD_QUESTION_ID:askerID};
     NSDictionary *data = @{SKYWORLD_HEADER:header,
                            SKYWORLD_BODY:body};
     return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_QUESTIONAPI andData:data];
@@ -391,13 +391,13 @@
 //        "question_id" : quid
 //    }
 //}
-+ (NSString *)urlAnswerQuestion:(NSInteger)questionID withAnswer:(NSString *)answer
++ (NSString *)urlAnswerQuestion:(NSString *)questionID withAnswer:(NSString *)answer
 {
     NSString *token = [SCUserProfileManager sharedInstance].token;
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_ANSWER,
                              SKYWORLD_TOKEN:token};
     NSDictionary *body = @{SKYWORLD_ANSWER:answer,
-                           SKYWORLD_QUESTION_ID:[NSNumber numberWithInteger:questionID]};
+                           SKYWORLD_QUESTION_ID:questionID};
     NSDictionary *data = @{SKYWORLD_HEADER:header,
                            SKYWORLD_BODY:body};
     return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_QUESTIONAPI andData:data];
@@ -421,12 +421,12 @@
 //        "both"    : [true/false]  true: make relationship for eachother, false only for request user
 //    }
 //}
-+ (NSString *)urlMakeFollow:(BOOL)flag withUser:(NSInteger)userID bothSide:(BOOL)both
++ (NSString *)urlMakeFollow:(BOOL)flag withUser:(NSNumber *)userID bothSide:(BOOL)both
 {
     NSString *token = [SCUserProfileManager sharedInstance].token;
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_FOLLOW,
                              SKYWORLD_TOKEN:token};
-    NSDictionary *body = @{SKYWORLD_USER_ID:[NSNumber numberWithInteger:userID],
+    NSDictionary *body = @{SKYWORLD_USER_ID:userID,
                            SKYWORLD_FLAG:(flag?@1:@2),
                            SKYWORLD_BOTH:[NSNumber numberWithBool:both]};
     NSDictionary *data = @{SKYWORLD_HEADER:header,
