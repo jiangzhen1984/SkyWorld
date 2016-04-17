@@ -65,4 +65,10 @@
 #pragma mark - Topic Query JSON Protocol
 + (NSString *)urlQueryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType currentCount:(NSInteger)curCount updateTimePre:(NSTimeInterval)time;
 
+#pragma mark - Log Collection API
++ (NSString *)urlLogCollection;
+
+#pragma mark - Version API
++ (NSString *)urlGetLatestIOSClientVersion;
+
 @end

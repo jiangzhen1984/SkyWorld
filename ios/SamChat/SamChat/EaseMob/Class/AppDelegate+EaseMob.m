@@ -42,6 +42,8 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    NSString *token = [NSString stringWithFormat:@"%@", deviceToken];
+    DebugLog(@"My token is:%@", token);
     [[EMClient sharedClient] bindDeviceToken:deviceToken];
 }
 

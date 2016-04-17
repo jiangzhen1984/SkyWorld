@@ -26,8 +26,8 @@
         SCArticlePicture *scarticlePicture = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_SCARTICLEPICTURE
                                                                            inManagedObjectContext:context];
 #warning add thumbnail processing
-        scarticlePicture.url_thumbnail = [NSString stringWithFormat:@"%@%@",SKYWORLD_API_ADDRESS,picDictionary[SKYWORLD_URL]];
-        scarticlePicture.url_original = [NSString stringWithFormat:@"%@%@",SKYWORLD_API_ADDRESS,picDictionary[SKYWORLD_URL]];
+        scarticlePicture.url_thumbnail = picDictionary[SKYWORLD_URL];
+        scarticlePicture.url_original = picDictionary[SKYWORLD_URL];
         scarticlePicture.sequence = [NSNumber numberWithInt:i];
         i++;
         scarticlePicture.fg_id = articleId;

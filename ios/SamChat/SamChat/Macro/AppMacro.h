@@ -27,7 +27,7 @@
 
 #define SC_CURRENT_LOGIN_USERNAME      @"currentloginusername"
 #define SC_CURRENT_LOGIN_TOKEN         @"token"
-
+#define SC_LATEST_ALERT_VERSION         @"latestalertversion"
 
 #define SC_LOGINUSER_NO_LOGIN           0
 #define SC_LOGINUSER_LOGIN              1

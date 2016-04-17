@@ -133,4 +133,46 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         }];
 }
 
+#pragma mark - Check Version
++ (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion
+{
+    if(!completion){
+        return;
+    }
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:[SCSkyWorldAPI urlGetLatestIOSClientVersion]
+      parameters:nil
+        progress:^(NSProgress * _Nonnull downloadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            DebugLog(@"Check Version Return:%@", responseObject);
+            if([responseObject isKindOfClass:[NSDictionary class]]
+               && ([(NSNumber *)responseObject[SKYWORLD_RET] integerValue] == 0)){
+                NSNumber *latestVersion = responseObject[SKYWORLD_IOS_NUMBER];
+                if(latestVersion == nil){
+                    completion(false, nil);
+                    return;
+                }
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                NSNumber *latestAlertVersion = [userDefaults objectForKey:SC_LATEST_ALERT_VERSION];
+                NSString *currentVersionString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+                NSNumber *currentVersion = [NSNumber numberWithInteger:[currentVersionString integerValue]];
+                if (latestAlertVersion == nil) {
+                    latestAlertVersion = currentVersion;
+                }
+                if([latestAlertVersion compare:latestVersion] != NSOrderedSame){
+                    completion(true, [latestVersion stringValue]);
+                }else{
+                    completion(false, nil);
+                }
+                latestAlertVersion = latestVersion;
+                [userDefaults setObject:latestAlertVersion forKey:SC_LATEST_ALERT_VERSION];
+            }else{
+                completion(false, nil);
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            DebugLog(@"Check Version Error:%@", error);
+            completion(false, nil);
+        }];
+}
+
 @end

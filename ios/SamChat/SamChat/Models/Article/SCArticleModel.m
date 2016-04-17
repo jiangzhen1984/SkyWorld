@@ -94,7 +94,7 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
       parameters:nil
         progress:^(NSProgress * _Nonnull downloadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            //DebugLog(@"responseObject: %@", responseObject);
+            DebugLog(@"responseObject: %@", responseObject);
             if([responseObject isKindOfClass:[NSDictionary class]]){
                 NSDictionary *response = responseObject;
                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];

@@ -2922,6 +2922,12 @@
 				TargetAttributes = {
 					311BC6291CA37B19006B4707 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 99MRWBVH2W;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					311BC6451CA37B19006B4707 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -3523,6 +3529,8 @@
 			baseConfigurationReference = E6F84DEBA6BAFDCDDEB63EE0 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "/Users/gknows/Documents/SkyWorld/ios/SamChat/SamChat/SamChat-Prefix.pch";
@@ -3541,9 +3549,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SamChat/HyphenateSDK/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = SkyWorld.SamChat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skyworld.samchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8cbd1aa5-f1b9-4769-8bcf-beef4449b1bf";
+				PROVISIONING_PROFILE = "870b5a19-fbb4-46d6-92ce-997f298305c8";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -3553,6 +3561,8 @@
 			baseConfigurationReference = 6B8040025EA2D601540773F1 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "/Users/gknows/Documents/SkyWorld/ios/SamChat/SamChat/SamChat-Prefix.pch";
@@ -3571,9 +3581,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SamChat/HyphenateSDK/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = SkyWorld.SamChat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skyworld.samchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8cbd1aa5-f1b9-4769-8bcf-beef4449b1bf";
+				PROVISIONING_PROFILE = "870b5a19-fbb4-46d6-92ce-997f298305c8";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

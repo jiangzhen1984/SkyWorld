@@ -10,17 +10,18 @@
 #define SCSkyWorldAPIMacro_h
 
 
-#define SKYWORLD_API_PREFIX             @"http://121.42.207.185/SkyWorld/api/1.0/"
-#define SKYWORLD_API_PUSH               @"http://121.42.207.185/SkyWorld/push"
+//#define SKYWORLD_API_PREFIX             @"http://121.42.207.185/SkyWorld/api/1.0/"
+//#define SKYWORLD_API_PUSH               @"http://121.42.207.185/SkyWorld/push"
 #define SKYWORLD_API_HOTTOPICAPI        @"http://139.129.57.77/sw/api_1.0_HotTopicAPI.do"
-//#define SKYWORLD_API_PREFIX             @"http://139.129.57.77/sw/api/1.0/"
-//#define SKYWORLD_API_PUSH               @"http://139.129.57.77/sw/push"
+#define SKYWORLD_API_PREFIX             @"http://139.129.57.77/sw/api/1.0/"
+#define SKYWORLD_API_PUSH               @"http://139.129.57.77/sw/push"
 #define SKYWORLD_API_ADDRESS            @"http://139.129.57.77/"
 
 #define SKYWORLD_APITYPE_USERAPI        @"UserAPI"
 #define SKYWORLD_APITYPE_QUESTIONAPI    @"QuestionAPI"
 #define SKYWORLD_APITYPE_USERAVATARAPI  @"UserAvatarAPI"
 #define SKYWORLD_APITYPE_ARTICLEAPI     @"ArticleApi"
+#define SKYWORLD_APITYPE_SYSTEMAPI      @"SystemApi"
 
 #pragma mark - Json Key Define
 #define SKYWORLD_HEADER         @"header"
@@ -111,6 +112,7 @@
 #define SKYWORLD_USER_AVATAR_ORIGIN @"user.avatar.origin"
 #define SKYWORLD_ARTICLE_PICS       @"article.pics"
 #define SKYWORLD_USER_CELLPHONE     @"user.cellphone"
+#define SKYWORLD_IOS_NUMBER         @"ios.number"
 
 #pragma mark - Json Value Define
 #define SKYWORLD_REGISTER           @"register"
@@ -130,6 +132,7 @@
 #define SKYWORLD_ARTICLE_QUERY      @"article-query"
 #define SKYWORLD_EASEMOB            @"easemob"
 #define SKYWORLD_QUERY_TOPIC_LIST   @"query_topic_list"
-
+#define SKYWORLD_VERSION            @"version"
+#define SKYWORLD_LOG_COLLECTION     @"log-collection"
 
 #endif /* SCSkyWorldAPIMacro_h */

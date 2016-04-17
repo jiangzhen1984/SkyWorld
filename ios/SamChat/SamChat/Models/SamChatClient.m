@@ -71,6 +71,11 @@ static SamChatClient *sharedInstance = nil;
     [SCUserSettingModel feedbackWithComment:comment completion:completion];
 }
 
+- (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion
+{
+    [SCUserSettingModel checkVersionCompletion:completion];
+}
+
 - (void)sendAnswer:(NSString *)answer toQuestionID:(NSString *)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCAnswerQuestionModel sendAnswer:answer toQuestionID:question_id completion:completion];

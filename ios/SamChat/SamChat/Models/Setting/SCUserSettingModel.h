@@ -14,5 +14,6 @@
 + (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
 + (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
++ (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion;
 
 @end

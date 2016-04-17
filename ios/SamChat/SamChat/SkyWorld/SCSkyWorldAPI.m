@@ -655,4 +655,54 @@
     return [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
 
+#pragma mark - Log Collection API
+//API: /api/1.0/SystemApi
+//http://139.129.57.77/sw/api/1.0/SystemApi
+//Log Upload
+//{
+//    "header" :
+//    {
+//        "action" : "log-collection"
+//    },
+//    
+//    "body" :
+//    {
+//    }
+//}
+//
+//log data as http form multi-part data
++ (NSString *)urlLogCollection
+{
+    NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_LOG_COLLECTION};
+    NSDictionary *body = @{};
+    NSDictionary *data = @{SKYWORLD_HEADER:header,
+                           SKYWORLD_BODY:body};
+    return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_SYSTEMAPI andData:data];
+}
+
+#pragma mark - Version API
+//======================================= Version API  =====================================
+//API: /api/1.0/SystemApi
+//http://139.129.57.77/sw/api/1.0/SystemApi
+//Version
+//{
+//    "header" :
+//    {
+//        "action" : "version"
+//    },
+//    
+//    "body" :
+//    {
+//        "opt"    [1/2]  1: for android  2: for ios
+//    }
+//}
++ (NSString *)urlGetLatestIOSClientVersion
+{
+    NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_VERSION};
+    NSDictionary *body = @{SKYWORLD_OPT:@2};
+    NSDictionary *data = @{SKYWORLD_HEADER:header,
+                           SKYWORLD_BODY:body};
+    return [SCSkyWorldAPI generateUrlStringWithType:SKYWORLD_APITYPE_SYSTEMAPI andData:data];
+}
+
 @end

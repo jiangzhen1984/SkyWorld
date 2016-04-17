@@ -62,6 +62,18 @@ didFinishLaunchingWithOptions:launchOptions
     if (_homeController) {
         [_homeController jumpToChatList];
     }
+    
+    NSError *parseError = nil;
+    NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:userInfo
+                                                        options:NSJSONWritingPrettyPrinted error:&parseError];
+    NSString *str =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"apns.content", @"Apns content")
+                                                    message:str
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"ok", @"OK")
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -70,6 +82,20 @@ didFinishLaunchingWithOptions:launchOptions
     if (_homeController) {
         [_homeController didReceiveLocalNotification:notification];
     }
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+// UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"test"
+//                                                 message:[NSString stringWithFormat:@"%@", userInfo]
+//                                                delegate:nil
+//                                       cancelButtonTitle:@"OK"
+//                                       otherButtonTitles:nil, nil];
+//    [alert show];
+    // for test
+    NSString *info = [NSString stringWithFormat:@"%@", userInfo];
+    [info writeToFile:[NSString stringWithFormat:@"%@/Documents/info.log",NSHomeDirectory()] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    completionHandler(UIBackgroundFetchResultFailed);
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
