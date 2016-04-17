@@ -13,6 +13,9 @@
  */
 package com.easemob.easeui.adapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -25,6 +28,7 @@ import android.widget.ListView;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
+import com.easemob.chat.TextMessageBody;
 import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.widget.EaseChatMessageList.MessageListItemClickListener;
 import com.easemob.easeui.widget.chatrow.EaseChatRow;
@@ -92,8 +96,38 @@ public class EaseMessageAdapter extends BaseAdapter{
 		private void refreshList() {
 			// UI线程不能直接使用conversation.getAllMessages()
 			// 否则在UI刷新过程中，如果收到新的消息，会导致并发问题
+			/*SAMC_BEGIN(test for add dummp EMMessage to chat fragment)
+			EMMessage testMsg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
+			testMsg.setFrom("dkw-138004");
+			TextMessageBody testBody = new TextMessageBody("hello from easemob sdk");
+    			testMsg.addBody(testBody);
+			testMsg.setAcked(true);
+			
+
+			EMMessage testMsg2 = EMMessage.createSendMessage(EMMessage.Type.TXT);
+     			testMsg2.setReceipt("dkw-138004");
+			testMsg2.setTo("dkw-138004");
+     			TextMessageBody body = new TextMessageBody("hello from easemob sdk 2");
+     			testMsg2.addBody(body);
+			testMsg2.status = EMMessage.Status.SUCCESS;
+			
+			/*SAMC_END(test for add dummp EMMessage to chat fragment)*/
+
+			
 			messages = (EMMessage[]) conversation.getAllMessages().toArray(new EMMessage[conversation.getAllMessages().size()]);
-			for (int i = 0; i < messages.length; i++) {
+
+			/*SAMC_BEGIN(test for add dummp EMMessage to chat fragment)
+			List<EMMessage> testList = new ArrayList <EMMessage>();
+			for(int i=0;i<messages.length;i++){
+				testList.add(messages[i]);
+			}
+			testList.add(testMsg);
+			testList.add(testMsg2);
+			messages = (EMMessage[]) testList.toArray(new EMMessage[testList.size()]);
+			
+			SAMC_BEGIN(test for add dummp EMMessage to chat fragment)*/
+			
+			for (int i = 0; i < messages.length-1; i++) {
 				// getMessage will set message as read status
 				conversation.getMessage(i);
 			}

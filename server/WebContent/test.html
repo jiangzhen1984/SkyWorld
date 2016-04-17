@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form method="post" enctype="multipart/form-data" action="/SkyWorld/api/1.0/UserAvatarAPI">
+<form method="post" enctype="multipart/form-data" action="/sw/api/1.0/UserAvatarAPI">
 	<input name="sd" type="file" />
 	<input name="data" value="" size="160" />
 	<input type="submit" />
@@ -14,7 +14,7 @@
 
 <hr><br>
 Publish
-<form method="post" enctype="multipart/form-data" action="/SkyWorld/api/1.0/ArticleApi">
+<form method="post" enctype="multipart/form-data" action="/sw/api/1.0/ArticleApi">
 	<input name="pic1" type="file" />
 	<input name="pic2" type="file" />
 	<input name="pic3" type="file" />
@@ -27,7 +27,7 @@ Publish
 
 <hr><br>
 Recommend
-<form method="post" enctype="multipart/form-data" action="/SkyWorld/api/1.0/ArticleApi">
+<form method="post" enctype="multipart/form-data" action="/sw/api/1.0/ArticleApi">
 	<input name="data" value="" size="160" />
 	<input type="submit" />
 </form>
@@ -35,14 +35,14 @@ Recommend
 
 <hr><br>
 article-query
-<form method="get"  action="/SkyWorld/api/1.0/ArticleApi">
+<form method="get"  action="/sw/api/1.0/ArticleApi">
 	<input name="data" value="" size="160" />
 	<input type="submit" />
 </form>
 
 <hr><br>
 log-upload
-<form method="post"   enctype="multipart/form-data" action="/SkyWorld/api/1.0/SystemApi" >
+<form method="post"   enctype="multipart/form-data" action="/sw/api/1.0/SystemApi" >
 	<input name="data" value='{"header" : { "action" : "log-collection"}, "body" : {}}' size="160" />
 	<input name="pic1" type="file" />
 	<input name="pic2" type="file" />

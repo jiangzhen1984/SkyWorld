@@ -515,7 +515,9 @@ public class SamService{
 		
 		if(mWaitThread!=null){
 			mWaitThread.StopThread();
+			SamLog.e(TAG,"before waitStopLock");
 			waitStopLock();
+			SamLog.e(TAG,"after waitStopLock");
 			
 		}
 

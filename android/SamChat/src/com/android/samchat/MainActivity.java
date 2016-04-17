@@ -103,6 +103,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	public static final int CONFIRM_ID_INVITE_FRIEND_ACTIVITY_EXITED=306;
 
 	public static final int CONFIRM_ID_CAPTURE_ACTIVITY_EXITED=307;
+
+	public static final int CONFIRM_ID_UPDATE_SUCCEED = 308;
 	
 
 	private int sInviteNum = 0;
@@ -168,6 +170,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private LinearLayout mSweep_layout;
 	private LinearLayout mStart_group_layout;
 	private LinearLayout mSettings_layout;	
+	private LinearLayout mUpdate_layout;
 	private LinearLayout mLogout_layout;
 	private LinearLayout mExitapp_layout;
 	private TextView mVersion;
@@ -202,6 +205,23 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	private String versionName;
 	private Context mContext;
+
+
+	private void startApk(){
+		//启动手机中的一个APK文件，如启动test.apk
+		Intent intent =getPackageManager().getLaunchIntentForPackage("com.android.SamChat");
+		if(intent != null)
+		{
+			startActivity(intent);
+		}
+	}
+
+	public void update() {  
+		Intent intent = new Intent(Intent.ACTION_VIEW);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setDataAndType(Uri.fromFile(new File("/sdcard/Download/SamChat.apk")),"application/vnd.android.package-archive");  
+		startActivity(intent);
+	} 
 
 
 	public void sendNotification(){
@@ -406,6 +426,14 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			public void onClick(View arg0) {
 				menu.toggle();
 				launchSettingActivity();
+			}
+		});
+
+		mUpdate_layout =  (LinearLayout)menu.findViewById(R.id.update_layout);
+		mUpdate_layout.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				update();
 			}
 		});
 
@@ -691,6 +719,10 @@ public class MainActivity extends IndicatorFragmentActivity implements
 				}
 				
 			}
+		}
+		else if(requestCode == CONFIRM_ID_UPDATE_SUCCEED){
+			SamLog.e(TAG,"start apk automatically");
+			startApk();
 		}else{
 			super.onActivityResult(requestCode, resultCode, data);
 		}
@@ -1016,7 +1048,19 @@ public class MainActivity extends IndicatorFragmentActivity implements
 					SamLog.e(TAG,"network disconnected!!!!!!!!!!!!");
    					SamService.getInstance().onNetworkDisconnect();
 				} 
-			} 
+			}else if(Intent.ACTION_PACKAGE_ADDED.equals(action)){
+				String packageName = intent.getData().getSchemeSpecificPart();
+				PackageManager pm = context.getPackageManager();
+				Intent intent1 = new Intent();
+				try {
+					intent1 = pm.getLaunchIntentForPackage(packageName);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent1);
+			}
    
 		}  
 	}; 
@@ -1024,6 +1068,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private void registerNetworkStatusReceiver(){
 		IntentFilter mFilter = new IntentFilter(); 
 		mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); 
+		mFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
 		registerReceiver(myNetReceiver, mFilter); 
 	}
 
@@ -1125,6 +1170,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		unregisterBroadcastReceiver();
 		EMChatManager.getInstance().removeConnectionListener(connectionListener);
 		EaseMobHelper.getInstance().reset();
+		SamService.getInstance().stopSamService();
 
 	}
 	
@@ -1142,14 +1188,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	}
 
 	public void exitProgrames(){
-		if(mDialog!=null){
-			mDialog.launchProcessDialog(this,getString(R.string.exiting));
-		}
 		
-		SamService.getInstance().stopSamService();
-		if(mDialog!=null){
-			mDialog.dismissPrgoressDiglog();
-		}
+		
 		
 		this.finish(); 
 	}
@@ -1248,7 +1288,6 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	public void exitActivity(){
 		SamLog.e(TAG, "exit main activity"); 
-		SamService.getInstance().stopSamService();
 		this.finish();
 	}
 

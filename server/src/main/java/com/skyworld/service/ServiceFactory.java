@@ -12,6 +12,7 @@ import com.skyworld.service.question.APIInquireService;
 import com.skyworld.service.skservicer.APICmpQueryService;
 import com.skyworld.service.skservicer.APIServicerCompanyUpdateService;
 import com.skyworld.service.skservicer.APIUpgradeService;
+import com.skyworld.service.system.APIAppService;
 import com.skyworld.service.system.APIFeedbackService;
 import com.skyworld.service.system.APILogCollection;
 import com.skyworld.service.user.APILoginService;
@@ -158,6 +159,7 @@ public class ServiceFactory {
 		
 		mApiService[API_CODE_SYSTEM] =  new APIJsonPartDispatchService();
 		((APIJsonPartDispatchService)mApiService[API_CODE_SYSTEM]).addActionMapping("log-collection", new APILogCollection());
+		((APIJsonPartDispatchService)mApiService[API_CODE_SYSTEM]).addActionMapping("version", new APIAppService());
 	}
 	
 	

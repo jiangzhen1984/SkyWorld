@@ -9,7 +9,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.skyworld.service.dsf.AndroidAppVersion;
 import com.skyworld.service.dsf.Feedback;
+import com.skyworld.service.dsf.IOSAppVersion;
+import com.skyworld.service.po.SWAppVersion;
 import com.skyworld.service.po.SWPFeedback;
 
 public class SystemBasicService extends BaseService {
@@ -74,5 +77,49 @@ public class SystemBasicService extends BaseService {
 		}
 		return list;
 		
+	}
+	
+	
+	public IOSAppVersion  getIOSAppVersion() {
+		IOSAppVersion ios  = null;
+		Session session = openSession();
+		Query query = session.createQuery(" from SWAppVersion where appType = ?  ");
+		//1 for ios
+		query.setInteger(0, 1);
+		List<SWAppVersion> list = query.list();
+		if (list != null  && list.size() > 0) {
+			SWAppVersion swapp = list.iterator().next();
+			ios = new IOSAppVersion();
+			ios.setId(swapp.getId());
+			ios.setAppType(swapp.getAppType());
+			ios.setFilename(swapp.getFilename());
+			ios.setForce(swapp.isForce());
+			ios.setType(swapp.getType());
+			ios.setNumber(swapp.getNumber());
+		}
+		session.close();
+		return ios;
+	}
+	
+	
+	public AndroidAppVersion  getAndroidAppVersion() {
+		AndroidAppVersion android  = null;
+		Session session = openSession();
+		Query query = session.createQuery(" from SWAppVersion where appType = ?  ");
+		//0 for android
+		query.setInteger(0, 0);
+		List<SWAppVersion> list = query.list();
+		if (list != null  && list.size() > 0) {
+			SWAppVersion swapp = list.iterator().next();
+			android = new AndroidAppVersion();
+			android.setId(swapp.getId());
+			android.setAppType(swapp.getAppType());
+			android.setFilename(swapp.getFilename());
+			android.setForce(swapp.isForce());
+			android.setType(swapp.getType());
+			android.setNumber(swapp.getNumber());
+		}
+		session.close();
+		return android;
 	}
 }
