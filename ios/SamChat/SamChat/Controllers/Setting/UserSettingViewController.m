@@ -10,6 +10,7 @@
 #import "ContactListViewController.h"
 #import "KYDrawerController.h"
 #import "QRCodeScanViewController.h"
+#import "AddFriendViewController.h"
 
 @interface UserSettingViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -92,6 +93,13 @@
     DebugLog(@"navigation: %@", self.navigationController);
     [self.navigationController pushViewController:contactListVC animated:YES];
     //[(KYDrawerController *)[self parentViewController] setDrawerState:KYDrawerControllerDrawerStateClosed animated:YES];
+}
+
+- (IBAction)addContactAction
+{
+    AddFriendViewController *addController = [[AddFriendViewController alloc] initWithStyle:UITableViewStylePlain];
+    self.navigationController.navigationBarHidden = NO;
+    [self.navigationController pushViewController:addController animated:YES];
 }
 
 - (IBAction)QRCodeScan:(UIButton *)sender

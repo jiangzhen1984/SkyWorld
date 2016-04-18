@@ -297,6 +297,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEq-yK-rWg">
                                 <rect key="frame" x="120" y="182" width="60" height="30"/>
                                 <state key="normal" title="朋友邀请"/>
+                                <connections>
+                                    <action selector="addContactAction" destination="eUE-cW-PZ6" eventType="touchUpInside" id="0SW-rq-Jzx"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xIe-wH-fdr">
                                 <rect key="frame" x="120" y="234" width="60" height="30"/>
