@@ -59,15 +59,12 @@
 {
     [self showHudInView:self.view hint:NSLocalizedString(@"signup.ongoing", @"Is signup...")];
     
-    NSDictionary *registerInfo = @{SKYWORLD_CELLPHONE: self.cellphone,
-                                   SKYWORLD_USERNAME: self.username.text,
-                                   SKYWORLD_PWD: self.password.text,
-                                   SKYWORLD_COUNTRY_CODE: [NSNumber numberWithInteger:[self.countryCode integerValue]],
-                                   SKYWORLD_CONFIRM_PWD: self.password.text};
-   // [[SamChatClient sharedInstance] signupWithUserinfoDictionary:registerInfo delegate:self];
     NSString *username = self.username.text;
     NSString *password = self.password.text;
-    [[SamChatClient sharedInstance] signupWithUserinfoDictionary:registerInfo
+    [[SamChatClient sharedInstance] signupWithCellphone:self.cellphone
+                                            countryCode:[NSNumber numberWithInteger:[self.countryCode integerValue]]
+                                               username:username
+                                               password:password
         completion:^(BOOL success, SCSkyWorldError *error) {
             [self hideHud];
             if(success){

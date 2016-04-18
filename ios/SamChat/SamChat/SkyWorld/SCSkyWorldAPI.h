@@ -12,7 +12,7 @@
 @interface SCSkyWorldAPI : NSObject
 
 #pragma mark - Register JSON Protocol 
-+ (NSString *)urlRegisterWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode userName:(NSString *)username passWord:(NSString *)password;
++ (NSString *)urlRegisterWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode username:(NSString *)username password:(NSString *)password;
 
 #pragma mark - Login JSON Protocol
 + (NSString *)urlLoginWithUsername:(NSString *)username passWord:(NSString *)password;

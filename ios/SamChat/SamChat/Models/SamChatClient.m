@@ -51,9 +51,9 @@ static SamChatClient *sharedInstance = nil;
     [SCLoginModel loginWithUsername:username password:password completion:completion];
 }
 
-- (void)signupWithUserinfoDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)signupWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode username:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
-    [SCSignupModel signupWithUserinfoDictionary:info completion:completion];
+    [SCSignupModel signupWithCellphone:cellphone countryCode:countrycode username:username password:password completion:completion];
 }
 
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion

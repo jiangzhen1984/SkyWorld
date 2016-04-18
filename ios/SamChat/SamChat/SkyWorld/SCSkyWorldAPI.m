@@ -70,7 +70,7 @@
 //        "confirm_pwd"  : "a"
 //    }
 //}
-+ (NSString *)urlRegisterWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode userName:(NSString *)username passWord:(NSString *)password
++ (NSString *)urlRegisterWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode username:(NSString *)username password:(NSString *)password
 {
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_REGISTER};
     NSDictionary *body = @{SKYWORLD_CELLPHONE:cellphone,
