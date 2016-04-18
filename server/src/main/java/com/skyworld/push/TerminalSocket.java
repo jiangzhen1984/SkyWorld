@@ -79,7 +79,9 @@ public class TerminalSocket {
 		if (isAvailable()) {
 			log.info(" [WRITE ] :" + msg);
 			log.info(" [WRITE] :" + resp);
-			resp.setBufferSize(msg.length());
+			int lenBuf = msg.getBytes("UTF-8").length;
+			resp.setBufferSize(lenBuf);
+			resp.setContentLength(lenBuf);
 			PrintWriter pw = resp.getWriter();
 			pw.write(msg);
 			pw.flush();
