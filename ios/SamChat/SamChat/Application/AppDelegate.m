@@ -10,10 +10,10 @@
 #import "MainViewController.h"
 #import "LoginViewController.h"
 
-#import "AppDelegate+EaseMob.h"
 #import "AppDelegate+SamChat.h"
 
 #import "SCCrashCatcher.h"
+#import "ChatDemoHelper.h"
 
 @interface AppDelegate ()
 
@@ -37,23 +37,57 @@
 //         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
 //    }
 
-#warning 初始化环信SDK，详细内容在AppDelegate+EaseMob.m 文件中
-#warning SDK注册 APNS文件的名字, 需要与后台上传证书时的名字一一对应
     NSString *apnsCertName = nil;
-
-//    apnsCertName = @"chatdemoui";
-
-    [self easemobApplication:application
-didFinishLaunchingWithOptions:launchOptions
-                      appkey:@"skyworld#skyworld"
-                apnsCertName:apnsCertName
-                 otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:NO]}];
+    [[EaseSDKHelper shareHelper] easemobApplication:application
+                      didFinishLaunchingWithOptions:launchOptions
+                                             appkey:@"skyworld#skyworld"
+                                       apnsCertName:apnsCertName
+                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:NO]}];
+    [ChatDemoHelper shareHelper];
 
     DebugLog(@"%@",NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]);
     [self samchatApplication:application didFinishLaunchingWithOptions:launchOptions];
     
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+#pragma mark - App Delegate
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSString *token = [NSString stringWithFormat:@"%@", deviceToken];
+    DebugLog(@"My token is:%@", token);
+    // 将得到的deviceToken传给SDK
+    [[EMClient sharedClient] bindDeviceToken:deviceToken];
+}
+
+// 注册deviceToken失败，此处失败，与环信SDK无关，一般是您的环境配置或者证书配置有误
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"apns.failToRegisterApns", Fail to register apns)
+                                                    message:error.description
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"ok", @"OK")
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+#pragma mark - EMPushManagerDelegateDevice
+// 打印收到的apns信息
+-(void)didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSError *parseError = nil;
+    NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:userInfo
+                                                        options:NSJSONWritingPrettyPrinted error:&parseError];
+    NSString *str =  [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"apns.content", @"Apns content")
+                                                    message:str
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"ok", @"OK")
+                                          otherButtonTitles:nil];
+    [alert show];
+    
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -86,12 +120,6 @@ didFinishLaunchingWithOptions:launchOptions
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-// UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"test"
-//                                                 message:[NSString stringWithFormat:@"%@", userInfo]
-//                                                delegate:nil
-//                                       cancelButtonTitle:@"OK"
-//                                       otherButtonTitles:nil, nil];
-//    [alert show];
     // for test
     NSString *info = [NSString stringWithFormat:@"%@", userInfo];
     [info writeToFile:[NSString stringWithFormat:@"%@/Documents/info.log",NSHomeDirectory()] atomically:YES encoding:NSUTF8StringEncoding error:nil];

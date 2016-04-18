@@ -305,7 +305,6 @@
 		31FAC60B1CAAB3C50034A0CD /* tabbarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31FAC57D1CAAB3C50034A0CD /* tabbarBackground@2x.png */; };
 		31FAC60C1CAAB3C50034A0CD /* tabbarSelectBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 31FAC57E1CAAB3C50034A0CD /* tabbarSelectBg.png */; };
 		31FAC60D1CAAB3C50034A0CD /* tabbarSelectBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 31FAC57F1CAAB3C50034A0CD /* tabbarSelectBg@2x.png */; };
-		31FAC68F1CAAB7E30034A0CD /* AppDelegate+EaseMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6221CAAB7E30034A0CD /* AppDelegate+EaseMob.m */; };
 		31FAC6951CAAB7E30034A0CD /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC62F1CAAB7E30034A0CD /* CallViewController.m */; };
 		31FAC6961CAAB7E30034A0CD /* ConversationListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6331CAAB7E30034A0CD /* ConversationListController.m */; };
 		31FAC6971CAAB7E30034A0CD /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6361CAAB7E30034A0CD /* ChatViewController.m */; };
@@ -1006,8 +1005,6 @@
 		31FAC57D1CAAB3C50034A0CD /* tabbarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbarBackground@2x.png"; sourceTree = "<group>"; };
 		31FAC57E1CAAB3C50034A0CD /* tabbarSelectBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbarSelectBg.png; sourceTree = "<group>"; };
 		31FAC57F1CAAB3C50034A0CD /* tabbarSelectBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbarSelectBg@2x.png"; sourceTree = "<group>"; };
-		31FAC6211CAAB7E30034A0CD /* AppDelegate+EaseMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+EaseMob.h"; sourceTree = "<group>"; };
-		31FAC6221CAAB7E30034A0CD /* AppDelegate+EaseMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+EaseMob.m"; sourceTree = "<group>"; };
 		31FAC62E1CAAB7E30034A0CD /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		31FAC62F1CAAB7E30034A0CD /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
 		31FAC6321CAAB7E30034A0CD /* ConversationListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationListController.h; sourceTree = "<group>"; };
@@ -2579,8 +2576,6 @@
 		31FAC6201CAAB7E30034A0CD /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				31FAC6211CAAB7E30034A0CD /* AppDelegate+EaseMob.h */,
-				31FAC6221CAAB7E30034A0CD /* AppDelegate+EaseMob.m */,
 				31FAC62D1CAAB7E30034A0CD /* Call */,
 				31FAC6301CAAB7E30034A0CD /* Chat */,
 				31FAC6381CAAB7E30034A0CD /* ChatDemoHelper.h */,
@@ -3266,7 +3261,6 @@
 				31FAC6A91CAAB7E30034A0CD /* AddFriendViewController.m in Sources */,
 				3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */,
 				31FAC6991CAAB7E30034A0CD /* ChatGroupDetailViewController.m in Sources */,
-				31FAC68F1CAAB7E30034A0CD /* AppDelegate+EaseMob.m in Sources */,
 				31C1A7541CBC7CF70010F6B4 /* UIImage+GIF.m in Sources */,
 				31C1A7591CBC7CF70010F6B4 /* UIView+WebCacheOperation.m in Sources */,
 				31FAC58A1CAAB3C50034A0CD /* THProgressView.m in Sources */,
