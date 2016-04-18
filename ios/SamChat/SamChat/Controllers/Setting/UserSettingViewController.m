@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelUserName;
 
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
+@property (weak, nonatomic) IBOutlet UIImageView *imageViewQRCode;
 
 @end
 
@@ -31,6 +32,7 @@
     self.imageViewAvatar.userInteractionEnabled=YES;
     UITapGestureRecognizer *imageTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(setUserAvatar)];
     [self.imageViewAvatar addGestureRecognizer:imageTap];
+    self.imageViewQRCode.image = [self qrImageWithString:[SCUserProfileManager sharedInstance].username];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -50,6 +52,25 @@
 #warning change the placeholder image to the last image
     [self.imageViewAvatar sd_setImageWithURL:avatarUrl placeholderImage:[SCUtils createImageWithColor:[UIColor redColor]]];
     //[self.avatarView sd_setImageWithURL:[NSURL URLWithString:model.avatarURLPath] placeholderImage:model.avatarImage];
+}
+
+#pragma mark QRCode
+- (UIImage *)qrImageWithString:(NSString *)text
+{
+    NSError *error = nil;
+    ZXMultiFormatWriter *writer = [ZXMultiFormatWriter writer];
+    ZXBitMatrix* result = [writer encode:text
+                                  format:kBarcodeFormatQRCode
+                                   width:200
+                                  height:200
+                                   error:&error];
+    UIImage *image = nil;
+    if (result) {
+        CGImageRef cgimage = [[ZXImage imageWithMatrix:result] cgimage];
+        image = [UIImage imageWithCGImage:cgimage];
+        CGImageRelease(cgimage);
+    }
+    return image;
 }
 
 #pragma mark - getter

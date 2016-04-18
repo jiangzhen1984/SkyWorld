@@ -45,6 +45,8 @@
 #import "EMSDKFull.h"
 #import "EaseUI.h"
 
+#define DEMO_CALL 1
+
 #endif
 
 #endif /* SamChat_Prefix_pch */

@@ -334,18 +334,27 @@
                                     <action selector="logout:" destination="eUE-cW-PZ6" eventType="touchUpInside" id="nay-C4-Dir"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9nq-Gu-cXC">
+                                <rect key="frame" x="20" y="500" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="1ye-wq-Z7I"/>
+                                    <constraint firstAttribute="width" constant="100" id="uFZ-G8-3LW"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="xIe-wH-fdr" firstAttribute="leading" secondItem="xlX-gL-6se" secondAttribute="leading" id="2Zf-5s-sDU"/>
                             <constraint firstItem="ak5-Oe-0s6" firstAttribute="top" secondItem="348-0K-yo0" secondAttribute="bottom" constant="22" id="7eI-hY-fwy"/>
                             <constraint firstItem="xlX-gL-6se" firstAttribute="top" secondItem="YDl-OJ-XUy" secondAttribute="bottom" constant="22" id="Bgn-yD-dXv"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="9nq-Gu-cXC" secondAttribute="leading" id="F0v-HP-Z72"/>
                             <constraint firstItem="CgO-YT-rbt" firstAttribute="top" secondItem="qaq-Qi-e1a" secondAttribute="bottom" constant="22" id="F9Y-rk-3Ko"/>
                             <constraint firstItem="348-0K-yo0" firstAttribute="top" secondItem="xIe-wH-fdr" secondAttribute="bottom" constant="22" id="HYV-VP-0wQ"/>
                             <constraint firstItem="qaq-Qi-e1a" firstAttribute="top" secondItem="ak5-Oe-0s6" secondAttribute="bottom" constant="22" id="RFH-Hv-8f8"/>
                             <constraint firstItem="YDl-OJ-XUy" firstAttribute="top" secondItem="aJk-8Y-ImL" secondAttribute="bottom" constant="-20" id="RSf-xa-ruH"/>
                             <constraint firstItem="UEq-yK-rWg" firstAttribute="top" secondItem="xlX-gL-6se" secondAttribute="bottom" constant="22" id="YaJ-gA-WWJ"/>
                             <constraint firstItem="348-0K-yo0" firstAttribute="leading" secondItem="xlX-gL-6se" secondAttribute="leading" id="YkV-p2-f3c"/>
+                            <constraint firstItem="LhH-dZ-SRe" firstAttribute="top" secondItem="9nq-Gu-cXC" secondAttribute="bottom" id="Ym6-Jk-4CK"/>
                             <constraint firstItem="xIe-wH-fdr" firstAttribute="top" secondItem="UEq-yK-rWg" secondAttribute="bottom" constant="22" id="Z2O-2T-jNy"/>
                             <constraint firstItem="xlX-gL-6se" firstAttribute="leading" secondItem="vLG-fa-Nil" secondAttribute="leadingMargin" constant="100" id="aeq-Z1-d3c"/>
                             <constraint firstItem="UEq-yK-rWg" firstAttribute="leading" secondItem="xlX-gL-6se" secondAttribute="leading" id="b1E-NE-GZ3"/>
@@ -358,6 +367,7 @@
                     </view>
                     <connections>
                         <outlet property="imageViewAvatar" destination="ZhW-bJ-GWm" id="AN5-Pd-abt"/>
+                        <outlet property="imageViewQRCode" destination="9nq-Gu-cXC" id="RjK-uW-zyr"/>
                         <outlet property="labelUserName" destination="wgw-Dq-ok0" id="fAp-Lb-Fkq"/>
                     </connections>
                 </viewController>
@@ -520,7 +530,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mkn-g4-Dq2">
                                                     <rect key="frame" x="86" y="46" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
