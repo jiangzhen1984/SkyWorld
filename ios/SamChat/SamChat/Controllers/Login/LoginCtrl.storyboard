@@ -164,8 +164,8 @@
                         <outlet property="buttonLogin" destination="DqI-c6-Oej" id="b3j-GN-odp"/>
                         <outlet property="buttonShowPassword" destination="JlQ-Xx-xGC" id="Rln-G0-hH7"/>
                         <outlet property="labelErrorTip" destination="wMl-JZ-SR8" id="XLo-PK-7Xl"/>
-                        <outlet property="password" destination="aHD-wS-H8K" id="2Lh-6c-fqu"/>
-                        <outlet property="username" destination="Umk-u9-Kc4" id="i0a-EO-L8G"/>
+                        <outlet property="textPassword" destination="aHD-wS-H8K" id="Yii-ej-Dnz"/>
+                        <outlet property="textUsername" destination="Umk-u9-Kc4" id="rfr-qR-mQ6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yw1-OH-IzF" userLabel="First Responder" sceneMemberID="firstResponder"/>

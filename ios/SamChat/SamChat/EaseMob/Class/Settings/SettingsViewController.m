@@ -325,7 +325,7 @@
             }
             else{
                 [[ApplyViewController shareController] clear];
-                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
             }
         });
     });
