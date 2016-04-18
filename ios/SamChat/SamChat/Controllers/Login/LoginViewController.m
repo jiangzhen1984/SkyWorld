@@ -12,11 +12,10 @@
 #import "AFNetworking.h"
 #import "MBProgressHUD.h"
 #import "SCUtils.h"
-#import <sqlite3.h>
 
 @interface LoginViewController ()
-@property (weak, nonatomic) IBOutlet UITextField *username;
-@property (weak, nonatomic) IBOutlet UITextField *password;
+@property (weak, nonatomic) IBOutlet UITextField *textUsername;
+@property (weak, nonatomic) IBOutlet UITextField *textPassword;
 @property (weak, nonatomic) IBOutlet UIButton *buttonShowPassword;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLogin;
 @property (weak, nonatomic) IBOutlet UILabel *labelErrorTip;
@@ -62,12 +61,12 @@
 
 - (void)changeButtonShowPasswordStatus
 {
-    self.buttonShowPassword.hidden = (self.password.text.length <= 0);
+    self.buttonShowPassword.hidden = (self.textPassword.text.length <= 0);
 }
 
 - (void)changeButtonLoginStatus
 {
-    BOOL inputOK = (self.username.text.length >= SC_MINIMUM_USERNAME_LENGTH) && (self.password.text.length >= SC_MINIMUM_PASSWORD_LENGTH);
+    BOOL inputOK = (self.textUsername.text.length >= SC_MINIMUM_USERNAME_LENGTH) && (self.textPassword.text.length >= SC_MINIMUM_PASSWORD_LENGTH);
     self.buttonLogin.enabled = inputOK;
 }
 
@@ -85,9 +84,9 @@
 
 - (IBAction)showPassword:(UIButton *)sender
 {
-    self.password.secureTextEntry = !self.password.secureTextEntry;
-    [self.password becomeFirstResponder]; // reset the cursor position
-    NSString *buttonTitle = self.password.secureTextEntry ? @"显示" : @"隐藏";
+    self.textPassword.secureTextEntry = !self.textPassword.secureTextEntry;
+    [self.textPassword becomeFirstResponder]; // reset the cursor position
+    NSString *buttonTitle = self.textPassword.secureTextEntry ? @"显示" : @"隐藏";
     [self.buttonShowPassword setTitle:buttonTitle forState:UIControlStateNormal];
     [self changeButtonShowPasswordStatus];
 }
@@ -98,8 +97,8 @@
     
     [self showHudInView:self.view hint:NSLocalizedString(@"login.ongoing", @"Is Login...")];
 
-    [[SamChatClient sharedInstance] loginWithUsername:self.username.text
-                                             password:self.password.text
+    [[SamChatClient sharedInstance] loginWithUsername:self.textUsername.text
+                                             password:self.textPassword.text
        completion:^(BOOL success, SCSkyWorldError *error) {
            [self hideHud];
            if(success){
@@ -117,7 +116,7 @@
 
 - (IBAction)usernameDoneEditing:(id)sender
 {
-    [self.password becomeFirstResponder];
+    [self.textPassword becomeFirstResponder];
 }
 
 - (IBAction)passwordDoneEditing:(id)sender
@@ -128,14 +127,13 @@
 
 - (IBAction)backgroundTap:(id)sender
 {
-    [self.username resignFirstResponder];
-    [self.password resignFirstResponder];
+    [self.textUsername resignFirstResponder];
+    [self.textPassword resignFirstResponder];
 }
 
 #pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     if([segue.identifier isEqualToString:@"signup"]) {

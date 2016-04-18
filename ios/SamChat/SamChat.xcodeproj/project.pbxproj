@@ -50,8 +50,6 @@
 		317B82941CA96CC2000415E9 /* libEaseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317B82931CA96CC2000415E9 /* libEaseUI.a */; };
 		317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D431CA8C0270035A14E /* SCUserProfileManager.m */; };
 		317C2D501CA90A1E0035A14E /* AppDelegate+SamChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */; };
-		3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */; };
-		3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D06C1CA68C4A0088FD67 /* ResetPassWordViewController.m */; };
 		3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0701CA690730088FD67 /* SCViewFactory.m */; };
 		31A9F5151CBA9AF6005DA65D /* QRCodeScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9F5141CBA9AF6005DA65D /* QRCodeScanViewController.m */; };
 		31A9F5181CBA9D6F005DA65D /* libZXingObjC-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A9F5171CBA9D6F005DA65D /* libZXingObjC-iOS.a */; };
@@ -166,10 +164,12 @@
 		31C1A7B71CBF46420010F6B4 /* SCArticlePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7AD1CBF46420010F6B4 /* SCArticlePicture.m */; };
 		31C1A7B81CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7AF1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m */; };
 		31C1A7B91CBF46420010F6B4 /* SCArticleRecommend.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7B11CBF46420010F6B4 /* SCArticleRecommend.m */; };
-		31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70B1CA37F530049EE23 /* LoginViewController.m */; };
-		31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */; };
-		31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E70F1CA37F530049EE23 /* SignupViewController.m */; };
-		31F8E7191CA380780049EE23 /* LoginCtrl.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F8E7181CA380780049EE23 /* LoginCtrl.storyboard */; };
+		31D5CDC51CC4A56800D02D1D /* LoginCtrl.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D5CDBA1CC4A56800D02D1D /* LoginCtrl.storyboard */; };
+		31D5CDC61CC4A56800D02D1D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDBC1CC4A56800D02D1D /* LoginViewController.m */; };
+		31D5CDC71CC4A56800D02D1D /* ResetPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDBE1CC4A56800D02D1D /* ResetPassWordViewController.m */; };
+		31D5CDC81CC4A56800D02D1D /* RetrievePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC01CC4A56800D02D1D /* RetrievePassWordViewController.m */; };
+		31D5CDC91CC4A56800D02D1D /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC21CC4A56800D02D1D /* SignupSettingViewController.m */; };
+		31D5CDCA1CC4A56800D02D1D /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC41CC4A56800D02D1D /* SignupViewController.m */; };
 		31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */; };
 		31F8E71E1CA3B24F0049EE23 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */; };
 		31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E7271CA3D31D0049EE23 /* SCUtils.m */; };
@@ -613,10 +613,6 @@
 		317C2D4E1CA90A1E0035A14E /* AppDelegate+SamChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AppDelegate+SamChat.h"; path = "Application/AppDelegate+SamChat.h"; sourceTree = "<group>"; };
 		317C2D4F1CA90A1E0035A14E /* AppDelegate+SamChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AppDelegate+SamChat.m"; path = "Application/AppDelegate+SamChat.m"; sourceTree = "<group>"; };
 		317C2D511CA90AE60035A14E /* NotificationMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NotificationMacro.h; path = Macro/NotificationMacro.h; sourceTree = "<group>"; };
-		3183D0681CA68AAF0088FD67 /* RetrievePassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetrievePassWordViewController.h; sourceTree = "<group>"; };
-		3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetrievePassWordViewController.m; sourceTree = "<group>"; };
-		3183D06B1CA68C4A0088FD67 /* ResetPassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassWordViewController.h; sourceTree = "<group>"; };
-		3183D06C1CA68C4A0088FD67 /* ResetPassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassWordViewController.m; sourceTree = "<group>"; };
 		3183D06F1CA690730088FD67 /* SCViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCViewFactory.h; path = Views/SCViewFactory.h; sourceTree = "<group>"; };
 		3183D0701CA690730088FD67 /* SCViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCViewFactory.m; path = Views/SCViewFactory.m; sourceTree = "<group>"; };
 		31A9F5131CBA9AF6005DA65D /* QRCodeScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRCodeScanViewController.h; path = Setting/QRCodeScanViewController.h; sourceTree = "<group>"; };
@@ -841,13 +837,17 @@
 		31C1A7AF1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCArticleRecommend+CoreDataProperties.m"; path = "CoreData/SCArticleRecommend+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31C1A7B01CBF46420010F6B4 /* SCArticleRecommend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCArticleRecommend.h; path = CoreData/SCArticleRecommend.h; sourceTree = "<group>"; };
 		31C1A7B11CBF46420010F6B4 /* SCArticleRecommend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCArticleRecommend.m; path = CoreData/SCArticleRecommend.m; sourceTree = "<group>"; };
-		31F8E70A1CA37F530049EE23 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		31F8E70B1CA37F530049EE23 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupSettingViewController.h; sourceTree = "<group>"; };
-		31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupSettingViewController.m; sourceTree = "<group>"; };
-		31F8E70E1CA37F530049EE23 /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
-		31F8E70F1CA37F530049EE23 /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
-		31F8E7181CA380780049EE23 /* LoginCtrl.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginCtrl.storyboard; sourceTree = "<group>"; };
+		31D5CDBA1CC4A56800D02D1D /* LoginCtrl.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LoginCtrl.storyboard; path = Login/LoginCtrl.storyboard; sourceTree = "<group>"; };
+		31D5CDBB1CC4A56800D02D1D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Login/LoginViewController.h; sourceTree = "<group>"; };
+		31D5CDBC1CC4A56800D02D1D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Login/LoginViewController.m; sourceTree = "<group>"; };
+		31D5CDBD1CC4A56800D02D1D /* ResetPassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResetPassWordViewController.h; path = Login/ResetPassWordViewController.h; sourceTree = "<group>"; };
+		31D5CDBE1CC4A56800D02D1D /* ResetPassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ResetPassWordViewController.m; path = Login/ResetPassWordViewController.m; sourceTree = "<group>"; };
+		31D5CDBF1CC4A56800D02D1D /* RetrievePassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RetrievePassWordViewController.h; path = Login/RetrievePassWordViewController.h; sourceTree = "<group>"; };
+		31D5CDC01CC4A56800D02D1D /* RetrievePassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RetrievePassWordViewController.m; path = Login/RetrievePassWordViewController.m; sourceTree = "<group>"; };
+		31D5CDC11CC4A56800D02D1D /* SignupSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignupSettingViewController.h; path = Login/SignupSettingViewController.h; sourceTree = "<group>"; };
+		31D5CDC21CC4A56800D02D1D /* SignupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignupSettingViewController.m; path = Login/SignupSettingViewController.m; sourceTree = "<group>"; };
+		31D5CDC31CC4A56800D02D1D /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignupViewController.h; path = Login/SignupViewController.h; sourceTree = "<group>"; };
+		31D5CDC41CC4A56800D02D1D /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignupViewController.m; path = Login/SignupViewController.m; sourceTree = "<group>"; };
 		31F8E71A1CA3A8CF0049EE23 /* SCUITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUITabBarController.h; sourceTree = "<group>"; };
 		31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUITabBarController.m; sourceTree = "<group>"; };
 		31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -1472,7 +1472,6 @@
 				311BC6331CA37B19006B4707 /* ViewController.h */,
 				311BC6341CA37B19006B4707 /* ViewController.m */,
 				311BC6361CA37B19006B4707 /* Main.storyboard */,
-				31F8E7181CA380780049EE23 /* LoginCtrl.storyboard */,
 				311BC63C1CA37B19006B4707 /* Assets.xcassets */,
 				311BC63E1CA37B19006B4707 /* LaunchScreen.storyboard */,
 				311BC6411CA37B19006B4707 /* Info.plist */,
@@ -2773,16 +2772,17 @@
 		31FAC7221CAC02BA0034A0CD /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				31F8E70A1CA37F530049EE23 /* LoginViewController.h */,
-				31F8E70B1CA37F530049EE23 /* LoginViewController.m */,
-				31F8E70C1CA37F530049EE23 /* SignupSettingViewController.h */,
-				31F8E70D1CA37F530049EE23 /* SignupSettingViewController.m */,
-				31F8E70E1CA37F530049EE23 /* SignupViewController.h */,
-				31F8E70F1CA37F530049EE23 /* SignupViewController.m */,
-				3183D0681CA68AAF0088FD67 /* RetrievePassWordViewController.h */,
-				3183D0691CA68AAF0088FD67 /* RetrievePassWordViewController.m */,
-				3183D06B1CA68C4A0088FD67 /* ResetPassWordViewController.h */,
-				3183D06C1CA68C4A0088FD67 /* ResetPassWordViewController.m */,
+				31D5CDBA1CC4A56800D02D1D /* LoginCtrl.storyboard */,
+				31D5CDBB1CC4A56800D02D1D /* LoginViewController.h */,
+				31D5CDBC1CC4A56800D02D1D /* LoginViewController.m */,
+				31D5CDBD1CC4A56800D02D1D /* ResetPassWordViewController.h */,
+				31D5CDBE1CC4A56800D02D1D /* ResetPassWordViewController.m */,
+				31D5CDBF1CC4A56800D02D1D /* RetrievePassWordViewController.h */,
+				31D5CDC01CC4A56800D02D1D /* RetrievePassWordViewController.m */,
+				31D5CDC11CC4A56800D02D1D /* SignupSettingViewController.h */,
+				31D5CDC21CC4A56800D02D1D /* SignupSettingViewController.m */,
+				31D5CDC31CC4A56800D02D1D /* SignupViewController.h */,
+				31D5CDC41CC4A56800D02D1D /* SignupViewController.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -3050,7 +3050,6 @@
 				31C1A7981CBE2ED70010F6B4 /* Info.plist in Resources */,
 				31FAC5F31CAAB3C50034A0CD /* titleBar@2x.png in Resources */,
 				310A9AF91CAA092B000616F0 /* EaseUIResource.bundle in Resources */,
-				31F8E7191CA380780049EE23 /* LoginCtrl.storyboard in Resources */,
 				31FAC5E81CAAB3C50034A0CD /* icon_040.gif in Resources */,
 				31FAC6021CAAB3C50034A0CD /* tabbar_contacts.png in Resources */,
 				31FAC5E21CAAB3C50034A0CD /* icon_029.gif in Resources */,
@@ -3095,6 +3094,7 @@
 				31C1A77C1CBE0B2B0010F6B4 /* ChatTab.xcassets in Resources */,
 				31FAC5B51CAAB3C50034A0CD /* chat_location_detail_disclosureHL@2x.png in Resources */,
 				31FAC5C51CAAB3C50034A0CD /* chat_sender_audio_playing_002@2x.png in Resources */,
+				31D5CDC51CC4A56800D02D1D /* LoginCtrl.storyboard in Resources */,
 				31FAC5BC1CAAB3C50034A0CD /* chat_receiver_audio_playing000@2x.png in Resources */,
 				31FAC5E71CAAB3C50034A0CD /* icon_035_cover.png in Resources */,
 				31FAC6091CAAB3C50034A0CD /* tabbar_settingHL@2x.png in Resources */,
@@ -3203,6 +3203,7 @@
 				31FAC6A61CAAB7E30034A0CD /* ContactListSelectViewController.m in Sources */,
 				31FAC6BD1CAAB7E30034A0CD /* SettingsViewController.m in Sources */,
 				31C1A62B1CBB6BB60010F6B4 /* UITableView+SDAutoTableViewCellHeight.m in Sources */,
+				31D5CDC61CC4A56800D02D1D /* LoginViewController.m in Sources */,
 				31B3C93E1CB214B600CDB105 /* SCCoreDataManager.m in Sources */,
 				31C1A74D1CBC7CF70010F6B4 /* SDWebImageCompat.m in Sources */,
 				31FAC6B01CAAB7E30034A0CD /* EMLoginViewController.m in Sources */,
@@ -3221,7 +3222,6 @@
 				31C1A77A1CBE033A0010F6B4 /* SCArticlePublishViewController.m in Sources */,
 				31FAC5801CAAB3C50034A0CD /* EMAlertView.m in Sources */,
 				31FAC69C1CAAB7E30034A0CD /* CreateGroupViewController.m in Sources */,
-				3183D06A1CA68AAF0088FD67 /* RetrievePassWordViewController.m in Sources */,
 				31C1A7771CBDEE1E0010F6B4 /* SCCrashCatcher.m in Sources */,
 				31BDF48B1CB6420700EDCED0 /* KYDrawerController.m in Sources */,
 				31C1A6221CBB6BAC0010F6B4 /* MLLinkLabel.m in Sources */,
@@ -3273,6 +3273,7 @@
 				31FAC6A01CAAB7E30034A0CD /* GroupSubjectChangingViewController.m in Sources */,
 				31B3C9361CB214B600CDB105 /* ContactUser.m in Sources */,
 				31C1A6201CBB6BAC0010F6B4 /* MLLabelLayoutManager.m in Sources */,
+				31D5CDCA1CC4A56800D02D1D /* SignupViewController.m in Sources */,
 				31FAC5921CAAB3C50034A0CD /* UIImageView+HeadImage.m in Sources */,
 				31B3C9391CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m in Sources */,
 				31C1A5E81CBB69EF0010F6B4 /* SCArticleCell.m in Sources */,
@@ -3280,6 +3281,7 @@
 				31FAC5961CAAB3C50034A0CD /* EMSearchBar.m in Sources */,
 				31B3C90C1CB209B100CDB105 /* AppDelegate.m in Sources */,
 				31FAC69D1CAAB7E30034A0CD /* GroupBansViewController.m in Sources */,
+				31D5CDC71CC4A56800D02D1D /* ResetPassWordViewController.m in Sources */,
 				31B3C9381CB214B600CDB105 /* LoginUserInformation.m in Sources */,
 				3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */,
 				316F4E3B1CB8EF4500B2F9A3 /* SCPushManager.m in Sources */,
@@ -3314,12 +3316,9 @@
 				31C1A7B31CBF46420010F6B4 /* SCArticleComment.m in Sources */,
 				31B3C9601CB3CB4600CDB105 /* AnswerTheQuestionViewController.m in Sources */,
 				31FAC7881CAE3A0B0034A0CD /* SCUITabPagerViewController.m in Sources */,
-				31F8E7101CA37F530049EE23 /* LoginViewController.m in Sources */,
 				31C1A7641CBCBB3F0010F6B4 /* SCRefreshFooter.m in Sources */,
 				31FAC6A51CAAB7E30034A0CD /* MyChatroomListViewController.m in Sources */,
 				31FAC69E1CAAB7E30034A0CD /* GroupListViewController.m in Sources */,
-				3183D06D1CA68C4A0088FD67 /* ResetPassWordViewController.m in Sources */,
-				31F8E7121CA37F530049EE23 /* SignupViewController.m in Sources */,
 				31C1A7991CBE2ED70010F6B4 /* QBAlbumCell.m in Sources */,
 				31FAC6AD1CAAB7E30034A0CD /* InvitationManager.m in Sources */,
 				31C1A7531CBC7CF70010F6B4 /* UIButton+WebCache.m in Sources */,
@@ -3333,6 +3332,7 @@
 				31B3C9511CB365F800CDB105 /* SCChatListViewController.m in Sources */,
 				31FAC5971CAAB3C50034A0CD /* EMTextView.m in Sources */,
 				31C1A6461CBB6F800010F6B4 /* SDWaitingView.m in Sources */,
+				31D5CDC81CC4A56800D02D1D /* RetrievePassWordViewController.m in Sources */,
 				31FAC6A41CAAB7E30034A0CD /* ChatroomListViewController.m in Sources */,
 				317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */,
 				31C1A7A11CBE2ED70010F6B4 /* QBVideoIndicatorView.m in Sources */,
@@ -3346,6 +3346,7 @@
 				31C1A75D1CBC80EF0010F6B4 /* SCProducerModel.m in Sources */,
 				31C1A79D1CBE2ED70010F6B4 /* QBCheckmarkView.m in Sources */,
 				31C1A6191CBB6BAC0010F6B4 /* NSAttributedString+MLLabel.m in Sources */,
+				31D5CDC91CC4A56800D02D1D /* SignupSettingViewController.m in Sources */,
 				31FAC6B41CAAB7E30034A0CD /* EMRotbotChatViewCell.m in Sources */,
 				31FAC5811CAAB3C50034A0CD /* EMGifImage.m in Sources */,
 				3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */,
@@ -3358,7 +3359,6 @@
 				31C1A7B71CBF46420010F6B4 /* SCArticlePicture.m in Sources */,
 				31C1A79F1CBE2ED70010F6B4 /* QBImagePickerController.m in Sources */,
 				31FAC5891CAAB3C50034A0CD /* SRSlimeView.m in Sources */,
-				31F8E7111CA37F530049EE23 /* SignupSettingViewController.m in Sources */,
 				31FAC59A1CAAB3C50034A0CD /* EMChooseViewController.m in Sources */,
 				31B3C9541CB383FA00CDB105 /* QuestionAndAnswerViewController.m in Sources */,
 				316F4E2D1CB8AD3500B2F9A3 /* SCSkyWorldError.m in Sources */,
