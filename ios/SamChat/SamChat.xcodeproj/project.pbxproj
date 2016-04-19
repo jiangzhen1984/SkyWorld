@@ -164,6 +164,7 @@
 		31C1A7B71CBF46420010F6B4 /* SCArticlePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7AD1CBF46420010F6B4 /* SCArticlePicture.m */; };
 		31C1A7B81CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7AF1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m */; };
 		31C1A7B91CBF46420010F6B4 /* SCArticleRecommend.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7B11CBF46420010F6B4 /* SCArticleRecommend.m */; };
+		31C8B8E31CC5DFF70037BEB8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C8B8E21CC5DFF70037BEB8 /* MapKit.framework */; };
 		31D5CDC51CC4A56800D02D1D /* LoginCtrl.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D5CDBA1CC4A56800D02D1D /* LoginCtrl.storyboard */; };
 		31D5CDC61CC4A56800D02D1D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDBC1CC4A56800D02D1D /* LoginViewController.m */; };
 		31D5CDC71CC4A56800D02D1D /* ResetPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDBE1CC4A56800D02D1D /* ResetPassWordViewController.m */; };
@@ -836,6 +837,7 @@
 		31C1A7AF1CBF46420010F6B4 /* SCArticleRecommend+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCArticleRecommend+CoreDataProperties.m"; path = "CoreData/SCArticleRecommend+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31C1A7B01CBF46420010F6B4 /* SCArticleRecommend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCArticleRecommend.h; path = CoreData/SCArticleRecommend.h; sourceTree = "<group>"; };
 		31C1A7B11CBF46420010F6B4 /* SCArticleRecommend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCArticleRecommend.m; path = CoreData/SCArticleRecommend.m; sourceTree = "<group>"; };
+		31C8B8E21CC5DFF70037BEB8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		31D5CDBA1CC4A56800D02D1D /* LoginCtrl.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LoginCtrl.storyboard; path = Login/LoginCtrl.storyboard; sourceTree = "<group>"; };
 		31D5CDBB1CC4A56800D02D1D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Login/LoginViewController.h; sourceTree = "<group>"; };
 		31D5CDBC1CC4A56800D02D1D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Login/LoginViewController.m; sourceTree = "<group>"; };
@@ -1108,6 +1110,7 @@
 				31FAC6C91CAABCB60034A0CD /* Accounts.framework in Frameworks */,
 				31FAC6C71CAABCA70034A0CD /* Social.framework in Frameworks */,
 				317B82941CA96CC2000415E9 /* libEaseUI.a in Frameworks */,
+				31C8B8E31CC5DFF70037BEB8 /* MapKit.framework in Frameworks */,
 				317B82921CA962CA000415E9 /* libiconv.tbd in Frameworks */,
 				317B82901CA962C2000415E9 /* libstdc++.6.0.9.tbd in Frameworks */,
 				317B828E1CA962BA000415E9 /* libz.tbd in Frameworks */,
@@ -2818,6 +2821,7 @@
 		6CC38090E7EA689E781EDA90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				31C8B8E21CC5DFF70037BEB8 /* MapKit.framework */,
 				31A9F5171CBA9D6F005DA65D /* libZXingObjC-iOS.a */,
 				31FAC6C81CAABCB60034A0CD /* Accounts.framework */,
 				31FAC6C61CAABCA70034A0CD /* Social.framework */,
@@ -2920,6 +2924,9 @@
 						DevelopmentTeam = 99MRWBVH2W;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
 								enabled = 1;
 							};
 						};
