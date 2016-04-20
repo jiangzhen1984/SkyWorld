@@ -115,6 +115,32 @@ static SamChatHelper *sharedInstance = nil;
             [self addNewQuestionLocalNotification:receivedQuestion];
         }
     }];
+    
+    NSString *questionFrom = [question valueForKeyPath:SKYWORLD_ASKER_USERNAME];
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:questionFrom
+                                                                                   type:EMConversationTypeChat
+                                                                       createIfNotExist:YES];
+    
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:question[SKYWORLD_QUEST]];
+    NSString *questionTo = [[EMClient sharedClient] currentUsername];
+    
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:questionFrom from:questionFrom to:questionTo body:body ext:nil];
+    message.chatType = EMChatTypeChat;
+    message.direction = EMMessageDirectionReceive;
+    message.timestamp = [question[SKYWORLD_DATETIME] longLongValue];
+    message.ext = @{@"from":@"question"};
+    //message.isRead = false;
+    
+    [conversation insertMessage:message];
+    NSMutableDictionary *convertsationExtDic = [[NSMutableDictionary alloc] initWithDictionary:conversation.ext];
+    if(convertsationExtDic == nil){
+        convertsationExtDic = [[NSMutableDictionary alloc] initWithDictionary:@{CONVERSATION_TYPE_KEY_QUESTION:[NSNumber numberWithBool:NO],
+                                                                                CONVERSATION_TYPE_KEY_ANSWER:[NSNumber numberWithBool:NO],
+                                                                                CONVERSATION_TYPE_KEY_NORMAL:[NSNumber numberWithBool:NO]}];
+    }
+    [convertsationExtDic setValue:[NSNumber numberWithBool:YES] forKey:CONVERSATION_TYPE_KEY_QUESTION];
+    conversation.ext = convertsationExtDic;
+    [conversation updateConversationExtToDB];
 }
 
 #pragma mark - Receive Easemob Account Info
