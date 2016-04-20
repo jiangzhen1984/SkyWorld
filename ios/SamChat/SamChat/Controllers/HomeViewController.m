@@ -12,7 +12,6 @@
 #import "SettingsViewController.h"
 #import "ApplyViewController.h"
 #import "ChatViewController.h"
-#import "ConversationListController.h"
 #import "ContactListViewController.h"
 
 #import "ServiceSearchViewController.h"
@@ -21,7 +20,9 @@
 
 #import "WZLBadgeImport.h"
 #import "KYDrawerController.h"
-#import "AnswerTheQuestionViewController.h"
+
+#import "SCServiceConversationViewController.h"
+#import "SCNormalConversationViewController.h"
 
 typedef enum{
     HomeViewTabServiceSearch = 0,
@@ -34,10 +35,11 @@ typedef enum{
 @interface HomeViewController () <SCUITabPagerDataSource, SCUITabPagerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) ServiceSearchViewController *serviceSearchVC;
-@property (nonatomic, strong) SCChatListViewController *chatListVC;
 @property (nonatomic, strong) OfficalListTableViewController *officalListVC;
 @property (nonatomic, strong) ProducerViewController *producerVC;
 
+@property (nonatomic, strong) SCNormalConversationViewController *normalConversationVC;
+@property (nonatomic, strong) SCServiceConversationViewController *serviceConversationVC;
 
 @property (nonatomic, strong) ContactListViewController *contactsVC;
 
@@ -71,6 +73,23 @@ typedef enum{
  //   [self reloadData];
 }
 
+#pragma mark - lazy loading
+- (SCNormalConversationViewController *)normalConversationVC
+{
+    if(_normalConversationVC == nil){
+        _normalConversationVC = [[SCNormalConversationViewController alloc] initWithNibName:nil bundle:nil];
+    }
+    return _normalConversationVC;
+}
+
+- (SCServiceConversationViewController *)serviceConversationVC
+{
+    if(_serviceConversationVC == nil){
+        _serviceConversationVC = [[SCServiceConversationViewController alloc] initWithNibName:nil bundle:nil];
+    }
+    return _serviceConversationVC;
+}
+
 - (void)navigationBarStyle
 {
     self.navigationController.navigationBar.translucent = NO;
@@ -97,7 +116,7 @@ typedef enum{
 #pragma mark - Tab Pager Data Source
 
 - (NSInteger)numberOfViewControllers {
-    return 4;
+    return 5;
 }
 
 - (UIViewController *)viewControllerForIndex:(NSInteger)index
@@ -108,7 +127,8 @@ typedef enum{
             viewController = self.serviceSearchVC;
             break;
         case HomeViewTabChatList:
-            viewController = [ChatDemoHelper shareHelper].conversationListVC;
+            //viewController = [ChatDemoHelper shareHelper].conversationListVC;
+            viewController = self.normalConversationVC;
             break;
         case HomeViewTabOfficalList:
             viewController = self.officalListVC;
@@ -117,6 +137,7 @@ typedef enum{
             viewController = self.producerVC;
             break;
         default:
+            viewController = self.serviceConversationVC;
             break;
     }
     return viewController;
@@ -125,12 +146,6 @@ typedef enum{
 // Implement either viewForTabAtIndex: or titleForTabAtIndex:
 - (UIView *)viewForTabAtIndex:(NSInteger)index
 {
-    //CGRect frame = CGRectMake(0, 0, self.view.frame.size.width/4, 50);
-    //UIButton *buttonView = [[UIButton alloc] initWithFrame:frame];
-//    UIButton *buttonView = [[UIButton alloc] init];
-//    buttonView.backgroundColor = SC_MAIN_COLOR;
-//    [buttonView setTitle:[NSString stringWithFormat:@"%ld", index] forState:UIControlStateNormal];
-//    return buttonView;
     return self.tabButtons[index];
 }
 
@@ -166,11 +181,13 @@ typedef enum{
 
 #pragma mark - Tab Pager Delegate
 
-- (void)tabPager:(SCUITabPagerViewController *)tabPager willTransitionToTabAtIndex:(NSInteger)index {
+- (void)tabPager:(SCUITabPagerViewController *)tabPager willTransitionToTabAtIndex:(NSInteger)index
+{
     NSLog(@"Will transition from tab %ld to %ld", [self selectedIndex], (long)index);
 }
 
-- (void)tabPager:(SCUITabPagerViewController *)tabPager didTransitionToTabAtIndex:(NSInteger)index {
+- (void)tabPager:(SCUITabPagerViewController *)tabPager didTransitionToTabAtIndex:(NSInteger)index
+{
     NSLog(@"Did transition to tab %ld", (long)index);
 }
 
@@ -225,7 +242,7 @@ static NSString *kGroupName = @"GroupName";
     [self setupUntreatedApplyCount];
     
     [ChatDemoHelper shareHelper].contactViewVC = _contactsVC;
-    [ChatDemoHelper shareHelper].conversationListVC = _chatListVC;
+    [ChatDemoHelper shareHelper].conversationListVC = self.normalConversationVC;
 }
 //
 //#pragma mark - UITabBarDelegate
@@ -271,7 +288,11 @@ static NSString *kGroupName = @"GroupName";
     button4.backgroundColor = SC_MAIN_COLOR;
     [button4 setTitle:[NSString stringWithFormat:@"4"] forState:UIControlStateNormal];
     
-    self.tabButtons = @[button1, button2, button3, button4];
+    UIButton *button5 = [[UIButton alloc] init];
+    button5.backgroundColor = SC_MAIN_COLOR;
+    [button5 setTitle:[NSString stringWithFormat:@"5"] forState:UIControlStateNormal];
+    
+    self.tabButtons = @[button1, button2, button3, button4, button5];
 }
 
 - (void)setupSubviews
@@ -285,9 +306,6 @@ static NSString *kGroupName = @"GroupName";
     
 //    self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
 //    self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
-    
-    _chatListVC = [[SCChatListViewController alloc] initWithNibName:nil bundle:nil];
-    [_chatListVC networkChanged:_connectionState];
     
 //    _chatListVC = [[ConversationListController alloc] initWithNibName:nil bundle:nil];
 //    [_chatListVC networkChanged:_connectionState];
@@ -352,7 +370,7 @@ static NSString *kGroupName = @"GroupName";
         unreadCount += conversation.unreadMessagesCount;
     }
     unreadCount += [[SCUserProfileManager sharedInstance].currentLoginUserInformation.unreadquestioncount integerValue];
-    if (_chatListVC) {
+    if (self.normalConversationVC) {
         if (unreadCount > 0) {
             //_chatListVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
             [self setupBadgeToView:self.tabButtons[1]];
@@ -381,7 +399,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)networkChanged:(EMConnectionState)connectionState
 {
     _connectionState = connectionState;
-    [_chatListVC networkChanged:connectionState];
+    [self.normalConversationVC networkChanged:connectionState];
 }
 
 - (void)playSoundAndVibration{
@@ -525,7 +543,7 @@ static NSString *kGroupName = @"GroupName";
         //        ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
         //        [chatController hideImagePicker];
     }
-    else if(_chatListVC)
+    else if(self.normalConversationVC)
     {
         [self.navigationController popToViewController:self animated:NO];
 //        [self setSelectedViewController:_chatListVC];
@@ -630,7 +648,7 @@ static NSString *kGroupName = @"GroupName";
             }
         }];
     }
-    else if (_chatListVC)
+    else if (self.normalConversationVC)
     {
         [self.navigationController popToViewController:self animated:NO];
 //        [self setSelectedViewController:_chatListVC];
@@ -648,9 +666,6 @@ static NSString *kGroupName = @"GroupName";
         return;
     }
 #warning add viewcontrollers enumerate check
-    AnswerTheQuestionViewController *answerTheQuestionVC = [[AnswerTheQuestionViewController alloc] init];
-    answerTheQuestionVC.receivedQuestion = receivedQuestion;
-    [self.navigationController pushViewController:answerTheQuestionVC animated:YES];
 }
 
 

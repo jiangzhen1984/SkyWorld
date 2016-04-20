@@ -12,7 +12,6 @@
 #import "SCUserSettingModel.h"
 #import "SCAnswerQuestionModel.h"
 #import "SCUserRelationModel.h"
-#import "SCArticleModel.h"
 #import "SCProducerModel.h"
 
 #import "SCServiceSearchModel.h"
@@ -84,26 +83,6 @@ static SamChatClient *sharedInstance = nil;
 - (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCUserRelationModel makeFollow:flag withUser:userID completion:completion];
-}
-
-- (void)publishArticleWithImages:(NSArray *)images comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCArticleModel publishArticleWithImages:images comment:comment completion:completion];
-}
-
-- (void)queryArticleWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCArticleModel queryArticleWithTimeFrom:from to:to count:count completion:completion];
-}
-
-- (void)recommendArticleWithId:(NSNumber *)articleId flag:(BOOL)flag completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCArticleModel recommendArticleWithId:articleId flag:flag completion:completion];
-}
-
-- (void)commentArticleWithId:(NSNumber *)articleId comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCArticleModel commentArticleWithId:articleId comment:comment completion:completion];
 }
 
 - (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion

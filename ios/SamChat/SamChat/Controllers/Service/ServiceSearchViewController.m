@@ -18,7 +18,7 @@
 #import "SCHotTopicView.h"
 #import "HotTopic.h"
 
-@interface ServiceSearchViewController () <SCAnswerPushDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface ServiceSearchViewController () <UITableViewDataSource,UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *homeImage;
@@ -48,7 +48,6 @@
     [super viewDidLoad];
     [self setupSubViews];
     
-    [SamChatHelper sharedInstance].answerPushDelegate = self;
     self.isSearching = false;
 }
 
@@ -243,8 +242,6 @@
 - (void)questionSuccessWithResponse:(NSDictionary *)response
 {
     self.currentQuestionID = [response[SKYWORLD_QUESTION_ID] stringValue];
-#warning dddddddddddddddddddd
-    DebugLog(@"0000000000000000000000000:%@", self.currentQuestionID);
     self.isSearching = true;
     
     NSDictionary *questionInfo = @{SEND_QUESTION_QUESTION:self.currentQuestion,

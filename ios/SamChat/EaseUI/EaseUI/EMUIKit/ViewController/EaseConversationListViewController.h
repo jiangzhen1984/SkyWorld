@@ -41,6 +41,10 @@ typedef NS_ENUM(int, DXDeleteConvesationType) {
 //           didFailDeletingConversation:(id<IConversationModel>)conversation
 //                          deletionMode:(DXDeleteConvesationType)deletionType;
 
+SAMC_BEGIN
+- (NSArray *)getAllConversations;
+SAMC_END
+
 
 @end
 

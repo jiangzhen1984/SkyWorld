@@ -9,7 +9,6 @@
 #import "AppDelegate+SamChat.h"
 #import "LoginUserInformation.h"
 #import "ChatDemoHelper.h"
-#import "SamChatHelper.h"
 
 #import "UserSettingViewController.h"
 
@@ -22,15 +21,14 @@
                                              selector:@selector(loginStateChange:)
                                                  name:NOTIFICATION_LOGIN_STATE_CHANGE
                                                object:nil];
-    
-//    NSString *appkey = @"skyworld#skyworld";
-//    NSString *apnsCertName = @"";
-//    
-//    [[EaseSDKHelper shareHelper] easemobApplication:application
-//                      didFinishLaunchingWithOptions:launchOptions
-//                                             appkey:appkey
-//                                       apnsCertName:apnsCertName
-//                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
+    NSString *appkey = @"skyworld#skyworld";
+    NSString *apnsCertName = nil;
+    [[EaseSDKHelper shareHelper] easemobApplication:application
+                      didFinishLaunchingWithOptions:launchOptions
+                                             appkey:appkey
+                                       apnsCertName:apnsCertName
+                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:NO]}];
+    [ChatDemoHelper shareHelper];
     
     BOOL isCurrentUserLoginOK = [[SCUserProfileManager sharedInstance] isCurrentUserLoginStatusOK];
     //isCurrentUserLoginOK = YES;
@@ -79,9 +77,8 @@
         [[ChatDemoHelper shareHelper] asyncGroupFromServer];
         [[ChatDemoHelper shareHelper] asyncConversationFromDB];
         [[ChatDemoHelper shareHelper] asyncPushOptions];
+        [[ChatDemoHelper shareHelper] asyncPush];
         
-        [SamChatHelper sharedInstance].mainVC = self.homeController;
-        [[SamChatHelper sharedInstance] asyncPush];
         
     } else {
         self.homeController = nil;

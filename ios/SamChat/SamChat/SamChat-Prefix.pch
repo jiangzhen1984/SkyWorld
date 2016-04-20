@@ -31,11 +31,11 @@
 #import "SCSkyWorldError.h"
 
 #import "SamChatClient.h"
-#import "SamChatHelper.h"
 
 // Core Data
 #import "ContactUser.h"
 #import "LoginUserInformation.h"
+#import "ReceivedQuestion.h"
 
 // easemob
 #import "ChatDemoUIDefine.h"

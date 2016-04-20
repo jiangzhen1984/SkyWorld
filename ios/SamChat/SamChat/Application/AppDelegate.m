@@ -37,14 +37,6 @@
 //         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(245, 245, 245, 1), NSForegroundColorAttributeName, [UIFont fontWithName:@ "HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
 //    }
 
-    NSString *apnsCertName = nil;
-    [[EaseSDKHelper shareHelper] easemobApplication:application
-                      didFinishLaunchingWithOptions:launchOptions
-                                             appkey:@"skyworld#skyworld"
-                                       apnsCertName:apnsCertName
-                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:NO]}];
-    [ChatDemoHelper shareHelper];
-
     DebugLog(@"%@",NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]);
     [self samchatApplication:application didFinishLaunchingWithOptions:launchOptions];
     

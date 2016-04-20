@@ -27,11 +27,6 @@
 - (void)sendAnswer:(NSString *)answer toQuestionID:(NSString *)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
-- (void)publishArticleWithImages:(NSArray *)images comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
-- (void)queryArticleWithTimeFrom:(NSTimeInterval)from to:(NSTimeInterval)to count:(NSInteger)count completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
-- (void)recommendArticleWithId:(NSNumber *)articleId flag:(BOOL)flag completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
-- (void)commentArticleWithId:(NSNumber *)articleId comment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
-
 - (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
 - (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType reset:(BOOL)flag completion:(void (^)(BOOL success, NSArray *topics, SCSkyWorldError *error))completion;

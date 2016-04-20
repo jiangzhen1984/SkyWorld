@@ -17,4 +17,8 @@
 //    #import "EMClient+Call.h"
 
 #define NSEaseLocalizedString(key, comment) [[NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@"EaseUIResource" withExtension:@"bundle"]] localizedStringForKey:(key) value:@"" table:nil]
+
+#define SAMC_BEGIN
+#define SAMC_END
+
 #endif

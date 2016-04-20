@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCArticleRefreshHeader.h"
 #import "SCRefreshFooter.h"
 #import "SCRefreshHeader.h"
 

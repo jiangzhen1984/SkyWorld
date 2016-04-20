@@ -8,57 +8,39 @@
 
 #import <Foundation/Foundation.h>
 
-//#import "ConversationListController.h"
 #import "ContactListViewController.h"
 #import "HomeViewController.h"
 #import "ChatViewController.h"
-#import "SCChatListViewController.h"
+#import "SCNormalConversationViewController.h"
 
 #if DEMO_CALL == 1
 
 #import "CallViewController.h"
-
-@interface ChatDemoHelper : NSObject <EMClientDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate,EMCallManagerDelegate>
-
+@interface ChatDemoHelper : NSObject <EMClientDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate,EMCallManagerDelegate,SCPushDelegate>
 #else
-
-@interface ChatDemoHelper : NSObject <EMClientDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate>
-
+@interface ChatDemoHelper : NSObject <EMClientDelegate,EMChatManagerDelegate,EMContactManagerDelegate,EMGroupManagerDelegate,EMChatroomManagerDelegate,SCPushDelegate>
 #endif
 
 @property (nonatomic, weak) ContactListViewController *contactViewVC;
-
-//@property (nonatomic, weak) ConversationListController *conversationListVC;
-@property (nonatomic, weak) SCChatListViewController *conversationListVC;
-
+@property (nonatomic, weak) SCNormalConversationViewController *conversationListVC;
 @property (nonatomic, weak) HomeViewController *mainVC;
-
 @property (nonatomic, weak) ChatViewController *chatVC;
 
 #if DEMO_CALL == 1
-
 @property (strong, nonatomic) EMCallSession *callSession;
 @property (strong, nonatomic) CallViewController *callController;
-
 #endif
 
 + (instancetype)shareHelper;
-
 - (void)asyncPushOptions;
-
 - (void)asyncGroupFromServer;
-
 - (void)asyncConversationFromDB;
-
+- (void)asyncPush;
 #if DEMO_CALL == 1
-
 - (void)makeCallWithUsername:(NSString *)aUsername
                      isVideo:(BOOL)aIsVideo;
-
 - (void)hangupCallWithReason:(EMCallEndReason)aReason;
-
 - (void)answerCall;
-
 #endif
 
 @end
