@@ -148,6 +148,7 @@
 		31C8B90B1CC757420037BEB8 /* SCConversationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C8B90A1CC757420037BEB8 /* SCConversationListViewController.m */; };
 		31C8B90E1CC75AC70037BEB8 /* SCNormalConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C8B90D1CC75AC70037BEB8 /* SCNormalConversationViewController.m */; };
 		31C8B9111CC7721F0037BEB8 /* SamChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31C8B90F1CC7721F0037BEB8 /* SamChat.xcdatamodeld */; };
+		31C8B9141CC775810037BEB8 /* SamChatHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C8B9131CC775810037BEB8 /* SamChatHelper.m */; };
 		31D5CDC51CC4A56800D02D1D /* LoginCtrl.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31D5CDBA1CC4A56800D02D1D /* LoginCtrl.storyboard */; };
 		31D5CDC61CC4A56800D02D1D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDBC1CC4A56800D02D1D /* LoginViewController.m */; };
 		31D5CDC71CC4A56800D02D1D /* ResetPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDBE1CC4A56800D02D1D /* ResetPassWordViewController.m */; };
@@ -292,7 +293,6 @@
 		31FAC6951CAAB7E30034A0CD /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC62F1CAAB7E30034A0CD /* CallViewController.m */; };
 		31FAC6961CAAB7E30034A0CD /* ConversationListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6331CAAB7E30034A0CD /* ConversationListController.m */; };
 		31FAC6971CAAB7E30034A0CD /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6361CAAB7E30034A0CD /* ChatViewController.m */; };
-		31FAC6981CAAB7E30034A0CD /* ChatDemoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6391CAAB7E30034A0CD /* ChatDemoHelper.m */; };
 		31FAC6991CAAB7E30034A0CD /* ChatGroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC63C1CAAB7E30034A0CD /* ChatGroupDetailViewController.m */; };
 		31FAC69A1CAAB7E30034A0CD /* ContactSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC63E1CAAB7E30034A0CD /* ContactSelectionViewController.m */; };
 		31FAC69B1CAAB7E30034A0CD /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC6401CAAB7E30034A0CD /* ContactView.m */; };
@@ -786,6 +786,8 @@
 		31C8B90C1CC75AC70037BEB8 /* SCNormalConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCNormalConversationViewController.h; path = Chat/SCNormalConversationViewController.h; sourceTree = "<group>"; };
 		31C8B90D1CC75AC70037BEB8 /* SCNormalConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCNormalConversationViewController.m; path = Chat/SCNormalConversationViewController.m; sourceTree = "<group>"; };
 		31C8B9101CC7721F0037BEB8 /* SamChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SamChat.xcdatamodel; sourceTree = "<group>"; };
+		31C8B9121CC775810037BEB8 /* SamChatHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SamChatHelper.h; path = Models/SamChatHelper.h; sourceTree = "<group>"; };
+		31C8B9131CC775810037BEB8 /* SamChatHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SamChatHelper.m; path = Models/SamChatHelper.m; sourceTree = "<group>"; };
 		31D5CDBA1CC4A56800D02D1D /* LoginCtrl.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LoginCtrl.storyboard; path = Login/LoginCtrl.storyboard; sourceTree = "<group>"; };
 		31D5CDBB1CC4A56800D02D1D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Login/LoginViewController.h; sourceTree = "<group>"; };
 		31D5CDBC1CC4A56800D02D1D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Login/LoginViewController.m; sourceTree = "<group>"; };
@@ -961,8 +963,6 @@
 		31FAC6331CAAB7E30034A0CD /* ConversationListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationListController.m; sourceTree = "<group>"; };
 		31FAC6351CAAB7E30034A0CD /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		31FAC6361CAAB7E30034A0CD /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
-		31FAC6381CAAB7E30034A0CD /* ChatDemoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatDemoHelper.h; sourceTree = "<group>"; };
-		31FAC6391CAAB7E30034A0CD /* ChatDemoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatDemoHelper.m; sourceTree = "<group>"; };
 		31FAC63B1CAAB7E30034A0CD /* ChatGroupDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatGroupDetailViewController.h; sourceTree = "<group>"; };
 		31FAC63C1CAAB7E30034A0CD /* ChatGroupDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatGroupDetailViewController.m; sourceTree = "<group>"; };
 		31FAC63D1CAAB7E30034A0CD /* ContactSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactSelectionViewController.h; sourceTree = "<group>"; };
@@ -2072,6 +2072,8 @@
 				317C2D431CA8C0270035A14E /* SCUserProfileManager.m */,
 				31B3C9031CB0F08600CDB105 /* ISCTableCellModel.h */,
 				31BDF47E1CB609A600EDCED0 /* ISCChatMessageModel.h */,
+				31C8B9121CC775810037BEB8 /* SamChatHelper.h */,
+				31C8B9131CC775810037BEB8 /* SamChatHelper.m */,
 				316F4E251CB89E4300B2F9A3 /* SamChatClient.h */,
 				316F4E261CB89E4300B2F9A3 /* SamChatClient.m */,
 			);
@@ -2437,8 +2439,6 @@
 			children = (
 				31FAC62D1CAAB7E30034A0CD /* Call */,
 				31FAC6301CAAB7E30034A0CD /* Chat */,
-				31FAC6381CAAB7E30034A0CD /* ChatDemoHelper.h */,
-				31FAC6391CAAB7E30034A0CD /* ChatDemoHelper.m */,
 				31FAC63A1CAAB7E30034A0CD /* ChatGroup */,
 				31FAC64F1CAAB7E30034A0CD /* Chatroom */,
 				31FAC6561CAAB7E30034A0CD /* Contacts */,
@@ -3037,7 +3037,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				31C1A61F1CBB6BAC0010F6B4 /* NSString+MLExpression.m in Sources */,
-				31FAC6981CAAB7E30034A0CD /* ChatDemoHelper.m in Sources */,
 				31C1A7511CBC7CF70010F6B4 /* SDWebImageManager.m in Sources */,
 				31C1A62C1CBB6BB60010F6B4 /* UIView+SDAutoLayout.m in Sources */,
 				31FAC6BC1CAAB7E30034A0CD /* PushNotificationViewController.m in Sources */,
@@ -3049,6 +3048,7 @@
 				31B3C93A1CB214B600CDB105 /* ReceivedAnswer.m in Sources */,
 				31C1A76B1CBCDFDB0010F6B4 /* SCRefreshHeader.m in Sources */,
 				31B3C93B1CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m in Sources */,
+				31C8B9141CC775810037BEB8 /* SamChatHelper.m in Sources */,
 				31FAC6B11CAAB7E30034A0CD /* MainViewController.m in Sources */,
 				31C1A74E1CBC7CF70010F6B4 /* SDWebImageDecoder.m in Sources */,
 				31C1A5DA1CBB66180010F6B4 /* SCBaseRefreshView.m in Sources */,

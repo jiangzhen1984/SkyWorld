@@ -8,7 +8,6 @@
 
 #import "HomeViewController.h"
 
-#import "ChatDemoHelper.h"
 #import "SettingsViewController.h"
 #import "ApplyViewController.h"
 #import "ChatViewController.h"
@@ -127,7 +126,7 @@ typedef enum{
             viewController = self.serviceSearchVC;
             break;
         case HomeViewTabChatList:
-            //viewController = [ChatDemoHelper shareHelper].conversationListVC;
+            //viewController = [SamChatHelper shareHelper].conversationListVC;
             viewController = self.normalConversationVC;
             break;
         case HomeViewTabOfficalList:
@@ -241,8 +240,8 @@ static NSString *kGroupName = @"GroupName";
     [self setupUnreadMessageCount];
     [self setupUntreatedApplyCount];
     
-    [ChatDemoHelper shareHelper].contactViewVC = _contactsVC;
-    [ChatDemoHelper shareHelper].conversationListVC = self.normalConversationVC;
+    [SamChatHelper shareHelper].contactViewVC = _contactsVC;
+    [SamChatHelper shareHelper].conversationListVC = self.normalConversationVC;
 }
 //
 //#pragma mark - UITabBarDelegate

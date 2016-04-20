@@ -13,7 +13,6 @@
 #import "AppDelegate+SamChat.h"
 
 #import "SCCrashCatcher.h"
-#import "ChatDemoHelper.h"
 
 @interface AppDelegate ()
 

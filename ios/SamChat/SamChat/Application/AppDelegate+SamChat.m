@@ -8,7 +8,6 @@
 
 #import "AppDelegate+SamChat.h"
 #import "LoginUserInformation.h"
-#import "ChatDemoHelper.h"
 
 #import "UserSettingViewController.h"
 
@@ -28,7 +27,7 @@
                                              appkey:appkey
                                        apnsCertName:apnsCertName
                                         otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:NO]}];
-    [ChatDemoHelper shareHelper];
+    [SamChatHelper shareHelper];
     
     BOOL isCurrentUserLoginOK = [[SCUserProfileManager sharedInstance] isCurrentUserLoginStatusOK];
     //isCurrentUserLoginOK = YES;
@@ -72,12 +71,12 @@
             //viewController = self.homeController.navigationController;
             viewController = self.drawViewController;
         }
-        [ChatDemoHelper shareHelper].mainVC = self.homeController;
+        [SamChatHelper shareHelper].mainVC = self.homeController;
         
-        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
-        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
-        [[ChatDemoHelper shareHelper] asyncPushOptions];
-        [[ChatDemoHelper shareHelper] asyncPush];
+        [[SamChatHelper shareHelper] asyncGroupFromServer];
+        [[SamChatHelper shareHelper] asyncConversationFromDB];
+        [[SamChatHelper shareHelper] asyncPushOptions];
+        [[SamChatHelper shareHelper] asyncPush];
         
         
     } else {

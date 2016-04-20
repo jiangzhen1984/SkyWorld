@@ -12,7 +12,6 @@
 
 #import "EMLoginViewController.h"
 #import "EMError.h"
-#import "ChatDemoHelper.h"
 #import "MBProgressHUD.h"
 
 @interface EMLoginViewController ()<UITextFieldDelegate>
@@ -143,9 +142,9 @@
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     [[EMClient sharedClient] dataMigrationTo3];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[ChatDemoHelper shareHelper] asyncGroupFromServer];
-                        [[ChatDemoHelper shareHelper] asyncConversationFromDB];
-                        [[ChatDemoHelper shareHelper] asyncPushOptions];
+                        [[SamChatHelper shareHelper] asyncGroupFromServer];
+                        [[SamChatHelper shareHelper] asyncConversationFromDB];
+                        [[SamChatHelper shareHelper] asyncPushOptions];
                         [MBProgressHUD hideAllHUDsForView:weakself.view animated:YES];
                         //发送自动登陆状态通知
                         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];

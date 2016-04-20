@@ -12,7 +12,6 @@
 #import "ChatroomDetailViewController.h"
 #import "UserProfileViewController.h"
 #import "ContactListSelectViewController.h"
-#import "ChatDemoHelper.h"
 
 @interface ChatViewController ()<UIAlertViewDelegate, EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource,EMClientDelegate>
 {
@@ -255,7 +254,7 @@
 {
     [[EMClient sharedClient].chatManager removeDelegate:self];
     [[EMClient sharedClient].roomManager removeDelegate:self];
-    [[ChatDemoHelper shareHelper] setChatVC:nil];
+    [[SamChatHelper shareHelper] setChatVC:nil];
     
     if (self.deleteConversationIfNull) {
         //判断当前会话是否为空，若符合则删除该会话

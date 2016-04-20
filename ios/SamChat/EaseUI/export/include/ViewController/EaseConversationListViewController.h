@@ -11,6 +11,9 @@
 #import "EaseConversationModel.h"
 #import "EaseConversationCell.h"
 
+#define SAMC_BEGIN
+#define SAMC_END
+
 typedef NS_ENUM(int, DXDeleteConvesationType) {
     DXDeleteConvesationOnly,
     DXDeleteConvesationWithMessages,

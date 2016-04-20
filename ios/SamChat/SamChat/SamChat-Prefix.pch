@@ -13,6 +13,16 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
+// easemob
+#import "ChatDemoUIDefine.h"
+#import "EMAlertView.h"
+#import "TTGlobalUICommon.h"
+
+#import "EMSDKFull.h"
+#import "EaseUI.h"
+
+#define DEMO_CALL 1
+
 #import "AppMacro.h"
 #import "SCSkyWorldAPIMacro.h"
 #import "NotificationMacro.h"
@@ -31,21 +41,14 @@
 #import "SCSkyWorldError.h"
 
 #import "SamChatClient.h"
+#import "SamChatHelper.h"
 
 // Core Data
 #import "ContactUser.h"
 #import "LoginUserInformation.h"
 #import "ReceivedQuestion.h"
 
-// easemob
-#import "ChatDemoUIDefine.h"
-#import "EMAlertView.h"
-#import "TTGlobalUICommon.h"
 
-#import "EMSDKFull.h"
-#import "EaseUI.h"
-
-#define DEMO_CALL 1
 
 #endif
 

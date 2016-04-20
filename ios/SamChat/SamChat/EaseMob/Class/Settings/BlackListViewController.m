@@ -15,7 +15,6 @@
 #import "BaseTableViewCell.h"
 #import "SRRefreshView.h"
 
-#import "ChatDemoHelper.h"
 //#import "EaseChineseToPinyin.h"
 
 @interface BlackListViewController ()<UITableViewDataSource, UITableViewDelegate, SRRefreshDelegate>
@@ -133,7 +132,7 @@
         EMError *error = [[EMClient sharedClient].contactManager removeUserFromBlackList:username];
         if (!error)
         {
-            [[ChatDemoHelper shareHelper].contactViewVC reloadDataSource];
+            [[SamChatHelper shareHelper].contactViewVC reloadDataSource];
             [[self.dataSource objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
             [tableView reloadData];
         }

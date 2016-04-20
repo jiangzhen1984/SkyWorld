@@ -14,7 +14,6 @@
 #import <CoreTelephony/CTCall.h>
 #import "CallViewController.h"
 
-#import "ChatDemoHelper.h"
 
 @interface CallViewController ()
 {
@@ -340,7 +339,7 @@
     }
     
 #if DEMO_CALL == 1
-    [[ChatDemoHelper shareHelper] answerCall];
+    [[SamChatHelper shareHelper] answerCall];
 #endif
 }
 
@@ -353,7 +352,7 @@
     [audioSession setActive:YES error:nil];
     
 #if DEMO_CALL == 1
-    [[ChatDemoHelper shareHelper] hangupCallWithReason:EMCallEndReasonHangup];
+    [[SamChatHelper shareHelper] hangupCallWithReason:EMCallEndReasonHangup];
 #endif
 }
 

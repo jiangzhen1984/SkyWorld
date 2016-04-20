@@ -17,7 +17,6 @@
 #import "ChatViewController.h"
 #import "ConversationListController.h"
 #import "ContactListViewController.h"
-#import "ChatDemoHelper.h"
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
 static NSString *kMessageType = @"MessageType";
@@ -78,8 +77,8 @@ static NSString *kGroupName = @"GroupName";
     [self setupUnreadMessageCount];
     [self setupUntreatedApplyCount];
     
-    [ChatDemoHelper shareHelper].contactViewVC = _contactsVC;
-    [ChatDemoHelper shareHelper].conversationListVC = _chatListVC;
+    [SamChatHelper shareHelper].contactViewVC = _contactsVC;
+    [SamChatHelper shareHelper].conversationListVC = _chatListVC;
 }
 
 - (void)didReceiveMemoryWarning
