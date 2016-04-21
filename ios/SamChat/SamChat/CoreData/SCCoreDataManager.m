@@ -114,6 +114,13 @@ static SCCoreDataManager *sharedInstance = nil;
     return context;
 }
 
+- (NSManagedObjectContext *)confinementObjectContextOfmainContext
+{
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
+    context.parentContext = self.mainObjectContext;
+    return context;
+}
+
 #pragma mark - Core Data Saving support
 - (void)saveContext
 {

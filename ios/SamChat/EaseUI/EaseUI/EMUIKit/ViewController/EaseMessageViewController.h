@@ -290,6 +290,14 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 - (NSDictionary*)emotionExtFormessageViewController:(EaseMessageViewController *)viewController
                                         easeEmotion:(EaseEmotion*)easeEmotion;
 
+#define SAMC_BEGIN
+#define SAMC_END
+SAMC_BEGIN
+// 这三个必须同时实现
+@property (nonatomic, strong) NSDictionary *messageConversationType;
+- (NSArray *)loadMoreMessagesFromId:(NSString*)messageId limit:(NSInteger)count;
+- (BOOL)shouldMergeQuestions;
+SAMC_END
 @end
 
 @interface EaseMessageViewController : EaseRefreshTableViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate, EMChatManagerDelegate, EMCDDeviceManagerDelegate, EMChatToolbarDelegate, EaseChatBarMoreViewDelegate, EMLocationViewDelegate,EMChatroomManagerDelegate>
@@ -468,5 +476,10 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
  */
 -(void)addMessageToDataSource:(EMMessage *)message
                      progress:(id)progress;
+
+SAMC_BEGIN
+@property (strong, nonatomic) NSString *lastMessageId; // 上一次查询最后的聊天信息的id
+@property (strong, nonatomic) NSNumber *lastQuestionTime; // 上一次查询最后的问题的时间
+SAMC_END
 
 @end

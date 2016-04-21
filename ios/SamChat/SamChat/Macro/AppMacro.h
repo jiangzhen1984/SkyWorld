@@ -49,9 +49,12 @@
 #define MAX_ARTICLE_IMAGE_COUNT 9
 
 // coversation type key
-#define CONVERSATION_TYPE_KEY_QUESTION  @"QuestionConversation"
-#define CONVERSATION_TYPE_KEY_ANSWER    @"AnswerConversation"
-#define CONVERSATION_TYPE_KEY_NORMAL    @"NormalConversation"
+#define CONVERSATION_TYPE_QUESTION  @"QuestionConversation"
+#define CONVERSATION_TYPE_ANSWER    @"AnswerConversation"
+#define CONVERSATION_TYPE_NORMAL    @"NormalConversation"
+
+// message ext
+#define MESSAGE_CONVERSATION_TYPE             @"MessageConversationType"
 
 #define SAMC_BEGIN
 #define SAMC_END

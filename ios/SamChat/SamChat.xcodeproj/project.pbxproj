@@ -17,6 +17,9 @@
 		311BC6401CA37B19006B4707 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 311BC63E1CA37B19006B4707 /* LaunchScreen.storyboard */; };
 		311BC64B1CA37B19006B4707 /* SamChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC64A1CA37B19006B4707 /* SamChatTests.m */; };
 		311BC6561CA37B19006B4707 /* SamChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 311BC6551CA37B19006B4707 /* SamChatUITests.m */; };
+		311E3BCE1CC85C3A00605A49 /* SCSearchConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311E3BCD1CC85C3A00605A49 /* SCSearchConversationViewController.m */; };
+		311E3BD11CC8695D00605A49 /* SCServiceSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 311E3BD01CC8695D00605A49 /* SCServiceSearchBar.m */; };
+		311E3BD41CC876B800605A49 /* SCHotTopicsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 311E3BD31CC876B800605A49 /* SCHotTopicsView.m */; };
 		3159D9901CAE68F200212DAB /* ServiceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */; };
 		3159D9941CAE6A8C00212DAB /* OfficalListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */; };
 		3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9971CAE6B5C00212DAB /* ProducerViewController.m */; };
@@ -503,6 +506,12 @@
 		311BC6511CA37B19006B4707 /* SamChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		311BC6551CA37B19006B4707 /* SamChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatUITests.m; sourceTree = "<group>"; };
 		311BC6571CA37B19006B4707 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		311E3BCC1CC85C3A00605A49 /* SCSearchConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSearchConversationViewController.h; path = Service/SCSearchConversationViewController.h; sourceTree = "<group>"; };
+		311E3BCD1CC85C3A00605A49 /* SCSearchConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCSearchConversationViewController.m; path = Service/SCSearchConversationViewController.m; sourceTree = "<group>"; };
+		311E3BCF1CC8695D00605A49 /* SCServiceSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCServiceSearchBar.h; path = Views/Service/SCServiceSearchBar.h; sourceTree = "<group>"; };
+		311E3BD01CC8695D00605A49 /* SCServiceSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCServiceSearchBar.m; path = Views/Service/SCServiceSearchBar.m; sourceTree = "<group>"; };
+		311E3BD21CC876B800605A49 /* SCHotTopicsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHotTopicsView.h; path = Views/Service/SCHotTopicsView.h; sourceTree = "<group>"; };
+		311E3BD31CC876B800605A49 /* SCHotTopicsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHotTopicsView.m; path = Views/Service/SCHotTopicsView.m; sourceTree = "<group>"; };
 		3159D98E1CAE68F200212DAB /* ServiceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceSearchViewController.h; path = Service/ServiceSearchViewController.h; sourceTree = "<group>"; };
 		3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiceSearchViewController.m; path = Service/ServiceSearchViewController.m; sourceTree = "<group>"; };
 		3159D9921CAE6A8C00212DAB /* OfficalListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OfficalListTableViewController.h; path = Offical/OfficalListTableViewController.h; sourceTree = "<group>"; };
@@ -1407,6 +1416,7 @@
 		311BC62C1CA37B19006B4707 /* SamChat */ = {
 			isa = PBXGroup;
 			children = (
+				310A9A5F1CAA08EF000616F0 /* EaseMob */,
 				3159D99F1CAEADC600212DAB /* 3rdparty */,
 				317C2D4D1CA909B80035A14E /* Application */,
 				317C2D451CA8E3410035A14E /* CoreData */,
@@ -1486,7 +1496,6 @@
 				31C1A6261CBB6BB60010F6B4 /* SDAutoLayout */,
 				31C1A5F01CBB6BAC0010F6B4 /* MLEmojiLabel */,
 				31BDF4881CB641C300EDCED0 /* KYDrawerController */,
-				310A9A5F1CAA08EF000616F0 /* EaseMob */,
 				317B82521CA9625E000415E9 /* HyphenateSDK */,
 			);
 			name = 3rdparty;
@@ -1977,6 +1986,10 @@
 				31C1A7671CBCBCE80010F6B4 /* SCHotTopicView.m */,
 				31C1A7721CBD261A0010F6B4 /* SCReceivedAnswerView.h */,
 				31C1A7731CBD261A0010F6B4 /* SCReceivedAnswerView.m */,
+				311E3BCF1CC8695D00605A49 /* SCServiceSearchBar.h */,
+				311E3BD01CC8695D00605A49 /* SCServiceSearchBar.m */,
+				311E3BD21CC876B800605A49 /* SCHotTopicsView.h */,
+				311E3BD31CC876B800605A49 /* SCHotTopicsView.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -2650,6 +2663,8 @@
 				31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */,
 				31C8B9051CC756AC0037BEB8 /* SCServiceConversationViewController.h */,
 				31C8B9061CC756AC0037BEB8 /* SCServiceConversationViewController.m */,
+				311E3BCC1CC85C3A00605A49 /* SCSearchConversationViewController.h */,
+				311E3BCD1CC85C3A00605A49 /* SCSearchConversationViewController.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -3114,6 +3129,7 @@
 				31FAC58B1CAAB3C50034A0CD /* TTGlobalUICommon.m in Sources */,
 				31C1A7681CBCBCE80010F6B4 /* SCHotTopicView.m in Sources */,
 				31C1A61C1CBB6BAC0010F6B4 /* MLExpressionManager.m in Sources */,
+				311E3BD41CC876B800605A49 /* SCHotTopicsView.m in Sources */,
 				316F4E5E1CBA417300B2F9A3 /* SCAnswerQuestionModel.m in Sources */,
 				316F4E341CB8CF3600B2F9A3 /* SCSignupModel.m in Sources */,
 				31FAC6A91CAAB7E30034A0CD /* AddFriendViewController.m in Sources */,
@@ -3152,6 +3168,7 @@
 				31FAC6A31CAAB7E30034A0CD /* ChatroomDetailViewController.m in Sources */,
 				31FAC6951CAAB7E30034A0CD /* CallViewController.m in Sources */,
 				31FAC5931CAAB3C50034A0CD /* UIResponder+Router.m in Sources */,
+				311E3BCE1CC85C3A00605A49 /* SCSearchConversationViewController.m in Sources */,
 				31C1A6451CBB6F800010F6B4 /* SDPhotoBrowser.m in Sources */,
 				316F4E3E1CB91A9700B2F9A3 /* SCConversationCell.m in Sources */,
 				3159D9901CAE68F200212DAB /* ServiceSearchViewController.m in Sources */,
@@ -3160,6 +3177,7 @@
 				3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */,
 				31FAC7851CAE39410034A0CD /* SCUITabView.m in Sources */,
 				31FAC6971CAAB7E30034A0CD /* ChatViewController.m in Sources */,
+				311E3BD11CC8695D00605A49 /* SCServiceSearchBar.m in Sources */,
 				31FAC59B1CAAB3C50034A0CD /* EMNavigationController.m in Sources */,
 				31FAC7881CAE3A0B0034A0CD /* SCUITabPagerViewController.m in Sources */,
 				31C1A7641CBCBB3F0010F6B4 /* SCRefreshFooter.m in Sources */,

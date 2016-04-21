@@ -20,6 +20,7 @@
 #import "WZLBadgeImport.h"
 #import "KYDrawerController.h"
 
+#import "SCSearchConversationViewController.h"
 #import "SCServiceConversationViewController.h"
 #import "SCNormalConversationViewController.h"
 
@@ -37,6 +38,7 @@ typedef enum{
 @property (nonatomic, strong) OfficalListTableViewController *officalListVC;
 @property (nonatomic, strong) ProducerViewController *producerVC;
 
+@property (nonatomic, strong) SCSearchConversationViewController *searchConversationVC;
 @property (nonatomic, strong) SCNormalConversationViewController *normalConversationVC;
 @property (nonatomic, strong) SCServiceConversationViewController *serviceConversationVC;
 
@@ -73,6 +75,14 @@ typedef enum{
 }
 
 #pragma mark - lazy loading
+- (SCSearchConversationViewController *)searchConversationVC
+{
+    if(_searchConversationVC == nil){
+        _searchConversationVC = [[SCSearchConversationViewController alloc] initWithNibName:nil bundle:nil];
+    }
+    return _searchConversationVC;
+}
+
 - (SCNormalConversationViewController *)normalConversationVC
 {
     if(_normalConversationVC == nil){
@@ -130,7 +140,8 @@ typedef enum{
             viewController = self.normalConversationVC;
             break;
         case HomeViewTabOfficalList:
-            viewController = self.officalListVC;
+            //viewController = self.officalListVC;
+            viewController = self.searchConversationVC;
             break;
         case HomeViewTabProducer:
             viewController = self.producerVC;

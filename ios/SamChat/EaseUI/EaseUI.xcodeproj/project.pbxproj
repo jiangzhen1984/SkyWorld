@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		31208CAE1CC7A22C00E620C0 /* EaseConversationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D4831BD8D1CB00C8D553 /* EaseConversationListViewController.m */; };
 		D20AA3E91BEA1E7400594EFB /* EaseBubbleView+Gif.m in Sources */ = {isa = PBXBuildFile; fileRef = D20AA3E81BEA1E7400594EFB /* EaseBubbleView+Gif.m */; };
 		D20AA3EC1BEA23DD00594EFB /* EaseCustomMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D20AA3EB1BEA23DD00594EFB /* EaseCustomMessageCell.m */; };
 		D250D3A21BD8D14400C8D553 /* EaseUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D3A11BD8D14400C8D553 /* EaseUI.m */; };
@@ -39,7 +40,6 @@
 		D250D50D1BD8D1CB00C8D553 /* EaseEmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D47C1BD8D1CB00C8D553 /* EaseEmojiEmoticons.m */; };
 		D250D50E1BD8D1CB00C8D553 /* EaseEmotionEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D47E1BD8D1CB00C8D553 /* EaseEmotionEscape.m */; };
 		D250D50F1BD8D1CB00C8D553 /* EaseEmotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D4801BD8D1CB00C8D553 /* EaseEmotionManager.m */; };
-		D250D5101BD8D1CB00C8D553 /* EaseConversationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D4831BD8D1CB00C8D553 /* EaseConversationListViewController.m */; };
 		D250D5111BD8D1CB00C8D553 /* EaseLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D4851BD8D1CB00C8D553 /* EaseLocationViewController.m */; };
 		D250D5121BD8D1CB00C8D553 /* EaseMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D4871BD8D1CB00C8D553 /* EaseMessageViewController.m */; };
 		D250D5131BD8D1CB00C8D553 /* EaseRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D250D4891BD8D1CB00C8D553 /* EaseRefreshTableViewController.m */; };
@@ -1877,6 +1877,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31208CAE1CC7A22C00E620C0 /* EaseConversationListViewController.m in Sources */,
 				D250D4C81BD8D1CB00C8D553 /* wav.mm in Sources */,
 				D250D5221BD8D1CB00C8D553 /* EaseChatToolbarItem.m in Sources */,
 				D250D4C41BD8D1CB00C8D553 /* EMCDDeviceManager+ProximitySensor.m in Sources */,
@@ -1941,7 +1942,6 @@
 				D2F2C98F1C10604700F4AE1E /* MJRefreshBackGifFooter.m in Sources */,
 				D250D5071BD8D1CB00C8D553 /* UIViewController+DismissKeyboard.m in Sources */,
 				D250D51E1BD8D1CB00C8D553 /* EaseBubbleView+Video.m in Sources */,
-				D250D5101BD8D1CB00C8D553 /* EaseConversationListViewController.m in Sources */,
 				D250D5181BD8D1CB00C8D553 /* EaseMessageCell.m in Sources */,
 				D2F2C9991C10604700F4AE1E /* MWCaptionView.m in Sources */,
 				D2F2C9AB1C10604700F4AE1E /* UIButton+EMWebCache.m in Sources */,
@@ -2059,6 +2059,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -2100,6 +2101,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

@@ -20,5 +20,6 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 - (NSManagedObjectContext *)privateChildObjectContextOfmainContext;
+- (NSManagedObjectContext *)confinementObjectContextOfmainContext;
 
 @end

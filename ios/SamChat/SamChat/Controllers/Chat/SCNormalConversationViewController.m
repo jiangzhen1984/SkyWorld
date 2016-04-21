@@ -29,6 +29,7 @@
         EMConversation *conversation = conversationModel.conversation;
         if (conversation) {
             ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
+            chatController.messageConversationType = @{MESSAGE_CONVERSATION_TYPE:CONVERSATION_TYPE_NORMAL};
             chatController.title = conversationModel.title;
             [self.navigationController pushViewController:chatController animated:YES];
         }
@@ -42,8 +43,10 @@
     NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
     NSMutableArray *serviceConversations = [[NSMutableArray alloc] init];
     for (EMConversation *conversation in conversations) {
-        if((conversation.ext!=nil) &&
-           ([[conversation.ext valueForKey:CONVERSATION_TYPE_KEY_NORMAL] isEqualToNumber:[NSNumber numberWithBool:YES]])) {
+        DebugLog(@"normal list:%@", conversation.ext);
+        if((conversation.ext==nil) || conversation.type != EMConversationTypeChat){
+            [serviceConversations addObject:conversation];
+        }else if([[conversation.ext valueForKey:CONVERSATION_TYPE_NORMAL] isEqualToNumber:[NSNumber numberWithBool:YES]]) {
             [serviceConversations addObject:conversation];
         }
     }
