@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.android.samservice.*;
 import com.android.samservice.info.*;
-import com.easemob.EMCallBack;
-import com.easemob.chat.EMChat;
-import com.easemob.chat.EMChatManager;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -81,7 +81,7 @@ public class SignAccountActivity extends Activity {
 				public void run() {
 					SamLog.i(TAG,"login easemob successfully");
 					//EMChatManager.getInstance().updateCurrentUserNick(SamService.getInstance().get_current_user().getusername());
-					EMChat.getInstance().setAutoLogin(true);
+					//EMChat.getInstance().setAutoLogin(true);
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.ACTIVE);
 					SamService.getInstance().getDao().updateLoginUserEaseStatus(user.getusername(),LoginUser.ACTIVE);
@@ -164,7 +164,7 @@ public class SignAccountActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				EMChatManager.getInstance().login(userName,password,EMcb);
+				EMClient.getInstance().login(userName,password,EMcb);
 			}
 		}).start();
 	}
@@ -190,7 +190,7 @@ public class SignAccountActivity extends Activity {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						EMChatManager.getInstance().login(userName,password,EMcb);
+						EMClient.getInstance().login(userName,password,EMcb);
 					}
 				}).start();
 				break;
@@ -621,7 +621,7 @@ public class SignAccountActivity extends Activity {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						EMChatManager.getInstance().login(userName,password,EMcb);
+						EMClient.getInstance().login(userName,password,EMcb);
 					}
 				}).start();
 			}	

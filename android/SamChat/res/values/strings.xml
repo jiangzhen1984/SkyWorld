@@ -233,4 +233,5 @@
     <string name="exiting_user_conflict">exiting due to login on another phone</string>
     
     <string name="updateapp">Upate App</string>
+    <string name="vendor_setting">Vendor Setting</string>
 </resources>

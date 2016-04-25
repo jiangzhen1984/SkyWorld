@@ -40,12 +40,7 @@ import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.FollowerRecord;
 import com.android.samservice.info.LoginUser;
-import com.easemob.EMCallBack;
-import com.easemob.EMConnectionListener;
-import com.easemob.EMError;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMContactManager;
-import com.easemob.easeui.utils.EaseUserUtils;
+
 
 public class SamPublic_Fragment extends Fragment{
 	static final String TAG = "SamPublic_Fragment";

@@ -2,8 +2,6 @@ package com.android.samchat;
 
 import java.util.List;
 
-import org.apache.harmony.javax.security.auth.Refreshable;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,13 +22,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.samservice.Constants;
-import com.easemob.EMValueCallBack;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.easeui.ui.EaseGroupRemoveListener;
-//import com.easemob.chatuidemo.Constant;
-//import com.easemob.chatuidemo.adapter.GroupAdapter;
-import com.easemob.util.EMLog;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.easeui.ui.EaseGroupRemoveListener;
 
 public class GroupsActivity extends Activity {
 	public static final String TAG = "GroupsActivity";
@@ -75,7 +69,7 @@ public class GroupsActivity extends Activity {
 
 		instance = this;
 		inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		grouplist = EMGroupManager.getInstance().getAllGroups();
+		grouplist = EMClient.getInstance().groupManager().getAllGroups();
 		groupListView = (ListView) findViewById(R.id.list);
 		//show group list
 		//groupAdapter = new GroupAdapter(this, 1, grouplist);
@@ -86,21 +80,20 @@ public class GroupsActivity extends Activity {
 		                R.color.holo_orange_light, R.color.holo_red_light);
 		//ÏÂÀ­Ë¢ÐÂ
 		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-
 			@Override
 			public void onRefresh() {
-			    EMGroupManager.getInstance().asyncGetGroupsFromServer(new EMValueCallBack<List<EMGroup>>() {
-                    
-                    @Override
-                    public void onSuccess(List<EMGroup> value) {
-                        handler.sendEmptyMessage(0);
-                    }
-                    
-                    @Override
-                    public void onError(int error, String errorMsg) {
-                        handler.sendEmptyMessage(1);
-                    }
-                });
+				new Thread(){
+					@Override
+					public void run(){
+						try {
+							EMClient.getInstance().groupManager().getJoinedGroupsFromServer();
+							handler.sendEmptyMessage(0);
+						} catch (Exception e) {
+							e.printStackTrace();
+							handler.sendEmptyMessage(1);
+						}
+					}
+				}.start();
 			}
 		});
 		
@@ -145,7 +138,7 @@ public class GroupsActivity extends Activity {
 		});
 
 		groupRemoveListener = new GroupRemoveListener();
-		EMGroupManager.getInstance().addGroupChangeListener(groupRemoveListener);
+		EMClient.getInstance().groupManager().addGroupChangeListener(groupRemoveListener);
 
 		swipeRefreshLayout.autoRefresh(); 
 		
@@ -163,7 +156,7 @@ public class GroupsActivity extends Activity {
 	}
 	
 	private void refresh(){
-		grouplist = EMGroupManager.getInstance().getAllGroups();
+		grouplist = EMClient.getInstance().groupManager().getAllGroups();
 		groupAdapter = new GroupAdapter(this, 1, grouplist);
 		groupListView.setAdapter(groupAdapter);
 		groupAdapter.notifyDataSetChanged();

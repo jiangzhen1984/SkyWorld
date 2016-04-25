@@ -1,7 +1,8 @@
 <resources>
 
-     <dimen name="height_top_bar">52dp</dimen>
-     <dimen name="top_bar_avatar_marginTop">32dp</dimen>
+    <!-- SAMC_BEGIN(change height_top_bar from 46dp to 52dp) -->
+    <dimen name="height_top_bar">52dp</dimen>
+    <!-- SAMC_END(change height_top_bar from 46dp to 52dp) -->
     <dimen name="padding_search_bar">5dp</dimen>
     <dimen name="height_row_weixin">59dp</dimen>
     <dimen name="size_avatar">48dp</dimen>
@@ -19,5 +20,8 @@
 	<dimen name="chat_nick_margin_left">12dp</dimen>
 	<dimen name="chat_nick_text_size">13sp</dimen>
 	
+	<!-- SAMC_BEGIN(add some common margin in EaseUI lib) -->
 	<dimen name="title_left_margin">20dp</dimen>
+	<dimen name="top_bar_avatar_marginTop">32dp</dimen>
+	<!-- SAMC_END(add some common margin in EaseUI lib) -->
 </resources>

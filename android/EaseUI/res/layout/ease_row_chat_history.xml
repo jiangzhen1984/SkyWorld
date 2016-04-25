@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="59dp"
      android:id="@+id/list_itease_layout"
-     android:background="@color/default_bg"
+     android:background="#fff"
     android:gravity="center_vertical" >
 
     <RelativeLayout
@@ -12,14 +12,14 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true" >
 
-      <com.easemob.easeui.ui.CircleImageView
+      <ImageView
             android:id="@+id/avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ease_default_avatar" />
-      <!-- android:scaleType="fitXY" -->
 
         <TextView
             android:id="@+id/unread_msg_number"
@@ -39,7 +39,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="11dp"
+        android:layout_marginLeft="7dp"
         android:layout_marginTop="6dp"
         android:layout_toRightOf="@id/avatar_container"
         android:textColor="@color/list_itease_primary_color"
@@ -61,7 +61,7 @@
         android:layout_height="20dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="11dp"
+        android:layout_marginLeft="7dp"
         android:layout_toRightOf="@id/avatar_container"
         android:src="@drawable/ease_msg_state_fail_resend"
         android:visibility="gone" />
@@ -75,17 +75,8 @@
         android:layout_toRightOf="@id/msg_state"
         android:singleLine="true"
         android:ellipsize="end"
-		android:layout_marginBottom="5dp"
-		android:layout_marginLeft="11dp"
+        android:padding="7dp"
         android:textColor="@color/list_itease_secondary_color"
         android:textSize="14sp" />
-    
-    <View 
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/name"
-        android:background="@color/listview_gray_devider"
-        />
 
 </RelativeLayout>

@@ -581,6 +581,39 @@ public class DBManager
 		return question;
 	}
 
+	public List<String> get_ReceivedQuestion_Not_Response(long contactuserid,String receiverusername){
+		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION ;
+		/*
+		id(primary) |question_id | question |contact user id | status | response |received time | canceled time |receivercellphone
+		*/
+
+		List<String> questions = new ArrayList<String>();
+		List<Long> ids=new ArrayList<Long>();
+
+		Cursor c = db.query(table,null,"contactuserid=? and receiverusername=? and response=?",new String[]{""+contactuserid,receiverusername,""+ReceivedQuestion.NOT_RESPONSED},null,null,null);
+		while(c.moveToNext()){
+			String question_id = c.getString(c.getColumnIndex("question_id"));
+			questions.add(question_id);
+
+			long id = c.getLong(c.getColumnIndex("id"));
+			ids.add(id);
+		}
+
+		c.close();
+
+		for(Long index:ids){
+			ContentValues cv = new ContentValues();
+			cv.put("response",ReceivedQuestion.RESPONSED);
+		
+			String whereClause = "id=?";
+			String [] whereArgs = {""+Long.valueOf(index)};
+
+			db.update(table,cv,whereClause,whereArgs);
+		}
+
+		return questions;
+	}
+
 	public void clearReceivedQuestion(String receiverusername,long datetime){
 		String table = DatabaseHelper.TABLE_NAME_RECEIVED_QUESTION ;
 

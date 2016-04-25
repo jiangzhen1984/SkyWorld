@@ -8,8 +8,8 @@ import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samchat.easemobdemo.EaseMobHelper.DataSyncListener;
 
 import com.android.samservice.*;
-import com.easemob.chat.EMContactManager;
-import com.easemob.easeui.ui.EaseContactListFragment;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.ui.EaseContactListFragment;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -131,7 +131,7 @@ public class SamContact_Fragment extends EaseContactListFragment{
 		if(blackListSyncListener == null){
 			blackListSyncListener = new BlackListSyncListener();
         		EaseMobHelper.getInstance().addSyncBlackListListener(blackListSyncListener);
-			blackList = EMContactManager.getInstance().getBlackListUsernames();
+			//blackList = EMClient.getInstance().contactManager().getBlackListUsernames();
 		}
 		if(contactSyncListener == null){
 			contactSyncListener = new ContactSyncListener();
@@ -228,7 +228,7 @@ public class SamContact_Fragment extends EaseContactListFragment{
 
                 @Override
                 public void run() {
-                    blackList = EMContactManager.getInstance().getBlackListUsernames();
+                    //blackList = EMClient.getInstance().contactManager().getBlackListUsernames();
                     refresh();
                 }
                 

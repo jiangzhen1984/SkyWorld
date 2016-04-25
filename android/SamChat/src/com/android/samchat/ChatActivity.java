@@ -1,17 +1,20 @@
 package com.android.samchat;
 
+import com.android.samservice.Constants;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.ui.EaseBaseActivity;
+import com.hyphenate.easeui.ui.EaseChatFragment;
+
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.easemob.easeui.EaseConstant;
-import com.easemob.easeui.ui.EaseBaseActivity;
-import com.easemob.easeui.ui.EaseChatFragment;
 
 
 public class ChatActivity extends EaseBaseActivity{
     public static ChatActivity activityInstance;
     private EaseChatFragment chatFragment;
     String toChatUsername;
+    String chatActivityType;
+    int chatType;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -20,6 +23,12 @@ public class ChatActivity extends EaseBaseActivity{
         activityInstance = this;
         //聊天人或群id
         toChatUsername = getIntent().getExtras().getString(EaseConstant.EXTRA_USER_ID);
+	 chatType = getIntent().getExtras().getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
+	 if(chatType == EaseConstant.CHATTYPE_SINGLE){
+	 	chatActivityType = getIntent().getExtras().getString(Constants.CHAT_ACTIVITY_TYPE);
+	 }else{
+		chatActivityType = null;
+	 }
         chatFragment = new SamChatFragment();
         //传入参数
         chatFragment.setArguments(getIntent().getExtras());

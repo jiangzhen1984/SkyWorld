@@ -1,5 +1,10 @@
 package com.android.samchat;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroupManager.EMGroupOptions;
+import com.hyphenate.chat.EMGroupManager.EMGroupStyle;
+import com.hyphenate.easeui.widget.EaseAlertDialog;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,9 +19,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.easemob.chat.EMGroupManager;
-import com.easemob.easeui.widget.EaseAlertDialog;
-import com.easemob.exceptions.EaseMobException;
 
 public class NewGroupActivity extends Activity {
 	private EditText groupNameEditText;
@@ -82,14 +84,22 @@ public class NewGroupActivity extends Activity {
 					String desc = introductionEditText.getText().toString();
 					String[] members = data.getStringArrayExtra("newmembers");
 					try {
+						EMGroupOptions option = new EMGroupOptions();
+					    option.maxUsers = 200;
+					    //String reason = NewGroupActivity.this.getString(R.string.invite_join_group);
+					    //reason  = EMClient.getInstance().getCurrentUser() + reason + groupName;
 						if(checkBox.isChecked()){
 							//创建公开群，此种方式创建的群，可以自由加入
 							//创建公开群，此种方式创建的群，用户需要申请，等群主同意后才能加入此群
-						    EMGroupManager.getInstance().createPublicGroup(groupName, desc, members, true,200);
+							option.style = memberCheckbox.isChecked() ? EMGroupStyle.EMGroupStylePublicJoinNeedApproval : EMGroupStyle.EMGroupStylePublicOpenJoin;
+						    //EMClient.getInstance().groupManager().createPublicGroup(groupName, desc, members, true,200);
 						}else{
 							//创建不公开群
-						    EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, true/*memberCheckbox.isChecked()*/,200);
+							option.style = memberCheckbox.isChecked()?EMGroupStyle.EMGroupStylePrivateMemberCanInvite:EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
+							//EMClient.getInstance().groupManager().createPrivateGroup(groupName, desc, members, true/*memberCheckbox.isChecked()*/,200);
 						}
+						
+						EMClient.getInstance().groupManager().createGroup(groupName, desc, members, null, option);
 						runOnUiThread(new Runnable() {
 							public void run() {
 								progressDialog.dismiss();
@@ -97,7 +107,7 @@ public class NewGroupActivity extends Activity {
 								finish();
 							}
 						});
-					} catch (final EaseMobException e) {
+					} catch (final Exception e) {
 						runOnUiThread(new Runnable() {
 							public void run() {
 								progressDialog.dismiss();

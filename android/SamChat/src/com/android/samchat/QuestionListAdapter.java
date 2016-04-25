@@ -17,7 +17,6 @@ import com.android.samservice.*;
 import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.ReceivedQuestion;
-import com.easemob.easeui.utils.EaseUserUtils;
 
 public class QuestionListAdapter extends BaseAdapter{
 	static private String TAG = "QuestionListAdapter";

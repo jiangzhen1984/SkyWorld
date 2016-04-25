@@ -2,6 +2,8 @@ package com.android.samchat;
 
 import java.util.List;
 
+import com.hyphenate.chat.EMGroup;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Editable;
@@ -16,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.easemob.chat.EMGroup;
 
 public class GroupAdapter extends ArrayAdapter<EMGroup> {
 	public static final int GROUP_CREATED = 0;

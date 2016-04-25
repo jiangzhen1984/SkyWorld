@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List; 
 
 import com.android.samservice.SamService;
-import com.easemob.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.EaseUserUtils;
+
 
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter; 

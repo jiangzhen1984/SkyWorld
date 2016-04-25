@@ -31,7 +31,7 @@ import android.widget.TextView;
 
 import com.android.samservice.*;
 import com.android.samservice.info.*;
-import com.easemob.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 
 public class FriendGroupAdapter extends BaseAdapter{
 	static private String TAG = "FriendGroupAdapter";

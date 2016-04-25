@@ -4,12 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.samservice.Constants;
-import com.easemob.easeui.EaseConstant;
-import com.easemob.easeui.ui.EaseBaseActivity;
-import com.easemob.easeui.ui.EaseChatFragment;
+import com.android.samservice.SamService;
+import com.android.samservice.info.ContactUser;
+import com.android.samservice.info.LoginUser;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.ui.EaseChatFragment;
+import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
+import com.hyphenate.easeui.ui.EaseChatFragment.ClientDBInterface;
+import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
@@ -26,19 +34,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.TextMessageBody;
-import com.easemob.easeui.ui.EaseChatFragment;
-import com.easemob.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
-import com.easemob.easeui.widget.chatrow.EaseChatRow;
-import com.easemob.easeui.widget.chatrow.EaseCustomChatRowProvider;
-import com.easemob.easeui.widget.emojicon.EaseEmojiconMenu;
-import com.easemob.util.PathUtil;
-
-public class SamChatFragment extends EaseChatFragment implements EaseChatFragmentListener{
+public class SamChatFragment extends EaseChatFragment implements EaseChatFragmentListener,ClientDBInterface{
+    public static final int CONFIRM_ID_BACK_FROM_GROUP_DETAILS = 10;
 
    
     @Override
@@ -49,6 +46,7 @@ public class SamChatFragment extends EaseChatFragment implements EaseChatFragmen
     @Override
     protected void setUpView() {
         setChatFragmentListener(this);
+	 setClientDBCallBack(this);
         super.setUpView();
     }
 
@@ -65,24 +63,20 @@ public class SamChatFragment extends EaseChatFragment implements EaseChatFragmen
     @Override
     public void onEnterToChatDetails() {
         if (chatType == Constants.CHATTYPE_GROUP) {
-            EMGroup group = EMGroupManager.getInstance().getGroup(toChatUsername);
+            EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
             if (group == null) {
                 Toast.makeText(getActivity(), R.string.gorup_not_found, Toast.LENGTH_SHORT).show();
                 return;
             }
             startActivityForResult(
                     (new Intent(getActivity(), GroupDetailsActivity.class).putExtra("groupId", toChatUsername)),
-                    0);
+                    CONFIRM_ID_BACK_FROM_GROUP_DETAILS);
         }
     }
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(chatType != Constants.CHATTYPE_GROUP){
-			return;
-		}
-		
-		if(requestCode == 0){
+		if(requestCode == CONFIRM_ID_BACK_FROM_GROUP_DETAILS){
 			updateGroupChatName();
 		}else{
 			super.onActivityResult(requestCode, resultCode, data);
@@ -112,7 +106,20 @@ public class SamChatFragment extends EaseChatFragment implements EaseChatFragmen
       
         return false;
     }
-    
+
+
+    @Override
+    public List<String> getNotResponsedQuestion(String sender){
+	LoginUser me = SamService.getInstance().get_current_user();
+	ContactUser cuser = SamService.getInstance().getDao().query_ContactUser_db_by_username(sender);
+	if(cuser == null){
+		return null;
+	}
+	
+       List<String> questions = SamService.getInstance().getDao().get_ReceivedQuestion_Not_Response_db(cuser.getid(),me.getusername());
+
+	return questions;
+    }
    
 }
 

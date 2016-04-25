@@ -26,37 +26,28 @@ import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.InviteMessageRecord;
 import com.android.samservice.info.InviteMessageRecord.InviteMessageStatus;
 import com.android.samservice.info.LoginUser;
-import com.easemob.EMCallBack;
-import com.easemob.EMConnectionListener;
-import com.easemob.EMError;
-import com.easemob.EMEventListener;
-import com.easemob.EMGroupChangeListener;
-import com.easemob.EMNotifierEvent;
-import com.easemob.EMValueCallBack;
-import com.easemob.chat.CmdMessageBody;
-import com.easemob.chat.EMChat;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMChatOptions;
-import com.easemob.chat.EMContactListener;
-import com.easemob.chat.EMContactManager;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.EMMessage.ChatType;
-import com.easemob.chat.EMMessage.Type;
-import com.easemob.chat.TextMessageBody;
-import com.easemob.easeui.controller.EaseUI;
-import com.easemob.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
-import com.easemob.easeui.controller.EaseUI.EaseSettingsProvider;
-import com.easemob.easeui.controller.EaseUI.EaseUserProfileProvider;
-import com.easemob.easeui.domain.EaseEmojicon;
-import com.easemob.easeui.domain.EaseEmojiconGroupEntity;
-import com.easemob.easeui.domain.EaseUser;
-import com.easemob.easeui.model.EaseNotifier;
-import com.easemob.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
-import com.easemob.easeui.utils.EaseCommonUtils;
-import com.easemob.easeui.utils.EaseUserUtils;
-import com.easemob.exceptions.EaseMobException;
+import com.android.samservice.info.SendQuestion;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMContactListener;
+import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.EMValueCallBack;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMContactManager;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMConversation.EMConversationType;
+import com.hyphenate.chat.EMGroupManager;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.controller.EaseUI.EaseSettingsProvider;
+import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.exceptions.HyphenateException;
+
 
 
 public class EaseMobHelper {
@@ -70,7 +61,7 @@ public class EaseMobHelper {
     /**
      * EMEventListener
      */
-    protected EMEventListener eventListener = null;
+    //protected EMEventListener eventListener = null;
 
 	private Map<String, EaseUser> contactList;
 
@@ -118,7 +109,8 @@ public class EaseMobHelper {
     private LocalBroadcastManager broadcastManager;
 
     private boolean isContactGroupListenerRegisted;
-
+    EMMessageListener messageListener;
+	
     private Object lock;
 
 	private EaseMobHelper() {
@@ -140,6 +132,7 @@ public class EaseMobHelper {
 	 */
 	public void init(Context context) {
 		appContext = context;
+		EMClient.getInstance().setDebugMode(false);
 		easeUI = EaseUI.getInstance();
 		setEaseUIProviders();
 		demoModel = new EaseMobModel(context);
@@ -150,9 +143,6 @@ public class EaseMobHelper {
 		broadcastManager = LocalBroadcastManager.getInstance(appContext);
 		
 		initDbDao();
-
-		
-		
 	}
 
 	 protected void setEaseUIProviders() {
@@ -182,7 +172,7 @@ public class EaseMobHelper {
             public void onDisconnected(int error) {
                 if (error == EMError.USER_REMOVED) {
                     //onCurrentAccountRemoved();
-                }else if (error == EMError.CONNECTION_CONFLICT) {
+                }else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     //onConnectionConflict();
                 }
             }
@@ -216,13 +206,145 @@ public class EaseMobHelper {
             }
         };
         
-        EMChatManager.getInstance().addConnectionListener(connectionListener);       
+        EMClient.getInstance().addConnectionListener(connectionListener);       
 
         registerContactListener();
 
-        //registerEventListener();
+        registerEventListener();
         
     }
+
+
+	protected void registerEventListener() {
+		messageListener = new EMMessageListener() {
+			@Override
+			public void onMessageReceived(List<EMMessage> messages) {
+				boolean isMsgFromService=false;
+				boolean isMsgFromChat=false;
+				boolean isMsgFromVendor=false;
+				boolean isGroupMsg=false;
+
+				Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
+				
+				for (EMMessage message : messages) {
+					if(message.getChatType()==EMMessage.ChatType.Chat){
+						String chat_type = message.getStringAttribute (EaseConstant.CHAT_ACTIVITY_TYPE, EaseConstant.CHAT_ACTIVITY_TYPE_VIEW_CHAT);
+				
+						if(chat_type.equals(EaseConstant.CHAT_ACTIVITY_TYPE_VIEW_SERVICE)){
+							isMsgFromService = true;
+							String from = message.getFrom();
+							EMConversation conv = EMClient.getInstance().chatManager().getConversation(from,EMConversationType.Chat);
+							synchronized(conv){
+								String attr = conv.getExtField();
+		  						if(attr!=null && attr.contains(EaseConstant.CONVERSATION_ATTR_VIEW_VENDOR)){
+									continue;
+		  						}else if(attr == null){
+		  							conv.setExtField(EaseConstant.CONVERSATION_ATTR_VIEW_VENDOR);
+								}else{
+									conv.setExtField(attr+EaseConstant.CONVERSATION_ATTR_VIEW_VENDOR);
+								}
+							}
+						}else if(chat_type.equals(EaseConstant.CHAT_ACTIVITY_TYPE_VIEW_CHAT)){
+							isMsgFromChat = true;
+							String from = message.getFrom();
+							EMConversation conv = EMClient.getInstance().chatManager().getConversation(from,EMConversationType.Chat);
+							synchronized(conv){
+								String attr = conv.getExtField();
+		  						if(attr!=null && attr.contains(EaseConstant.CONVERSATION_ATTR_VIEW_CHAT)){
+									continue;
+		  						}else if(attr == null){
+		  							conv.setExtField(EaseConstant.CONVERSATION_ATTR_VIEW_CHAT);
+								}else{
+									conv.setExtField(attr+EaseConstant.CONVERSATION_ATTR_VIEW_CHAT);
+								}
+							}
+						}else if((chat_type.equals(EaseConstant.CHAT_ACTIVITY_TYPE_VIEW_VENDOR))){
+							isMsgFromVendor = true;
+							String from = message.getFrom();
+							EMConversation conv = EMClient.getInstance().chatManager().getConversation(from,EMConversationType.Chat);
+							String link_questions = message.getStringAttribute (EaseConstant.CHAT_QUESTIONS_BACK, null);
+							String[] quest_ids=null; 
+							if(link_questions!=null){
+								quest_ids = link_questions.split(" ");
+							}
+							if(quest_ids!=null){
+								for(int i=0; i< quest_ids.length;i++){
+									SendQuestion sq = SamService.getInstance().getDao().query_send_question_db(quest_ids[i]);
+									if(sq!=null){
+										EMMessage qMsg = EMMessage.createSendMessage(EMMessage.Type.TXT);
+										qMsg.setMsgTime(sq.sendtime);
+										qMsg.setFrom(SamService.getInstance().get_current_user().geteasemob_username());
+										qMsg.setTo(from);
+										qMsg.addBody(new EMTextMessageBody(sq.question));
+										qMsg.setAttribute(Constants.CHAT_ACTIVITY_TYPE,Constants.CHAT_ACTIVITY_TYPE_VIEW_SERVICE);
+										//qMsg.setDelivered(true);
+										qMsg.setStatus(EMMessage.Status.SUCCESS);
+										synchronized(conv){
+											conv.insertMessage(qMsg);
+										}
+									}
+								}
+							}
+							
+
+							
+							synchronized(conv){
+								String attr = conv.getExtField();
+		  						if(attr!=null && attr.contains(EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE)){
+									continue;
+		  						}else if(attr == null){
+		  							conv.setExtField(EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE);
+								}else{
+									conv.setExtField(attr+EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE);
+								}
+							}
+						}
+					}else{
+						isGroupMsg = true;
+					}
+				}
+
+				if(isMsgFromService){
+					sendNewMsgFromServiceBroadcast();
+				}
+
+				if(isMsgFromChat){
+					sendNewMsgFromChatBroadcast();
+				}
+
+				if(isMsgFromVendor){
+					sendNewMsgFromVendorBroadcast();
+				}
+
+				if (isGroupMsg){
+					/*receive group msg*/
+					sendNewMsgFromGroup();
+				}
+
+				
+			}
+			
+			@Override
+			public void onCmdMessageReceived(List<EMMessage> messages) {
+			}
+
+			@Override
+			public void onMessageReadAckReceived(List<EMMessage> messages) {
+			}
+			
+			@Override
+			public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+			}
+			
+			@Override
+			public void onMessageChanged(EMMessage message, Object change) {
+				
+			}
+		};
+		
+		EMClient.getInstance().chatManager().addMessageListener(messageListener);
+	}
+
     
     private void initDbDao() {
         inviteMessgeDao = new InviteMessgeDao(appContext);
@@ -232,7 +354,7 @@ public class EaseMobHelper {
     public void registerContactListener(){
        // if(!isContactGroupListenerRegisted){
 	     SamLog.e(TAG,"registerContactListener");
-            EMContactManager.getInstance().setContactListener(new MyContactListener());
+	     EMClient.getInstance().contactManager().setContactListener(new MyContactListener());
             isContactGroupListenerRegisted = true;
        // }
         
@@ -263,6 +385,26 @@ public class EaseMobHelper {
 
 	public void sendQAActivityDestroyedBroadcast(){
 		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_QAACTIVITY_DESTROYED));
+	}
+
+	public void sendNewMsgFromServiceBroadcast(){
+		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_NEW_MSG_FROM_SERVICE));
+	}
+
+	public void sendNewMsgFromChatBroadcast(){
+		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_NEW_MSG_FROM_CHAT));
+	}
+
+	public void sendNewMsgFromVendorBroadcast(){
+		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_NEW_MSG_FROM_VENDOR));
+	}
+
+	public void sendNewMsgFromGroup(){
+		broadcastManager.sendBroadcast(new Intent(Constants.ACTION_NEW_MSG_FROM_GROUP));
+	}
+
+	public void sendNewQuestReceived(String from){
+		broadcastManager.sendBroadcast(new Intent(EaseConstant.ACTION_NEW_QUEST_FOR_VENDOR_CHAT_FRAG).putExtra(EaseConstant.QUESTION_OWNER, from));
 	}
 
 
@@ -296,32 +438,30 @@ public class EaseMobHelper {
      public class MyContactListener implements EMContactListener {
 
         @Override
-        public void onContactAdded(List<String> usernameList) {  
+        public void onContactAdded(String username) {  
            SamLog.e(TAG,"onContactAdded");
             Map<String, EaseUser> localUsers = getContactList();
             Map<String, EaseUser> toAddUsers = new HashMap<String, EaseUser>();
-            for (String username : usernameList) {
-                EaseUser user = new EaseUser(username);
-                if (!localUsers.containsKey(username)) {
-                    userfDao.saveContact(user);
-                }
-
-		   updateInviteMsgStatus(username,InviteMessageStatus.AGREED.ordinal());
-                toAddUsers.put(username, user);
+            EaseUser user = new EaseUser(username);
+            if (!localUsers.containsKey(username)) {
+                userfDao.saveContact(user);
             }
+
+		    updateInviteMsgStatus(username,InviteMessageStatus.AGREED.ordinal());
+            toAddUsers.put(username, user);
+            
             localUsers.putAll(toAddUsers);
             broadcastManager.sendBroadcast(new Intent(Constants.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
-        public void onContactDeleted(final List<String> usernameList) {
+        public void onContactDeleted(String username) {
             SamLog.e(TAG,"onContactDeleted");
             Map<String, EaseUser> localUsers = EaseMobHelper.getInstance().getContactList();
-            for (String username : usernameList) {
-                localUsers.remove(username);
-                userfDao.deleteContact(username);
-                inviteMessgeDao.deleteMessage(username);
-            }
+            localUsers.remove(username);
+            userfDao.deleteContact(username);
+            inviteMessgeDao.deleteMessage(username);
+
             broadcastManager.sendBroadcast(new Intent(Constants.ACTION_CONTACT_CHANAGED));
         }
 
@@ -487,12 +627,12 @@ public class EaseMobHelper {
     
 
 	public boolean isLoggedIn() {
-		return EMChat.getInstance().isLoggedIn();
+		return EMClient.getInstance().isLoggedInBefore();
 	}
 
 	
 	public void logout(boolean unbindDeviceToken, final EMCallBack callback) {
-		EMChatManager.getInstance().logout(unbindDeviceToken, new EMCallBack() {
+		EMClient.getInstance().logout(unbindDeviceToken, new EMCallBack() {
 			
 			@Override
 			public void onSuccess() {
@@ -665,15 +805,18 @@ public class EaseMobHelper {
            public void run(){
                List<String> usernames = null;
                try {
-                   usernames = EMContactManager.getInstance().getContactUserNames();
+            	   usernames = EMClient.getInstance().contactManager().getAllContactsFromServer();
                    // in case that logout already before server returns, we should return immediately
-                   if(!EMChat.getInstance().isLoggedIn()){
+                   if(!isLoggedIn()){
+                       isContactsSyncedWithServer = false;
+                       isSyncingContactsWithServer = false;
+                       notifyContactsSyncListener(false);
                        return;
                    }
 
 		      SamLog.e(TAG,"before syncFetchContactInfoFromServer");
 		      syncFetchContactInfoFromServer(usernames);
-                   Map<String, EaseUser> userlist = new HashMap<String, EaseUser>();
+			Map<String, EaseUser> userlist = new HashMap<String, EaseUser>();
 			for (String username : usernames) {
 				EaseUser user = new EaseUser(username);
 				ContactUser cuser = null;
@@ -718,7 +861,7 @@ public class EaseMobHelper {
                    if(callback != null){
                        callback.onSuccess(usernames);
                    }
-               } catch (EaseMobException e) {
+               } catch (HyphenateException e) {
                    demoModel.setContactSynced(false);
                    isContactsSyncedWithServer = false;
                    isSyncingContactsWithServer = false;
@@ -739,6 +882,8 @@ public class EaseMobHelper {
            listener.onSyncComplete(success);
        }
    }
+   
+
 
 
     public synchronized void asyncFetchGroupsFromServer(final EMCallBack callback){
@@ -752,10 +897,13 @@ public class EaseMobHelper {
            @Override
            public void run(){
                try {
-                   EMGroupManager.getInstance().getGroupsFromServer();
+            	   EMClient.getInstance().groupManager().getJoinedGroupsFromServer();
                    
                    // in case that logout already before server returns, we should return immediately
-                   if(!EMChat.getInstance().isLoggedIn()){
+                   if((!isLoggedIn())){
+                       isGroupsSyncedWithServer = false;
+                       isSyncingGroupsWithServer = false;
+                       noitifyGroupSyncListeners(false);
                        return;
                    }
                    
@@ -771,7 +919,7 @@ public class EaseMobHelper {
                    if(callback != null){
                        callback.onSuccess();
                    }
-               } catch (EaseMobException e) {
+               } catch (HyphenateException e) {
                    demoModel.setGroupSynced(false);
                    isGroupsSyncedWithServer = false;
                    isSyncingGroupsWithServer = false;
@@ -803,11 +951,14 @@ public class EaseMobHelper {
            @Override
            public void run(){
                try {
-                   List<String> usernames = EMContactManager.getInstance().getBlackListUsernamesFromServer();
+            	   List<String> usernames = EMClient.getInstance().contactManager().getBlackListFromServer();
                    
                    // in case that logout already before server returns, we should return immediately
-                   if(!EMChat.getInstance().isLoggedIn()){
-                       return;
+                   if((!isLoggedIn())){
+                	  isBlackListSyncedWithServer = false;
+                       isSyncingBlackListWithServer = false;
+                       notifyBlackListSyncListener(false);
+		         return;
                    }
                    
                    demoModel.setBlacklistSynced(true);
@@ -815,12 +966,12 @@ public class EaseMobHelper {
                    isBlackListSyncedWithServer = true;
                    isSyncingBlackListWithServer = false;
                    
-                   EMContactManager.getInstance().saveBlackList(usernames);
+                   EMClient.getInstance().contactManager().saveBlackList(usernames);
                    notifyBlackListSyncListener(true);
                    if(callback != null){
                        callback.onSuccess(usernames);
                    }
-               } catch (EaseMobException e) {
+               } catch (HyphenateException e) {
                    demoModel.setBlacklistSynced(false);
                    
                    isBlackListSyncedWithServer = false;
@@ -841,7 +992,7 @@ public class EaseMobHelper {
             listener.onSyncComplete(success);
         }
     }
-    
+	
     public boolean isSyncingGroupsWithServer() {
         return isSyncingGroupsWithServer;
     }
@@ -871,8 +1022,8 @@ public class EaseMobHelper {
             return;
         }
 
-	 SamLog.e(TAG,"notify swich on from now on ...");
-        EMChat.getInstance().setAppInited();
+        SamLog.e(TAG,"notify swich on from now on ...");
+        //EMClient.getInstance().setAppInited();
         alreadyNotified = true;
     }
 	
@@ -894,6 +1045,8 @@ public class EaseMobHelper {
         isContactGroupListenerRegisted = false;
         
         setContactList(null);
+
+	 EMClient.getInstance().chatManager().removeMessageListener(messageListener);
         
     }
 
