@@ -16,7 +16,7 @@ import com.android.samservice.*;
 import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.ReceivedAnswer;
-import com.easemob.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 
 public class SearchListAdapter extends BaseAdapter{
 	static private String TAG = "SearchListAdapter";

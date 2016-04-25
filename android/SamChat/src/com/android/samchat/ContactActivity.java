@@ -5,9 +5,9 @@ import java.util.Map;
 import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samservice.Constants;
 import com.android.samservice.SamLog;
-import com.easemob.easeui.EaseConstant;
-import com.easemob.easeui.domain.EaseUser;
-import com.easemob.easeui.ui.EaseContactListFragment.EaseContactListItemClickListener;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.ui.EaseContactListFragment.EaseContactListItemClickListener;
 
 
 import android.support.v4.app.Fragment;

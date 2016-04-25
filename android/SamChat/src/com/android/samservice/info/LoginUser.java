@@ -118,4 +118,20 @@ public class LoginUser
 	public void seteasemob_status(int easemob_status){
 		this.easemob_status  = easemob_status;
 	}
+
+	public String getarea(){
+		return this.area;
+	}
+
+	public String getlocation(){
+		return this.location;
+	}
+
+	public String getdescription(){
+		return this.description;
+	}
+
+	public String getimagefile(){
+		return this.imagefile;
+	}
 }

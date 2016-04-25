@@ -17,10 +17,9 @@ import android.widget.Toast;
 
 import com.android.samservice.*;
 import com.android.samservice.info.LoginUser;
-import com.easemob.EMCallBack;
-import com.easemob.chat.EMChat;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMGroupManager;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+
 
 /* Author KevinDong
  * This is the launcher activity.SamLuancherActivity will below 3 function:
@@ -46,7 +45,7 @@ public class SamLauncherActivity extends Activity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 					SamLog.i(TAG,"login easemob successfully");
-					EMChat.getInstance().setAutoLogin(true);
+					//EMChat.getInstance().setAutoLogin(true);
 					//EMChatManager.getInstance().updateCurrentUserNick(SamService.getInstance().get_current_user().getusername());
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.ACTIVE);
@@ -90,7 +89,6 @@ public class SamLauncherActivity extends Activity {
 		SamService.getInstance().startWaitThread();
 		skyworld.EaseMobInit();
 
-
 		final String userName = SamService.getInstance().get_current_user().geteasemob_username();
 		final String password = SamService.getInstance().get_current_user().getpassword();
 
@@ -98,17 +96,14 @@ public class SamLauncherActivity extends Activity {
 			IntentFilter easemob_filter = new IntentFilter();
 			easemob_filter.addAction(SamService.EASEMOBNAMEGOT);
 			registerReceiver(EaseMobNameGotReceiver, easemob_filter);
-
 			startEaseMobNameGotTimeOut();
 			return;
 		}
-
-
 		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				EMChatManager.getInstance().login(userName,password,EMcb);
+				EMClient.getInstance().login(userName,password,EMcb);
 			}
 		}).start();
 	}
@@ -133,7 +128,7 @@ public class SamLauncherActivity extends Activity {
 	    	
 	        switch(msg.what) {
 	            case MSG_AUTOLOGIN_CALLBACK:
-			cancelTimeOut();
+			//cancelTimeOut();
 			if(timeout_happened){
 				SamLog.i(TAG,"drop msg due to timeout happened");
 				break;
@@ -142,12 +137,6 @@ public class SamLauncherActivity extends Activity {
 	            	if(msg.arg1==SignService.R_AUTO_SIGN_IN_OK){
 	            		SamLog.i(TAG,"SamLauncherActivity auto login succeed!");
 				login_easemob();
-				//if(msg.arg2 !=0){
-				/*write token failed*/
-				//	launchMainActivity();
-				//}else{
-				//	launchMainActivity();
-				//}
 	            	}else if(msg.arg1==SignService.R_AUTO_SIGN_IN_NO_HISTORY){
 	            		SamLog.w(TAG, "SamLauncherActivity auto login no history!");
 				invalideAllLoginRecord();
@@ -184,7 +173,7 @@ public class SamLauncherActivity extends Activity {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						EMChatManager.getInstance().login(userName,password,EMcb);
+						EMClient.getInstance().login(userName,password,EMcb);
 					}
 				}).start();
 				break;
@@ -223,7 +212,6 @@ public class SamLauncherActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 
 		IntentFilter destroy_filter = new IntentFilter();
 		destroy_filter.addAction(SamService.FINISH_ALL_SIGN_ACTVITY);
@@ -284,7 +272,7 @@ public class SamLauncherActivity extends Activity {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						EMChatManager.getInstance().login(userName,password,EMcb);
+						EMClient.getInstance().login(userName,password,EMcb);
 					}
 				}).start();
 			}	

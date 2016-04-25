@@ -9,9 +9,9 @@ import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.FollowerRecord;
 import com.android.samservice.info.LoginUser;
 import com.android.samservice.info.ReceivedAnswer;
-import com.easemob.easeui.EaseConstant;
-import com.easemob.easeui.domain.EaseUser;
-import com.easemob.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import android.app.Activity;
 import android.content.Context;

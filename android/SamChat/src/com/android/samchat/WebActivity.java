@@ -30,9 +30,6 @@ import android.widget.Toast;
 
 import com.android.samservice.HttpCommClient;
 import com.android.samservice.SamService;
-import com.easemob.chat.EMContactManager;
-import com.easemob.easeui.utils.EaseUserUtils;
-import com.easemob.exceptions.EaseMobException;
 
 public class WebActivity extends Activity {
 

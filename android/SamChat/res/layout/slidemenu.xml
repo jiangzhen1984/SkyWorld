@@ -11,7 +11,7 @@
     	android:layout_height="wrap_content"
     	android:background="@color/text_theme">
     	
-        <com.easemob.easeui.ui.CircleImageView
+        <com.hyphenate.easeui.ui.CircleImageView
             android:id="@+id/avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -160,6 +160,38 @@
         android:layout_gravity="center_vertical"
         android:textSize="18sp"
         android:text="@string/sweep"/>
+    
+    </LinearLayout>
+    
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/listview_gray_devider"
+        android:layout_marginTop="5dp"/>
+    
+     <LinearLayout
+        android:id="@+id/vendor_setting_layout"  
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="20dp"
+    	android:orientation="horizontal" >
+        
+      <ImageView
+      	 android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginRight="30dp"
+         android:layout_gravity="center_vertical"
+         android:contentDescription="@null"
+         android:src="@drawable/sam_setting_icon"/>
+    
+      <TextView
+        android:id="@+id/vendor_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp"
+        android:text="@string/vendor_setting"/>
     
     </LinearLayout>
     

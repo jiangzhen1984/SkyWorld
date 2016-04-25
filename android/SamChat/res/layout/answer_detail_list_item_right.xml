@@ -93,7 +93,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="60dp">
     
-        <com.easemob.easeui.ui.CircleImageView
+        <com.hyphenate.easeui.ui.CircleImageView
              android:id="@+id/userimage"
              android:layout_width="45dp"
              android:layout_height="45dp"

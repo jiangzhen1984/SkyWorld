@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.android.samservice.*;
 import com.android.samservice.info.*;
-import com.easemob.easeui.utils.EaseUserUtils;
+
 
 public class UserInfoDescListAdapter extends BaseAdapter{
 	static private String TAG = "UserInfoDescListAdapter";

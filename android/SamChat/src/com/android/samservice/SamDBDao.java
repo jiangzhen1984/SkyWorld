@@ -207,6 +207,12 @@ public class SamDBDao{
 		}
 	}
 
+	public List<String> get_ReceivedQuestion_Not_Response_db(long contactuserid,String receivername){
+		synchronized(dbLock){
+			return dbHandle.get_ReceivedQuestion_Not_Response(contactuserid,receivername);
+		}
+	}
+
 	public List<ReceivedQuestion> query_RecentReceivedQuestion_db(){
 		synchronized(dbLock){
 			return dbHandle.queryRecentReceivedQuestion(SamService.getInstance().get_current_user().getusername());
