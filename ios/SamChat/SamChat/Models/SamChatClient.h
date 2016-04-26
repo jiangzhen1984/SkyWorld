@@ -33,12 +33,9 @@
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion;
 - (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion;
 
-
-
-- (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType reset:(BOOL)flag completion:(void (^)(BOOL success, NSArray *topics, SCSkyWorldError *error))completion;
+// SCServiceManager
+- (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType currentCount:(NSInteger)currentCount updateTimePre:(NSTimeInterval)updateTimePre completion:(void (^)(BOOL success, NSDictionary *response, NSError *error))completion;
 
 - (void)asyncWaitingPush;
-
-
 
 @end

@@ -8,20 +8,14 @@
 
 #import "SamChatClient.h"
 
-#import "SCServiceSearchModel.h"
 
 #import "SCAccountManager.h"
 #import "SCProducerManager.h"
 #import "SCOfficalManager.h"
 #import "SCSettingManager.h"
+#import "SCServiceManager.h"
 
 static SamChatClient *sharedInstance = nil;
-
-@interface SamChatClient ()
-
-@property (nonatomic, strong) SCServiceSearchModel *serviceSearchModel;
-
-@end
 
 @implementation SamChatClient
 
@@ -38,8 +32,6 @@ static SamChatClient *sharedInstance = nil;
 {
     self = [super init];
     if(self){
-        _serviceSearchModel = [SCServiceSearchModel new];
-        [_serviceSearchModel resetModel];
     }
     return self;
 }
@@ -85,27 +77,19 @@ static SamChatClient *sharedInstance = nil;
     [SCSettingManager checkVersionCompletion:completion];
 }
 
-//-----------------
-
-
-
-
-
-
-- (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType reset:(BOOL)flag completion:(void (^)(BOOL success, NSArray *topics, SCSkyWorldError *error))completion
+- (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType currentCount:(NSInteger)currentCount updateTimePre:(NSTimeInterval)updateTimePre completion:(void (^)(BOOL success, NSDictionary *response, NSError *error))completion
 {
-    if(flag){
-        [self.serviceSearchModel resetModel];
-    }
-    [self.serviceSearchModel queryTopicListWithOptType:optType topicType:topicType completion:completion];
+    [SCServiceManager queryTopicListWithOptType:optType
+                                      topicType:topicType
+                                   currentCount:currentCount
+                                  updateTimePre:updateTimePre
+                                     completion:completion];
 }
 
 - (void)asyncWaitingPush
 {
     [self.pushManager asyncWaitingPush];
 }
-
-
 
 #pragma mark - Lazy initialization
 - (SCPushManager *)pushManager

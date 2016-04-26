@@ -17,6 +17,9 @@
 @property (nonatomic, strong) SCRefreshFooter *refreshFooterView;
 @property (nonatomic, strong) NSMutableArray *hotTopics;
 
+@property (nonatomic, assign) NSTimeInterval updateTimePre;
+@property (nonatomic, assign) NSInteger currentCount;
+
 @end
 
 @implementation SCHotTopicsView
@@ -106,12 +109,20 @@
 
 - (void)asyncLoadHotTopicsFromServerWithReset:(BOOL)resetflag
 {
+    if (resetflag) {
+        _updateTimePre = 0;
+        _currentCount = 0;
+    }
     [[SamChatClient sharedInstance] queryTopicListWithOptType:0
                                                     topicType:0
-                                                        reset:resetflag
-                                                   completion:^(BOOL success, NSArray *topics, SCSkyWorldError *error) {
-                                                       if(success && ([topics count] > 0)){
-                                                           if(resetflag){
+                                                 currentCount:_currentCount
+                                                updateTimePre:_updateTimePre
+                                                   completion:^(BOOL success, NSDictionary *response, NSError *error) {
+                                                       if (success) {
+                                                           NSArray *topics = [self convertJsonArrayToTopicsArray:response[SKYWORLD_TOPICS]];
+                                                           _currentCount += [topics count];
+                                                           _updateTimePre = [response[SKYWORLD_QUERY_TIME] doubleValue];
+                                                           if (resetflag) {
                                                                [self.hotTopics removeAllObjects];
                                                            }
                                                            [self.hotTopics addObjectsFromArray:topics];
@@ -119,6 +130,36 @@
                                                            [self.tableView reloadData];
                                                        }
                                                    }];
+    
+//    [[SamChatClient sharedInstance] queryTopicListWithOptType:0
+//                                                    topicType:0
+//                                                        reset:resetflag
+//                                                   completion:^(BOOL success, NSArray *topics, SCSkyWorldError *error) {
+//                                                       if(success && ([topics count] > 0)){
+//                                                           if(resetflag){
+//                                                               [self.hotTopics removeAllObjects];
+//                                                           }
+//                                                           [self.hotTopics addObjectsFromArray:topics];
+//                                                           [HotTopic updateHotTopicsInPrivateManagedObjectContextWithArray:topics];
+//                                                           [self.tableView reloadData];
+//                                                       }
+//                                                   }];
+}
+
+- (NSArray *)convertJsonArrayToTopicsArray:(NSArray *)topicsJson
+{
+    NSMutableArray *topics = [[NSMutableArray alloc] init];
+    for (id topicDictionary in topicsJson) {
+        if([topicDictionary isKindOfClass:[NSDictionary class]]){
+            HotTopicCellModel *topic = [[HotTopicCellModel alloc] init];
+            topic.type = [((NSDictionary *)topicDictionary)[SKYWORLD_TOPIC_TYPE] integerValue];
+            topic.name = ((NSDictionary *)topicDictionary)[SKYWORLD_NAME];
+            if((topic.name) && (topic.name.length > 0)){
+                [topics addObject:topic];
+            }
+        }
+    }
+    return topics;
 }
 
 #pragma mark - Table Data Source & Delegate
