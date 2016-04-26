@@ -7,13 +7,13 @@
 //
 
 #import "SamChatClient.h"
-#import "SCUserSettingModel.h"
 
 #import "SCServiceSearchModel.h"
 
 #import "SCAccountManager.h"
 #import "SCProducerManager.h"
 #import "SCOfficalManager.h"
+#import "SCSettingManager.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -69,22 +69,26 @@ static SamChatClient *sharedInstance = nil;
     [SCOfficalManager makeFollow:flag withUser:userID completion:completion];
 }
 
-//-----------------
 
-- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [SCUserSettingModel uploadUserAvatarInBackground:image completion:completion];
+    [SCSettingManager feedbackWithComment:comment completion:completion];
 }
 
-- (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [SCUserSettingModel feedbackWithComment:comment completion:completion];
+    [SCSettingManager uploadUserAvatarInBackground:image completion:completion];
 }
 
 - (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion
 {
-    [SCUserSettingModel checkVersionCompletion:completion];
+    [SCSettingManager checkVersionCompletion:completion];
 }
+
+//-----------------
+
+
+
 
 
 

@@ -28,9 +28,9 @@
 // SCOfficalManager
 - (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, NSError *error))completion;
 
-
-- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
-- (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
+// SCSettingManager
+- (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, NSError *error))completion;
+- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion;
 - (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion;
 
 

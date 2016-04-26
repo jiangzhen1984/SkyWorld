@@ -1,17 +1,48 @@
 //
-//  SCUserSettingModel.m
+//  SCSettingManager.m
 //  SamChat
 //
-//  Created by HJ on 4/10/16.
+//  Created by HJ on 4/26/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#import "SCUserSettingModel.h"
+#import "SCSettingManager.h"
+#import "SCSkyWorldErrorHelper.h"
 
-@implementation SCUserSettingModel
+@implementation SCSettingManager
 
-+ (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
++ (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, NSError *error))completion
 {
+    NSAssert(completion != nil, @"completion block should not be nil");
+    if((comment==nil) || (comment.length<=0)){
+        // should check in controller
+        completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
+        return;
+    }
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:[SCSkyWorldAPI urlFeedbackWithComment:comment]
+      parameters:nil
+        progress:^(NSProgress *downloadProgress) {
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if([responseObject isKindOfClass:[NSDictionary class]]){
+                NSDictionary *response = responseObject;
+                NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
+                if(errorCode){
+                    completion(false, [SCSkyWorldErrorHelper errorWithCode:errorCode]);
+                }else{
+                    completion(true, nil);
+                }
+            }else{
+                completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
+        }];
+}
+
++ (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
     UIImage *headImage = [SCUtils scalingAndCroppingImage:image ForSize:CGSizeMake(120.f, 120.f)];
     NSData* imageData;
     if (UIImagePNGRepresentation(headImage)) {
@@ -37,67 +68,21 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
         NSString *avatarUrlString = [response valueForKeyPath:SKYWORLD_USER_AVATAR_ORIGIN];
         if((errorCode) || (avatarUrlString==nil)){
-            if(completion){
-                completion(false, [SCSkyWorldError errorWithCode:errorCode]);
-            }
+            completion(false, [SCSkyWorldErrorHelper errorWithCode:errorCode]);
             return;
         }
         NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
         [mainContext performBlockAndWait:^{
             [LoginUserInformation updateImageFileWithString:avatarUrlString inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
         }];
-        if (completion){
-            completion(true, nil);
-        }
+        completion(true, nil);
     }else{
-        if(completion){
-            completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
-        }
+        completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
     }
 } failure:^(NSURLSessionDataTask *task, NSError *error) {
     DebugLog(@"avatar failed:%@", error);
-    if (completion) {
-        completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
-    }
+    completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
 }];
-}
-
-+ (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    if((comment==nil) || (comment.length<=0)){
-        // should check in controller
-        if(completion){
-            completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
-        }
-        return;
-    }
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:[SCSkyWorldAPI urlFeedbackWithComment:comment]
-      parameters:nil
-        progress:^(NSProgress *downloadProgress) {
-        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            if([responseObject isKindOfClass:[NSDictionary class]]){
-                NSDictionary *response = responseObject;
-                NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
-                if(errorCode){
-                    if(completion){
-                        completion(false, [SCSkyWorldError errorWithCode:errorCode]);
-                    }
-                }else{
-                    if(completion){
-                        completion(true, nil);
-                    }
-                }
-            }else{
-                if(completion){
-                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
-                }
-            }
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            if(completion){
-                completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
-            }
-        }];
 }
 
 #pragma mark - Check Version

@@ -139,7 +139,7 @@
     UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
     [picker dismissViewControllerAnimated:YES completion:nil];
     if (orgImage) {
-        [[SamChatClient sharedInstance] uploadUserAvatarInBackground:orgImage completion:^(BOOL success, SCSkyWorldError *error) {
+        [[SamChatClient sharedInstance] uploadUserAvatarInBackground:orgImage completion:^(BOOL success, NSError *error) {
             [self hideHud];
             if(success){
                 NSURL *avatarUrl = [NSURL URLWithString:[SCUserProfileManager sharedInstance].currentLoginUserInformation.imagefile];
