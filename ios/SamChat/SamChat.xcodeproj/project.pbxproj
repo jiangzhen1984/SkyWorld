@@ -51,7 +51,6 @@
 		3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0701CA690730088FD67 /* SCViewFactory.m */; };
 		31A9F5151CBA9AF6005DA65D /* QRCodeScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9F5141CBA9AF6005DA65D /* QRCodeScanViewController.m */; };
 		31A9F5181CBA9D6F005DA65D /* libZXingObjC-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A9F5171CBA9D6F005DA65D /* libZXingObjC-iOS.a */; };
-		31B3C9021CB0E67400CDB105 /* SCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */; };
 		31B3C90C1CB209B100CDB105 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C90B1CB209B100CDB105 /* AppDelegate.m */; };
 		31B3C9361CB214B600CDB105 /* ContactUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C91D1CB214B600CDB105 /* ContactUser.m */; };
 		31B3C9371CB214B600CDB105 /* ContactUser+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C91F1CB214B600CDB105 /* ContactUser+CoreDataProperties.m */; };
@@ -65,10 +64,7 @@
 		31B3C94A1CB28BD200CDB105 /* UserSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9491CB28BD200CDB105 /* UserSettingViewController.m */; };
 		31B3C94D1CB3463700CDB105 /* ProducerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C94C1CB3463700CDB105 /* ProducerEditViewController.m */; };
 		31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */; };
-		31BDF47A1CB5FBD500EDCED0 /* SCBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */; };
-		31BDF47D1CB6007C00EDCED0 /* SCChatMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */; };
 		31BDF48B1CB6420700EDCED0 /* KYDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */; };
-		31C1A5D61CBB65350010F6B4 /* SCSimpleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A5D51CBB65350010F6B4 /* SCSimpleCell.m */; };
 		31C1A5DA1CBB66180010F6B4 /* SCBaseRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A5D91CBB66180010F6B4 /* SCBaseRefreshView.m */; };
 		31C1A5DD1CBB66CE0010F6B4 /* SCBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A5DC1CBB66CE0010F6B4 /* SCBaseTableViewController.m */; };
 		31C1A6151CBB6BAC0010F6B4 /* MLEmoji_Expression.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 31C1A5F11CBB6BAC0010F6B4 /* MLEmoji_Expression.bundle */; };
@@ -596,9 +592,6 @@
 		31A9F5141CBA9AF6005DA65D /* QRCodeScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRCodeScanViewController.m; path = Setting/QRCodeScanViewController.m; sourceTree = "<group>"; };
 		31A9F5171CBA9D6F005DA65D /* libZXingObjC-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libZXingObjC-iOS.a"; path = "ZXingObjc/build/Debug-iphoneos/libZXingObjC-iOS.a"; sourceTree = "<group>"; };
 		31B3C8FC1CAF6BE900CDB105 /* SCSkyWorldAPIMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPIMacro.h; sourceTree = "<group>"; };
-		31B3C9001CB0E67400CDB105 /* SCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCTableViewCell.h; path = Views/SCTableViewCell.h; sourceTree = "<group>"; };
-		31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCTableViewCell.m; path = Views/SCTableViewCell.m; sourceTree = "<group>"; };
-		31B3C9031CB0F08600CDB105 /* ISCTableCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ISCTableCellModel.h; path = Models/ISCTableCellModel.h; sourceTree = "<group>"; };
 		31B3C90A1CB209B100CDB105 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Application/AppDelegate.h; sourceTree = "<group>"; };
 		31B3C90B1CB209B100CDB105 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Application/AppDelegate.m; sourceTree = "<group>"; };
 		31B3C91C1CB214B600CDB105 /* ContactUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactUser.h; path = CoreData/ContactUser.h; sourceTree = "<group>"; };
@@ -626,15 +619,8 @@
 		31B3C94C1CB3463700CDB105 /* ProducerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProducerEditViewController.m; path = Producer/ProducerEditViewController.m; sourceTree = "<group>"; };
 		31B3C9611CB3D0F400CDB105 /* SCChatToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCChatToolBar.h; path = Views/SCChatToolBar.h; sourceTree = "<group>"; };
 		31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCChatToolBar.m; path = Views/SCChatToolBar.m; sourceTree = "<group>"; };
-		31BDF4781CB5FBD500EDCED0 /* SCBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCBubbleView.h; path = Views/MessageCell/MessageCellBubbleView/SCBubbleView.h; sourceTree = "<group>"; };
-		31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCBubbleView.m; path = Views/MessageCell/MessageCellBubbleView/SCBubbleView.m; sourceTree = "<group>"; };
-		31BDF47B1CB6007C00EDCED0 /* SCChatMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCChatMessageCell.h; path = Views/MessageCell/SCChatMessageCell.h; sourceTree = "<group>"; };
-		31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCChatMessageCell.m; path = Views/MessageCell/SCChatMessageCell.m; sourceTree = "<group>"; };
-		31BDF47E1CB609A600EDCED0 /* ISCChatMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ISCChatMessageModel.h; path = Models/ISCChatMessageModel.h; sourceTree = "<group>"; };
 		31BDF4891CB6420700EDCED0 /* KYDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYDrawerController.h; path = 3rdparty/KYDrawerController/KYDrawerController.h; sourceTree = "<group>"; };
 		31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KYDrawerController.m; path = 3rdparty/KYDrawerController/KYDrawerController.m; sourceTree = "<group>"; };
-		31C1A5D41CBB65350010F6B4 /* SCSimpleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSimpleCell.h; path = Views/SimpleCell/SCSimpleCell.h; sourceTree = "<group>"; };
-		31C1A5D51CBB65350010F6B4 /* SCSimpleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCSimpleCell.m; path = Views/SimpleCell/SCSimpleCell.m; sourceTree = "<group>"; };
 		31C1A5D81CBB66180010F6B4 /* SCBaseRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCBaseRefreshView.h; path = Views/BaseView/SCBaseRefreshView.h; sourceTree = "<group>"; };
 		31C1A5D91CBB66180010F6B4 /* SCBaseRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCBaseRefreshView.m; path = Views/BaseView/SCBaseRefreshView.m; sourceTree = "<group>"; };
 		31C1A5DB1CBB66CE0010F6B4 /* SCBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCBaseTableViewController.h; path = Views/BaseView/SCBaseTableViewController.h; sourceTree = "<group>"; };
@@ -1521,13 +1507,6 @@
 			name = Setting;
 			sourceTree = "<group>";
 		};
-		316F4E5B1CBA414000B2F9A3 /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Chat;
-			sourceTree = "<group>";
-		};
 		316F4E5F1CBA483E00B2F9A3 /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -1675,12 +1654,8 @@
 				31C1A7651CBCBC6A0010F6B4 /* Service */,
 				31C1A7611CBCB8950010F6B4 /* Custom */,
 				31C1A5D71CBB65D10010F6B4 /* BaseView */,
-				31C1A5D31CBB64A20010F6B4 /* SimpleCell */,
-				31BDF4761CB5FB6600EDCED0 /* MessageCell */,
 				3183D06F1CA690730088FD67 /* SCViewFactory.h */,
 				3183D0701CA690730088FD67 /* SCViewFactory.m */,
-				31B3C9001CB0E67400CDB105 /* SCTableViewCell.h */,
-				31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */,
 				31B3C9611CB3D0F400CDB105 /* SCChatToolBar.h */,
 				31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */,
 				316F4E3C1CB91A9700B2F9A3 /* SCConversationCell.h */,
@@ -1711,25 +1686,6 @@
 			name = Chat;
 			sourceTree = "<group>";
 		};
-		31BDF4761CB5FB6600EDCED0 /* MessageCell */ = {
-			isa = PBXGroup;
-			children = (
-				31BDF4771CB5FB8000EDCED0 /* MessageCellBubbleView */,
-				31BDF47B1CB6007C00EDCED0 /* SCChatMessageCell.h */,
-				31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */,
-			);
-			name = MessageCell;
-			sourceTree = "<group>";
-		};
-		31BDF4771CB5FB8000EDCED0 /* MessageCellBubbleView */ = {
-			isa = PBXGroup;
-			children = (
-				31BDF4781CB5FBD500EDCED0 /* SCBubbleView.h */,
-				31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */,
-			);
-			name = MessageCellBubbleView;
-			sourceTree = "<group>";
-		};
 		31BDF4881CB641C300EDCED0 /* KYDrawerController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1737,15 +1693,6 @@
 				31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */,
 			);
 			name = KYDrawerController;
-			sourceTree = "<group>";
-		};
-		31C1A5D31CBB64A20010F6B4 /* SimpleCell */ = {
-			isa = PBXGroup;
-			children = (
-				31C1A5D41CBB65350010F6B4 /* SCSimpleCell.h */,
-				31C1A5D51CBB65350010F6B4 /* SCSimpleCell.m */,
-			);
-			name = SimpleCell;
 			sourceTree = "<group>";
 		};
 		31C1A5D71CBB65D10010F6B4 /* BaseView */ = {
@@ -2060,15 +2007,12 @@
 				31C1A75A1CBC80C40010F6B4 /* Producer */,
 				316F4E631CBA5A6700B2F9A3 /* User */,
 				316F4E5F1CBA483E00B2F9A3 /* Service */,
-				316F4E5B1CBA414000B2F9A3 /* Chat */,
 				316F4E571CBA2BE000B2F9A3 /* Setting */,
 				316F4E351CB8EA5800B2F9A3 /* Push */,
 				316F4E2E1CB8B80900B2F9A3 /* Login */,
 				316F4E281CB89E6200B2F9A3 /* Protocols */,
 				317C2D421CA8C0270035A14E /* SCUserProfileManager.h */,
 				317C2D431CA8C0270035A14E /* SCUserProfileManager.m */,
-				31B3C9031CB0F08600CDB105 /* ISCTableCellModel.h */,
-				31BDF47E1CB609A600EDCED0 /* ISCChatMessageModel.h */,
 				31C8B9121CC775810037BEB8 /* SamChatHelper.h */,
 				31C8B9131CC775810037BEB8 /* SamChatHelper.m */,
 				316F4E251CB89E4300B2F9A3 /* SamChatClient.h */,
@@ -3069,7 +3013,6 @@
 				31B3C94D1CB3463700CDB105 /* ProducerEditViewController.m in Sources */,
 				31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */,
 				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
-				31C1A5D61CBB65350010F6B4 /* SCSimpleCell.m in Sources */,
 				31FAC5951CAAB3C50034A0CD /* BaseTableViewCell.m in Sources */,
 				31FAC5801CAAB3C50034A0CD /* EMAlertView.m in Sources */,
 				31FAC69C1CAAB7E30034A0CD /* CreateGroupViewController.m in Sources */,
@@ -3079,12 +3022,10 @@
 				31FAC6961CAAB7E30034A0CD /* ConversationListController.m in Sources */,
 				31C1A6441CBB6F800010F6B4 /* SDBrowserImageView.m in Sources */,
 				31FAC59C1CAAB3C50034A0CD /* EMSearchDisplayController.m in Sources */,
-				31BDF47D1CB6007C00EDCED0 /* SCChatMessageCell.m in Sources */,
 				31C1A74F1CBC7CF70010F6B4 /* SDWebImageDownloader.m in Sources */,
 				31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */,
 				31C1A7711CBCE8AF0010F6B4 /* HotTopic.m in Sources */,
 				31C1A7581CBC7CF70010F6B4 /* UIImageView+WebCache.m in Sources */,
-				31BDF47A1CB5FBD500EDCED0 /* SCBubbleView.m in Sources */,
 				31FAC6AA1CAAB7E30034A0CD /* ApplyFriendCell.m in Sources */,
 				31C1A6181CBB6BAC0010F6B4 /* MLEmojiLabel.m in Sources */,
 				316F4E271CB89E4300B2F9A3 /* SamChatClient.m in Sources */,
@@ -3171,7 +3112,6 @@
 				31FAC6A41CAAB7E30034A0CD /* ChatroomListViewController.m in Sources */,
 				317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */,
 				31C1A7A11CBE2ED70010F6B4 /* QBVideoIndicatorView.m in Sources */,
-				31B3C9021CB0E67400CDB105 /* SCTableViewCell.m in Sources */,
 				31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */,
 				31C1A7571CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m in Sources */,
 				31C8B8EA1CC5F61E0037BEB8 /* SCSkyWorldErrorHelper.m in Sources */,

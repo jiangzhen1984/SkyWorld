@@ -34,8 +34,6 @@
 
 #import "SCSkyWorldAPI.h"
 
-#import "SCTableViewCell.h"
-
 #import "AFNetworking.h"
 
 #import "SCSkyWorldError.h"
