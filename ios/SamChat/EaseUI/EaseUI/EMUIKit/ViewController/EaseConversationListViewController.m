@@ -121,8 +121,24 @@
 //        [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId deleteMessages:YES];
 //        [self.dataArray removeObjectAtIndex:indexPath.row];
 //        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        EMConversation *conversation = model.conversation;
+        NSDictionary *conversationExt = conversation.ext;
+//        :@{MESSAGE_FROM_VIEW_SEARCH:[NSNumber numberWithBool:NO],
+//           MESSAGE_FROM_VIEW_CHAT:[NSNumber numberWithBool:NO],
+//           MESSAGE_FROM_VIEW_VENDOR:[NSNumber numberWithBool:NO]}];
         
-        
+        [conversationExt setValue:[NSNumber numberWithBool:NO] forKey:self.currentListMessageFromView];
+        conversation.ext = conversationExt;
+        [conversation updateConversationExtToDB];
+        if ([[conversationExt valueForKey:MESSAGE_FROM_VIEW_CHAT] isEqualToNumber:[NSNumber numberWithBool:YES]] ||
+            [[conversationExt valueForKey:MESSAGE_FROM_VIEW_SEARCH] isEqualToNumber:[NSNumber numberWithBool:YES]] ||
+            [[conversationExt valueForKey:MESSAGE_FROM_VIEW_VENDOR] isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+            // do nothing
+        }else{
+            [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId deleteMessages:YES];
+        }
+        [self.dataArray removeObjectAtIndex:indexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 //SAMC_END
     }
 }
