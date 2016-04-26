@@ -2,16 +2,13 @@
 //  HomeViewController.h
 //  SamChat
 //
-//  Created by HJ on 3/30/16.
+//  Created by HJ on 4/26/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "SCUITabPagerViewController.h"
-#import "EMClientDelegate.h"
-#import "EMMessage.h"
 
-@interface HomeViewController : SCUITabPagerViewController
+@interface HomeViewController : UITabBarController
 {
     EMConnectionState _connectionState;
 }

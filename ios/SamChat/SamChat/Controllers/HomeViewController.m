@@ -2,7 +2,7 @@
 //  HomeViewController.m
 //  SamChat
 //
-//  Created by HJ on 3/30/16.
+//  Created by HJ on 4/26/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
@@ -11,68 +11,89 @@
 #import "SettingsViewController.h"
 #import "ApplyViewController.h"
 #import "ChatViewController.h"
+#import "ConversationListController.h"
 #import "ContactListViewController.h"
-
 #import "OfficalListTableViewController.h"
-#import "ProducerViewController.h"
+#import "UserSettingViewController.h"
 
-#import "WZLBadgeImport.h"
-#import "KYDrawerController.h"
+//两次提示的默认间隔
+static const CGFloat kDefaultPlaySoundInterval = 3.0;
+static NSString *kMessageType = @"MessageType";
+static NSString *kConversationChatter = @"ConversationChatter";
+static NSString *kGroupName = @"GroupName";
 
-#import "SCSearchConversationViewController.h"
-#import "SCServiceConversationViewController.h"
-#import "SCNormalConversationViewController.h"
+#if DEMO_CALL == 1
+@interface HomeViewController () <UIAlertViewDelegate, EMCallManagerDelegate>
+#else
+@interface HomeViewController () <UIAlertViewDelegate>
+#endif
+{
+    SCSearchConversationViewController *_searchConversationVC;
+    SCNormalConversationViewController *_normalConversationVC;
+    SCServiceConversationViewController *_serviceConversationVC;
+    OfficalListTableViewController *_officeListVC;
+    UserSettingViewController *_userSettingVC;
+    
+    UIBarButtonItem *_addFriendItem;
+}
 
-@interface HomeViewController () <SCUITabPagerDataSource, SCUITabPagerDelegate, UIAlertViewDelegate>
-
-@property (nonatomic, strong) OfficalListTableViewController *officalListVC;
-@property (nonatomic, strong) ProducerViewController *producerVC;
-
-@property (nonatomic, strong) SCSearchConversationViewController *searchConversationVC;
-@property (nonatomic, strong) SCNormalConversationViewController *normalConversationVC;
-@property (nonatomic, strong) SCServiceConversationViewController *serviceConversationVC;
-
-@property (nonatomic, strong) ContactListViewController *contactsVC;
-
-@property (nonatomic, strong) NSDate *lastPlaySoundDate;
-
-@property (nonatomic, strong) NSArray *tabButtons;
-
-- (void)easeMobSetup;
+@property (strong, nonatomic) NSDate *lastPlaySoundDate;
 
 @end
 
 @implementation HomeViewController
 
-#pragma mark - View Controller Life Cycle
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self easeMobSetup];
+    //if 使tabBarController中管理的viewControllers都符合 UIRectEdgeNone
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+    self.title = NSLocalizedString(@"title.conversation", @"Conversations");
     
-    [self setDataSource:self];
-    [self setDelegate:self];
-    [self navigationBarStyle];
-    [self reloadData];
+    //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
+    //    [self didUnreadMessagesCountChanged];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUntreatedApplyCount) name:@"setupUntreatedApplyCount" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUnreadMessageCount) name:@"setupUnreadMessageCount" object:nil];
+    
+    [self setupSubviews];
+    self.selectedIndex = 0;
+    
+//    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+//    [addButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
+//    [addButton addTarget:_contactsVC action:@selector(addFriendAction) forControlEvents:UIControlEventTouchUpInside];
+//    _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+    
+    [self setupUnreadMessageCount];
+    [self setupUntreatedApplyCount];
+    
+  //  [SamChatHelper shareHelper].contactViewVC = _contactsVC;
+    [SamChatHelper shareHelper].normalConversationListVC = _normalConversationVC;
+    [SamChatHelper shareHelper].searchConversationListVC = _searchConversationVC;
+    [SamChatHelper shareHelper].serviceConversationListVC = _serviceConversationVC;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)didReceiveMemoryWarning
 {
-    [super viewWillAppear:animated];
- //   [self reloadData];
+    [super didReceiveMemoryWarning];
+}
+
+- (void)dealloc
+{
+    
 }
 
 #pragma mark - lazy loading
-- (SCSearchConversationViewController *)searchConversationVC
-{
-    if(_searchConversationVC == nil){
-        _searchConversationVC = [[SCSearchConversationViewController alloc] initWithNibName:nil bundle:nil];
-    }
-    return _searchConversationVC;
-}
-
 - (SCNormalConversationViewController *)normalConversationVC
 {
     if(_normalConversationVC == nil){
@@ -89,227 +110,67 @@
     return _serviceConversationVC;
 }
 
-- (void)navigationBarStyle
+#pragma mark - UITabBarDelegate
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setBackgroundImage:[SCUtils createImageWithColor:SC_MAIN_COLOR] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setBackIndicatorImage:[SCUtils createImageWithColor:SC_MAIN_COLOR]];
-    [self.navigationController.navigationBar setShadowImage:[SCUtils createImageWithColor:[UIColor clearColor]]];
-    
-    // NavigationBar
-    UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectZero];
-    titleView.font = [UIFont fontWithName:@"Futura-Medium" size:19];
-    titleView.textColor = [UIColor colorWithRed:0.333333 green:0.333333 blue:0.333333 alpha:1.0];
-    titleView.text = @"Menu";
-    [titleView sizeToFit];
-    titleView.backgroundColor = [UIColor colorWithRed:((2) / 255.0) green:((168) / 255.0) blue:((244) / 255.0) alpha:1.0];
-    self.navigationItem.titleView = titleView;
-    
-    
-    UIBarButtonItem *settingButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                   target:self
-                                                                                   action:@selector(drawerSetting)];
-    self.navigationItem.rightBarButtonItem = settingButton;
-}
-
-#pragma mark - Tab Pager Data Source
-
-- (NSInteger)numberOfViewControllers {
-    return 5;
-}
-
-- (UIViewController *)viewControllerForIndex:(NSInteger)index
-{
-    UIViewController *viewController = nil;
-    switch (index) {
-        case 0:
-            viewController = self.searchConversationVC;
-            break;
-        case 1:
-            //viewController = [SamChatHelper shareHelper].conversationListVC;
-            viewController = self.normalConversationVC;
-            break;
-        case 2:
-            viewController = self.serviceConversationVC;
-            break;
-        case 3:
-            viewController = self.officalListVC;
-            break;
-        case 4:
-            viewController = self.producerVC;
-            break;
-        default:
-            viewController = nil;
-            break;
+    if (item.tag == 0) {
+        self.title = @"Search";
+        self.navigationItem.rightBarButtonItem = nil;
+    }else if (item.tag == 1){
+        self.title = @"Chat";
+        self.navigationItem.rightBarButtonItem = _addFriendItem;
+    }else if (item.tag == 2){
+        self.title = @"Public";
+        self.navigationItem.rightBarButtonItem = nil;
+       // [_settingsVC refreshConfig];
+    }else if(item.tag == 3){
+        self.title = @"Service";
+        self.navigationItem.rightBarButtonItem = nil;
+    }else if(item.tag == 4){
+        self.title = @"Setting";
+        self.navigationItem.rightBarButtonItem = nil;
     }
-    return viewController;
-}
-
-// Implement either viewForTabAtIndex: or titleForTabAtIndex:
-- (UIView *)viewForTabAtIndex:(NSInteger)index
-{
-    return self.tabButtons[index];
-}
-
-//- (NSString *)titleForTabAtIndex:(NSInteger)index
-//{
-//  return [NSString stringWithFormat:@"Tab #%ld", (long) index + 1];
-//}
-
-- (CGFloat)tabHeight
-{
-    return 44.0f;
-}
-
-- (UIColor *)tabColor
-{
-    return [UIColor whiteColor];
-}
-
-- (UIColor *)tabBackgroundColor
-{
-    return SC_MAIN_COLOR;
-}
-
-- (UIFont *)titleFont
-{
-    return [UIFont fontWithName:@"HelveticaNeue-Bold" size:20.0f];
-}
-
-- (UIColor *)titleColor
-{
-    return [UIColor whiteColor];
-}
-
-#pragma mark - Tab Pager Delegate
-
-- (void)tabPager:(SCUITabPagerViewController *)tabPager willTransitionToTabAtIndex:(NSInteger)index
-{
-    NSLog(@"Will transition from tab %ld to %ld", [self selectedIndex], (long)index);
-}
-
-- (void)tabPager:(SCUITabPagerViewController *)tabPager didTransitionToTabAtIndex:(NSInteger)index
-{
-    NSLog(@"Did transition to tab %ld", (long)index);
-}
-
-#pragma mark - Easemob
-
-//两次提示的默认间隔
-static const CGFloat kDefaultPlaySoundInterval = 3.0;
-static NSString *kMessageType = @"MessageType";
-static NSString *kConversationChatter = @"ConversationChatter";
-static NSString *kGroupName = @"GroupName";
-
-//#if DEMO_CALL == 1
-//@interface MainViewController () <UIAlertViewDelegate, EMCallManagerDelegate>
-//#else
-//@interface MainViewController () <UIAlertViewDelegate>
-//#endif
-//{
-//
-//    ContactListViewController *_contactsVC;
-//    SettingsViewController *_settingsVC;
-//    //    __weak CallViewController *_callController;
-//    
-//    UIBarButtonItem *_addFriendItem;
-//}
-//
-//@property (strong, nonatomic) NSDate *lastPlaySoundDate;
-//
-//@end
-
-- (void)easeMobSetup
-{
-    //if 使tabBarController中管理的viewControllers都符合 UIRectEdgeNone
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    self.title = NSLocalizedString(@"title.conversation", @"Conversations");
-    
-    //获取未读消息数，此时并没有把self注册为SDK的delegate，读取出的未读数是上次退出程序时的
-    //    [self didUnreadMessagesCountChanged];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUntreatedApplyCount) name:@"setupUntreatedApplyCount" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupUnreadMessageCount) name:@"setupUnreadMessageCount" object:nil];
-    
-    [self setupSubviews];
-    //self.selectedIndex = 0;
-    
-//    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-//    [addButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
-//    [addButton addTarget:_contactsVC action:@selector(addFriendAction) forControlEvents:UIControlEventTouchUpInside];
-//    _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
-    
-    [self setupUnreadMessageCount];
-    [self setupUntreatedApplyCount];
-    
-    [SamChatHelper shareHelper].contactViewVC = _contactsVC;
-    [SamChatHelper shareHelper].normalConversationListVC = self.normalConversationVC;
-    [SamChatHelper shareHelper].searchConversationListVC = self.searchConversationVC;
-    [SamChatHelper shareHelper].serviceConversationListVC = self.serviceConversationVC;
-}
-//
-//#pragma mark - UITabBarDelegate
-//
-//- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
-//{
-//    if (item.tag == 0) {
-//        self.title = NSLocalizedString(@"title.conversation", @"Conversations");
-//        self.navigationItem.rightBarButtonItem = nil;
-//    }else if (item.tag == 1){
-//        self.title = NSLocalizedString(@"title.addressbook", @"AddressBook");
-//        self.navigationItem.rightBarButtonItem = _addFriendItem;
-//    }else if (item.tag == 2){
-//        self.title = NSLocalizedString(@"title.setting", @"Setting");
-//        self.navigationItem.rightBarButtonItem = nil;
-//        [_settingsVC refreshConfig];
-//    }
-//}
-
-- (void)drawerSetting
-{
-    KYDrawerController *drawerController = self.navigationController.parentViewController;
-    [drawerController setDrawerState:KYDrawerControllerDrawerStateOpened animated:YES];
 }
 
 #pragma mark - private
 
-- (void)setupTabButtons
-{
-    UIButton *button1 = [[UIButton alloc] init];
-    button1.backgroundColor = SC_MAIN_COLOR;
-    [button1 setTitle:[NSString stringWithFormat:@"1"] forState:UIControlStateNormal];
-    
-    UIButton *button2 = [[UIButton alloc] init];
-    button2.backgroundColor = SC_MAIN_COLOR;
-    [button2 setTitle:[NSString stringWithFormat:@"2"] forState:UIControlStateNormal];
-    
-    UIButton *button3 = [[UIButton alloc] init];
-    button3.backgroundColor = SC_MAIN_COLOR;
-    [button3 setTitle:[NSString stringWithFormat:@"3"] forState:UIControlStateNormal];
-    
-    UIButton *button4 = [[UIButton alloc] init];
-    button4.backgroundColor = SC_MAIN_COLOR;
-    [button4 setTitle:[NSString stringWithFormat:@"4"] forState:UIControlStateNormal];
-    
-    UIButton *button5 = [[UIButton alloc] init];
-    button5.backgroundColor = SC_MAIN_COLOR;
-    [button5 setTitle:[NSString stringWithFormat:@"5"] forState:UIControlStateNormal];
-    
-    self.tabButtons = @[button1, button2, button3, button4, button5];
-}
-
 - (void)setupSubviews
 {
-    [self setupTabButtons];
+    self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
+    self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
     
-    _officalListVC = [self.storyboard instantiateViewControllerWithIdentifier:@"OfficalList"];
+    _searchConversationVC = [[SCSearchConversationViewController alloc] initWithNibName:nil bundle:nil];
+    [_searchConversationVC networkChanged:_connectionState];
+    _searchConversationVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search"
+                                                                         image:nil
+                                                                           tag:0];
     
-    _producerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Producer"];
+    _normalConversationVC = [[SCNormalConversationViewController alloc] initWithNibName:nil bundle:nil];
+    [_normalConversationVC networkChanged:_connectionState];
+    _normalConversationVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Chat"
+                                                                         image:nil
+                                                                           tag:1];
     
-//    self.tabBar.backgroundImage = [[UIImage imageNamed:@"tabbarBackground"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
-//    self.tabBar.selectionIndicatorImage = [[UIImage imageNamed:@"tabbarSelectBg"] stretchableImageWithLeftCapWidth:25 topCapHeight:25];
+    _officeListVC = [[OfficalListTableViewController alloc] initWithNibName:nil bundle:nil];
+    _officeListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Public"
+                                                             image:nil
+                                                               tag:2];
     
+    _serviceConversationVC = [[SCServiceConversationViewController alloc] initWithNibName:nil bundle:nil];
+    [_serviceConversationVC networkChanged:_connectionState];
+    _serviceConversationVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Service"
+                                                                      image:nil
+                                                                        tag:3];
+    
+    //_userSettingVC = [[UserSettingViewController alloc] initWithNibName:nil bundle:nil];
+    _userSettingVC = [[SCUtils mainStoryBoard] instantiateViewControllerWithIdentifier:@"UserSettingView"];
+    _userSettingVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting"
+                                                              image:nil
+                                                                tag:4];
+    
+    self.viewControllers = @[_searchConversationVC, _normalConversationVC, _officeListVC, _serviceConversationVC, _userSettingVC];
+    [self selectedTapTabBarItems:_searchConversationVC.tabBarItem];
 //    _chatListVC = [[ConversationListController alloc] initWithNibName:nil bundle:nil];
 //    [_chatListVC networkChanged:_connectionState];
 //    _chatListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.conversation", @"Conversations")
@@ -319,8 +180,8 @@ static NSString *kGroupName = @"GroupName";
 //                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_chats"]];
 //    [self unSelectedTapTabBarItems:_chatListVC.tabBarItem];
 //    [self selectedTapTabBarItems:_chatListVC.tabBarItem];
-    
-    _contactsVC = [[ContactListViewController alloc] initWithNibName:nil bundle:nil];
+//    
+//    _contactsVC = [[ContactListViewController alloc] initWithNibName:nil bundle:nil];
 //    _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.addressbook", @"AddressBook")
 //                                                           image:nil
 //                                                             tag:1];
@@ -328,7 +189,7 @@ static NSString *kGroupName = @"GroupName";
 //                         withFinishedUnselectedImage:[UIImage imageNamed:@"tabbar_contacts"]];
 //    [self unSelectedTapTabBarItems:_contactsVC.tabBarItem];
 //    [self selectedTapTabBarItems:_contactsVC.tabBarItem];
-    
+//    
 //    _settingsVC = [[SettingsViewController alloc] init];
 //    _settingsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"title.setting", @"Setting")
 //                                                           image:nil
@@ -338,30 +199,24 @@ static NSString *kGroupName = @"GroupName";
 //    _settingsVC.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 //    [self unSelectedTapTabBarItems:_settingsVC.tabBarItem];
 //    [self selectedTapTabBarItems:_settingsVC.tabBarItem];
-    
-    //self.viewControllers = @[_chatListVC, _contactsVC, _settingsVC];
-    //[self selectedTapTabBarItems:_chatListVC.tabBarItem];
+//    
+//    self.viewControllers = @[_chatListVC, _contactsVC, _settingsVC];
+//    [self selectedTapTabBarItems:_chatListVC.tabBarItem];
 }
 
-//-(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem
-//{
-//    [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-//                                        [UIFont systemFontOfSize:14], UITextAttributeFont,[UIColor whiteColor],UITextAttributeTextColor,
-//                                        nil] forState:UIControlStateNormal];
-//}
-//
-//-(void)selectedTapTabBarItems:(UITabBarItem *)tabBarItem
-//{
-//    [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-//                                        [UIFont systemFontOfSize:14],
-//                                        UITextAttributeFont,RGBACOLOR(0x00, 0xac, 0xff, 1),UITextAttributeTextColor,
-//                                        nil] forState:UIControlStateSelected];
-//}
-
-- (void)setupBadgeToView:(UIView *)view
+-(void)unSelectedTapTabBarItems:(UITabBarItem *)tabBarItem
 {
-    [view showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
-    view.badgeCenterOffset = CGPointMake(-8, 8);
+    [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                        [UIFont systemFontOfSize:14], UITextAttributeFont,[UIColor whiteColor],UITextAttributeTextColor,
+                                        nil] forState:UIControlStateNormal];
+}
+
+-(void)selectedTapTabBarItems:(UITabBarItem *)tabBarItem
+{
+    [tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                        [UIFont systemFontOfSize:14],
+                                        UITextAttributeFont,RGBACOLOR(0x00, 0xac, 0xff, 1),UITextAttributeTextColor,
+                                        nil] forState:UIControlStateSelected];
 }
 
 // 统计未读消息数
@@ -386,25 +241,46 @@ static NSString *kGroupName = @"GroupName";
     }
     DebugLog(@"unread count:%ld, %ld, %ld", searchUnreadCount, normalUnreadCount, serviceUnreadCount);
     //unreadCount += [[SCUserProfileManager sharedInstance].currentLoginUserInformation.unreadquestioncount integerValue];
-    if (self.searchConversationVC) {
+//    if (self.searchConversationVC) {
+//        if (searchUnreadCount) {
+//            [self setupBadgeToView:self.tabButtons[0]];
+//        }else{
+//            [self.tabButtons[0] clearBadge];
+//        }
+//    }
+//    if (self.normalConversationVC) {
+//        if (normalUnreadCount > 0) {
+//            [self setupBadgeToView:self.tabButtons[1]];
+//        }else{
+//            [self.tabButtons[1] clearBadge];
+//        }
+//    }
+//    if (self.serviceConversationVC) {
+//        if (serviceUnreadCount) {
+//            [self setupBadgeToView:self.tabButtons[2]];
+//        }else{
+//            [self.tabButtons[2] clearBadge];
+//        }
+//    }
+    if (_searchConversationVC) {
         if (searchUnreadCount) {
-            [self setupBadgeToView:self.tabButtons[0]];
-        }else{
-            [self.tabButtons[0] clearBadge];
+            _searchConversationVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)searchUnreadCount];
+        } else {
+            _searchConversationVC.tabBarItem.badgeValue = nil;
         }
     }
-    if (self.normalConversationVC) {
-        if (normalUnreadCount > 0) {
-            [self setupBadgeToView:self.tabButtons[1]];
-        }else{
-            [self.tabButtons[1] clearBadge];
+    if (_normalConversationVC) {
+        if (normalUnreadCount) {
+            _normalConversationVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)normalUnreadCount];
+        } else {
+            _normalConversationVC.tabBarItem.badgeValue = nil;
         }
     }
-    if (self.serviceConversationVC) {
+    if (_serviceConversationVC) {
         if (serviceUnreadCount) {
-            [self setupBadgeToView:self.tabButtons[2]];
-        }else{
-            [self.tabButtons[2] clearBadge];
+            _serviceConversationVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)serviceUnreadCount];
+        } else {
+            _serviceConversationVC.tabBarItem.badgeValue = nil;
         }
     }
     
@@ -415,22 +291,22 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)setupUntreatedApplyCount
 {
-    NSInteger unreadCount = [[[ApplyViewController shareController] dataSource] count];
-    if (_contactsVC) {
-        if (unreadCount > 0) {
-            //_contactsVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
-        }else{
-            //_contactsVC.tabBarItem.badgeValue = nil;
-        }
-    }
+//    NSInteger unreadCount = [[[ApplyViewController shareController] dataSource] count];
+//    if (_contactsVC) {
+//        if (unreadCount > 0) {
+//            _contactsVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
+//        }else{
+//            _contactsVC.tabBarItem.badgeValue = nil;
+//        }
+//    }
 }
 
 - (void)networkChanged:(EMConnectionState)connectionState
 {
     _connectionState = connectionState;
-    [self.normalConversationVC networkChanged:connectionState];
-    [self.searchConversationVC networkChanged:connectionState];
-    [self.serviceConversationVC networkChanged:connectionState];
+    [_normalConversationVC networkChanged:connectionState];
+    [_searchConversationVC networkChanged:connectionState];
+    [_serviceConversationVC networkChanged:connectionState];
 }
 
 - (void)playSoundAndVibration{
@@ -574,11 +450,11 @@ static NSString *kGroupName = @"GroupName";
         //        ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
         //        [chatController hideImagePicker];
     }
-    else if(self.normalConversationVC)
-    {
-        [self.navigationController popToViewController:self animated:NO];
+//    else if(_chatListVC)
+//    {
+//        [self.navigationController popToViewController:self animated:NO];
 //        [self setSelectedViewController:_chatListVC];
-    }
+//    }
 }
 
 - (EMConversationType)conversationTypeFromMessageType:(EMChatType)type
@@ -603,16 +479,11 @@ static NSString *kGroupName = @"GroupName";
 - (void)didReceiveLocalNotification:(UILocalNotification *)notification
 {
     NSDictionary *userInfo = notification.userInfo;
-    if(userInfo && userInfo[LOCAL_NOTIFICATION_QUESTION_ID]){
-        [self jumpToAnswerTheQuestionWithQuestionId:[NSString stringWithFormat:@"%@", userInfo[LOCAL_NOTIFICATION_QUESTION_ID]]];
-        return;
-    }
-    
     if (userInfo)
     {
         if ([self.navigationController.topViewController isKindOfClass:[ChatViewController class]]) {
-            // ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
-            //[chatController hideImagePicker];
+            //            ChatViewController *chatController = (ChatViewController *)self.navigationController.topViewController;
+            //            [chatController hideImagePicker];
         }
         
         NSArray *viewControllers = self.navigationController.viewControllers;
@@ -679,25 +550,11 @@ static NSString *kGroupName = @"GroupName";
             }
         }];
     }
-    else if (self.normalConversationVC)
-    {
-        [self.navigationController popToViewController:self animated:NO];
+//    else if (_chatListVC)
+//    {
+//        [self.navigationController popToViewController:self animated:NO];
 //        [self setSelectedViewController:_chatListVC];
-        [self selectTabbarIndex:1];
-    }
+//    }
 }
-
-- (void)jumpToAnswerTheQuestionWithQuestionId:(NSString *)questionId
-{
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-    ReceivedQuestion *receivedQuestion = nil;
-    receivedQuestion = [ReceivedQuestion receivedQuestionWithQuestionID:questionId inManagedObjectContext:mainContext];
-
-    if(receivedQuestion == nil){
-        return;
-    }
-#warning add viewcontrollers enumerate check
-}
-
 
 @end

@@ -50,26 +50,26 @@
         [[ApplyViewController shareController] loadDataSourceFromLocalDB];
 
         if(self.homeController == nil) {
-            //self.homeController = [[HomeViewController alloc] init];
-            //viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
-            UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-            self.homeController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
+            self.homeController = [[HomeViewController alloc] init];
+            viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
+//            UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//            self.homeController = [storyBoard instantiateViewControllerWithIdentifier:@"HomeView"];
             //viewController = [[UINavigationController alloc] initWithRootViewController:self.homeController];
             
-            self.drawViewController = [[KYDrawerController alloc] initWithDrawerDirection:KYDrawerControllerDrawerDirectionRight drawerWidth:250.0f];
-            self.drawViewController.mainViewController =[[UINavigationController alloc] initWithRootViewController:self.homeController];
+//            self.drawViewController = [[KYDrawerController alloc] initWithDrawerDirection:KYDrawerControllerDrawerDirectionRight drawerWidth:250.0f];
+//            self.drawViewController.mainViewController =[[UINavigationController alloc] initWithRootViewController:self.homeController];
             
-            UserSettingViewController *settingViewController = [storyBoard instantiateViewControllerWithIdentifier:@"UserSettingView"];
+//            UserSettingViewController *settingViewController = [storyBoard instantiateViewControllerWithIdentifier:@"UserSettingView"];
 
-            self.drawViewController.drawerViewController = settingViewController;
+//            self.drawViewController.drawerViewController = settingViewController;
             //viewController = self.drawViewController;
-            UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:self.drawViewController];
-            nvc.navigationBarHidden = YES;
-            viewController = nvc;
+//            UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:self.drawViewController];
+//            nvc.navigationBarHidden = YES;
+//            viewController = nvc;
             
         }else{
-            //viewController = self.homeController.navigationController;
-            viewController = self.drawViewController;
+            viewController = self.homeController.navigationController;
+            //viewController = self.drawViewController;
         }
         [SamChatHelper shareHelper].mainVC = self.homeController;
         
@@ -81,7 +81,7 @@
         
     } else {
         self.homeController = nil;
-        self.drawViewController = nil;
+        //self.drawViewController = nil;
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoginCtrl" bundle:[NSBundle mainBundle]];
         viewController = [storyBoard instantiateViewControllerWithIdentifier:@"LoginNavController"];
     }
