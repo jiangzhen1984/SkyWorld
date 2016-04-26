@@ -95,7 +95,7 @@
             model.title = [[SCUserProfileManager sharedInstance] getNickNameWithUsername:username];
             model.avatarURLPath = contactUser.imagefile;
         }
-        model.messagesFromView = [self.delegate currentListMessageFromView];
+        model.messagesFromView = self.currentListMessageFromView;
     } else if (model.conversation.type == EMConversationTypeGroupChat) {
         NSString *imageName = @"groupPublicHeader";
         if (![conversation.ext objectForKey:@"subject"])

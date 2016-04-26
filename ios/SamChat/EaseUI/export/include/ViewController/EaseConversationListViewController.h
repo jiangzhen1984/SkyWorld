@@ -43,7 +43,6 @@ typedef NS_ENUM(int, DXDeleteConvesationType) {
 
 //SAMC_BEGIN
 - (NSArray *)getAllConversations;
-- (NSString *)currentListMessageFromView;
 //SAMC_END
 
 
@@ -101,5 +100,9 @@ typedef NS_ENUM(int, DXDeleteConvesationType) {
  @result
  */
 - (void)refreshAndSortView;
+
+//SAMC_BEGIN
+@property (strong, nonatomic) NSString *currentListMessageFromView;
+//SAMC_END
 
 @end

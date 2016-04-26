@@ -23,6 +23,7 @@
 {
     [super viewDidLoad];
     self.delegate = self;
+    self.currentListMessageFromView = MESSAGE_FROM_VIEW_VENDOR;
     [self setupSubviews];
     [self tableViewDidTriggerHeaderRefresh];
 }
@@ -148,11 +149,6 @@
         }
     }
     return serviceConversations;
-}
-
-- (NSString *)currentListMessageFromView
-{
-    return MESSAGE_FROM_VIEW_VENDOR;
 }
 
 @end

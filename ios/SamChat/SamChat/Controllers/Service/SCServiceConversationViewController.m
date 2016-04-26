@@ -19,6 +19,7 @@
 {
     [super viewDidLoad];
     self.delegate = self;
+    self.currentListMessageFromView = MESSAGE_FROM_VIEW_SEARCH;
     [self tableViewDidTriggerHeaderRefresh];
 }
 
@@ -51,11 +52,6 @@
         }
     }
     return serviceConversations;
-}
-
-- (NSString *)currentListMessageFromView
-{
-    return MESSAGE_FROM_VIEW_SEARCH;
 }
 
 #pragma mark - Get Message Ext Dictionary

@@ -17,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.currentListMessageFromView = MESSAGE_FROM_VIEW_CHAT;
     self.delegate = self;
     [self tableViewDidTriggerHeaderRefresh];
 }
@@ -51,11 +52,6 @@
         }
     }
     return serviceConversations;
-}
-
-- (NSString *)currentListMessageFromView
-{
-    return MESSAGE_FROM_VIEW_CHAT;
 }
 
 @end
