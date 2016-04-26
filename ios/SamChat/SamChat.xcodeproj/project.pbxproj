@@ -25,8 +25,6 @@
 		3159D99E1CAE725A00212DAB /* home_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3159D99D1CAE725A00212DAB /* home_background.png */; };
 		316F4E271CB89E4300B2F9A3 /* SamChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E261CB89E4300B2F9A3 /* SamChatClient.m */; };
 		316F4E2D1CB8AD3500B2F9A3 /* SCSkyWorldError.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E2C1CB8AD3500B2F9A3 /* SCSkyWorldError.m */; };
-		316F4E311CB8B82200B2F9A3 /* SCLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E301CB8B82200B2F9A3 /* SCLoginModel.m */; };
-		316F4E341CB8CF3600B2F9A3 /* SCSignupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E331CB8CF3600B2F9A3 /* SCSignupModel.m */; };
 		316F4E3B1CB8EF4500B2F9A3 /* SCPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E3A1CB8EF4500B2F9A3 /* SCPushManager.m */; };
 		316F4E3E1CB91A9700B2F9A3 /* SCConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E3D1CB91A9700B2F9A3 /* SCConversationCell.m */; };
 		316F4E411CB9295E00B2F9A3 /* SCBadgeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E401CB9295E00B2F9A3 /* SCBadgeImageView.m */; };
@@ -515,10 +513,6 @@
 		316F4E2A1CB8A53B00B2F9A3 /* SCSkyWorldErrorCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldErrorCode.h; sourceTree = "<group>"; };
 		316F4E2B1CB8AD3500B2F9A3 /* SCSkyWorldError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldError.h; sourceTree = "<group>"; };
 		316F4E2C1CB8AD3500B2F9A3 /* SCSkyWorldError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSkyWorldError.m; sourceTree = "<group>"; };
-		316F4E2F1CB8B82200B2F9A3 /* SCLoginModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCLoginModel.h; path = Models/Login/SCLoginModel.h; sourceTree = "<group>"; };
-		316F4E301CB8B82200B2F9A3 /* SCLoginModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCLoginModel.m; path = Models/Login/SCLoginModel.m; sourceTree = "<group>"; };
-		316F4E321CB8CF3600B2F9A3 /* SCSignupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSignupModel.h; path = Models/Login/SCSignupModel.h; sourceTree = "<group>"; };
-		316F4E331CB8CF3600B2F9A3 /* SCSignupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCSignupModel.m; path = Models/Login/SCSignupModel.m; sourceTree = "<group>"; };
 		316F4E391CB8EF4500B2F9A3 /* SCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPushManager.h; path = Models/Push/SCPushManager.h; sourceTree = "<group>"; };
 		316F4E3A1CB8EF4500B2F9A3 /* SCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPushManager.m; path = Models/Push/SCPushManager.m; sourceTree = "<group>"; };
 		316F4E3C1CB91A9700B2F9A3 /* SCConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCConversationCell.h; path = Views/SCConversationCell.h; sourceTree = "<group>"; };
@@ -1483,17 +1477,6 @@
 			name = Protocols;
 			sourceTree = "<group>";
 		};
-		316F4E2E1CB8B80900B2F9A3 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				316F4E2F1CB8B82200B2F9A3 /* SCLoginModel.h */,
-				316F4E301CB8B82200B2F9A3 /* SCLoginModel.m */,
-				316F4E321CB8CF3600B2F9A3 /* SCSignupModel.h */,
-				316F4E331CB8CF3600B2F9A3 /* SCSignupModel.m */,
-			);
-			name = Login;
-			sourceTree = "<group>";
-		};
 		316F4E351CB8EA5800B2F9A3 /* Push */ = {
 			isa = PBXGroup;
 			children = (
@@ -2017,7 +2000,6 @@
 				316F4E5F1CBA483E00B2F9A3 /* Service */,
 				316F4E571CBA2BE000B2F9A3 /* Setting */,
 				316F4E351CB8EA5800B2F9A3 /* Push */,
-				316F4E2E1CB8B80900B2F9A3 /* Login */,
 				316F4E281CB89E6200B2F9A3 /* Protocols */,
 				317C2D421CA8C0270035A14E /* SCUserProfileManager.h */,
 				317C2D431CA8C0270035A14E /* SCUserProfileManager.m */,
@@ -3059,7 +3041,6 @@
 				31C1A7681CBCBCE80010F6B4 /* SCHotTopicView.m in Sources */,
 				31C1A61C1CBB6BAC0010F6B4 /* MLExpressionManager.m in Sources */,
 				311E3BD41CC876B800605A49 /* SCHotTopicsView.m in Sources */,
-				316F4E341CB8CF3600B2F9A3 /* SCSignupModel.m in Sources */,
 				31FAC6A91CAAB7E30034A0CD /* AddFriendViewController.m in Sources */,
 				3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */,
 				31FAC6991CAAB7E30034A0CD /* ChatGroupDetailViewController.m in Sources */,
@@ -3112,7 +3093,6 @@
 				31FAC6AD1CAAB7E30034A0CD /* InvitationManager.m in Sources */,
 				31C1A7531CBC7CF70010F6B4 /* UIButton+WebCache.m in Sources */,
 				31C1A6211CBB6BAC0010F6B4 /* MLLabel.m in Sources */,
-				316F4E311CB8B82200B2F9A3 /* SCLoginModel.m in Sources */,
 				31C1A74A1CBC7CF70010F6B4 /* MKAnnotationView+WebCache.m in Sources */,
 				31C1A5DD1CBB66CE0010F6B4 /* SCBaseTableViewController.m in Sources */,
 				31FAC5971CAAB3C50034A0CD /* EMTextView.m in Sources */,

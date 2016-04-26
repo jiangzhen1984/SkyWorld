@@ -99,15 +99,15 @@
 
     [[SamChatClient sharedInstance] loginWithUsername:self.textUsername.text
                                              password:self.textPassword.text
-       completion:^(BOOL success, SCSkyWorldError *error) {
+       completion:^(BOOL success, NSError *error) {
            [self hideHud];
            if(success){
                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
            }else{
                if(error.code == SCSkyWorldErrorUsernameOrPasswordWrong){
-                   self.labelErrorTip.text = error.errorDescription;
+                   self.labelErrorTip.text = error.userInfo[NSLocalizedDescriptionKey];
                }else{
-                   [self showHint:error.errorDescription];
+                   [self showHint:error.userInfo[NSLocalizedDescriptionKey]];
                }
            }
        }];

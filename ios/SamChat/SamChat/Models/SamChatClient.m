@@ -7,13 +7,15 @@
 //
 
 #import "SamChatClient.h"
-#import "SCLoginModel.h"
-#import "SCSignupModel.h"
+//#import "SCLoginModel.h"
+//#import "SCSignupModel.h"
 #import "SCUserSettingModel.h"
 #import "SCUserRelationModel.h"
 #import "SCProducerModel.h"
 
 #import "SCServiceSearchModel.h"
+
+#import "SCAccountManager.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -44,14 +46,14 @@ static SamChatClient *sharedInstance = nil;
     return self;
 }
 
-- (void)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL, NSError *))completion
 {
-    [SCLoginModel loginWithUsername:username password:password completion:completion];
+    [SCAccountManager loginWithUsername:username password:password completion:completion];
 }
 
-- (void)signupWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode username:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)signupWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode username:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [SCSignupModel signupWithCellphone:cellphone countryCode:countrycode username:username password:password completion:completion];
+    [SCAccountManager signupWithCellphone:cellphone countryCode:countrycode username:username password:password completion:completion];
 }
 
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
