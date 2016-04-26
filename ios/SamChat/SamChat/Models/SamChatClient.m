@@ -8,12 +8,12 @@
 
 #import "SamChatClient.h"
 #import "SCUserSettingModel.h"
-#import "SCUserRelationModel.h"
 
 #import "SCServiceSearchModel.h"
 
 #import "SCAccountManager.h"
 #import "SCProducerManager.h"
+#import "SCOfficalManager.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -64,6 +64,11 @@ static SamChatClient *sharedInstance = nil;
     [SCProducerManager upgradeToProducerWithInformationDictionary:info completion:completion];
 }
 
+- (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [SCOfficalManager makeFollow:flag withUser:userID completion:completion];
+}
+
 //-----------------
 
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
@@ -81,10 +86,6 @@ static SamChatClient *sharedInstance = nil;
     [SCUserSettingModel checkVersionCompletion:completion];
 }
 
-- (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCUserRelationModel makeFollow:flag withUser:userID completion:completion];
-}
 
 
 - (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType reset:(BOOL)flag completion:(void (^)(BOOL success, NSArray *topics, SCSkyWorldError *error))completion

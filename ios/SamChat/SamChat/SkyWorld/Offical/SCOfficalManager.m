@@ -1,17 +1,19 @@
 //
-//  SCUserRelationModel.m
+//  SCOfficalManager.m
 //  SamChat
 //
-//  Created by HJ on 4/10/16.
+//  Created by HJ on 4/26/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#import "SCUserRelationModel.h"
+#import "SCOfficalManager.h"
+#import "SCSkyWorldErrorHelper.h"
 
-@implementation SCUserRelationModel
+@implementation SCOfficalManager
 
-+ (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
++ (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, NSError *error))completion
 {
+    NSAssert(completion != nil, @"completion block should not be nil");
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:[SCSkyWorldAPI urlMakeFollow:flag withUser:userID bothSide:NO]
       parameters:nil
@@ -21,26 +23,17 @@
                 NSDictionary *response = responseObject;
                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                 if(errorCode){
-                    if(completion){
-                        completion(false, [SCSkyWorldError errorWithCode:errorCode]);
-                    }
+                    completion(false, [SCSkyWorldErrorHelper errorWithCode:errorCode]);
                 }else{
 #warning save the relation ship
-                    if(completion){
-                        completion(true, nil);
-                    }
+                    completion(true, nil);
                 }
             }else{
-                if(completion){
-                    completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
-                }
+                completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            if(completion){
-                completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
-            }
+            completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
         }];
 }
-
 
 @end
