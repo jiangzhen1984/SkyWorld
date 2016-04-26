@@ -149,6 +149,8 @@
 		31D5CDCA1CC4A56800D02D1D /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC41CC4A56800D02D1D /* SignupViewController.m */; };
 		31F6F7CE1CCDCAA7007AB092 /* EMConversation+MessagesCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7CD1CCDCAA7007AB092 /* EMConversation+MessagesCount.m */; };
 		31F6F7D21CCF3201007AB092 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7D11CCF3201007AB092 /* HomeViewController.m */; };
+		31F6F7D71CCF4882007AB092 /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F6F7D61CCF4882007AB092 /* Setting.storyboard */; };
+		31F6F7DA1CCF4CE4007AB092 /* SCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7D91CCF4CE4007AB092 /* SCSettingViewController.m */; };
 		31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */; };
 		31F8E71E1CA3B24F0049EE23 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */; };
 		31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E7271CA3D31D0049EE23 /* SCUtils.m */; };
@@ -779,6 +781,9 @@
 		31F6F7CF1CCDD7FC007AB092 /* EMConversation+MessagesCount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMConversation+MessagesCount.h"; sourceTree = "<group>"; };
 		31F6F7D01CCF3201007AB092 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		31F6F7D11CCF3201007AB092 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		31F6F7D61CCF4882007AB092 /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Setting.storyboard; path = Setting/Setting.storyboard; sourceTree = "<group>"; };
+		31F6F7D81CCF4CE4007AB092 /* SCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSettingViewController.h; path = Setting/SCSettingViewController.h; sourceTree = "<group>"; };
+		31F6F7D91CCF4CE4007AB092 /* SCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCSettingViewController.m; path = Setting/SCSettingViewController.m; sourceTree = "<group>"; };
 		31F8E71A1CA3A8CF0049EE23 /* SCUITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUITabBarController.h; sourceTree = "<group>"; };
 		31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUITabBarController.m; sourceTree = "<group>"; };
 		31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -1673,6 +1678,9 @@
 				31B3C9491CB28BD200CDB105 /* UserSettingViewController.m */,
 				31A9F5131CBA9AF6005DA65D /* QRCodeScanViewController.h */,
 				31A9F5141CBA9AF6005DA65D /* QRCodeScanViewController.m */,
+				31F6F7D61CCF4882007AB092 /* Setting.storyboard */,
+				31F6F7D81CCF4CE4007AB092 /* SCSettingViewController.h */,
+				31F6F7D91CCF4CE4007AB092 /* SCSettingViewController.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -2871,6 +2879,7 @@
 				31FAC5DF1CAAB3C50034A0CD /* icon_024_cover.png in Resources */,
 				31FAC5E51CAAB3C50034A0CD /* icon_030_cover.png in Resources */,
 				31FAC5A51CAAB3C50034A0CD /* chatListCellHead@2x.png in Resources */,
+				31F6F7D71CCF4882007AB092 /* Setting.storyboard in Resources */,
 				31FAC5BA1CAAB3C50034A0CD /* imageDownloadFail@2x.png in Resources */,
 				31FAC5E91CAAB3C50034A0CD /* icon_040_cover.png in Resources */,
 				311BC63D1CA37B19006B4707 /* Assets.xcassets in Resources */,
@@ -3138,6 +3147,7 @@
 				31FAC6A21CAAB7E30034A0CD /* PublicGroupListViewController.m in Sources */,
 				31FAC6BA1CAAB7E30034A0CD /* DebugViewController.m in Sources */,
 				31B3C9411CB214B600CDB105 /* SendQuestion.m in Sources */,
+				31F6F7DA1CCF4CE4007AB092 /* SCSettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

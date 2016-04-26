@@ -15,6 +15,7 @@
 #import "ContactListViewController.h"
 #import "OfficalListTableViewController.h"
 #import "UserSettingViewController.h"
+#import "SCSettingViewController.h"
 
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
@@ -32,7 +33,7 @@ static NSString *kGroupName = @"GroupName";
     SCNormalConversationViewController *_normalConversationVC;
     SCServiceConversationViewController *_serviceConversationVC;
     OfficalListTableViewController *_officeListVC;
-    UserSettingViewController *_userSettingVC;
+    SCSettingViewController *_settingVC;
     
     UIBarButtonItem *_addFriendItem;
 }
@@ -163,13 +164,13 @@ static NSString *kGroupName = @"GroupName";
                                                                       image:nil
                                                                         tag:3];
     
-    //_userSettingVC = [[UserSettingViewController alloc] initWithNibName:nil bundle:nil];
-    _userSettingVC = [[SCUtils mainStoryBoard] instantiateViewControllerWithIdentifier:@"UserSettingView"];
-    _userSettingVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting"
-                                                              image:nil
-                                                                tag:4];
+    UIStoryboard *settingStoryboard = [UIStoryboard storyboardWithName:@"Setting" bundle:[NSBundle mainBundle]];
+    _settingVC = [settingStoryboard instantiateViewControllerWithIdentifier:@"SettingView"];
+    _settingVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting"
+                                                          image:nil
+                                                            tag:4];
     
-    self.viewControllers = @[_searchConversationVC, _normalConversationVC, _officeListVC, _serviceConversationVC, _userSettingVC];
+    self.viewControllers = @[_searchConversationVC, _normalConversationVC, _officeListVC, _serviceConversationVC, _settingVC];
     [self selectedTapTabBarItems:_searchConversationVC.tabBarItem];
 //    _chatListVC = [[ConversationListController alloc] initWithNibName:nil bundle:nil];
 //    [_chatListVC networkChanged:_connectionState];

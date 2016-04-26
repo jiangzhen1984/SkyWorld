@@ -123,10 +123,6 @@
 //        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         EMConversation *conversation = model.conversation;
         NSDictionary *conversationExt = conversation.ext;
-//        :@{MESSAGE_FROM_VIEW_SEARCH:[NSNumber numberWithBool:NO],
-//           MESSAGE_FROM_VIEW_CHAT:[NSNumber numberWithBool:NO],
-//           MESSAGE_FROM_VIEW_VENDOR:[NSNumber numberWithBool:NO]}];
-        
         [conversationExt setValue:[NSNumber numberWithBool:NO] forKey:self.currentListMessageFromView];
         conversation.ext = conversationExt;
         [conversation updateConversationExtToDB];
