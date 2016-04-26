@@ -276,6 +276,9 @@ public class SWUserService extends BaseService {
 		Query query = session.createQuery(" from SWPServicerDesc where servicer.id = ?");
 		query.setLong(0, servicer.getId());
 		List<SWPServicerDesc> list = (List<SWPServicerDesc>)query.list();
+		//--xcl 添加
+		session.close();
+		//--
 		if (list.size() > 0) {
 			SWPServicerDesc desc = list.get(0);
 			servicer.setArea(desc.getArea());
