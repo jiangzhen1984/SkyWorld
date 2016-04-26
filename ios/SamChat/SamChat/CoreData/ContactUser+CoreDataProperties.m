@@ -2,7 +2,7 @@
 //  ContactUser+CoreDataProperties.m
 //  SamChat
 //
-//  Created by HJ on 4/4/16.
+//  Created by HJ on 4/26/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -13,17 +13,16 @@
 
 @implementation ContactUser (CoreDataProperties)
 
-@dynamic username;
-@dynamic phonenumber;
-@dynamic usertype;
-@dynamic imagefile;
-@dynamic desc;
 @dynamic area;
-@dynamic location;
-@dynamic unique_id;
+@dynamic desc;
 @dynamic easemob_username;
+@dynamic imagefile;
 @dynamic lastupdate;
-@dynamic answers;
+@dynamic location;
+@dynamic phonenumber;
+@dynamic unique_id;
+@dynamic username;
+@dynamic usertype;
 @dynamic questions;
 
 @end

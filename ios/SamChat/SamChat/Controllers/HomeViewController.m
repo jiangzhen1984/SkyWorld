@@ -13,7 +13,6 @@
 #import "ChatViewController.h"
 #import "ContactListViewController.h"
 
-#import "ServiceSearchViewController.h"
 #import "OfficalListTableViewController.h"
 #import "ProducerViewController.h"
 
@@ -26,7 +25,6 @@
 
 @interface HomeViewController () <SCUITabPagerDataSource, SCUITabPagerDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, strong) ServiceSearchViewController *serviceSearchVC;
 @property (nonatomic, strong) OfficalListTableViewController *officalListVC;
 @property (nonatomic, strong) ProducerViewController *producerVC;
 
@@ -304,7 +302,6 @@ static NSString *kGroupName = @"GroupName";
 - (void)setupSubviews
 {
     [self setupTabButtons];
-    _serviceSearchVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ServiceSearch"];
     
     _officalListVC = [self.storyboard instantiateViewControllerWithIdentifier:@"OfficalList"];
     

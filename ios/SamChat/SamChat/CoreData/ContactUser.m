@@ -7,7 +7,6 @@
 //
 
 #import "ContactUser.h"
-#import "ReceivedAnswer.h"
 #import "ReceivedQuestion.h"
 
 @implementation ContactUser
