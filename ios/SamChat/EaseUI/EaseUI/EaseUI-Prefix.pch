@@ -21,5 +21,10 @@
 
 #define NSEaseLocalizedString(key, comment) [[NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@"EaseUIResource" withExtension:@"bundle"]] localizedStringForKey:(key) value:@"" table:nil]
 
+// message from view
+#define MESSAGE_FROM_VIEW           @"chat_activity_type"
+#define MESSAGE_FROM_VIEW_SEARCH    @"service"
+#define MESSAGE_FROM_VIEW_CHAT      @"chat"
+#define MESSAGE_FROM_VIEW_VENDOR    @"vendor"
 
 #endif

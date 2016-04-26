@@ -24,14 +24,6 @@
 #import "SCServiceConversationViewController.h"
 #import "SCNormalConversationViewController.h"
 
-typedef enum{
-    HomeViewTabServiceSearch = 0,
-    HomeViewTabChatList,
-    HomeViewTabOfficalList,
-    HomeViewTabProducer
-}HomeViewTabss;
-
-
 @interface HomeViewController () <SCUITabPagerDataSource, SCUITabPagerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) ServiceSearchViewController *serviceSearchVC;
@@ -132,22 +124,24 @@ typedef enum{
 {
     UIViewController *viewController = nil;
     switch (index) {
-        case HomeViewTabServiceSearch:
-            viewController = self.serviceSearchVC;
+        case 0:
+            viewController = self.searchConversationVC;
             break;
-        case HomeViewTabChatList:
+        case 1:
             //viewController = [SamChatHelper shareHelper].conversationListVC;
             viewController = self.normalConversationVC;
             break;
-        case HomeViewTabOfficalList:
-            //viewController = self.officalListVC;
-            viewController = self.searchConversationVC;
+        case 2:
+            viewController = self.serviceConversationVC;
             break;
-        case HomeViewTabProducer:
+        case 3:
+            viewController = self.officalListVC;
+            break;
+        case 4:
             viewController = self.producerVC;
             break;
         default:
-            viewController = self.serviceConversationVC;
+            viewController = nil;
             break;
     }
     return viewController;
@@ -252,7 +246,9 @@ static NSString *kGroupName = @"GroupName";
     [self setupUntreatedApplyCount];
     
     [SamChatHelper shareHelper].contactViewVC = _contactsVC;
-    [SamChatHelper shareHelper].conversationListVC = self.normalConversationVC;
+    [SamChatHelper shareHelper].normalConversationListVC = self.normalConversationVC;
+    [SamChatHelper shareHelper].searchConversationListVC = self.searchConversationVC;
+    [SamChatHelper shareHelper].serviceConversationListVC = self.serviceConversationVC;
 }
 //
 //#pragma mark - UITabBarDelegate
@@ -375,21 +371,47 @@ static NSString *kGroupName = @"GroupName";
 -(void)setupUnreadMessageCount
 {
     NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
-    NSInteger unreadCount = 0;
+    NSInteger normalUnreadCount = 0;
+    NSInteger searchUnreadCount = 0;
+    NSInteger serviceUnreadCount = 0;
     for (EMConversation *conversation in conversations) {
-        unreadCount += conversation.unreadMessagesCount;
+        // 从最新的开始读取未读数量的消息，这些消息都是收到的消息，因为如果回复过，则之前的都是已读
+        NSArray *messages = [conversation loadMoreMessagesFromId:nil limit:conversation.unreadMessagesCount];
+        for (EMMessage *message in messages) {
+            if ([[message.ext valueForKey:MESSAGE_FROM_VIEW] isEqualToString:MESSAGE_FROM_VIEW_SEARCH]) {
+                serviceUnreadCount ++;
+            }else if([[message.ext valueForKey:MESSAGE_FROM_VIEW] isEqualToString:MESSAGE_FROM_VIEW_VENDOR]) {
+                searchUnreadCount ++;
+            }else{
+                normalUnreadCount ++;
+            }
+        }
     }
-    unreadCount += [[SCUserProfileManager sharedInstance].currentLoginUserInformation.unreadquestioncount integerValue];
+    DebugLog(@"unread count:%ld, %ld, %ld", searchUnreadCount, normalUnreadCount, serviceUnreadCount);
+    //unreadCount += [[SCUserProfileManager sharedInstance].currentLoginUserInformation.unreadquestioncount integerValue];
+    if (self.searchConversationVC) {
+        if (searchUnreadCount) {
+            [self setupBadgeToView:self.tabButtons[0]];
+        }else{
+            [self.tabButtons[0] clearBadge];
+        }
+    }
     if (self.normalConversationVC) {
-        if (unreadCount > 0) {
-            //_chatListVC.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i",(int)unreadCount];
+        if (normalUnreadCount > 0) {
             [self setupBadgeToView:self.tabButtons[1]];
         }else{
-            //_chatListVC.tabBarItem.badgeValue = nil;
             [self.tabButtons[1] clearBadge];
         }
     }
+    if (self.serviceConversationVC) {
+        if (serviceUnreadCount) {
+            [self setupBadgeToView:self.tabButtons[2]];
+        }else{
+            [self.tabButtons[2] clearBadge];
+        }
+    }
     
+    NSInteger unreadCount = normalUnreadCount+searchUnreadCount+serviceUnreadCount;
     UIApplication *application = [UIApplication sharedApplication];
     [application setApplicationIconBadgeNumber:unreadCount];
 }
@@ -410,6 +432,8 @@ static NSString *kGroupName = @"GroupName";
 {
     _connectionState = connectionState;
     [self.normalConversationVC networkChanged:connectionState];
+    [self.searchConversationVC networkChanged:connectionState];
+    [self.serviceConversationVC networkChanged:connectionState];
 }
 
 - (void)playSoundAndVibration{
@@ -662,7 +686,7 @@ static NSString *kGroupName = @"GroupName";
     {
         [self.navigationController popToViewController:self animated:NO];
 //        [self setSelectedViewController:_chatListVC];
-        [self selectTabbarIndex:HomeViewTabChatList];
+        [self selectTabbarIndex:1];
     }
 }
 

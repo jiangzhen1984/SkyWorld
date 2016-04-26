@@ -162,13 +162,13 @@
     }
     dispatch_async(refreshQueue, ^{
         NSArray *conversations;
-SAMC_BEGIN
+//SAMC_BEGIN
         if(_delegate && [_delegate respondsToSelector:@selector(getAllConversations)]){
             conversations = [_delegate getAllConversations];
         }else{
             conversations = [[EMClient sharedClient].chatManager getAllConversations];
         }
-SAMC_END
+//SAMC_END
         NSArray* sorted = [conversations sortedArrayUsingComparator:
                            ^(EMConversation *obj1, EMConversation* obj2){
                                EMMessage *message1 = [obj1 latestMessage];

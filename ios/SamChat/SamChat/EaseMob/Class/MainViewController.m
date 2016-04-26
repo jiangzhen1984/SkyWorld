@@ -78,7 +78,7 @@ static NSString *kGroupName = @"GroupName";
     [self setupUntreatedApplyCount];
     
     [SamChatHelper shareHelper].contactViewVC = _contactsVC;
-    [SamChatHelper shareHelper].conversationListVC = _chatListVC;
+    [SamChatHelper shareHelper].normalConversationListVC = _chatListVC;
 }
 
 - (void)didReceiveMemoryWarning

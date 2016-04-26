@@ -33,6 +33,7 @@
                 completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            DebugLog(@"Error:%@", error);
             completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorServerNotReachable]);
         }];
 }

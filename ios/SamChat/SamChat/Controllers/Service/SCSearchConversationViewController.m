@@ -49,6 +49,55 @@
     return _hotpicsView;
 }
 
+#pragma mark - Push Question
+- (void)pushNewQuestion:(NSString *)question
+{
+    DebugLog(@"token: %@", [SCUserProfileManager sharedInstance].token);
+    NSString *urlString = [SCSkyWorldAPI urlNewQuestionWithQuestion:question];
+    //    DebugLog(@"pushing new question with: %@", urlString);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlString
+      parameters:nil
+        progress:^(NSProgress *downloadProgress){
+        }
+         success:^(NSURLSessionDataTask *task, id responseObject) {
+             if([responseObject isKindOfClass:[NSDictionary class]]) {
+                 DebugLog(@"%@", responseObject);
+                 NSDictionary *response = responseObject;
+                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
+                 if(errorCode) {
+                     [self questionFailedWithErrorCode:errorCode];
+                     return;
+                 }
+                 [self question:question SuccessWithResponse:response];
+             }
+         }
+         failure:^(NSURLSessionDataTask *task, NSError *error){
+             DebugLog(@"Error: %@", error);
+         }];
+}
+
+
+- (void)questionFailedWithErrorCode:(NSInteger)errorCode
+{
+    DebugLog(@"question error code: %ld", errorCode);
+}
+
+- (void)question:(NSString *)question SuccessWithResponse:(NSDictionary *)response
+{
+    NSString *questionId = [response[SKYWORLD_QUESTION_ID] stringValue];
+    
+    NSDictionary *questionInfo = @{SEND_QUESTION_QUESTION:question,
+                                   SEND_QUESTION_QUESTION_ID:questionId};
+    
+    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    [mainContext performBlockAndWait:^{
+        [SendQuestion sendQuestionWithInfo:questionInfo
+                    inManagedObjectContext:mainContext];
+    }];
+}
+
 #pragma mark - SCServiceSearchBarDelegate
 - (void)searchEditingDidBegin
 {
@@ -58,6 +107,11 @@
 - (void)searchEditingDidEndOnExit
 {
     DebugLog(@"end edit");
+    NSString *question = self.serviceSearchBar.searchContent;
+    if ((question==nil) || (question.length<=0)) {
+        return;
+    }
+    [self pushNewQuestion:self.serviceSearchBar.searchContent];
 }
 
 #pragma mark - SCHotTopicsDelegete
@@ -74,7 +128,7 @@
         EMConversation *conversation = conversationModel.conversation;
         if (conversation) {
             ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-            chatController.messageConversationType = @{MESSAGE_CONVERSATION_TYPE:CONVERSATION_TYPE_QUESTION};
+            chatController.messageExtDictionary = @{MESSAGE_FROM_VIEW:MESSAGE_FROM_VIEW_SEARCH};
             chatController.title = conversationModel.title;
             [self.navigationController pushViewController:chatController animated:YES];
         }
@@ -89,11 +143,16 @@
     NSMutableArray *serviceConversations = [[NSMutableArray alloc] init];
     for (EMConversation *conversation in conversations) {
         if((conversation.ext!=nil) &&
-           ([[conversation.ext valueForKey:CONVERSATION_TYPE_ANSWER] isEqualToNumber:[NSNumber numberWithBool:YES]])) {
+           ([[conversation.ext valueForKey:MESSAGE_FROM_VIEW_VENDOR] isEqualToNumber:[NSNumber numberWithBool:YES]])) {
             [serviceConversations addObject:conversation];
         }
     }
     return serviceConversations;
+}
+
+- (NSString *)currentListMessageFromView
+{
+    return MESSAGE_FROM_VIEW_VENDOR;
 }
 
 @end

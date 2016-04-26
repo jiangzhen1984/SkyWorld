@@ -33,6 +33,7 @@
 
 + (instancetype)errorWithCode:(NSInteger)aCode
 {
+    DebugLog(@"errorCode:%ld",aCode);
     SCSkyWorldError *error = [SCSkyWorldError errorWithDescription:nil code:aCode];
     switch (aCode) {
         case SCSkyWorldErrorParseFailed:

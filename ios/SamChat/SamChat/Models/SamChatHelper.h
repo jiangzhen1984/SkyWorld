@@ -12,6 +12,8 @@
 #import "HomeViewController.h"
 #import "ChatViewController.h"
 #import "SCNormalConversationViewController.h"
+#import "SCSearchConversationViewController.h"
+#import "SCServiceConversationViewController.h"
 
 #if DEMO_CALL == 1
 
@@ -22,7 +24,9 @@
 #endif
 
 @property (nonatomic, weak) ContactListViewController *contactViewVC;
-@property (nonatomic, weak) SCNormalConversationViewController *conversationListVC;
+@property (nonatomic, weak) SCNormalConversationViewController *normalConversationListVC;
+@property (nonatomic, weak) SCServiceConversationViewController *serviceConversationListVC;
+@property (nonatomic, weak) SCSearchConversationViewController *searchConversationListVC;
 @property (nonatomic, weak) HomeViewController *mainVC;
 @property (nonatomic, weak) ChatViewController *chatVC;
 

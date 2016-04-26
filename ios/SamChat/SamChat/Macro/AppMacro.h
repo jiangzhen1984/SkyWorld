@@ -48,15 +48,11 @@
 
 #define MAX_ARTICLE_IMAGE_COUNT 9
 
-// coversation type key
-#define CONVERSATION_TYPE_QUESTION  @"QuestionConversation"
-#define CONVERSATION_TYPE_ANSWER    @"AnswerConversation"
-#define CONVERSATION_TYPE_NORMAL    @"NormalConversation"
-
-// message ext
-#define MESSAGE_CONVERSATION_TYPE             @"MessageConversationType"
-
-#define SAMC_BEGIN
-#define SAMC_END
+// message from view
+#define MESSAGE_FROM_VIEW           @"chat_activity_type"
+#define MESSAGE_FROM_VIEW_SEARCH    @"service"
+#define MESSAGE_FROM_VIEW_CHAT      @"chat"
+#define MESSAGE_FROM_VIEW_VENDOR    @"vendor"
+#define MESSAGE_QUESTIONS           @"questions"
 
 #endif /* AppMacro_h */

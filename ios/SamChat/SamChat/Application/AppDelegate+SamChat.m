@@ -21,7 +21,7 @@
                                                  name:NOTIFICATION_LOGIN_STATE_CHANGE
                                                object:nil];
     NSString *appkey = @"skyworld#skyworld";
-    NSString *apnsCertName = nil;
+    NSString *apnsCertName = @"samchatdev";
     [[EaseSDKHelper shareHelper] easemobApplication:application
                       didFinishLaunchingWithOptions:launchOptions
                                              appkey:appkey

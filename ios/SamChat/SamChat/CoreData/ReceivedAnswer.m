@@ -9,7 +9,7 @@
 #import "ReceivedAnswer.h"
 #import "ContactUser.h"
 
-@interface ReceivedAnswer () <ISCTableCellModel>
+@interface ReceivedAnswer ()
 
 @end
 
@@ -28,26 +28,6 @@
                                                inManagedObjectContext:context];
     [[SCCoreDataManager sharedInstance] saveContext];
     return receivedAnswer;
-}
-
-- (NSString *)i_title
-{
-    return self.fromWho.username;
-}
-
-- (NSString *)i_details
-{
-    return self.answer;
-}
-
-- (NSString *)i_time
-{
-    return [SCUtils convertToDateStringWithTimeStamp:[self.receivedtime longLongValue]];
-}
-
-- (NSString *)i_avatarURLPath
-{
-    return self.fromWho.imagefile;
 }
 
 @end

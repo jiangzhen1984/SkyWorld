@@ -15,7 +15,8 @@
 
 @implementation SCServiceConversationViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.delegate = self;
     [self tableViewDidTriggerHeaderRefresh];
@@ -29,7 +30,8 @@
         EMConversation *conversation = conversationModel.conversation;
         if (conversation) {
             ChatViewController *chatController = [[ChatViewController alloc] initWithConversationChatter:conversation.conversationId conversationType:conversation.type];
-            chatController.messageConversationType = @{MESSAGE_CONVERSATION_TYPE:CONVERSATION_TYPE_ANSWER};
+            //chatController.messageExtDictionary = @{MESSAGE_FROM_VIEW:MESSAGE_FROM_VIEW_VENDOR};
+            chatController.messageExtDictionary = [self getMessageExtDictionaryWithConversationId:conversation.conversationId];
             chatController.title = conversationModel.title;
             [self.navigationController pushViewController:chatController animated:YES];
         }
@@ -44,11 +46,34 @@
     NSMutableArray *serviceConversations = [[NSMutableArray alloc] init];
     for (EMConversation *conversation in conversations) {
         if((conversation.ext!=nil) &&
-           ([[conversation.ext valueForKey:CONVERSATION_TYPE_QUESTION] isEqualToNumber:[NSNumber numberWithBool:YES]])) {
+           ([[conversation.ext valueForKey:MESSAGE_FROM_VIEW_SEARCH] isEqualToNumber:[NSNumber numberWithBool:YES]])) {
             [serviceConversations addObject:conversation];
         }
     }
     return serviceConversations;
+}
+
+- (NSString *)currentListMessageFromView
+{
+    return MESSAGE_FROM_VIEW_SEARCH;
+}
+
+#pragma mark - Get Message Ext Dictionary
+- (NSDictionary *)getMessageExtDictionaryWithConversationId:(NSString *)conversationId
+{
+    NSMutableDictionary *extDic = [NSMutableDictionary dictionaryWithDictionary:@{MESSAGE_FROM_VIEW:MESSAGE_FROM_VIEW_VENDOR}];
+    NSString *username = conversationId;
+    NSArray *questionIds = [ReceivedQuestion unresponsedQuestionIdsFrom:username
+                                                          markResponsed:YES
+                                                 inManagedObjectContext:[SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext];
+    if(questionIds && (questionIds.count>0)){
+        NSMutableString *idString = [[NSMutableString alloc] initWithString:questionIds[0]];
+        for (int i=1; i<questionIds.count; i++) {
+            [idString appendFormat:@" %@",questionIds[i]];
+        }
+        [extDic addEntriesFromDictionary:@{MESSAGE_QUESTIONS:idString}];
+    }
+    return extDic;
 }
 
 @end

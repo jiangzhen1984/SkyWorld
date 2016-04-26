@@ -747,15 +747,9 @@
     __weak typeof(self) weakSelf = self;
     dispatch_async(_messageQueue, ^{
         NSArray *moreMessages = nil;
-SAMC_BEGIN
-        if(weakSelf.dataSource && [weakSelf.dataSource respondsToSelector:@selector(shouldMergeQuestions)]
-           && [weakSelf.dataSource shouldMergeQuestions]) {
-            moreMessages = [weakSelf.dataSource loadMoreMessagesFromId:messageId limit:count];
+        if (weakSelf.dataSource && [weakSelf.dataSource respondsToSelector:@selector(messageViewController:loadMessageFromTimestamp:count:)]) {
+//            moreMessages = [weakSelf.dataSource messageViewController:weakSelf loadMessageFromTimestamp:timestamp count:count];
         }
-//        if (weakSelf.dataSource && [weakSelf.dataSource respondsToSelector:@selector(messageViewController:loadMessageFromTimestamp:count:)]) {
-////            moreMessages = [weakSelf.dataSource messageViewController:weakSelf loadMessageFromTimestamp:timestamp count:count];
-//        }
-SAMC_END
         else{
             moreMessages = [weakSelf.conversation loadMoreMessagesFromId:messageId limit:(int)count];
         }
@@ -1576,69 +1570,38 @@ SAMC_END
 
 #pragma mark - public
 
-//- (void)tableViewDidTriggerHeaderRefresh
-//{
-//    self.messageTimeIntervalTag = -1;
-//    NSString *messageId = nil;
-//    if ([self.messsagesSource count] > 0) {
-//        messageId = [(EMMessage *)self.messsagesSource.firstObject messageId];
-//    }
-//    else {
-//        messageId = nil;
-//    }
-//    [self _loadMessagesBefore:messageId count:self.messageCountOfPage append:YES];
-//    
-//    [self tableViewDidFinishTriggerHeader:YES reload:YES];
-//}
-
-SAMC_BEGIN
 - (void)tableViewDidTriggerHeaderRefresh
 {
     self.messageTimeIntervalTag = -1;
     NSString *messageId = nil;
-    
-    __weak typeof(self) weakSelf = self;
-    
-    if(weakSelf.dataSource && [weakSelf.dataSource respondsToSelector:@selector(shouldMergeQuestions)]
-       && [weakSelf.dataSource shouldMergeQuestions]) {
-        if([self.messsagesSource count] <= 0){
-            // 这里尽量对EaseUI代码做最少的改动，这两个会在子类中更新
-            self.lastMessageId = nil;
-            self.lastQuestionTime = nil;
-        }
-        messageId = self.lastMessageId;
-    }else{
-        if ([self.messsagesSource count] > 0) {
-            messageId = [(EMMessage *)self.messsagesSource.firstObject messageId];
-        }
-        else {
-            messageId = nil;
-        }
+    if ([self.messsagesSource count] > 0) {
+        messageId = [(EMMessage *)self.messsagesSource.firstObject messageId];
     }
-    
+    else {
+        messageId = nil;
+    }
     [self _loadMessagesBefore:messageId count:self.messageCountOfPage append:YES];
     
     [self tableViewDidFinishTriggerHeader:YES reload:YES];
 }
-SAMC_END
 
 #pragma mark - send message
 
 - (void)_sendMessage:(EMMessage *)message
 {
-SAMC_BEGIN
-    if (_dataSource && [_dataSource respondsToSelector:@selector(messageConversationType)]){
-        if([_dataSource messageConversationType]){
+//SAMC_BEGIN
+    if (_dataSource && [_dataSource respondsToSelector:@selector(messageExtDictionary)]){
+        if([_dataSource messageExtDictionary]){
             if (message.ext == nil) {
-                message.ext = [_dataSource messageConversationType];
+                message.ext = [_dataSource messageExtDictionary];
             }else{
                 NSMutableDictionary *extDic = [[NSMutableDictionary alloc] initWithDictionary:message.ext];
-                [extDic addEntriesFromDictionary:[_dataSource messageConversationType]];
+                [extDic addEntriesFromDictionary:[_dataSource messageExtDictionary]];
                 message.ext = extDic;
             }
         }
     }
-SAMC_END
+//SAMC_END
     if (self.conversation.type == EMConversationTypeGroupChat){
         message.chatType = EMChatTypeGroupChat;
     }

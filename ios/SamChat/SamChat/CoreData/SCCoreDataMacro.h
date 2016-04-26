@@ -38,7 +38,8 @@
 #define RECEIVED_QUESTION_INVALID           @0
 #define RECEIVED_QUESTION_RECEIVEDTIME      @"receivedtime"
 #define RECEIVED_QUESTION_RECEIVERUSERNAME  @"receiverusername"
-
+#define RECEIVED_QUESTION_FROMWHO_USERNAME  @"fromWho.username"
+#define RECEIVED_QUESTION_RESPONSE          @"response"
 #define RECEIVED_QUESTION_RESPONSED         @1
 #define RECEIVED_QUESTION_NOTRESPONSED      @0
 

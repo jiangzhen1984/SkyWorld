@@ -113,10 +113,15 @@ static SamChatHelper *helper = nil;
             }
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (weakself.conversationListVC) {
-                [weakself.conversationListVC refreshDataSource];
+            if (weakself.normalConversationListVC) {
+                [weakself.normalConversationListVC refreshDataSource];
             }
-            
+            if(weakself.searchConversationListVC) {
+                [weakself.searchConversationListVC refreshDataSource];
+            }
+            if(weakself.serviceConversationListVC) {
+                [weakself.serviceConversationListVC refreshDataSource];
+            }
             if (weakself.mainVC) {
                 [weakself.mainVC setupUnreadMessageCount];
             }
@@ -200,8 +205,14 @@ static SamChatHelper *helper = nil;
         [_mainVC setupUnreadMessageCount];
     }
     
-    if (self.conversationListVC) {
-        [_conversationListVC refreshDataSource];
+    if (self.normalConversationListVC) {
+        [_normalConversationListVC refreshDataSource];
+    }
+    if (self.searchConversationListVC) {
+        [_searchConversationListVC refreshDataSource];
+    }
+    if (self.serviceConversationListVC) {
+        [_serviceConversationListVC refreshDataSource];
     }
 }
 
@@ -217,8 +228,13 @@ static SamChatHelper *helper = nil;
     BOOL isRefreshCons = YES;
     for(EMMessage *message in aMessages){
         DebugLog(@"ext: %@", message.ext);
-        if(message.chatType == EMChatTypeChat){
+        if((message.chatType == EMChatTypeChat) && (message.ext != nil)){
             [self setExtOfConversationWithMessage:message];
+            NSString *questionIds = [message.ext valueForKey:MESSAGE_QUESTIONS];
+            if (questionIds) {
+                DebugLog(@"question ids: %@", questionIds);
+                [self insertQuestionsWithIds:questionIds toConversationId:message.conversationId];
+            }
         }
         BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
         if (needShowNotification) {
@@ -248,8 +264,14 @@ static SamChatHelper *helper = nil;
             isChatting = [message.conversationId isEqualToString:_chatVC.conversation.conversationId];
         }
         if (_chatVC == nil || !isChatting) {
-            if (self.conversationListVC) {
-                [_conversationListVC refresh];
+            if (self.normalConversationListVC) {
+                [_normalConversationListVC refresh];
+            }
+            if (self.searchConversationListVC) {
+                [_searchConversationListVC refresh];
+            }
+            if (self.serviceConversationListVC) {
+                [_serviceConversationListVC refresh];
             }
             
             if (self.mainVC) {
@@ -264,8 +286,14 @@ static SamChatHelper *helper = nil;
     }
     
     if (isRefreshCons) {
-        if (self.conversationListVC) {
-            [_conversationListVC refresh];
+        if (self.normalConversationListVC) {
+            [_normalConversationListVC refresh];
+        }
+        if (self.searchConversationListVC) {
+            [_searchConversationListVC refresh];
+        }
+        if (self.serviceConversationListVC) {
+            [_serviceConversationListVC refresh];
         }
         
         if (self.mainVC) {
@@ -510,8 +538,6 @@ static SamChatHelper *helper = nil;
                                                                          inManagedObjectContext:mainContext];
         if([receivedQuestion.status isEqualToNumber:RECEIVED_QUESTION_VALID]){ // new question
             [[SCUserProfileManager sharedInstance] updateCurrentLoginUserInformationWithUnreadQuestionCountAddOne];
-            [_mainVC setupUnreadMessageCount];
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RECEIVED_NEW_QUESTION object:nil];
         }
     }];
     
@@ -529,12 +555,13 @@ static SamChatHelper *helper = nil;
     message.timestamp = [question[SKYWORLD_DATETIME] longLongValue];
     message.isReadAcked = YES;
     message.isDeliverAcked = YES;
-    message.isRead = YES;
-    message.ext = @{MESSAGE_CONVERSATION_TYPE:CONVERSATION_TYPE_QUESTION};
-    //message.isRead = false;
+    message.isRead = NO;
+    message.ext = @{MESSAGE_FROM_VIEW:MESSAGE_FROM_VIEW_SEARCH};
     
     [conversation insertMessage:message];
-    [self setExtOfConversation:conversation withKey:CONVERSATION_TYPE_QUESTION];
+    [self setExtOfConversation:conversation withKey:MESSAGE_FROM_VIEW_SEARCH];
+    [_mainVC setupUnreadMessageCount];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_RECEIVED_NEW_QUESTION object:nil];
 }
 
 
@@ -776,7 +803,9 @@ static SamChatHelper *helper = nil;
 - (void)_clearHelper
 {
     self.mainVC = nil;
-    self.conversationListVC = nil;
+    self.normalConversationListVC = nil;
+    self.searchConversationListVC = nil;
+    self.serviceConversationListVC = nil;
     self.chatVC = nil;
     self.contactViewVC = nil;
     
@@ -791,9 +820,9 @@ static SamChatHelper *helper = nil;
 {
     NSMutableDictionary *convertsationExtDic = [[NSMutableDictionary alloc] initWithDictionary:conversation.ext];
     if(convertsationExtDic == nil){
-        convertsationExtDic = [[NSMutableDictionary alloc] initWithDictionary:@{CONVERSATION_TYPE_QUESTION:[NSNumber numberWithBool:NO],
-                                                                                CONVERSATION_TYPE_ANSWER:[NSNumber numberWithBool:NO],
-                                                                                CONVERSATION_TYPE_NORMAL:[NSNumber numberWithBool:NO]}];
+        convertsationExtDic = [[NSMutableDictionary alloc] initWithDictionary:@{MESSAGE_FROM_VIEW_SEARCH:[NSNumber numberWithBool:NO],
+                                                                                MESSAGE_FROM_VIEW_CHAT:[NSNumber numberWithBool:NO],
+                                                                                MESSAGE_FROM_VIEW_VENDOR:[NSNumber numberWithBool:NO]}];
     }
     [convertsationExtDic setValue:[NSNumber numberWithBool:YES] forKey:key];
     conversation.ext = convertsationExtDic;
@@ -807,10 +836,39 @@ static SamChatHelper *helper = nil;
                                                                                    type:EMConversationTypeChat
                                                                        createIfNotExist:YES];
     if(message.ext != nil){
-        NSString *conversationType = [message.ext valueForKey:MESSAGE_CONVERSATION_TYPE];
+        NSString *conversationType = [message.ext valueForKey:MESSAGE_FROM_VIEW];
         if(conversationType){
             [self setExtOfConversation:conversation withKey:conversationType];
         }
+    }
+}
+
+- (void)insertQuestionsWithIds:(NSString *)questionIdsString toConversationId:(NSString *)conversationId
+{
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:conversationId
+                                                                                   type:EMConversationTypeChat
+                                                                       createIfNotExist:YES];
+    NSArray *questionIds = [questionIdsString componentsSeparatedByString:@" "];
+    for (NSString *questionId in questionIds) {
+        NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+        SendQuestion *question = [SendQuestion sendQuestionWithId:questionId
+                                           inManagedObjectContext:mainContext];
+        NSString *text = [NSString stringWithFormat:@"我的问题：%@", question.question];
+        EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
+        EMMessage *message = [[EMMessage alloc] initWithConversationID:conversationId
+                                                                  from:[SCUserProfileManager sharedInstance].username
+                                                                    to:conversationId
+                                                                  body:body
+                                                                   ext:nil];
+        message.chatType = EMChatTypeChat;
+        message.direction = EMMessageDirectionSend;
+        message.timestamp = [question.sendtime longLongValue];
+        message.status = EMMessageStatusSuccessed;
+        message.isReadAcked = YES;
+        message.isDeliverAcked = YES;
+        message.isRead = YES;
+        message.ext = @{MESSAGE_FROM_VIEW:MESSAGE_FROM_VIEW_SEARCH};
+        [conversation insertMessage:message];
     }
 }
 

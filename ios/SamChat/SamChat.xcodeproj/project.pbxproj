@@ -158,6 +158,7 @@
 		31D5CDC81CC4A56800D02D1D /* RetrievePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC01CC4A56800D02D1D /* RetrievePassWordViewController.m */; };
 		31D5CDC91CC4A56800D02D1D /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC21CC4A56800D02D1D /* SignupSettingViewController.m */; };
 		31D5CDCA1CC4A56800D02D1D /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC41CC4A56800D02D1D /* SignupViewController.m */; };
+		31F6F7CE1CCDCAA7007AB092 /* EMConversation+MessagesCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7CD1CCDCAA7007AB092 /* EMConversation+MessagesCount.m */; };
 		31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */; };
 		31F8E71E1CA3B24F0049EE23 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */; };
 		31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E7271CA3D31D0049EE23 /* SCUtils.m */; };
@@ -808,6 +809,9 @@
 		31D5CDC21CC4A56800D02D1D /* SignupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignupSettingViewController.m; path = Login/SignupSettingViewController.m; sourceTree = "<group>"; };
 		31D5CDC31CC4A56800D02D1D /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignupViewController.h; path = Login/SignupViewController.h; sourceTree = "<group>"; };
 		31D5CDC41CC4A56800D02D1D /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignupViewController.m; path = Login/SignupViewController.m; sourceTree = "<group>"; };
+		31F6F7CC1CCDCAA7007AB092 /* EMConversation+MessagesCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EMConversation+MessagesCount.h"; path = "Category/EMConversation+MessagesCount.h"; sourceTree = "<group>"; };
+		31F6F7CD1CCDCAA7007AB092 /* EMConversation+MessagesCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EMConversation+MessagesCount.m"; path = "Category/EMConversation+MessagesCount.m"; sourceTree = "<group>"; };
+		31F6F7CF1CCDD7FC007AB092 /* EMConversation+MessagesCount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMConversation+MessagesCount.h"; sourceTree = "<group>"; };
 		31F8E71A1CA3A8CF0049EE23 /* SCUITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUITabBarController.h; sourceTree = "<group>"; };
 		31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUITabBarController.m; sourceTree = "<group>"; };
 		31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -1416,6 +1420,7 @@
 		311BC62C1CA37B19006B4707 /* SamChat */ = {
 			isa = PBXGroup;
 			children = (
+				31F6F7CB1CCDC9B2007AB092 /* Category */,
 				310A9A5F1CAA08EF000616F0 /* EaseMob */,
 				3159D99F1CAEADC600212DAB /* 3rdparty */,
 				317C2D4D1CA909B80035A14E /* Application */,
@@ -1600,6 +1605,7 @@
 				317B82581CA9625E000415E9 /* EMChatManagerDelegate.h */,
 				317B82591CA9625E000415E9 /* EMChatroom.h */,
 				317B825A1CA9625E000415E9 /* EMChatroomManagerDelegate.h */,
+				31F6F7CF1CCDD7FC007AB092 /* EMConversation+MessagesCount.h */,
 				317B825B1CA9625E000415E9 /* EMClient+Call.h */,
 				317B825C1CA9625E000415E9 /* EMClient.h */,
 				317B825D1CA9625E000415E9 /* EMClientDelegate.h */,
@@ -2047,6 +2053,15 @@
 				31C8B90A1CC757420037BEB8 /* SCConversationListViewController.m */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		31F6F7CB1CCDC9B2007AB092 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				31F6F7CC1CCDCAA7007AB092 /* EMConversation+MessagesCount.h */,
+				31F6F7CD1CCDCAA7007AB092 /* EMConversation+MessagesCount.m */,
+			);
+			name = Category;
 			sourceTree = "<group>";
 		};
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
@@ -3211,6 +3226,7 @@
 				31FAC6B41CAAB7E30034A0CD /* EMRotbotChatViewCell.m in Sources */,
 				31FAC5811CAAB3C50034A0CD /* EMGifImage.m in Sources */,
 				3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */,
+				31F6F7CE1CCDCAA7007AB092 /* EMConversation+MessagesCount.m in Sources */,
 				317C2D501CA90A1E0035A14E /* AppDelegate+SamChat.m in Sources */,
 				31FAC59D1CAAB3C50034A0CD /* XHMessageTextView.m in Sources */,
 				316F4E411CB9295E00B2F9A3 /* SCBadgeImageView.m in Sources */,

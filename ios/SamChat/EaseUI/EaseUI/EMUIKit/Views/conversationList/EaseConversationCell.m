@@ -11,6 +11,10 @@
 #import "EMConversation.h"
 #import "UIImageView+EMWebCache.h"
 
+//SAMC_BEGIN
+#import "EMConversation+MessagesCount.h"
+//SAMC_END
+
 CGFloat const EaseConversationCellPadding = 10;
 
 @interface EaseConversationCell()
@@ -172,13 +176,23 @@ CGFloat const EaseConversationCellPadding = 10;
         }
     }
     
-    if (_model.conversation.unreadMessagesCount == 0) {
+//SAMC_BEGIN
+//    if (_model.conversation.unreadMessagesCount == 0) {
+//        _avatarView.showBadge = NO;
+//    }
+//    else{
+//        _avatarView.showBadge = YES;
+//        _avatarView.badge = _model.conversation.unreadMessagesCount;
+//    }
+    int unreadCount = 0;
+    unreadCount = [_model.conversation messagesCountOfConversationFromView:_model.messagesFromView];
+    if (unreadCount == 0) {
         _avatarView.showBadge = NO;
-    }
-    else{
+    } else {
         _avatarView.showBadge = YES;
-        _avatarView.badge = _model.conversation.unreadMessagesCount;
+        _avatarView.badge = unreadCount;
     }
+//SAMC_END
 }
 
 - (void)setTitleLabelFont:(UIFont *)titleLabelFont
