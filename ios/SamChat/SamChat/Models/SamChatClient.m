@@ -7,15 +7,13 @@
 //
 
 #import "SamChatClient.h"
-//#import "SCLoginModel.h"
-//#import "SCSignupModel.h"
 #import "SCUserSettingModel.h"
 #import "SCUserRelationModel.h"
-#import "SCProducerModel.h"
 
 #import "SCServiceSearchModel.h"
 
 #import "SCAccountManager.h"
+#import "SCProducerManager.h"
 
 static SamChatClient *sharedInstance = nil;
 
@@ -56,14 +54,21 @@ static SamChatClient *sharedInstance = nil;
     [SCAccountManager signupWithCellphone:cellphone countryCode:countrycode username:username password:password completion:completion];
 }
 
+- (void)logoutWithCompletion:(void (^)(BOOL success, NSError *error))completion
+{
+    [SCAccountManager logoutWithCompletion:completion];
+}
+
+- (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [SCProducerManager upgradeToProducerWithInformationDictionary:info completion:completion];
+}
+
+//-----------------
+
 - (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
 {
     [SCUserSettingModel uploadUserAvatarInBackground:image completion:completion];
-}
-
-- (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCUserSettingModel logoutWithCompletion:completion];
 }
 
 - (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
@@ -81,10 +86,6 @@ static SamChatClient *sharedInstance = nil;
     [SCUserRelationModel makeFollow:flag withUser:userID completion:completion];
 }
 
-- (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCProducerModel upgradeToProducerWithInformationDictionary:info completion:completion];
-}
 
 - (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType reset:(BOOL)flag completion:(void (^)(BOOL success, NSArray *topics, SCSkyWorldError *error))completion
 {

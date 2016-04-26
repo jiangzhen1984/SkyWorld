@@ -1,17 +1,19 @@
 //
-//  SCProducerModel.m
+//  SCProducerManager.m
 //  SamChat
 //
-//  Created by HJ on 4/12/16.
+//  Created by HJ on 4/26/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#import "SCProducerModel.h"
+#import "SCProducerManager.h"
+#import "SCSkyWorldErrorHelper.h"
 
-@implementation SCProducerModel
+@implementation SCProducerManager
 
-+ (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
++ (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, NSError *error))completion
 {
+    NSAssert(completion != nil, @"completion block should not be nil");
     NSString *area = info[SKYWORLD_AREA] ?:@"";
     NSString *location = info[SKYWORLD_LOCATION] ?:@"";
     NSString *desc = info[SKYWORLD_DESC] ?:@"";
@@ -30,30 +32,24 @@
                  NSDictionary *response = responseObject;
                  NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                  if(errorCode) {
-                     if(completion){
-                         if(errorCode == SCSkyWorldErrorAlreadyUpgrade){
-                             completion(true, nil);
-                         }else{
-                             completion(false, [SCSkyWorldError errorWithCode:errorCode]);
-                         }
+                     if(errorCode == SCSkyWorldErrorAlreadyUpgrade){
+                         completion(true, nil);
+                     }else{
+                         completion(false, [SCSkyWorldErrorHelper errorWithCode:errorCode]);
                      }
                  }else{
                      [[SCUserProfileManager sharedInstance] saveCurrentLoginUserInformationWithSkyWorldResponse:response
                                                                                                    andOtherInfo:nil];
-                     if(completion){
-                         completion(true, nil);
-                     }
+                     completion(true, nil);
                  }
              }else{
-                 if(completion){
-                     completion(false, [SCSkyWorldError errorWithCode:SCSkyWorldErrorUnknowError]);
-                 }
+                 completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
              }
          }
          failure:^(NSURLSessionDataTask *task, NSError *error){
              DebugLog(@"Error: %@", error);
+             completion(false, [SCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
          }];
 }
-
 
 @end

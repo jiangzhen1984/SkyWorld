@@ -98,12 +98,12 @@
 {
     UIView *mainView = [[UIApplication sharedApplication].delegate window];
     [self showHudInView:mainView hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
-    [[SamChatClient sharedInstance] logoutWithCompletion:^(BOOL success, SCSkyWorldError *error) {
+    [[SamChatClient sharedInstance] logoutWithCompletion:^(BOOL success, NSError *error) {
         [self hideHud];
         if(success){
             [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
         }else{
-            [self showHint:error.errorDescription];
+            [self showHint:error.userInfo[NSLocalizedDescriptionKey]];
         }
     }];
 }

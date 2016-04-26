@@ -78,6 +78,9 @@
         case 2:
             [self pushSamChatGroups];
             break;
+        case 5:
+            [self logout];
+            break;
         default:
             break;
     }
@@ -101,6 +104,21 @@
     GroupListViewController *groupController = [[GroupListViewController alloc] initWithStyle:UITableViewStylePlain];
     [self.navigationController pushViewController:groupController animated:YES];
 }
+
+- (void)logout
+{
+    UIView *mainView = [[UIApplication sharedApplication].delegate window];
+    [self showHudInView:mainView hint:NSLocalizedString(@"setting.logoutOngoing", @"loging out...")];
+    [[SamChatClient sharedInstance] logoutWithCompletion:^(BOOL success, NSError *error) {
+        [self hideHud];
+        if(success){
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@NO];
+        }else{
+            [self showHint:error.userInfo[NSLocalizedDescriptionKey]];
+        }
+    }];
+}
+
 
 /*
 #pragma mark - Navigation

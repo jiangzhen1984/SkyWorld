@@ -54,7 +54,7 @@
                            SKYWORLD_LOCATION:self.textViewLocation.text,
                            SKYWORLD_DESC:self.textViewDescription.text};
     
-    [[SamChatClient sharedInstance] upgradeToProducerWithInformationDictionary:info completion:^(BOOL success, SCSkyWorldError *error) {
+    [[SamChatClient sharedInstance] upgradeToProducerWithInformationDictionary:info completion:^(BOOL success, NSError *error) {
         if(success){
             [self showHint:@"成功升级为服务者"];
             [self.navigationController popViewControllerAnimated:YES];
