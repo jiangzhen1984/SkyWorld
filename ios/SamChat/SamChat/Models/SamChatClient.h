@@ -24,7 +24,6 @@
 - (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion;
 
-- (void)sendAnswer:(NSString *)answer toQuestionID:(NSString *)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 - (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;
 
 - (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion;

@@ -14,7 +14,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ReceivedQuestion : NSManagedObject
-@property (nonatomic) CGFloat i_cellHeight;
 + (ReceivedQuestion *)receivedQuestionWithSkyWorldInfo:(NSDictionary *)questionDictionary inManagedObjectContext:(NSManagedObjectContext *)context;
 + (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context;
 

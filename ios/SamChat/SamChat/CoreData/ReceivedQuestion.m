@@ -15,8 +15,6 @@
 
 @implementation ReceivedQuestion
 
-@synthesize i_cellHeight = _i_cellHeight;
-
 + (ReceivedQuestion *)receivedQuestionWithSkyWorldInfo:(NSDictionary *)questionDictionary inManagedObjectContext:(NSManagedObjectContext *)context
 {
     LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:[SCUserProfileManager sharedInstance].username
