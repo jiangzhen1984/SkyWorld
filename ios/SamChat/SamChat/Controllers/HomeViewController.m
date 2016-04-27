@@ -70,10 +70,10 @@ static NSString *kGroupName = @"GroupName";
     [self setupSubviews];
     self.selectedIndex = 0;
     
-//    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-//    [addButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
-//    [addButton addTarget:_contactsVC action:@selector(addFriendAction) forControlEvents:UIControlEventTouchUpInside];
-//    _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [addButton setImage:[UIImage imageNamed:@"add.png"] forState:UIControlStateNormal];
+    [addButton addTarget:_normalConversationVC action:@selector(addFriendAction) forControlEvents:UIControlEventTouchUpInside];
+    _addFriendItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
     [self setupUnreadMessageCount];
     [self setupUntreatedApplyCount];
@@ -94,22 +94,22 @@ static NSString *kGroupName = @"GroupName";
     
 }
 
-#pragma mark - lazy loading
-- (SCNormalConversationViewController *)normalConversationVC
-{
-    if(_normalConversationVC == nil){
-        _normalConversationVC = [[SCNormalConversationViewController alloc] initWithNibName:nil bundle:nil];
-    }
-    return _normalConversationVC;
-}
-
-- (SCServiceConversationViewController *)serviceConversationVC
-{
-    if(_serviceConversationVC == nil){
-        _serviceConversationVC = [[SCServiceConversationViewController alloc] initWithNibName:nil bundle:nil];
-    }
-    return _serviceConversationVC;
-}
+//#pragma mark - lazy loading
+//- (SCNormalConversationViewController *)normalConversationVC
+//{
+//    if(_normalConversationVC == nil){
+//        _normalConversationVC = [[SCNormalConversationViewController alloc] initWithNibName:nil bundle:nil];
+//    }
+//    return _normalConversationVC;
+//}
+//
+//- (SCServiceConversationViewController *)serviceConversationVC
+//{
+//    if(_serviceConversationVC == nil){
+//        _serviceConversationVC = [[SCServiceConversationViewController alloc] initWithNibName:nil bundle:nil];
+//    }
+//    return _serviceConversationVC;
+//}
 
 #pragma mark - UITabBarDelegate
 

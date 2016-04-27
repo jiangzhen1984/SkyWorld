@@ -1470,13 +1470,6 @@
 			name = 3rdparty;
 			sourceTree = "<group>";
 		};
-		316F4E281CB89E6200B2F9A3 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Protocols;
-			sourceTree = "<group>";
-		};
 		316F4E351CB8EA5800B2F9A3 /* Push */ = {
 			isa = PBXGroup;
 			children = (
@@ -2000,7 +1993,6 @@
 			isa = PBXGroup;
 			children = (
 				316F4E351CB8EA5800B2F9A3 /* Push */,
-				316F4E281CB89E6200B2F9A3 /* Protocols */,
 				317C2D421CA8C0270035A14E /* SCUserProfileManager.h */,
 				317C2D431CA8C0270035A14E /* SCUserProfileManager.m */,
 				31C8B9121CC775810037BEB8 /* SamChatHelper.h */,

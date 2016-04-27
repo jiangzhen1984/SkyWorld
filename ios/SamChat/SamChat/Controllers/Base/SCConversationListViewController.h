@@ -18,4 +18,9 @@
 - (void)isConnect:(BOOL)isConnect;
 - (void)networkChanged:(EMConnectionState)connectionState;
 
+- (NSString *)conversationListViewController:(EaseConversationListViewController *)conversationListViewController
+      latestMessageTitleForConversationModel:(id<IConversationModel>)conversationModel;
+- (NSString *)conversationListViewController:(EaseConversationListViewController *)conversationListViewController
+       latestMessageTimeForConversationModel:(id<IConversationModel>)conversationModel;
+
 @end
