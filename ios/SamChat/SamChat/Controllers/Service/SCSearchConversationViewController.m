@@ -34,10 +34,8 @@
     _serviceSearchBar.delegate = self;
     [self.view addSubview:_serviceSearchBar];
     
-    [self.view addSubview:self.hotpicsView];
-    
     self.tableView.frame = CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44);
-    self.tableView.hidden = YES;
+    //self.tableView.hidden = YES;
 }
 
 #pragma mark - lazy loading
@@ -143,10 +141,25 @@
     NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
     NSMutableArray *serviceConversations = [[NSMutableArray alloc] init];
     for (EMConversation *conversation in conversations) {
+        DebugLog(@"ext: %@", conversation.ext);
         if((conversation.ext!=nil) &&
            ([[conversation.ext valueForKey:MESSAGE_FROM_VIEW_VENDOR] isEqualToNumber:[NSNumber numberWithBool:YES]])) {
             [serviceConversations addObject:conversation];
         }
+    }
+    if ((serviceConversations==nil) || (serviceConversations.count <= 0)) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.tableView.hidden = YES;
+            [self.view addSubview:self.hotpicsView];
+        });
+    }else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.tableView.hidden = NO;
+            if (_hotpicsView) {
+                [_hotpicsView removeFromSuperview];
+                _hotpicsView = nil;
+            }
+        });
     }
     return serviceConversations;
 }
