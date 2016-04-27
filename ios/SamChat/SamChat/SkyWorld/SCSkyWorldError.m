@@ -128,7 +128,7 @@
             error.errorDescription = @"连接服务器失败";
             break;
         case SCSkyWorldErrorUnknowError: // = 3
-            error.errorDescription = @"未知不错";
+            error.errorDescription = @"未知错误";
             break;
         case SCSkyWorldErrorLogoutError: // = 4
             error.errorDescription = @"退出失败";

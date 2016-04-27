@@ -226,7 +226,7 @@ static SamChatHelper *helper = nil;
 - (void)didReceiveMessages:(NSArray *)aMessages
 {
     BOOL isRefreshCons = YES;
-    for(EMMessage *message in aMessages){
+    for (EMMessage *message in aMessages) {
         DebugLog(@"ext: %@", message.ext);
         if((message.chatType == EMChatTypeChat) && (message.ext != nil)){
             [self setExtOfConversationWithMessage:message];
@@ -236,6 +236,8 @@ static SamChatHelper *helper = nil;
                 [self insertQuestionsWithIds:questionIds toConversationId:message.conversationId];
             }
         }
+    }
+    for(EMMessage *message in aMessages){
         BOOL needShowNotification = (message.chatType != EMChatTypeChat) ? [self _needShowNotification:message.conversationId] : YES;
         if (needShowNotification) {
 #if !TARGET_IPHONE_SIMULATOR
@@ -824,10 +826,16 @@ static SamChatHelper *helper = nil;
                                                                                 MESSAGE_FROM_VIEW_CHAT:[NSNumber numberWithBool:NO],
                                                                                 MESSAGE_FROM_VIEW_VENDOR:[NSNumber numberWithBool:NO]}];
     }
-    [convertsationExtDic setValue:[NSNumber numberWithBool:YES] forKey:key];
-    conversation.ext = convertsationExtDic;
-    BOOL success = [conversation updateConversationExtToDB];
-    DebugLog(@"conversation update %d", success);
+    if (([convertsationExtDic valueForKey:key]==nil) || [[convertsationExtDic valueForKey:key] isEqualToNumber:[NSNumber numberWithBool:NO]]) {
+        [convertsationExtDic setValue:[NSNumber numberWithBool:YES] forKey:key];
+        conversation.ext = convertsationExtDic;
+        BOOL success = [conversation updateConversationExtToDB];
+        DebugLog(@"conversation update %d", success);
+//会话列表刷新逻辑，环信原有是根据会话变化的回调刷新的，
+//但是这里因为多个view，如果某一个会话在其中一个view存在，其中一个不存在，则在不存在的view收到消息时不会触发会话列表变化
+//所以需要增加这种情况的刷新处理
+        [self didUpdateConversationList:nil];
+    }
 }
 
 - (void)setExtOfConversationWithMessage:(EMMessage *)message

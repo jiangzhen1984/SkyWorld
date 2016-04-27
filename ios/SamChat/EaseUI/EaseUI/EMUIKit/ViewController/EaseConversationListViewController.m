@@ -135,6 +135,10 @@
         }
         [self.dataArray removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        if ([self.currentListMessageFromView isEqualToString:MESSAGE_FROM_VIEW_VENDOR]
+            && (self.dataArray.count <= 0)) {
+            [self tableViewDidTriggerHeaderRefresh];
+        }
 //SAMC_END
     }
 }
