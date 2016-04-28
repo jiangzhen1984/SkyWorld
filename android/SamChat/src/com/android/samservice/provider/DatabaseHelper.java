@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
 	private static final String DATABASE_NAME = "SamDB.db";
 	/*
-	id(primary) | status | username | countrycode|phonenumber |password |usertype | image file |description |area | location |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate
+	id(primary) | status | username | countrycode|phonenumber |password |usertype | image file |description |area | location |login time|logout time | unique_id | easemob_username |easemob_status |lastupdate|conversation_existed
 	*/
 	public static final String TABLE_NAME_LOGIN_USER = "LoginUserTable";
 	
@@ -139,7 +139,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		sBuffer.append("[unique_id] INTEGER,"); 
 		sBuffer.append("[easemob_username] TEXT,"); //null: easemob history 
 		sBuffer.append("[easemob_status] INTEGER,"); //0:no login 1:login
-		sBuffer.append("[lastupdate] INTEGER )"); //last user info udate time recroded in server side
+		sBuffer.append("[lastupdate] INTEGER,"); //last user info udate time recroded in server side
+		sBuffer.append("[conversation_existed]  INTEGER)"); 
+		
 		// 执行创建表的SQL语句
         	db.execSQL(sBuffer.toString());
 	}

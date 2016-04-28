@@ -379,8 +379,12 @@ public class SamService{
 
 	private List<ActiveQuestion> activeQuestionArray = new ArrayList<ActiveQuestion>();
 
+	public Object lock_update_current_user = new Object();
 
-	
+
+	public Object get_lock_update_current_user(){
+		return lock_update_current_user;
+	}
 
 	public List<ActiveQuestion> getActiveQuestionArray(){
 		return activeQuestionArray;
@@ -2518,13 +2522,15 @@ public class SamService{
 				store_current_token(hcc.token_id);
 				
 				//update question info into db
-				LoginUser user = dao.query_activie_LoginUser_db();
-				user.usertype = LoginUser.MIDSERVER;
-				user.location = ugobj.vInfo.getLocation();
-				user.area = ugobj.vInfo.getArea();
-				user.description = ugobj.vInfo.getDesc();
-				dao.add_update_LoginUser_db(user);
-				set_current_user(user);
+				synchronized(lock_update_current_user){
+					LoginUser user = dao.query_activie_LoginUser_db();
+					user.usertype = LoginUser.MIDSERVER;
+					user.location = ugobj.vInfo.getLocation();
+					user.area = ugobj.vInfo.getArea();
+					user.description = ugobj.vInfo.getDesc();
+					dao.add_update_LoginUser_db(user);
+					set_current_user(user);
+				}
 
 				if(mWaitThread!=null){
 					mWaitThread.InterruptWaitThread();

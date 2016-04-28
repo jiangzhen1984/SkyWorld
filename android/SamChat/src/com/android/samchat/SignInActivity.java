@@ -37,7 +37,7 @@ public class SignInActivity extends Activity {
 	
 	static final String TAG="SamChat_Signin";
 
-	public static int SAM_SIGNIN_TIMEOUT=20000;
+	public static int SAM_SIGNIN_TIMEOUT=30000;
 
 
 	public static final int MSG_SIGNIN_CALLBACK = 1;

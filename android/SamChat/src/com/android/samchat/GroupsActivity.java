@@ -172,6 +172,16 @@ public class GroupsActivity extends Activity {
 	private class GroupRemoveListener extends EaseGroupRemoveListener {
 
 	@Override
+	public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
+		//handler.sendEmptyMessage(0);
+		runOnUiThread(new Runnable() {
+			public void run() {
+				swipeRefreshLayout.autoRefresh(); 
+			}
+		});
+	}
+
+	@Override
 	public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
 		//handler.sendEmptyMessage(0);
 		runOnUiThread(new Runnable() {

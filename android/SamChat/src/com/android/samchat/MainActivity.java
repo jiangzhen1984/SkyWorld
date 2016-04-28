@@ -11,6 +11,7 @@ import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 import com.android.samchat.R;
 import com.android.samchat.easemobdemo.EaseMobHelper;
+import com.android.samchat.easemobdemo.EaseMobPreference;
 import com.android.samchat.slidemenu.SlidingMenu;
 import com.android.samchat.slidemenu.SlidingMenu.OnOpenedListener;
 import com.android.samservice.*;
@@ -99,11 +100,16 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	public static final int CONFIRM_ID_CAPTURE_ACTIVITY_EXITED=307;
 
 	public static final int CONFIRM_ID_UPDATE_SUCCEED = 308;
+
+	public static final int CONFIRM_ID_BACK_FROM_VENDOR_SETTING = 400;
 	
 
 	private int sInviteNum = 0;
 	
-	private boolean isExit = false; 
+	private boolean isExit = false;
+
+	private int init_retry_count=0;
+	private static final int init_retry_count_max=3;
 	
 	
 	private final int ACTIVITY_TIMEOUT=2000;
@@ -311,8 +317,6 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	}
 
-	
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -485,8 +489,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 		GroupContactInfoDownLoadListener listener = new GroupContactInfoDownLoadListener();
 		EMClient.getInstance().groupManager().addGroupChangeListener(listener);
-	
-		asyncFollowListFromServer();
+
+		init_retry_count=0;
+		asyncFollowListFromServer(0);
 		
 		asyncDismissLoadInitDataDialog();
 		
@@ -494,7 +499,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 
 
-	synchronized private void  asyncFollowListFromServer(){
+	synchronized private void  asyncFollowListFromServer(final int mSleep){
 		if(isSyncingFollowList){
 			return;
 		}
@@ -504,6 +509,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		new Thread(){
 			@Override
 			public void run(){
+				if(mSleep!=0){
+					SystemClock.sleep(mSleep);
+				}
 				queryFollowList();
 			}
        	}.start();
@@ -533,10 +541,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	
 
 	private void queryFollowList(){
-		
 		SamService smSrvc = SamService.getInstance(); 
-		
-		
 		smSrvc.queryFollowList(new SMCallBack(){
 			@Override
 			public void onSuccess(final Object obj) {
@@ -544,34 +549,41 @@ public class MainActivity extends IndicatorFragmentActivity implements
 					public void run() {
 						isSyncedFollowList = true;
 						isSyncingFollowList = false;
+						init_retry_count = 0;
 
 						EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+
+						
 					}
 				});
 			}
 
 			@Override
 			public void onFailed(int code) {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						isSyncedFollowList = false;
-						isSyncingFollowList = false;
-						SamLog.e(TAG,"follower onFailed");
-						asyncFollowListFromServer();
-					}
-				});
+				if(init_retry_count++ >= init_retry_count_max){
+					SamService.getInstance().getDao().clear_FollowerRecord_db();
+					EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+					return;
+				}
+				
+				isSyncedFollowList = false;
+				isSyncingFollowList = false;
+				SamLog.e(TAG,"follower onError");
+				asyncFollowListFromServer(5000);
 			}
 
 			@Override
 			public void onError(int code) {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						isSyncedFollowList = false;
-						isSyncingFollowList = false;
-						SamLog.e(TAG,"follower onError");
-						asyncFollowListFromServer();
-					}
-				});
+				if(init_retry_count++ >= init_retry_count_max){
+					SamService.getInstance().getDao().clear_FollowerRecord_db();
+					EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+					return;
+				}
+				
+				isSyncedFollowList = false;
+				isSyncingFollowList = false;
+				SamLog.e(TAG,"follower onError");
+				asyncFollowListFromServer(5000);
 			}
 
 		});
@@ -1402,44 +1414,6 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
 			SamLog.i(TAG,"onInvitationReceived groundId:"+groupId
 						+" groupName:"+groupName+" inviter:"+inviter+" reason:"+reason);
-
-			EMGroup group = downloadGroupInfo(groupId);
-
-			if(group == null){
-				return;
-			}
-			
-			List<String> members = group.getMembers();
-			SamLog.i(TAG,"members size:"+members.size());
-			List<String> needMembers = new ArrayList<String>();
-			for(String member: members){
-				if(SamService.getInstance().getDao().query_ContactUser_db_by_username(member) == null){
-					needMembers.add(member);
-				}
-			}
-
-			if(needMembers.size()>0){
-				SamService.getInstance().query_user_info_from_server(needMembers, new SMCallBack(){
-					@Override
-					public void onSuccess(final Object obj){
-
-					} 
-
-					@Override
-					public void onFailed(int code) {
-
-					}
-
-					@Override
-					public void onError(int code) {
-
-					}
-
-				});
-			}
-			
-			
-			
 		}
 
 		@Override
@@ -1475,6 +1449,45 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		@Override
 		public void onGroupDestroy(final String groupId, String groupName) {
 			SamLog.i(TAG,"onGroupDestroy");
+		}
+
+		@Override
+		public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
+			SamLog.i(TAG,"onAutoAcceptInvitationFromGroup");
+			EMGroup group = downloadGroupInfo(groupId);
+
+			if(group == null){
+				return;
+			}
+			
+			List<String> members = group.getMembers();
+			SamLog.i(TAG,"members size:"+members.size());
+			List<String> needMembers = new ArrayList<String>();
+			for(String member: members){
+				if(SamService.getInstance().getDao().query_ContactUser_db_by_username(member) == null){
+					needMembers.add(member);
+				}
+			}
+
+			if(needMembers.size()>0){
+				SamService.getInstance().query_user_info_from_server(needMembers, new SMCallBack(){
+					@Override
+					public void onSuccess(final Object obj){
+
+					} 
+
+					@Override
+					public void onFailed(int code) {
+
+					}
+
+					@Override
+					public void onError(int code) {
+
+					}
+
+				});
+			}
 		}
 
 	}

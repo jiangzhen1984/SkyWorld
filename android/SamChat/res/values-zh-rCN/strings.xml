@@ -241,4 +241,5 @@
     
     <string name="updateapp">更新应用6</string>
     <string name="vendor_setting">商家设置</string>
+    <string name="delete_conversation">删除聊天</string>
 </resources>

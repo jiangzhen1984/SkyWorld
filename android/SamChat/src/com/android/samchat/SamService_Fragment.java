@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.android.samchat.R;
+import com.android.samchat.easemobdemo.EaseMobPreference;
 import com.android.samservice.*;
+import com.android.samservice.info.LoginUser;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMConversation.EMConversationType;
@@ -33,12 +35,16 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -78,6 +84,7 @@ public class SamService_Fragment extends Fragment {
 	private EaseConversationListItemClickListener listItemClickListener;
 
 	private boolean isSendingQuestion=false;
+	private boolean isAnswerConversationExisted=false;
 
 	private SamProcessDialog mDialog;
 
@@ -185,6 +192,17 @@ public class SamService_Fragment extends Fragment {
 		broadcastReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
+				synchronized(SamService.getInstance().get_lock_update_current_user()){
+					LoginUser cuser = SamService.getInstance().get_current_user();
+					if(cuser.getconversation_existed()!=LoginUser.EXISTED){
+						setAnswerConversationExisted(cuser.getusername(), LoginUser.EXISTED);
+						cuser.setconversation_existed(LoginUser.EXISTED);
+					}
+				}
+				
+				mHot_topic_layout.setVisibility(View.GONE);
+				mConversationList.setVisibility(View.VISIBLE);
+				
 				conversationList.clear();
 				conversationList.addAll(loadConversationList());
 				mConversationList.refresh();
@@ -200,8 +218,8 @@ public class SamService_Fragment extends Fragment {
 	    broadcastManager.unregisterReceiver(broadcastReceiver);
 	}
 
-	private boolean isAnswerConversationExisted(){
-		return false;
+	private void setAnswerConversationExisted(String username,int existed){
+		SamService.getInstance().getDao().updateLoginUserConversationExisted(username,existed);
 	}
 
 
@@ -268,7 +286,46 @@ public class SamService_Fragment extends Fragment {
 		});
 	}
 	
+	private void deleteConversation(EMConversation conversation){
+		String attr = conversation.getExtField();
+		if(attr == null){
+			return;
+		}else if(!attr.contains(EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE)){
+			return;
+		}else if(attr.equals(EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE)){
+			/*delete conversation from db*/
+			EMClient.getInstance().chatManager().deleteConversation(conversation.getUserName(), true);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+		}else{
+			attr = attr.replaceAll(EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE,"");
+			conversation.setExtField(attr);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+		}
+		
+		
+	}
 
+	@Override  
+	public boolean onContextItemSelected(MenuItem item) { 
+		if(!getUserVisibleHint()){
+			return false;
+		}
+	
+		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo(); 
+		EMConversation conversation = conversationList.get(menuInfo.position);
+		deleteConversation(conversation);
+		return true;
+	}  
+
+	@Override  
+	public void onCreateContextMenu(ContextMenu menu, View v,  ContextMenuInfo menuInfo) {  
+		menu.add(0, v.getId(), 0, getString(R.string.delete_conversation));        
+		super.onCreateContextMenu(menu, v, menuInfo);  
+	} 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -280,6 +337,8 @@ public class SamService_Fragment extends Fragment {
 			rootView=inflater.inflate(R.layout.fragment_samservice, container,false);
 			mContext = skyworld.appContext;//getActivity().getBaseContext();
 			mConversationList = (EaseConversationList)rootView.findViewById(R.id.list);
+			registerForContextMenu(mConversationList);
+			
 			mTopSearchList = (ListView)rootView.findViewById(R.id.top_search_list);
 			mHot_topic_layout = (LinearLayout)rootView.findViewById(R.id.hot_topic_layout);			
 			mAdpater = new SearchListAdapter(mContext);
@@ -354,7 +413,7 @@ public class SamService_Fragment extends Fragment {
        	 	}); 
 
 
-			if(!isAnswerConversationExisted()){
+			if(SamService.getInstance().get_current_user().getconversation_existed()!=LoginUser.EXISTED){
 				mSwipe_layout.setEnabled(true);
 				mHot_topic_layout.setVisibility(View.VISIBLE);
 				mConversationList.setVisibility(View.GONE);
@@ -520,7 +579,7 @@ public class SamService_Fragment extends Fragment {
 	  	  				mDialog.dismissPrgoressDiglog();
 	 	   			}
 					isSendingQuestion = false;
-					if(!isAnswerConversationExisted()){
+					if(SamService.getInstance().get_current_user().getconversation_existed()!=LoginUser.EXISTED){
 						mSwipe_layout.setEnabled(true);
 						mHot_topic_layout.setVisibility(View.VISIBLE);
 						mConversationList.setVisibility(View.GONE);
@@ -534,7 +593,7 @@ public class SamService_Fragment extends Fragment {
 	    					mDialog.dismissPrgoressDiglog();
 	    				}
 					isSendingQuestion = false;
-					if(!isAnswerConversationExisted()){
+					if(SamService.getInstance().get_current_user().getconversation_existed()!=LoginUser.EXISTED){
 						mSwipe_layout.setEnabled(true);
 						mHot_topic_layout.setVisibility(View.VISIBLE);
 						mConversationList.setVisibility(View.GONE);
@@ -547,7 +606,7 @@ public class SamService_Fragment extends Fragment {
 	    					mDialog.dismissPrgoressDiglog();
 	    				}
 					isSendingQuestion = false;
-					if(!isAnswerConversationExisted()){
+					if(SamService.getInstance().get_current_user().getconversation_existed()!=LoginUser.EXISTED){
 						mSwipe_layout.setEnabled(true);
 						mHot_topic_layout.setVisibility(View.VISIBLE);
 						mConversationList.setVisibility(View.GONE);

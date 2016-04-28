@@ -30,7 +30,7 @@ import com.hyphenate.chat.EMClient;
 
 public class SamLauncherActivity extends Activity {
 	static final String TAG="SamChat";
-	public static int SAM_LAUNCHER_TIMEOUT=20000;
+	public static int SAM_LAUNCHER_TIMEOUT=30000;
 
 
 	public static final int MSG_AUTOLOGIN_CALLBACK = 1;

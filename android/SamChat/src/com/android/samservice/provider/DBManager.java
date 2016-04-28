@@ -50,6 +50,7 @@ public class DBManager
 		cv.put("easemob_username",user.easemob_username);
 		cv.put("easemob_status",user.easemob_status);
 		cv.put("lastupdate",user.lastupdate);
+		cv.put("conversation_existed",user.conversation_existed);
 
 		return db.insert(table,null,cv);
 		
@@ -76,12 +77,25 @@ public class DBManager
 		cv.put("easemob_username",user.easemob_username);
 		cv.put("easemob_status",user.easemob_status);
 		cv.put("lastupdate",user.lastupdate);
+		cv.put("conversation_existed",user.conversation_existed);
 
 		String whereClause = "id=?";
 		String [] whereArgs = {""+id+""};
 
 		return db.update(table,cv,whereClause,whereArgs);
 		
+	}
+
+	public long updateLoginUserConversationExisted(String username,int existed){
+		//DatabaseHelper:TABLE_NAME_LOGIN_USER
+		String table = DatabaseHelper.TABLE_NAME_LOGIN_USER;
+		
+		ContentValues cv = new ContentValues();
+		cv.put("conversation_existed",existed);
+		String whereClause = "username=?";
+		String [] whereArgs = {username};
+
+		return db.update(table,cv,whereClause,whereArgs);
 	}
 
 	public long updateLoginUserEasemobStatus(String username,int status){
@@ -151,6 +165,7 @@ public class DBManager
 			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
 			user.easemob_status = c.getInt(c.getColumnIndex("easemob_status"));
 			user.lastupdate = c.getLong(c.getColumnIndex("lastupdate"));
+			user.conversation_existed = c.getInt(c.getColumnIndex("conversation_existed"));
 		}
 
 		c.close();
@@ -188,6 +203,7 @@ public class DBManager
 			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
 			user.easemob_status = c.getInt(c.getColumnIndex("easemob_status"));
 			user.lastupdate = c.getLong(c.getColumnIndex("lastupdate"));
+			user.conversation_existed = c.getInt(c.getColumnIndex("conversation_existed"));
 		}
 
 		c.close();
@@ -224,6 +240,7 @@ public class DBManager
 			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
 			user.easemob_status = c.getInt(c.getColumnIndex("easemob_status"));
 			user.lastupdate = c.getLong(c.getColumnIndex("lastupdate"));
+			user.conversation_existed = c.getInt(c.getColumnIndex("conversation_existed"));
 		}
 
 		c.close();
@@ -258,6 +275,7 @@ public class DBManager
 			user.easemob_username = c.getString(c.getColumnIndex("easemob_username"));
 			user.easemob_status = c.getInt(c.getColumnIndex("easemob_status"));
 			user.lastupdate = c.getLong(c.getColumnIndex("lastupdate"));
+			user.conversation_existed = c.getInt(c.getColumnIndex("conversation_existed"));
 
 			array.add(user);
 		}

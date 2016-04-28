@@ -17,6 +17,8 @@ public class Constants extends EaseConstant{
 
 	public static final String ACTION_FOLLOWER_CHANAGED = "action_follower_changed";
 
+	public static final String NEED_BACK_PREV_FRAGMENT= "need_back_prev_fragment";
+
 	
 	public static final String ACTION_CONTACT_CHANAGED = "action_contact_changed";
 	public static final String ACCOUNT_CONFLICT = "conflict";
