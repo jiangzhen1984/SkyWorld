@@ -3,6 +3,9 @@ package com.android.samchat;
 import java.util.Collections;
 import java.util.List;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.utils.EaseUserUtils;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,10 +22,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.easemob.chat.EMContactManager;
-import com.easemob.easeui.utils.EaseUserUtils;
-import com.easemob.exceptions.EaseMobException;
 
 public class BlackListActivity extends Activity {
 	private ListView listView;
@@ -46,7 +45,7 @@ public class BlackListActivity extends Activity {
 
 		listView = (ListView) findViewById(R.id.list);
 
-		List<String> blacklist = EMContactManager.getInstance().getBlackListUsernames();
+		List<String> blacklist = EMClient.getInstance().contactManager().getBlackListUsernames();
 
 		if (blacklist != null) {
 			Collections.sort(blacklist);
@@ -83,14 +82,14 @@ public class BlackListActivity extends Activity {
 	    new Thread(new Runnable() {
             public void run() {
                 try {
-                    EMContactManager.getInstance().deleteUserFromBlackList(tobeRemoveUser);
+                	EMClient.getInstance().contactManager().removeUserFromBlackList(tobeRemoveUser);
                     runOnUiThread(new Runnable() {
                         public void run() {
                             pd.dismiss();
                             adapter.remove(tobeRemoveUser);
                         }
                     });
-                } catch (EaseMobException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     runOnUiThread(new Runnable() {
                         public void run() {

@@ -3,7 +3,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_top_bar"
-    android:background="@color/common_bg_green"
+    android:background="@color/top_bar_normal_bg"
     android:gravity="center_vertical" >
 
     <RelativeLayout
@@ -25,9 +25,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/left_layout"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
+        android:layout_centerInParent="true"
         android:textColor="#ffffff"
         android:textSize="20sp" />
 

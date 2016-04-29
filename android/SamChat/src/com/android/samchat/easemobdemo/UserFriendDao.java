@@ -13,8 +13,9 @@ import com.android.samservice.SamService;
 import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.UserFriendRecord;
-import com.easemob.easeui.domain.EaseUser;
-import com.easemob.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+
 
 public class UserFriendDao{
 	

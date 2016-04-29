@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
 import com.android.samservice.info.ReceivedQuestion;
-import com.easemob.chat.EMContactManager;
-import com.easemob.exceptions.EaseMobException;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMContactManager;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -108,8 +109,8 @@ public class SendVerifyMsgActivity extends Activity {
 	/*use easemob interface*/
 		try{
 			SamLog.e(TAG,"easemob_name:"+easemob_name+" reason:"+verify_msg);
-			EMContactManager.getInstance().addContact(easemob_name, verify_msg);
-		}catch(EaseMobException e){
+			EMClient.getInstance().contactManager().addContact(easemob_name, verify_msg);
+		}catch(Exception e){
 			e.printStackTrace(); 
 	    		return false;
 		}

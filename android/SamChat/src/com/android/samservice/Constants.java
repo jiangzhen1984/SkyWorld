@@ -1,6 +1,6 @@
 package com.android.samservice;
 
-import com.easemob.easeui.EaseConstant;
+import com.hyphenate.easeui.EaseConstant;
 
 public class Constants extends EaseConstant{
 	/*
@@ -17,6 +17,8 @@ public class Constants extends EaseConstant{
 
 	public static final String ACTION_FOLLOWER_CHANAGED = "action_follower_changed";
 
+	public static final String NEED_BACK_PREV_FRAGMENT= "need_back_prev_fragment";
+
 	
 	public static final String ACTION_CONTACT_CHANAGED = "action_contact_changed";
 	public static final String ACCOUNT_CONFLICT = "conflict";
@@ -25,9 +27,14 @@ public class Constants extends EaseConstant{
 	public static final String ACTION_AVATAR_UPDATE = "action_avatar_update";
 
 	public static final String ACTION_QAACTIVITY_DESTROYED = "qa_activity_destroyed";
+	
+	public static final String GROUP_MEMBER_INFO_UPDATE="group_member_info_update";
 
+	public static final String ACTION_NEW_MSG_FROM_SERVICE = "new_msg_from_service";
+	public static final String ACTION_NEW_MSG_FROM_CHAT = "new_msg_from_chat";
+	public static final String ACTION_NEW_MSG_FROM_VENDOR = "new_msg_from_vendor";
 
-
+	public static final String ACTION_NEW_MSG_FROM_GROUP = "new_msg_from_group";
 
 }
 

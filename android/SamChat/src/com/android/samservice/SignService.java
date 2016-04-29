@@ -9,6 +9,7 @@ import org.apache.http.HttpStatus;
 
 import com.android.samchat.*;
 import com.android.samservice.info.AvatarRecord;
+import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.LoginUser;
 
 
@@ -542,6 +543,22 @@ public class SignService{
 			if(need_update){
 				downloadAvatar(hcc);
 			}
+
+			//add login user into contact user db also
+			ContactUser me = new ContactUser();
+			me.setusername(user.getusername());
+			me.setusertype(user.getUserType());
+			if(user.getUserType() == LoginUser.MIDSERVER){
+				me.setarea(user.getarea());
+				me.setlocation(user.getlocation());
+				me.setdescription(user.getdescription());
+			}
+			me.seteasemob_username(user.getusername());
+			me.setimagefile(user.getimagefile());
+			me.setlastupdate(user.getlastupdate());
+			me.setphonenumber(user.getphonenumber());
+			me.setunique_id(user.getunique_id());
+			SamService.getInstance().getDao().add_update_ContactUser_db(me);
 
 			cbobj.smcb.onSuccess(sinfo);
 			

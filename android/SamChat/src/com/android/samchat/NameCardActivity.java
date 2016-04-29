@@ -15,10 +15,9 @@ import com.android.samservice.SamService;
 import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.ReceivedQuestion;
-import com.easemob.chat.EMContactManager;
-import com.easemob.easeui.EaseConstant;
-import com.easemob.easeui.domain.EaseUser;
-import com.easemob.exceptions.EaseMobException;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.domain.EaseUser;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -93,7 +92,7 @@ public class NameCardActivity extends Activity {
 	private Menu menu;
 
 	private boolean isUserInBlackList(String easemob_name){
-		List<String> usernames = EMContactManager.getInstance().getBlackListUsernames();
+		List<String> usernames = EMClient.getInstance().contactManager().getBlackListUsernames();
 		return usernames.contains(easemob_name);
 	}
 
@@ -475,14 +474,14 @@ public class NameCardActivity extends Activity {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					EMContactManager.getInstance().deleteUserFromBlackList(easemob_name);
+					EMClient.getInstance().contactManager().removeUserFromBlackList(easemob_name);
 					runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
 							EaseMobHelper.getInstance().sendContactChangeBroadcast();
 						}
 					});
-				} catch (EaseMobException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -509,7 +508,7 @@ public class NameCardActivity extends Activity {
 			public void run() {
 				try {
 					//加入到黑名单
-					EMContactManager.getInstance().addUserToBlackList(easemob_name,false);
+					EMClient.getInstance().contactManager().addUserToBlackList(easemob_name,false);
 					runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
@@ -517,7 +516,7 @@ public class NameCardActivity extends Activity {
 							EaseMobHelper.getInstance().sendContactChangeBroadcast();
 					}
 				});
-				} catch (EaseMobException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -545,7 +544,7 @@ public class NameCardActivity extends Activity {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					EMContactManager.getInstance().deleteContact(tobeDeleteUser.getUsername());
+					EMClient.getInstance().contactManager().deleteContact(tobeDeleteUser.getUsername());
 					EaseMobHelper.getInstance().removeContact(tobeDeleteUser);
 					InviteMessgeDao inviteMessgeDao =new InviteMessgeDao(skyworld.appContext);
 					inviteMessgeDao.deleteMessage(tobeDeleteUser.getUsername());

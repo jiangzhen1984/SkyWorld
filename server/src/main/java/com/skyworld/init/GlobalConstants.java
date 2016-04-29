@@ -12,16 +12,16 @@ public class GlobalConstants {
 	
 	public static String AVATAR_CONTEXT = "avatar/";
 	
-	public static String AVATAR_HOST = HOME_HTTP +":/"+ HOME_HOST + "/" + AVATAR_CONTEXT;
+	public static String AVATAR_HOST = HOME_HTTP +"://"+ HOME_HOST + "/" + AVATAR_CONTEXT;
 	
 	public static String ARTICLE_CONTEXT = "article/";
 	
-	public static String ARTICLE_HOST = HOME_HTTP +":/"+ HOME_HOST + "/" + ARTICLE_CONTEXT;
+	public static String ARTICLE_HOST = HOME_HTTP +"://"+ HOME_HOST + "/" + ARTICLE_CONTEXT;
 	
 	
 	public static String SKSERVICER_CONTEXT = "skservicer/";
 	
-	public static String SKSERVICER_HOST = HOME_HTTP +":/"+ HOME_HOST + "/" + SKSERVICER_CONTEXT;
+	public static String SKSERVICER_HOST = HOME_HTTP +"://"+ HOME_HOST + "/" + SKSERVICER_CONTEXT;
 	
 	
 	public static String LOG_COLLECTION_CONTEXT = "collection/";
@@ -29,9 +29,9 @@ public class GlobalConstants {
 	
 	public static void initHost(String host) {
 		HOME_HOST = host;
-		AVATAR_HOST = HOME_HTTP +":/"+ HOME_HOST + "/" + AVATAR_CONTEXT;
-		ARTICLE_HOST = HOME_HTTP +":/"+ HOME_HOST + "/" + ARTICLE_CONTEXT;
-		SKSERVICER_HOST = HOME_HTTP +":/"+ HOME_HOST + "/" + SKSERVICER_CONTEXT;
+		AVATAR_HOST = HOME_HTTP +"://"+ HOME_HOST + "/" + AVATAR_CONTEXT;
+		ARTICLE_HOST = HOME_HTTP +"://"+ HOME_HOST + "/" + ARTICLE_CONTEXT;
+		SKSERVICER_HOST = HOME_HTTP +"://"+ HOME_HOST + "/" + SKSERVICER_CONTEXT;
 	}
 }
 

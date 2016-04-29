@@ -25,9 +25,8 @@ import com.android.samchat.easemobdemo.EaseMobHelper;
 import com.android.samservice.*;
 import com.android.samservice.info.*;
 import com.android.samservice.info.InviteMessageRecord.InviteMessageStatus;
-import com.easemob.chat.EMChatManager;
-import com.easemob.easeui.utils.EaseUserUtils;
-import com.easemob.exceptions.EaseMobException;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 
 public class NewFriendListAdapter extends BaseAdapter{
 	static private String TAG = "NewFriendListAdapter";
@@ -100,11 +99,11 @@ public class NewFriendListAdapter extends BaseAdapter{
 						String sender_easemob = rd.getsender();
 						
 						try{
-							EMChatManager.getInstance().refuseInvitation(sender_easemob);
+							EMClient.getInstance().contactManager().declineInvitation(sender_easemob);
 							SamLog.e(TAG,"refused "+sender_easemob + " invite");
 							EaseMobHelper.getInstance().updateInviteMsgStatus(sender_easemob,InviteMessageStatus.REFUSED.ordinal());
 							broadcastManager.sendBroadcast(new Intent(Constants.ACTION_CONTACT_CHANAGED));
-						}catch(EaseMobException e){
+						}catch(Exception e){
 							e.printStackTrace(); 
 						}
 					}
@@ -122,9 +121,9 @@ public class NewFriendListAdapter extends BaseAdapter{
 						String sender_easemob = rd.getsender();
 						
 						try{
-							EMChatManager.getInstance().acceptInvitation(sender_easemob);
+							EMClient.getInstance().contactManager().acceptInvitation(sender_easemob);
 							SamLog.e(TAG,"acception "+sender_easemob + " invite");
-						}catch(EaseMobException e){
+						}catch(Exception e){
 							e.printStackTrace(); 
 						}
 					}

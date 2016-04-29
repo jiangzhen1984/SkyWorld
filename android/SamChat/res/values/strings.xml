@@ -7,10 +7,10 @@
     <string name="app_name">SamChat</string>
     <string name="settings">Sam-Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="sam_services">Sam-services</string>
-    <string name="sam_chats">Sam-chats</string>
+    <string name="sam_services">Sam-search</string>
+    <string name="sam_chats">Sam-chat</string>
     <string name="sam_me">Me</string>
-    <string name="sam_vendor">Sam-vendor</string>    
+    <string name="sam_vendor">Sam-pro</string>    
     <string name="sam_public">Sam-public</string>
     <string name="sam_contact">Sam-contact</string>
     <string name="action_search">Search</string>
@@ -233,4 +233,6 @@
     <string name="exiting_user_conflict">exiting due to login on another phone</string>
     
     <string name="updateapp">Upate App</string>
+    <string name="vendor_setting">Vendor Setting</string>
+    <string name="delete_conversation">Delete Conversation</string>
 </resources>

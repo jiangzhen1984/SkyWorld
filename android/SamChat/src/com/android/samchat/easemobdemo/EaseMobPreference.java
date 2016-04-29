@@ -12,6 +12,7 @@ public class EaseMobPreference {
 	private static EaseMobPreference mEaseMobPreference;
 	private static SharedPreferences.Editor editor;
 
+
 	private String SHARED_KEY_SETTING_NOTIFICATION = "shared_key_setting_notification";
 	private String SHARED_KEY_SETTING_SOUND = "shared_key_setting_sound";
 	private String SHARED_KEY_SETTING_VIBRATE = "shared_key_setting_vibrate";
@@ -25,7 +26,7 @@ public class EaseMobPreference {
 	private static String SHARED_KEY_CURRENTUSER_USERNAME = "SHARED_KEY_CURRENTUSER_USERNAME";
 	private static String SHARED_KEY_CURRENTUSER_NICK = "SHARED_KEY_CURRENTUSER_NICK";
 	private static String SHARED_KEY_CURRENTUSER_AVATAR = "SHARED_KEY_CURRENTUSER_AVATAR";
-	
+
 	private EaseMobPreference(Context cxt) {
 		mSharedPreferences = cxt.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
 		editor = mSharedPreferences.edit();
@@ -52,8 +53,7 @@ public class EaseMobPreference {
 		
 		
 	}
-	
-	
+
 	public void setSettingMsgNotification(boolean paramBoolean) {
 		editor.putBoolean(SHARED_KEY_SETTING_NOTIFICATION, paramBoolean);
 		editor.commit();

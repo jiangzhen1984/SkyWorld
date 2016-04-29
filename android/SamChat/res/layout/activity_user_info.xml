@@ -22,7 +22,7 @@
         	android:scaleType="fitXY"
         	android:src="@drawable/photo_wall"/>
     	
-    	<com.easemob.easeui.ui.CircleImageView
+    	<com.hyphenate.easeui.ui.CircleImageView
         	android:id="@+id/avatar"
         	android:layout_width="50dp"
         	android:layout_height="50dp"

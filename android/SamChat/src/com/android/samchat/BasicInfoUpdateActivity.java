@@ -6,8 +6,6 @@ import com.android.samservice.Constants;
 import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
 import com.android.samservice.info.ReceivedQuestion;
-import com.easemob.chat.EMContactManager;
-import com.easemob.exceptions.EaseMobException;
 
 import android.app.Activity;
 import android.content.Intent;

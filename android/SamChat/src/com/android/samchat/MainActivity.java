@@ -11,6 +11,7 @@ import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 import com.android.samchat.R;
 import com.android.samchat.easemobdemo.EaseMobHelper;
+import com.android.samchat.easemobdemo.EaseMobPreference;
 import com.android.samchat.slidemenu.SlidingMenu;
 import com.android.samchat.slidemenu.SlidingMenu.OnOpenedListener;
 import com.android.samservice.*;
@@ -18,24 +19,18 @@ import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.FollowerRecord;
 import com.android.samservice.info.LoginUser;
-import com.easemob.EMCallBack;
-import com.easemob.EMConnectionListener;
-import com.easemob.EMError;
-import com.easemob.EMEventListener;
-import com.easemob.EMNotifierEvent;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMConversation;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.EMMessage.ChatType;
-import com.easemob.easeui.EaseConstant;
-import com.easemob.easeui.controller.EaseUI;
-import com.easemob.easeui.domain.EaseUser;
-import com.easemob.easeui.ui.EaseContactListFragment.EaseContactListItemClickListener;
-import com.easemob.easeui.ui.EaseConversationListFragment.EaseConversationListItemClickListener;
-import com.easemob.easeui.ui.EaseGroupRemoveListener;
-import com.easemob.easeui.utils.EaseUserUtils;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessage.ChatType;
+import com.hyphenate.easeui.ui.EaseConversationListFragment.EaseConversationListItemClickListener;
+import com.hyphenate.easeui.ui.EaseGroupRemoveListener;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.zijunlin.Zxing.Demo.CaptureActivity;
 
 import android.net.ConnectivityManager;
@@ -80,7 +75,7 @@ import android.widget.Toast;
 import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends IndicatorFragmentActivity implements
-		OnPageChangeListener, EMEventListener{
+		OnPageChangeListener{
 
 	static public final String TAG="SamChat_Main";
 	static public final String ACTIVITY_NAME = "com.android.samchat.MainActivity";
@@ -105,11 +100,16 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	public static final int CONFIRM_ID_CAPTURE_ACTIVITY_EXITED=307;
 
 	public static final int CONFIRM_ID_UPDATE_SUCCEED = 308;
+
+	public static final int CONFIRM_ID_BACK_FROM_VENDOR_SETTING = 400;
 	
 
 	private int sInviteNum = 0;
 	
-	private boolean isExit = false; 
+	private boolean isExit = false;
+
+	private int init_retry_count=0;
+	private static final int init_retry_count_max=3;
 	
 	
 	private final int ACTIVITY_TIMEOUT=2000;
@@ -168,6 +168,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private LinearLayout mContact_layout;
 	private LinearLayout mInvite_friend_layout;
 	private LinearLayout mSweep_layout;
+	private LinearLayout mVendor_setting_layout;
 	private LinearLayout mStart_group_layout;
 	private LinearLayout mSettings_layout;	
 	private LinearLayout mUpdate_layout;
@@ -316,8 +317,6 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 	}
 
-	
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -411,6 +410,14 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		});
 
+		mVendor_setting_layout = (LinearLayout)menu.findViewById(R.id.vendor_setting_layout); 
+		mVendor_setting_layout.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				launchVendorSettingActivity();
+			}
+		});
+
 		mStart_group_layout = (LinearLayout)menu.findViewById(R.id.start_group_layout);
 		mStart_group_layout.setOnClickListener(new OnClickListener(){
 			@Override
@@ -468,24 +475,23 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		});
 
-
-
-		//async loading follow list
-		
-		
-		EMGroupManager.getInstance().loadAllGroups();
-		EMChatManager.getInstance().loadAllConversations();
-
-		EMChatManager.getInstance().addConnectionListener(connectionListener);
-		registerBroadcastReceiver();
-		GroupContactInfoDownLoadListener listener = new GroupContactInfoDownLoadListener();
-		EMGroupManager.getInstance().addGroupChangeListener(listener);
-
-
 		Message msg = mHandler.obtainMessage(MSG_LOADING_INIT_DATA);
 		mHandler.sendMessage(msg); 
 
-		asyncFollowListFromServer();
+		//async loading follow list
+
+		EMClient.getInstance().groupManager().loadAllGroups();
+		EMClient.getInstance().chatManager().loadAllConversations();
+		//EMClient.getInstance().chatManager().addMessageListener(messageListener);
+		EMClient.getInstance().addConnectionListener(connectionListener);
+
+		registerBroadcastReceiver();
+
+		GroupContactInfoDownLoadListener listener = new GroupContactInfoDownLoadListener();
+		EMClient.getInstance().groupManager().addGroupChangeListener(listener);
+
+		init_retry_count=0;
+		asyncFollowListFromServer(0);
 		
 		asyncDismissLoadInitDataDialog();
 		
@@ -493,7 +499,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 
 
-	synchronized private void  asyncFollowListFromServer(){
+	synchronized private void  asyncFollowListFromServer(final int mSleep){
 		if(isSyncingFollowList){
 			return;
 		}
@@ -503,6 +509,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		new Thread(){
 			@Override
 			public void run(){
+				if(mSleep!=0){
+					SystemClock.sleep(mSleep);
+				}
 				queryFollowList();
 			}
        	}.start();
@@ -532,10 +541,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	
 
 	private void queryFollowList(){
-		
 		SamService smSrvc = SamService.getInstance(); 
-		
-		
 		smSrvc.queryFollowList(new SMCallBack(){
 			@Override
 			public void onSuccess(final Object obj) {
@@ -543,34 +549,41 @@ public class MainActivity extends IndicatorFragmentActivity implements
 					public void run() {
 						isSyncedFollowList = true;
 						isSyncingFollowList = false;
+						init_retry_count = 0;
 
 						EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+
+						
 					}
 				});
 			}
 
 			@Override
 			public void onFailed(int code) {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						isSyncedFollowList = false;
-						isSyncingFollowList = false;
-						SamLog.e(TAG,"follower onFailed");
-						asyncFollowListFromServer();
-					}
-				});
+				if(init_retry_count++ >= init_retry_count_max){
+					SamService.getInstance().getDao().clear_FollowerRecord_db();
+					EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+					return;
+				}
+				
+				isSyncedFollowList = false;
+				isSyncingFollowList = false;
+				SamLog.e(TAG,"follower onError");
+				asyncFollowListFromServer(5000);
 			}
 
 			@Override
 			public void onError(int code) {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						isSyncedFollowList = false;
-						isSyncingFollowList = false;
-						SamLog.e(TAG,"follower onError");
-						asyncFollowListFromServer();
-					}
-				});
+				if(init_retry_count++ >= init_retry_count_max){
+					SamService.getInstance().getDao().clear_FollowerRecord_db();
+					EaseMobHelper.getInstance().sendFollowerChangeBroadcast();
+					return;
+				}
+				
+				isSyncedFollowList = false;
+				isSyncingFollowList = false;
+				SamLog.e(TAG,"follower onError");
+				asyncFollowListFromServer(5000);
 			}
 
 		});
@@ -839,6 +852,13 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		startActivityForResult(newIntent, CONFIRM_ID_CAPTURE_ACTIVITY_EXITED);
 	}
 
+	private void launchVendorSettingActivity(){
+		Intent newIntent = new Intent(this,VendorSettingActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+	}
+
 	private void launchContactActivity(){
 		Intent newIntent = new Intent(this,ContactActivity.class);
 		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -898,7 +918,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		fragment_samservice = (SamService_Fragment)getFragment(TAB_ID_SAMSERVICES);//new SamService_Fragment();
 		fragment_samchats = (SamChats_Fragment)getFragment(TAB_ID_SAMCHATS);//new SamChats_Fragment();
 		fragment_sampublic = (SamPublic_Fragment)getFragment(TAB_ID_SAMPUBLIC);
-		fragment_samchats.setConversationListItemClickListener(new EaseConversationListItemClickListener() {
+		fragment_vendor =  (SamVendor_Fragment)getFragment(TAB_ID_VENDOR);
+		
+		/*fragment_samchats.setConversationListItemClickListener(new EaseConversationListItemClickListener() {
 			@Override
 			public void onListItemClicked(EMConversation conversation) {
 				Intent newIntent = new Intent(MainActivity.this, ChatActivity.class);
@@ -909,7 +931,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 				newIntent.putExtra(Constants.EXTRA_USER_ID, conversation.getUserName());
 				startActivity(newIntent);
 			}
-		});
+		});*/
 		
 		//fragment_samme = (SamMe_Fragment)getFragment(TAB_ID_SAMME);//new SamMe_Fragment();
 		
@@ -918,10 +940,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 
 		//registerBroadcastReceiver();
 		registerNetworkStatusReceiver();
-		EMChatManager.getInstance().registerEventListener(this,
-				new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage ,EMNotifierEvent.Event.EventOfflineMessage, EMNotifierEvent.Event.EventConversationListChanged});
 		
-		SamService.getInstance().onActivityLaunched(fragment_samservice,fragment_samchats);
+		
 	}
 
 
@@ -935,9 +955,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					final EMGroup returnGroup = EMGroupManager.getInstance().getGroupFromServer(groupId);
+					final EMGroup returnGroup = EMClient.getInstance().groupManager().getGroupFromServer(groupId);
 					// 更新本地数据
-					EMGroupManager.getInstance().createOrUpdateLocalGroup(returnGroup);
+					//EMClient.getInstance().groupManager().createOrUpdateLocalGroup(returnGroup);
 					//update member info db
 					List<String> members = returnGroup.getMembers();
 					List<String> needMembers = new ArrayList<String>();
@@ -973,44 +993,44 @@ public class MainActivity extends IndicatorFragmentActivity implements
 			}
 		}).start();
 	}
+	
+	/*EMMessageListener messageListener = new EMMessageListener() {
+		
+		@Override
+		public void onMessageReceived(List<EMMessage> messages) {
+			for (EMMessage message : messages) {
+				refreshUIWithMessage();
 
-	@Override
-	public void onEvent(EMNotifierEvent event) {
-	SamLog.e(TAG,"onEvent!!!");
-		switch (event.getEvent()) {
-		case EventNewMessage: 
-		{
-			EMMessage message = (EMMessage) event.getData();
+				String groupId = null;
+	            		// 群组消息
+				if (message.getChatType() == ChatType.GroupChat) {
+					groupId = message.getTo();
+					updateGroupInfo(groupId);
+				}
+			}
 
 			//EaseUI.getInstance().getNotifier().onNewMsg(message);
 
-			refreshUIWithMessage();
-
-			String groupId = null;
-            		// 群组消息
-			if (message.getChatType() == ChatType.GroupChat) {
-				groupId = message.getTo();
-				updateGroupInfo(groupId);
-			}
 			
-			break;
-		}
-
-		case EventOfflineMessage: {
-		    refreshUIWithMessage();
-			break;
-		}
-
-		case EventConversationListChanged: {
-		    refreshUIWithMessage();
-		    break;
 		}
 		
-		default:
-			break;
+		@Override
+		public void onCmdMessageReceived(List<EMMessage> messages) {
 		}
-	}
+		
+		@Override
+		public void onMessageReadAckReceived(List<EMMessage> messages) {
+		}
+		
+		@Override
+		public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+		}
+		
+		@Override
+		public void onMessageChanged(EMMessage message, Object change) {}
+	};
 
+	
 	private void refreshUIWithMessage() {
 		SamLog.e(TAG,"refreshUIWithMessage!!!");
 		runOnUiThread(new Runnable() {
@@ -1020,7 +1040,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 				}
 			}
 		});
-	}
+	}*/
 
 	private void refreshPublicUI(final List<ContactUser> follwerList) {
 		SamLog.e(TAG,"refreshPublicUI!!!");
@@ -1168,7 +1188,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		cancelNotification();
 		unregisterNetworkStatusReceiver();
 		unregisterBroadcastReceiver();
-		EMChatManager.getInstance().removeConnectionListener(connectionListener);
+		EMClient.getInstance().removeConnectionListener(connectionListener);
+		//EMClient.getInstance().chatManager().removeMessageListener(messageListener);
 		EaseMobHelper.getInstance().reset();
 		SamService.getInstance().stopSamService();
 
@@ -1246,6 +1267,9 @@ public class MainActivity extends IndicatorFragmentActivity implements
 					if(mDialog!=null){
     						mDialog.dismissPrgoressDiglog();
     					}
+
+					SamService.getInstance().onActivityLaunched(fragment_samservice,fragment_vendor);
+					
 					break;
 
 				
@@ -1258,7 +1282,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		public void onDisconnected(final int error) {
 			MainActivity.this.runOnUiThread(new Runnable() {
 				public void run() {
-					if (error == EMError.USER_REMOVED || error == EMError.CONNECTION_CONFLICT) {
+					if (error == EMError.USER_REMOVED || error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
 						if(mDialog!=null){
     							mDialog.launchProcessDialog(MainActivity.this,getString(R.string.exiting_user_conflict));
     						}
@@ -1355,7 +1379,7 @@ public class MainActivity extends IndicatorFragmentActivity implements
 						}
 					}
 				}else if(intent.getAction().equals(Constants.ACTION_QAACTIVITY_DESTROYED)){
-					fragment_samchats.dismissBage();
+					//fragment_samchats.dismissBage();
 					updateReminderIcon(MainActivity.TAB_ID_SAMCHATS,false);
 				}
 				
@@ -1375,8 +1399,8 @@ public class MainActivity extends IndicatorFragmentActivity implements
 	private EMGroup downloadGroupInfo(String groupId){
 		EMGroup group = null;
 		try{
-			group= EMGroupManager.getInstance().getGroupFromServer(groupId);
-			group =EMGroupManager.getInstance().createOrUpdateLocalGroup(group);
+			group = EMClient.getInstance().groupManager().getGroupFromServer(groupId);
+			//group = EMClient.getInstance().groupManager().createOrUpdateLocalGroup(group);
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
@@ -1390,44 +1414,6 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		public void onInvitationReceived(String groupId, String groupName, String inviter, String reason) {
 			SamLog.i(TAG,"onInvitationReceived groundId:"+groupId
 						+" groupName:"+groupName+" inviter:"+inviter+" reason:"+reason);
-
-			EMGroup group = downloadGroupInfo(groupId);
-
-			if(group == null){
-				return;
-			}
-			
-			List<String> members = group.getMembers();
-			SamLog.i(TAG,"members size:"+members.size());
-			List<String> needMembers = new ArrayList<String>();
-			for(String member: members){
-				if(SamService.getInstance().getDao().query_ContactUser_db_by_username(member) == null){
-					needMembers.add(member);
-				}
-			}
-
-			if(needMembers.size()>0){
-				SamService.getInstance().query_user_info_from_server(needMembers, new SMCallBack(){
-					@Override
-					public void onSuccess(final Object obj){
-
-					} 
-
-					@Override
-					public void onFailed(int code) {
-
-					}
-
-					@Override
-					public void onError(int code) {
-
-					}
-
-				});
-			}
-			
-			
-			
 		}
 
 		@Override
@@ -1463,6 +1449,45 @@ public class MainActivity extends IndicatorFragmentActivity implements
 		@Override
 		public void onGroupDestroy(final String groupId, String groupName) {
 			SamLog.i(TAG,"onGroupDestroy");
+		}
+
+		@Override
+		public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
+			SamLog.i(TAG,"onAutoAcceptInvitationFromGroup");
+			EMGroup group = downloadGroupInfo(groupId);
+
+			if(group == null){
+				return;
+			}
+			
+			List<String> members = group.getMembers();
+			SamLog.i(TAG,"members size:"+members.size());
+			List<String> needMembers = new ArrayList<String>();
+			for(String member: members){
+				if(SamService.getInstance().getDao().query_ContactUser_db_by_username(member) == null){
+					needMembers.add(member);
+				}
+			}
+
+			if(needMembers.size()>0){
+				SamService.getInstance().query_user_info_from_server(needMembers, new SMCallBack(){
+					@Override
+					public void onSuccess(final Object obj){
+
+					} 
+
+					@Override
+					public void onFailed(int code) {
+
+					}
+
+					@Override
+					public void onError(int code) {
+
+					}
+
+				});
+			}
 		}
 
 	}

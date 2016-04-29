@@ -4,40 +4,53 @@
 package com.android.samchat;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.android.samchat.R;
+import com.android.samchat.easemobdemo.EaseMobPreference;
 import com.android.samservice.*;
-import com.android.samservice.info.ReceivedAnswer;
+import com.android.samservice.info.LoginUser;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMConversation.EMConversationType;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.ui.EaseConversationListFragment.EaseConversationListItemClickListener;
+import com.hyphenate.easeui.widget.EaseConversationList;
 
-import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.text.InputType;
 
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -56,10 +69,6 @@ public class SamService_Fragment extends Fragment {
 	
 	public static final String CANCEL_QUESTION_CONFIRM = "com.android.samchat.cancel_question";
 
-	/*SamServiceFragement confirm*/
-	public static final int REQUST_CODE_CONFIRM_CANCEL_QUESTION = 11;
-	public static final int REQUST_CODE_BACK_FROM_SAMANSWERDETAILACTIVITY = 12;
-
 	public static final int HOT_TOPIC_MAX=20;
 	
 	private ListView mTopSearchList;
@@ -68,21 +77,18 @@ public class SamService_Fragment extends Fragment {
 	private View rootView;
 	private EditText mSearch;
 	private ImageView mClear;
-	private TextView mCancel_search;
-	private TextView mHot_topic;
 	private AutoNormalSwipeRefreshLayout mSwipe_layout;
-
-	private EditText mSamservice_search_input_show;
-	private LinearLayout mSamservice_search_layout_show;
-	private RelativeLayout mBanner_layout;
-
-	private String current_question;
-	private SamServiceType current_type;
+	private LinearLayout mHot_topic_layout;
+	private EaseConversationList mConversationList;
+	protected List<EMConversation> conversationList = new ArrayList<EMConversation>();
+	private EaseConversationListItemClickListener listItemClickListener;
 
 	private boolean isSendingQuestion=false;
-	private boolean isCancelingQuestion=false;
+	private boolean isAnswerConversationExisted=false;
 
 	private SamProcessDialog mDialog;
+
+	protected boolean hidden;
 
 
 	private List<String> hotTopicArray = new ArrayList<String>();
@@ -113,6 +119,108 @@ public class SamService_Fragment extends Fragment {
 	private long query_time=0;
 
 	private List<String> showHotTopicArray = new ArrayList<String>();
+
+
+
+	
+
+	protected List<EMConversation> loadConversationList(){
+        // 获取所有会话，包括陌生人
+		List< EMConversation > conversations = EMClient.getInstance().chatManager().getConversationsByType(EMConversationType.Chat);
+	 Map<String, EMConversation> serviceConversations = new HashMap<String,EMConversation>();
+	 synchronized (conversations) {
+            for (EMConversation conversation : conversations) {
+                String attr = conversation.getExtField();
+		  if(attr!=null && attr.contains(Constants.CONVERSATION_ATTR_VIEW_SERVICE)){
+			serviceConversations.put(conversation.getUserName(), conversation);
+		  }
+            }
+        }
+
+	List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
+	for (EMConversation conversation : serviceConversations.values()) {
+                if (conversation.getAllMessages().size() != 0) {
+                        sortList.add(new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(), conversation));
+                }
+            }
+
+        try {
+            // Internal is TimSort algorithm, has bug
+            sortConversationByLastChatTime(sortList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<EMConversation> list = new ArrayList<EMConversation>();
+        for (Pair<Long, EMConversation> sortItem : sortList) {
+            list.add(sortItem.second);
+        }
+        return list;
+    }
+
+    /**
+     * 根据最后一条消息的时间排序
+     * 
+     * @param usernames
+     */
+    private void sortConversationByLastChatTime(List<Pair<Long, EMConversation>> conversationList) {
+        Collections.sort(conversationList, new Comparator<Pair<Long, EMConversation>>() {
+            @Override
+            public int compare(final Pair<Long, EMConversation> con1, final Pair<Long, EMConversation> con2) {
+
+                if (con1.first == con2.first) {
+                    return 0;
+                } else if (con2.first > con1.first) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+
+        });
+    }
+
+
+	private boolean isBroadcastRegistered=false;
+	private LocalBroadcastManager broadcastManager;
+	private BroadcastReceiver broadcastReceiver; 
+
+	private void registerBroadcastReceiver() {
+		broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Constants.ACTION_NEW_MSG_FROM_VENDOR);
+
+		broadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				synchronized(SamService.getInstance().get_lock_update_current_user()){
+					LoginUser cuser = SamService.getInstance().get_current_user();
+					if(cuser.getconversation_existed()!=LoginUser.EXISTED){
+						setAnswerConversationExisted(cuser.getusername(), LoginUser.EXISTED);
+						cuser.setconversation_existed(LoginUser.EXISTED);
+					}
+				}
+				
+				mHot_topic_layout.setVisibility(View.GONE);
+				mConversationList.setVisibility(View.VISIBLE);
+				
+				conversationList.clear();
+				conversationList.addAll(loadConversationList());
+				mConversationList.refresh();
+			}
+		};
+		
+		broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+	}
+		
+
+	
+	private void unregisterBroadcastReceiver(){
+	    broadcastManager.unregisterReceiver(broadcastReceiver);
+	}
+
+	private void setAnswerConversationExisted(String username,int existed){
+		SamService.getInstance().getDao().updateLoginUserConversationExisted(username,existed);
+	}
 
 
 	private void queryHotTopic(){
@@ -178,7 +286,46 @@ public class SamService_Fragment extends Fragment {
 		});
 	}
 	
+	private void deleteConversation(EMConversation conversation){
+		String attr = conversation.getExtField();
+		if(attr == null){
+			return;
+		}else if(!attr.contains(EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE)){
+			return;
+		}else if(attr.equals(EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE)){
+			/*delete conversation from db*/
+			EMClient.getInstance().chatManager().deleteConversation(conversation.getUserName(), true);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+		}else{
+			attr = attr.replaceAll(EaseConstant.CONVERSATION_ATTR_VIEW_SERVICE,"");
+			conversation.setExtField(attr);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+		}
+		
+		
+	}
 
+	@Override  
+	public boolean onContextItemSelected(MenuItem item) { 
+		if(!getUserVisibleHint()){
+			return false;
+		}
+	
+		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo(); 
+		EMConversation conversation = conversationList.get(menuInfo.position);
+		deleteConversation(conversation);
+		return true;
+	}  
+
+	@Override  
+	public void onCreateContextMenu(ContextMenu menu, View v,  ContextMenuInfo menuInfo) {  
+		menu.add(0, v.getId(), 0, getString(R.string.delete_conversation));        
+		super.onCreateContextMenu(menu, v, menuInfo);  
+	} 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -188,8 +335,12 @@ public class SamService_Fragment extends Fragment {
 			SamLog.e(TAG, "onCreateView");
 			
 			rootView=inflater.inflate(R.layout.fragment_samservice, container,false);
+			mContext = skyworld.appContext;//getActivity().getBaseContext();
+			mConversationList = (EaseConversationList)rootView.findViewById(R.id.list);
+			registerForContextMenu(mConversationList);
+			
 			mTopSearchList = (ListView)rootView.findViewById(R.id.top_search_list);
-			mContext = getActivity().getBaseContext();
+			mHot_topic_layout = (LinearLayout)rootView.findViewById(R.id.hot_topic_layout);			
 			mAdpater = new SearchListAdapter(mContext);
 			for(int i=0;i<testString.length;i++){
 				hotTopicArray.add(testString[i]);
@@ -198,7 +349,6 @@ public class SamService_Fragment extends Fragment {
 			mTopSearchList.setAdapter(mAdpater);
 			mSearch = (EditText) rootView.findViewById(R.id.samservice_search_input);
 			mClear = (ImageView) rootView.findViewById(R.id.samservice_search_clear);
-			mHot_topic = (TextView) rootView.findViewById(R.id.hot_topic);
 			mSwipe_layout = (AutoNormalSwipeRefreshLayout)rootView.findViewById(R.id.swipe_layout);
 			mSwipe_layout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
 		                R.color.holo_orange_light, R.color.holo_red_light);
@@ -210,31 +360,6 @@ public class SamService_Fragment extends Fragment {
 					queryHotTopic();					
 				}
 			});
-
-			mBanner_layout = (RelativeLayout)rootView.findViewById(R.id.banner_layout);
-
-			mSamservice_search_input_show = (EditText)rootView.findViewById(R.id.samservice_search_input_show);
-			mSamservice_search_layout_show = (LinearLayout)rootView.findViewById(R.id.samservice_search_layout_show);
-
-			mSamservice_search_input_show.setEnabled(false);
-			mSamservice_search_input_show.setFocusable(false);
-			mSamservice_search_layout_show.setVisibility(View.GONE);
-
-					
-
-			mCancel_search = (TextView)  rootView.findViewById(R.id.cancel_search);
-			mCancel_search.setVisibility(View.GONE);
-			mCancel_search.setOnClickListener(new OnClickListener(){
-		    		@Override
-		    		public void onClick(View arg0) {
-		    			if(!isCancelingQuestion){
-		    				launchDialogActivityNeedConfirm(getString(R.string.reminder),getString(R.string.cancel_reminder));
-						isCancelingQuestion = true;
-					}
-		    		}
-		    	
-			});
-
 			
 			mSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {  
 				public boolean onEditorAction(TextView v, int actionId,KeyEvent event) {    
@@ -245,7 +370,6 @@ public class SamService_Fragment extends Fragment {
 							String question = mSearch.getText().toString().trim();
 							if(!question.equals("")){
 								/*send questions to server*/
-								current_question = question;
 								if(mDialog!=null){
     									mDialog.launchProcessDialog(getActivity(),getString(R.string.question_publish_now));
     								}
@@ -266,46 +390,51 @@ public class SamService_Fragment extends Fragment {
 		    		public void onClick(View arg0) {
 		    			mSearch.setText("");
 		    		}
-		    	
 			});
 
 			mTopSearchList.setOnItemClickListener(new OnItemClickListener(){   
-			@Override   
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {   
-				/*arg2 is postion*/
-				if(mAdpater.getListType() == SearchListAdapter.LIST_TYPE_ANSWER 
-					&& arg2+1!=mAdpater.getCount()){
-				//click answer to view:
-					if(current_question == null){
-						return;
+				@Override   
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {   
+					/*arg2 is postion*/
+					if(mAdpater.getListType() == SearchListAdapter.LIST_TYPE_TOP_SEARCH){
+					//click top search to view:
+						if(!isSendingQuestion){
+							List<String> topicList = mAdpater.getHotTopicArray();
+							String question = topicList.get(arg2);
+							mSearch.setText(question);	
+							mSearch.requestFocus();
+	
+							InputMethodManager inputManager =(InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE); 
+							inputManager.showSoftInput(mSearch, 0);
+						}
 					}
-					
-					ReceivedAnswer answer = mAdpater.getAnswerInfo(arg2);
-					mAdpater.setRead(arg2);
-					Intent intent = new Intent();
-					intent.setClass(getActivity(),SamAnswerDetailActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("ReceivedAnswer",answer);
-					bundle.putSerializable("CurrentQuestion",current_question);
-					intent.putExtras(bundle);
-					startActivityForResult(intent,REQUST_CODE_BACK_FROM_SAMANSWERDETAILACTIVITY);
-									
-				}else if(mAdpater.getListType() == SearchListAdapter.LIST_TYPE_TOP_SEARCH){
-				//click top search to view:
-					List<String> topicList = mAdpater.getHotTopicArray();
-					String question = topicList.get(arg2);
-					mSearch.setText(question);	
-					mSearch.requestFocus();
-
-					InputMethodManager inputManager =(InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE); 
-					inputManager.showSoftInput(mSearch, 0);
-				}
-				
-			}   
+				}   
                
-       	 }); 
+       	 	}); 
 
-			
+
+			if(SamService.getInstance().get_current_user().getconversation_existed()!=LoginUser.EXISTED){
+				mSwipe_layout.setEnabled(true);
+				mHot_topic_layout.setVisibility(View.VISIBLE);
+				mConversationList.setVisibility(View.GONE);
+			}else{
+				mSwipe_layout.setEnabled(false);
+				mHot_topic_layout.setVisibility(View.GONE);
+				mConversationList.setVisibility(View.VISIBLE);
+			}
+
+
+			listItemClickListener = new EaseConversationListItemClickListener() {
+				@Override
+				public void onListItemClicked(EMConversation conversation) {
+					Intent newIntent = new Intent(SamService_Fragment.this.getActivity(), ChatActivity.class);
+					newIntent.putExtra(Constants.EXTRA_USER_ID, conversation.getUserName());
+					newIntent.putExtra(Constants.EXTRA_CHAT_TYPE, Constants.CHATTYPE_SINGLE);
+					newIntent.putExtra(Constants.CHAT_ACTIVITY_TYPE,Constants.CHAT_ACTIVITY_TYPE_VIEW_SERVICE);					
+					startActivity(newIntent);
+					
+				}
+			};
 			
 		}
 		
@@ -317,17 +446,6 @@ public class SamService_Fragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		SamLog.i(TAG, "onCreated");
-		current_type = SamServiceType.TOP_SEARCH; 
-
-	}
-	
-	@Override
-	public void onAttach(Activity activity){
-		super.onAttach(activity);
-		SamLog.i(TAG, "onAttach");
-		
-		
-
 	}
 	
 	@Override
@@ -337,10 +455,20 @@ public class SamService_Fragment extends Fragment {
 	}
 	
 	@Override
-	public void onResume(){
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		this.hidden = hidden;
+		if (!hidden) {
+			mConversationList.refresh();
+		}
+	}
+
+	@Override
+	public void onResume() {
 		super.onResume();
-		SamLog.i(TAG, "onResume");
-		
+		if (!hidden) {
+			mConversationList.refresh();
+		}
 	}
 	
 	
@@ -349,6 +477,24 @@ public class SamService_Fragment extends Fragment {
 		super.onDetach();
 		SamLog.i(TAG, "onDetach");
 	}
+
+
+	private void setUpView(){
+		conversationList.clear();
+		conversationList.addAll(loadConversationList());
+		mConversationList.init(conversationList);
+		mConversationList.setConversationListIn(EaseConstant.CONVERSATION_LIST_IN_SERIVCE);
+		if(listItemClickListener != null){
+			mConversationList.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					EMConversation conversation = mConversationList.getItem(position);
+					listItemClickListener.onListItemClicked(conversation);
+				}
+			});
+		}
+	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
@@ -356,7 +502,12 @@ public class SamService_Fragment extends Fragment {
 		mDialog = new SamProcessDialog(getActivity());
 		SamLog.i(TAG, "onActivityCreated");
 
-		//queryHotTopic();
+		setUpView();
+		
+		if(!isBroadcastRegistered){
+			registerBroadcastReceiver();
+			isBroadcastRegistered=true;
+		}
 
 	}
 	
@@ -366,6 +517,11 @@ public class SamService_Fragment extends Fragment {
 		if(rootView != null){
 			SamLog.i(TAG, "onDestroyView");
 			((ViewGroup)(rootView.getParent())).removeView(rootView);
+		}
+
+		if(isBroadcastRegistered){
+			unregisterBroadcastReceiver();
+			isBroadcastRegistered=false;
 		}
 	}
 	
@@ -383,13 +539,6 @@ public class SamService_Fragment extends Fragment {
 		SamLog.i(TAG, "onStop");
 	}
 
-
-	private void cancel_question(){
-		/*send cancel to server*/
-		SamService.getInstance().cancel_question( mHandler, MSG_CANCEL_QUESTION_CALLBACK);
-
-	}
-	
 	private void closeInputMethod() {
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		boolean isOpen = imm.isActive();
@@ -405,133 +554,69 @@ public class SamService_Fragment extends Fragment {
 		SamService.getInstance().send_question(question, mHandler, MSG_SEND_QUESTION_CALLBACK);
 	}
 
-	private void update_answers(ReceivedAnswer answer){
-		mAdpater.addAnswerInfo(answer);
-		//mAdpater.setCount(mAdpater.getCountOfAnswerInfo()+1);
-		mAdpater.setListType_answer();
-		mAdpater.notifyDataSetChanged();
-	}
-
-	private void back_to_topsearch(){
-		mAdpater.clearAnswerInfo();
-		mAdpater.setListType_topSearch();
-		//mAdpater.setCount(15);	
-		mAdpater.notifyDataSetChanged();
-	}
-	
 	public Handler mHandler = new Handler() {
-	    @Override
-	    public void handleMessage(Message msg) {
-	    	if(getActivity() == null){
-	    		SamLog.e(TAG,"MainActivity is killed, drop msg...");
-	    		return;
-	    	}
+		@Override
+		public void handleMessage(Message msg) {
+	    		if(getActivity() == null){
+	    			SamLog.e(TAG,"MainActivity is killed, drop msg...");
+	    			return;
+	  	  	}
 	    	
-	    	switch(msg.what){
-	    	case MSG_SEND_QUESTION_CALLBACK:
-	    		isTopActivity();
-	    		isTopFragment();
-	    		if(msg.arg1 == SamService.R_SEND_QUESTION_OK){
-	    			SamLog.i(TAG,"question_id = " + ((SamCoreObj)msg.obj).refCBObj.qinfo.question_id);
-				if(mDialog!=null){
-	    				mDialog.dismissPrgoressDiglog();
-	    			}
-				mBanner_layout.setVisibility(View.GONE);
-				mSamservice_search_input_show.setText(current_question);
-				mSamservice_search_layout_show.setVisibility(View.VISIBLE);
-
-				mCancel_search.setVisibility(View.VISIBLE);
-				mHot_topic.setVisibility(View.GONE);
-				current_type = SamServiceType.ANSWER;
-				mSearch.setInputType(InputType.TYPE_NULL);
-				mAdpater.setListType_answer();
-				//mAdpater.setCount(1);
-				mAdpater.notifyDataSetChanged();
-				/*store samobj*/
-				isSendingQuestion = false;
-	    		}else if(msg.arg1 == SamService.R_SEND_QUESTION_ERROR){
-	    			SamLog.i(TAG,"question send error ...");
-				if(mDialog!=null){
-	    				mDialog.dismissPrgoressDiglog();
-	    			}
-				current_question = null;
-				isSendingQuestion = false;
-				mSwipe_layout.setEnabled(true);
-
-				launchDialogActivity(getString(R.string.question_publish_failed),getString(R.string.question_action_error_statement));
-	    		}else if(msg.arg1 == SamService.R_SEND_QUESTION_FAILED){
-	    			SamLog.i(TAG,"question send failed ...");
-				/*send question failed due to server error*/
-				if(mDialog!=null){
-	    				mDialog.dismissPrgoressDiglog();
-	    			}
-				current_question = null;
-				isSendingQuestion = false;
-				mSwipe_layout.setEnabled(true);
-				launchDialogActivity(getString(R.string.question_publish_failed),getString(R.string.question_action_server_error_statement));				
-	    		}else{
-	    			SamLog.i(TAG,"impossible here ...");
-				if(mDialog!=null){
-	    				mDialog.dismissPrgoressDiglog();
-	    			}
-				current_question = null;
-				isSendingQuestion = false;
-				mSwipe_layout.setEnabled(true);
-				launchDialogActivity("Fatal Error","Close samchat!");
-	    		}
-	    		break;
-	    	case MSG_ANSWER_BACK:
-			ReceivedAnswer ra = (ReceivedAnswer)msg.obj;
-			update_answers(ra);
-			break;
-
-		case MSG_CANCEL_QUESTION_CALLBACK:
-		  	if(msg.arg1 == SamService.R_CANCEL_QUESTION_OK){
-				SamLog.i(TAG,"cancel question succeed ...");
-				if(mDialog!=null){
-	    				mDialog.dismissPrgoressDiglog();
-	    			}
-
-				mBanner_layout.setVisibility(View.VISIBLE);
-				mSamservice_search_input_show.setText("");
-				mSamservice_search_layout_show.setVisibility(View.GONE);
+	  	  	switch(msg.what){
+	 	   	case MSG_SEND_QUESTION_CALLBACK:
+	 	   		if(msg.arg1 == SamService.R_SEND_QUESTION_OK){
+	 	   			SamLog.i(TAG,"question_id = " + ((SamCoreObj)msg.obj).refCBObj.qinfo.question_id);
+					if(mDialog!=null){
+	 	   				mDialog.dismissPrgoressDiglog();
+		    			}
 				
-				current_type = SamServiceType.TOP_SEARCH;
-				current_question = null;
-				mSearch.setInputType(InputType.TYPE_CLASS_TEXT);
-				mSearch.setText("");
-				mCancel_search.setVisibility(View.GONE);
-				mHot_topic.setVisibility(View.VISIBLE);
-				back_to_topsearch();
+					mHot_topic_layout.setVisibility(View.GONE);
+					mConversationList.setVisibility(View.VISIBLE);
+					isSendingQuestion = false;
+		    		}else if(msg.arg1 == SamService.R_SEND_QUESTION_ERROR){
+	  	  			SamLog.i(TAG,"question send error ...");
+					if(mDialog!=null){
+	  	  				mDialog.dismissPrgoressDiglog();
+	 	   			}
+					isSendingQuestion = false;
+					if(SamService.getInstance().get_current_user().getconversation_existed()!=LoginUser.EXISTED){
+						mSwipe_layout.setEnabled(true);
+						mHot_topic_layout.setVisibility(View.VISIBLE);
+						mConversationList.setVisibility(View.GONE);
+					}
 
-				isCancelingQuestion = false;
-				mSwipe_layout.setEnabled(true);
-				
-			}else if(msg.arg1 == SamService.R_CANCEL_QUESTION_FAILED){
-				SamLog.i(TAG,"cancel question failed ...");
-				/*cancel question failed due to server error*/
-				if(mDialog!=null){
-	    				mDialog.dismissPrgoressDiglog();
+					launchDialogActivity(getString(R.string.question_publish_failed),getString(R.string.question_action_error_statement));
+	 	   		}else if(msg.arg1 == SamService.R_SEND_QUESTION_FAILED){
+	 	   			SamLog.i(TAG,"question send failed ...");
+					/*send question failed due to server error*/
+					if(mDialog!=null){
+	    					mDialog.dismissPrgoressDiglog();
+	    				}
+					isSendingQuestion = false;
+					if(SamService.getInstance().get_current_user().getconversation_existed()!=LoginUser.EXISTED){
+						mSwipe_layout.setEnabled(true);
+						mHot_topic_layout.setVisibility(View.VISIBLE);
+						mConversationList.setVisibility(View.GONE);
+					}
+
+					launchDialogActivity(getString(R.string.question_publish_failed),getString(R.string.question_action_server_error_statement));				
+	    			}else{
+	    				SamLog.i(TAG,"impossible here ...");
+					if(mDialog!=null){
+	    					mDialog.dismissPrgoressDiglog();
+	    				}
+					isSendingQuestion = false;
+					if(SamService.getInstance().get_current_user().getconversation_existed()!=LoginUser.EXISTED){
+						mSwipe_layout.setEnabled(true);
+						mHot_topic_layout.setVisibility(View.VISIBLE);
+						mConversationList.setVisibility(View.GONE);
+					}
+
+					launchDialogActivity("Fatal Error","Close samchat!");
 	    			}
-				launchDialogActivity(getString(R.string.question_cancel_failed),getString(R.string.question_action_server_error_statement));	
-				isCancelingQuestion = false;
-			}else if(msg.arg1 == SamService.R_CANCEL_QUESTION_ERROR){
-				SamLog.i(TAG,"question send error ...");
-				if(mDialog!=null){
-	    				mDialog.dismissPrgoressDiglog();
-	    			}
-				launchDialogActivity(getString(R.string.question_cancel_failed),getString(R.string.question_action_error_statement));
-				isCancelingQuestion = false;
-			}else{
-				SamLog.i(TAG,"impossible here ...");
-				if(mDialog!=null){
-	    				mDialog.dismissPrgoressDiglog();
-	    			}
-				launchDialogActivity("Fatal Error","Close samchat!");
-				isCancelingQuestion = false;
+	    			break;		
 			}
-	      }
-	    }
+		}
 	};
 
 
@@ -543,49 +628,6 @@ public class SamService_Fragment extends Fragment {
 		newIntent.putExtra("message", msg);
 		startActivity(newIntent);
 	}
-
-	private void launchDialogActivityNeedConfirm(String title,String msg){
-		Intent newIntent = new Intent(CANCEL_QUESTION_CONFIRM);		
-		//newIntent.setFlags(intentFlags);
-		newIntent.putExtra("title", title);
-		newIntent.putExtra("message", msg);
-		startActivityForResult(newIntent, REQUST_CODE_CONFIRM_CANCEL_QUESTION);
-	}
-
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
-		if(requestCode == REQUST_CODE_CONFIRM_CANCEL_QUESTION){
-			SamLog.e(TAG,"result code:"+ resultCode);
-			if(resultCode == 1){ //OK
-				SamLog.e(TAG,"onActivityResult = 0");
-				cancel_question_confirm_ok();
-			}else{
-				SamLog.e(TAG,"onActivityResult != 0");
-				isCancelingQuestion = false;
-				cancel_question_confirm_not_ok();
-			}
-    	   
-		}else if(requestCode == REQUST_CODE_BACK_FROM_SAMANSWERDETAILACTIVITY){
-			SamLog.e(TAG,"onActivityResult,requestCode:2");
-			mAdpater.notifyDataSetChanged();
-		}
-	} 
-	
-	private void cancel_question_confirm_ok(){
-		if(mDialog!=null){
-    			mDialog.launchProcessDialog(getActivity(),getString(R.string.question_cancel_now));
-    		}
-		
-		cancel_question();
-		
-		return;
-	}
-
-	private void cancel_question_confirm_not_ok(){
-		return;
-	}
-
 
 	private boolean isTopActivity()  
 	{  
@@ -607,8 +649,7 @@ public class SamService_Fragment extends Fragment {
 			isTop = true;
 		}
 		SamLog.e(TAG, "isTopFragment = " + isTop);  
-		return isTop;  
-		
+		return isTop;
 	}
 
 }

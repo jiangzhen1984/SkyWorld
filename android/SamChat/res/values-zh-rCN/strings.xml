@@ -240,4 +240,6 @@
     <string name="exiting_user_conflict">正在退出帐号在另一台机器登陆</string>
     
     <string name="updateapp">更新应用6</string>
+    <string name="vendor_setting">商家设置</string>
+    <string name="delete_conversation">删除聊天</string>
 </resources>

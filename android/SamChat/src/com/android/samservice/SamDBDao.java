@@ -58,6 +58,19 @@ public class SamDBDao{
 		return ret;
 	}
 
+	public long updateLoginUserConversationExisted(String username,int existed){
+		long ret = 0;
+		synchronized(dbLock){
+			ret = dbHandle.updateLoginUserConversationExisted(username,existed);
+		}
+
+		if(ret == -1){
+			throw new RuntimeException("db error: login user table");
+		}
+
+		return ret;
+	}
+
 	
 
 	public long add_update_LoginUser_db(LoginUser user){
@@ -204,6 +217,12 @@ public class SamDBDao{
 	public ReceivedQuestion query_ReceivedQuestion_db(String question_id){
 		synchronized(dbLock){
 			return dbHandle.queryReceivedQuestion(question_id);
+		}
+	}
+
+	public List<String> get_ReceivedQuestion_Not_Response_db(long contactuserid,String receivername){
+		synchronized(dbLock){
+			return dbHandle.get_ReceivedQuestion_Not_Response(contactuserid,receivername);
 		}
 	}
 

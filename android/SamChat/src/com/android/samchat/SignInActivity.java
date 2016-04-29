@@ -6,10 +6,9 @@ import java.util.List;
 
 import com.android.samservice.*;
 import com.android.samservice.info.LoginUser;
-import com.easemob.EMCallBack;
-import com.easemob.chat.EMChat;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMGroupManager;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -38,7 +37,7 @@ public class SignInActivity extends Activity {
 	
 	static final String TAG="SamChat_Signin";
 
-	public static int SAM_SIGNIN_TIMEOUT=20000;
+	public static int SAM_SIGNIN_TIMEOUT=30000;
 
 
 	public static final int MSG_SIGNIN_CALLBACK = 1;
@@ -75,7 +74,7 @@ public class SignInActivity extends Activity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 					SamLog.i(TAG,"login easemob successfully");
-					EMChat.getInstance().setAutoLogin(true);
+					//EMChat.getInstance().setAutoLogin(true);
 					//EMChatManager.getInstance().updateCurrentUserNick(SamService.getInstance().get_current_user().getusername());
 					LoginUser user = SamService.getInstance().get_current_user();
 					user.seteasemob_status(LoginUser.ACTIVE);
@@ -163,7 +162,7 @@ public class SignInActivity extends Activity {
 					@Override
 					public void run() {
 						
-						EMChatManager.getInstance().login(userName,password,EMcb);
+						EMClient.getInstance().login(userName,password,EMcb);
 					}
 				}).start();
 
@@ -190,7 +189,7 @@ public class SignInActivity extends Activity {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						EMChatManager.getInstance().login(userName,password,EMcb);
+						EMClient.getInstance().login(userName,password,EMcb);
 					}
 				}).start();
 			break;
@@ -490,7 +489,7 @@ public class SignInActivity extends Activity {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						EMChatManager.getInstance().login(userName,password,EMcb);
+						EMClient.getInstance().login(userName,password,EMcb);
 					}
 				}).start();
 				

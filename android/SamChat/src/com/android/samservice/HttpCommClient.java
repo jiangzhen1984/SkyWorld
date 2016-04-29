@@ -46,13 +46,13 @@ import com.android.samservice.info.SendAnswer;
 
 public class HttpCommClient {
 	public static final String TAG="HttpCommClient";
-	/*
-	public static final String URL = "http://121.42.207.185/SkyWorld/api/1.0/UserAPI";
+	
+	/*public static final String URL = "http://121.42.207.185/SkyWorld/api/1.0/UserAPI";
 	public static final String URL_QUESTION = "http://121.42.207.185/SkyWorld/api/1.0/QuestionAPI";
 	public static final String PUSH_URL = "http://121.42.207.185/SkyWorld/push";
 	public static final String URL_AVATAR = "http://121.42.207.185/SkyWorld/api/1.0/UserAvatarAPI";
-	public static final String URL_ATICLE = "http://121.42.207.185/SkyWorld/api/1.0/ArticleApi";
-	*/
+	public static final String URL_ATICLE = "http://121.42.207.185/SkyWorld/api/1.0/ArticleApi";*/
+	
 
 	public static final String ROOT_URL = "http://139.129.57.77/sw/";
 	public static final String URL = "http://139.129.57.77/sw/api/1.0/UserAPI";
@@ -61,7 +61,6 @@ public class HttpCommClient {
 	public static final String URL_AVATAR = "http://139.129.57.77/sw/api/1.0/UserAvatarAPI";
 	public static final String URL_ATICLE = "http://139.129.57.77/sw/api/1.0/ArticleApi";
 	public static final String URL_HOTTOPIC = "http://139.129.57.77/sw/api_1.0_HotTopicAPI.do";
-
 	public static final String URL_VENDOR_WEB = "http://139.129.57.77/sw/skservicer/setting/info";
 	
 	

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
     
-    <com.easemob.easeui.ui.CircleImageView
+    <com.hyphenate.easeui.ui.CircleImageView
        android:id="@+id/userimg"
        android:layout_width="43dp"
        android:layout_height="43dp"

@@ -22,11 +22,11 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.android.samchat.easemobdemo.EaseMobHelper;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.easeui.adapter.EaseContactAdapter;
-import com.easemob.easeui.domain.EaseUser;
-import com.easemob.easeui.widget.EaseSidebar;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.easeui.adapter.EaseContactAdapter;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.widget.EaseSidebar;
 
 public class GroupPickContactsActivity extends Activity {
 	private ListView listView;
@@ -48,7 +48,7 @@ public class GroupPickContactsActivity extends Activity {
 		if (groupId == null) {// 创建群组
 			isCreatingNewGroup = true;
 		} else {
-			EMGroup group = EMGroupManager.getInstance().getGroup(groupId);
+			EMGroup group = EMClient.getInstance().groupManager().getGroup(groupId);
 			exitingMembers = group.getMembers();
 		}
 		if(exitingMembers == null)

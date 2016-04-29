@@ -14,7 +14,7 @@ import com.android.samservice.SamLog;
 import com.android.samservice.SamService;
 import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.LoginUser;
-import com.easemob.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.zijunlin.Zxing.Demo.CreateQRImageTest;
 
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;

@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hyphenate.easeui.domain.EaseUser;
+
 import android.content.Context;
 
-import com.easemob.easeui.domain.EaseUser;
+
 
 public class EaseMobModel {
     protected Context context = null;

@@ -1,6 +1,8 @@
 package com.android.samchat;
 
-import com.easemob.easeui.ui.EaseBaseActivity;
+
+
+import com.hyphenate.easeui.ui.EaseBaseActivity;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:hyphenate="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,26 +10,16 @@
     <RelativeLayout
         android:id="@+id/banner_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:orientation="vertical">
-        
-      <ImageView
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:contentDescription="@null"
-        android:src="@drawable/photo_wall"/>
+        android:layout_height="wrap_content">
 		
       <LinearLayout
         android:id="@+id/samservice_search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="@drawable/shadow_rectange_bg"
         android:focusable="true" 
@@ -77,61 +68,14 @@
     </RelativeLayout>
     
     <LinearLayout
-        android:id="@+id/samservice_search_layout_show"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal"
-        android:background="@drawable/shadow_rectange_bg"
-        android:focusable="true" 
-		android:focusableInTouchMode="true" 
-		android:visibility="gone">
-        
-         <ImageView
-            android:id="@+id/samservice_search_icon_show"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft ="2dp"
-            android:contentDescription="@null"
-            android:src="@drawable/samservice_search_icon"
-            android:layout_gravity="center_vertical"/>
-         <EditText
-            android:id="@+id/samservice_search_input_show"
-        	android:layout_width="0dp"
-        	android:layout_height="wrap_content"
-        	android:layout_weight="0.8"
-        	android:layout_marginLeft="5dp"
-        	android:layout_marginTop="2dp"
-        	android:layout_marginBottom="2dp"
-			android:layout_gravity="center_vertical"
-        	android:hint="@string/samservice_search"
-        	android:textColor="#000000"
-        	android:textSize="18sp"
-        	android:singleLine="true"
-        	android:maxLines="1"
-        	android:imeOptions="actionSearch"
-        	android:background="@null"/>
-         
-           <ImageView
-            android:id="@+id/samservice_search_clear_show"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginRight="2dp"
-            android:contentDescription="@null"
-            android:src="@drawable/cancel_icon"
-            android:layout_gravity="center_vertical"/>
-      
-        </LinearLayout>
-    	
-    <TextView
+      android:id="@+id/hot_topic_layout"  
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:orientation="vertical"
+      android:background="@color/default_bg">
+    
+      <TextView
             android:id="@+id/hot_topic"
             android:layout_width="match_parent"
         	android:layout_height="wrap_content"
@@ -141,10 +85,9 @@
         	android:gravity="center"
         	android:background="@color/default_bg"/>
     
-    <com.android.samchat.AutoNormalSwipeRefreshLayout
+      <com.android.samchat.AutoNormalSwipeRefreshLayout
             android:id="@+id/swipe_layout"
-            android:layout_height="0dp"
-			android:layout_weight="1" 
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_marginTop="10dp">
              
@@ -156,19 +99,19 @@
 				android:divider="@color/listview_gray_devider" 
 				android:dividerHeight="1dp">
 			</ListView>
-	</com.android.samchat.AutoNormalSwipeRefreshLayout>
+	  </com.android.samchat.AutoNormalSwipeRefreshLayout>
     	
+	</LinearLayout>
 	
-		
-	<TextView
-            android:id="@+id/cancel_search"
-            android:layout_width="match_parent"
-        	android:layout_height="48dp"
-        	android:textSize="18sp"
-        	android:text="@string/cancel_search"
-        	android:gravity="center"
-        	android:background="@color/orange"
-        	android:textColor="@color/common_white"/>
+     <com.hyphenate.easeui.widget.EaseConversationList
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@color/default_bg"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        hyphenate:cvsListPrimaryTextSize="16sp"/>
  	
 </LinearLayout>
 

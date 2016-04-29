@@ -12,11 +12,11 @@ import java.util.regex.Pattern;
 import org.apache.http.HttpStatus;
 
 import com.android.samchat.SamChats_Fragment;
-import com.android.samchat.SamMe_Fragment;
 import com.android.samchat.SamContact_Fragment;
 import com.android.samchat.SamQADetailActivity;
 import com.android.samchat.SamService_Fragment;
 import com.android.samchat.SamVendorInfo;
+import com.android.samchat.SamVendor_Fragment;
 import com.android.samchat.skyworld;
 import com.android.samservice.info.*;
 import com.android.samservice.provider.*;
@@ -379,8 +379,12 @@ public class SamService{
 
 	private List<ActiveQuestion> activeQuestionArray = new ArrayList<ActiveQuestion>();
 
+	public Object lock_update_current_user = new Object();
 
-	
+
+	public Object get_lock_update_current_user(){
+		return lock_update_current_user;
+	}
 
 	public List<ActiveQuestion> getActiveQuestionArray(){
 		return activeQuestionArray;
@@ -560,10 +564,10 @@ public class SamService{
 
 	}
 
-	public void onActivityLaunched(SamService_Fragment fragment_samservice, SamChats_Fragment fragment_samchat){
+	public void onActivityLaunched(SamService_Fragment fragment_samservice, SamVendor_Fragment fragment_vendor){
 		
 		answer_hndl = new WeakReference <Handler> (fragment_samservice.mHandler); 
-		servicer_question_hndl = new WeakReference <Handler>(fragment_samchat.mHandler);
+		servicer_question_hndl = new WeakReference <Handler>(fragment_vendor.mHandler);
 		
 	}
 
@@ -1017,13 +1021,13 @@ public class SamService{
 						rq.setreceivedtime(phinfoq.datetime);
 						rq.setreceivercellphone(get_current_user().getphonenumber());
 						rq.setreceiverusername(get_current_user().getusername());
-						msgid = SamChats_Fragment.MSG_QUESTION_RECEIVED;
+						msgid = SamVendor_Fragment.MSG_QUESTION_RECEIVED;
 					}else if(phinfoq.opt == 1){
 						rq = dao.query_ReceivedQuestion_db(phinfoq.quest_id);
 						if(rq!=null){
 							rq.setstatus(ReceivedQuestion.CANCEL);
 							rq.setcanceledtime(phinfoq.datetime);
-							msgid = SamChats_Fragment.MSG_QUESTION_CANCEL;
+							msgid = SamVendor_Fragment.MSG_QUESTION_CANCEL;
 						}else{
 							break;
 						}
@@ -1039,7 +1043,7 @@ public class SamService{
 					if(phinfoq.opt == 0){
 						dao.clearReceviedQuestion_db(phinfoq.datetime - 1*60*60*1000L);
 					}
-					Message msg1 = sq_hndl.obtainMessage(msgid, null);
+					Message msg1 = sq_hndl.obtainMessage(msgid, rq);
 					sq_hndl.sendMessage(msg1);
 					
 					break;
@@ -2518,13 +2522,15 @@ public class SamService{
 				store_current_token(hcc.token_id);
 				
 				//update question info into db
-				LoginUser user = dao.query_activie_LoginUser_db();
-				user.usertype = LoginUser.MIDSERVER;
-				user.location = ugobj.vInfo.getLocation();
-				user.area = ugobj.vInfo.getArea();
-				user.description = ugobj.vInfo.getDesc();
-				dao.add_update_LoginUser_db(user);
-				set_current_user(user);
+				synchronized(lock_update_current_user){
+					LoginUser user = dao.query_activie_LoginUser_db();
+					user.usertype = LoginUser.MIDSERVER;
+					user.location = ugobj.vInfo.getLocation();
+					user.area = ugobj.vInfo.getArea();
+					user.description = ugobj.vInfo.getDesc();
+					dao.add_update_LoginUser_db(user);
+					set_current_user(user);
+				}
 
 				if(mWaitThread!=null){
 					mWaitThread.InterruptWaitThread();
