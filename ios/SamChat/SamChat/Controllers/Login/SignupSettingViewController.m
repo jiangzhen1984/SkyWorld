@@ -12,7 +12,6 @@
 #import "MBProgressHUD.h"
 #import "SCUtils.h"
 #import "SCViewFactory.h"
-#import "SCSignupModel.h"
 #import "UIView+SDAutoLayout.h"
 
 @interface SignupSettingViewController ()
@@ -65,29 +64,29 @@
                                             countryCode:[NSNumber numberWithInteger:[self.countryCode integerValue]]
                                                username:username
                                                password:password
-        completion:^(BOOL success, SCSkyWorldError *error) {
+        completion:^(BOOL success, NSError *error) {
             [self hideHud];
             if(success){
               [self showHudInView:self.view hint:NSLocalizedString(@"siguplogin.ongoing", @"Signup Success, Is Login...")];
               [[SamChatClient sharedInstance] loginWithUsername:username
                    password:password
-                 completion:^(BOOL success, SCSkyWorldError *error) {
+                 completion:^(BOOL success, NSError *error) {
                      [self hideHud];
                      if(success){
                          [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_LOGIN_STATE_CHANGE object:@YES];
                      }else{
                          if(error.code == SCSkyWorldErrorUsernameOrPasswordWrong){
-                             self.labelErrorTip.text = error.errorDescription;
+                             self.labelErrorTip.text = error.userInfo[NSLocalizedDescriptionKey];
                          }else{
-                             [self showHint:error.errorDescription];
+                             [self showHint:error.userInfo[NSLocalizedDescriptionKey]];
                          }
                      }
                  }];
             }else{
               if(error.code == SCSkyWorldErrorUsernameOrPasswordAlreadyExist){
-                  self.labelErrorTip.text = error.errorDescription;
+                  self.labelErrorTip.text = error.userInfo[NSLocalizedDescriptionKey];
               }else{
-                  [self showHint:error.errorDescription];
+                  [self showHint:error.userInfo[NSLocalizedDescriptionKey]];
               }
             }
         }];

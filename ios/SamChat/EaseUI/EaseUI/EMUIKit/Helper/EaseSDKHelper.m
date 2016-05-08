@@ -119,14 +119,15 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     [self _registerRemoteNotification];
     
     EMOptions *options = [EMOptions optionsWithAppkey:appkey];
-//    options.apnsCertName = apnsCertName;
-    options.isAutoAcceptGroupInvitation = NO;
-    options.isAutoAcceptFriendInvitation = YES;
+    options.apnsCertName = apnsCertName;
+    options.isAutoAcceptGroupInvitation = YES;
+ //   options.isAutoAcceptFriendInvitation = YES;
     if ([otherConfig objectForKey:kSDKConfigEnableConsoleLogger]) {
         options.enableConsoleLog = YES;
     }
     
     BOOL sandBox = [otherConfig objectForKey:@"easeSandBox"] && [[otherConfig objectForKey:@"easeSandBox"] boolValue];
+    sandBox = false;
     if (!sandBox) {
         [[EMClient sharedClient] initializeSDKWithOptions:options];
     }

@@ -109,13 +109,13 @@
     }
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
-{
-    // for test
-    NSString *info = [NSString stringWithFormat:@"%@", userInfo];
-    [info writeToFile:[NSString stringWithFormat:@"%@/Documents/info.log",NSHomeDirectory()] atomically:YES encoding:NSUTF8StringEncoding error:nil];
-    completionHandler(UIBackgroundFetchResultFailed);
-}
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+//{
+//    // for test
+//    NSString *info = [NSString stringWithFormat:@"%@", userInfo];
+//    [info writeToFile:[NSString stringWithFormat:@"%@/Documents/info.log",NSHomeDirectory()] atomically:YES encoding:NSUTF8StringEncoding error:nil];
+//    completionHandler(UIBackgroundFetchResultFailed);
+//}
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {

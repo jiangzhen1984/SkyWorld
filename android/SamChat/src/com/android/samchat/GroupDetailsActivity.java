@@ -77,7 +77,13 @@ public class GroupDetailsActivity extends Activity implements OnClickListener {
 	    
 		// 获取传过来的groupid
 		groupId = getIntent().getStringExtra("groupId");
-		group = EMClient.getInstance().groupManager().getGroup(groupId);
+		try{
+			group = EMClient.getInstance().groupManager().getGroup(groupId);
+		}catch(Exception e){
+			e.printStackTrace();
+			finish();
+			return;
+		}
 
 		// we are not supposed to show the group if we don't find the group
 		if(group == null){

@@ -17,6 +17,10 @@
 @property (strong, nonatomic) NSString *avatarURLPath;
 @property (strong, nonatomic) UIImage *avatarImage;
 
+//SAMC_BEGIN
+@property (strong, nonatomic) NSString *messagesFromView;
+//SAMC_END
+
 - (instancetype)initWithConversation:(EMConversation *)conversation;
 
 @end

@@ -948,7 +948,7 @@ public class EaseChatFragment extends EaseBaseFragment {
                     messageList.refresh();
                 }
             }
-        }, true).show();;
+        }, true).show();
     }
 
     /**

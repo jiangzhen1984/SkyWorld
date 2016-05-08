@@ -106,7 +106,7 @@
             localizedDescription = @"连接服务器失败";
             break;
         case SCSkyWorldErrorUnknowError: // = 3
-            localizedDescription = @"未知不错";
+            localizedDescription = @"未知错误";
             break;
         case SCSkyWorldErrorLogoutError: // = 4
             localizedDescription = @"退出失败";

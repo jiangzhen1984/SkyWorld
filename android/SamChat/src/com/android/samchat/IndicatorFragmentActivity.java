@@ -4,6 +4,10 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.samservice.SamLog;
+import com.android.samservice.SamService;
+import com.android.samservice.info.LoginUser;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +36,7 @@ public abstract class IndicatorFragmentActivity extends FragmentActivity impleme
 
     protected int mCurrentTab = 0;
     protected int mLastTab = -1;
+    protected int mBackTab=-1;
 
     protected ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 
@@ -167,12 +172,41 @@ public abstract class IndicatorFragmentActivity extends FragmentActivity impleme
         mIndicator.onScrolled((mPager.getWidth() + mPager.getPageMargin()) * position + positionOffsetPixels);
     }
 
+
+	private void launchVendorSettingActivity(){
+		Intent newIntent = new Intent(this,VendorSettingActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		//newIntent.putExtra(Constants.NEED_BACK_PREV_FRAGMENT, true);		
+		startActivityForResult(newIntent, MainActivity.CONFIRM_ID_BACK_FROM_VENDOR_SETTING);	
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {  
+		SamLog.e(TAG,"main onActivityResult:"+requestCode);
+		if(requestCode == MainActivity.CONFIRM_ID_BACK_FROM_VENDOR_SETTING){
+			mPager.setCurrentItem(mBackTab);
+		}else{
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
+	
     @Override
     public void onPageSelected(int position) {
+	if(position == MainActivity.TAB_ID_VENDOR){
+		if(SamService.getInstance().get_current_user().getUserType() != LoginUser.MIDSERVER){
+			mBackTab = mCurrentTab;
+			launchVendorSettingActivity();
+			return;
+		}
+	}
+
+	
         mIndicator.onSwitched(position);
         mCurrentTab = position;
 
 	 mTitle.setText(mTabs.get(position).getName());
+
     }
 
     @Override

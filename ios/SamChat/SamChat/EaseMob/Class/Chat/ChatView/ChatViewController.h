@@ -11,6 +11,6 @@
 @interface ChatViewController : EaseMessageViewController
 
 // EaseMessageViewControllerDataSource
-@property (nonatomic, strong) NSDictionary *messageConversationType;
+@property (nonatomic, strong) NSDictionary *messageExtDictionary;
 
 @end

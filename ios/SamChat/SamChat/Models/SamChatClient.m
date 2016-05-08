@@ -7,22 +7,15 @@
 //
 
 #import "SamChatClient.h"
-#import "SCLoginModel.h"
-#import "SCSignupModel.h"
-#import "SCUserSettingModel.h"
-#import "SCAnswerQuestionModel.h"
-#import "SCUserRelationModel.h"
-#import "SCProducerModel.h"
 
-#import "SCServiceSearchModel.h"
+
+#import "SCAccountManager.h"
+#import "SCProducerManager.h"
+#import "SCOfficalManager.h"
+#import "SCSettingManager.h"
+#import "SCServiceManager.h"
 
 static SamChatClient *sharedInstance = nil;
-
-@interface SamChatClient ()
-
-@property (nonatomic, strong) SCServiceSearchModel *serviceSearchModel;
-
-@end
 
 @implementation SamChatClient
 
@@ -39,71 +32,64 @@ static SamChatClient *sharedInstance = nil;
 {
     self = [super init];
     if(self){
-        _serviceSearchModel = [SCServiceSearchModel new];
-        [_serviceSearchModel resetModel];
     }
     return self;
 }
 
-- (void)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)loginWithUsername:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL, NSError *))completion
 {
-    [SCLoginModel loginWithUsername:username password:password completion:completion];
+    [SCAccountManager loginWithUsername:username password:password completion:completion];
 }
 
-- (void)signupWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode username:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)signupWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode username:(NSString *)username password:(NSString *)password completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [SCSignupModel signupWithCellphone:cellphone countryCode:countrycode username:username password:password completion:completion];
+    [SCAccountManager signupWithCellphone:cellphone countryCode:countrycode username:username password:password completion:completion];
 }
 
-- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)logoutWithCompletion:(void (^)(BOOL success, NSError *error))completion
 {
-    [SCUserSettingModel uploadUserAvatarInBackground:image completion:completion];
+    [SCAccountManager logoutWithCompletion:completion];
 }
 
-- (void)logoutWithCompletion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [SCUserSettingModel logoutWithCompletion:completion];
+    [SCProducerManager upgradeToProducerWithInformationDictionary:info completion:completion];
 }
 
-- (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [SCUserSettingModel feedbackWithComment:comment completion:completion];
+    [SCOfficalManager makeFollow:flag withUser:userID completion:completion];
+}
+
+
+- (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [SCSettingManager feedbackWithComment:comment completion:completion];
+}
+
+- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [SCSettingManager uploadUserAvatarInBackground:image completion:completion];
 }
 
 - (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion
 {
-    [SCUserSettingModel checkVersionCompletion:completion];
+    [SCSettingManager checkVersionCompletion:completion];
 }
 
-- (void)sendAnswer:(NSString *)answer toQuestionID:(NSString *)question_id completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
+- (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType currentCount:(NSInteger)currentCount updateTimePre:(NSTimeInterval)updateTimePre completion:(void (^)(BOOL success, NSDictionary *response, NSError *error))completion
 {
-    [SCAnswerQuestionModel sendAnswer:answer toQuestionID:question_id completion:completion];
-}
-
-- (void)makeFollow:(BOOL)flag withUser:(NSNumber *)userID completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCUserRelationModel makeFollow:flag withUser:userID completion:completion];
-}
-
-- (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, SCSkyWorldError *error))completion
-{
-    [SCProducerModel upgradeToProducerWithInformationDictionary:info completion:completion];
-}
-
-- (void)queryTopicListWithOptType:(NSInteger)optType topicType:(NSInteger)topicType reset:(BOOL)flag completion:(void (^)(BOOL success, NSArray *topics, SCSkyWorldError *error))completion
-{
-    if(flag){
-        [self.serviceSearchModel resetModel];
-    }
-    [self.serviceSearchModel queryTopicListWithOptType:optType topicType:topicType completion:completion];
+    [SCServiceManager queryTopicListWithOptType:optType
+                                      topicType:topicType
+                                   currentCount:currentCount
+                                  updateTimePre:updateTimePre
+                                     completion:completion];
 }
 
 - (void)asyncWaitingPush
 {
     [self.pushManager asyncWaitingPush];
 }
-
-
 
 #pragma mark - Lazy initialization
 - (SCPushManager *)pushManager

@@ -20,20 +20,14 @@
 		311E3BCE1CC85C3A00605A49 /* SCSearchConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311E3BCD1CC85C3A00605A49 /* SCSearchConversationViewController.m */; };
 		311E3BD11CC8695D00605A49 /* SCServiceSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 311E3BD01CC8695D00605A49 /* SCServiceSearchBar.m */; };
 		311E3BD41CC876B800605A49 /* SCHotTopicsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 311E3BD31CC876B800605A49 /* SCHotTopicsView.m */; };
-		3159D9901CAE68F200212DAB /* ServiceSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */; };
 		3159D9941CAE6A8C00212DAB /* OfficalListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */; };
 		3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3159D9971CAE6B5C00212DAB /* ProducerViewController.m */; };
 		3159D99E1CAE725A00212DAB /* home_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3159D99D1CAE725A00212DAB /* home_background.png */; };
 		316F4E271CB89E4300B2F9A3 /* SamChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E261CB89E4300B2F9A3 /* SamChatClient.m */; };
 		316F4E2D1CB8AD3500B2F9A3 /* SCSkyWorldError.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E2C1CB8AD3500B2F9A3 /* SCSkyWorldError.m */; };
-		316F4E311CB8B82200B2F9A3 /* SCLoginModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E301CB8B82200B2F9A3 /* SCLoginModel.m */; };
-		316F4E341CB8CF3600B2F9A3 /* SCSignupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E331CB8CF3600B2F9A3 /* SCSignupModel.m */; };
 		316F4E3B1CB8EF4500B2F9A3 /* SCPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E3A1CB8EF4500B2F9A3 /* SCPushManager.m */; };
 		316F4E3E1CB91A9700B2F9A3 /* SCConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E3D1CB91A9700B2F9A3 /* SCConversationCell.m */; };
 		316F4E411CB9295E00B2F9A3 /* SCBadgeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E401CB9295E00B2F9A3 /* SCBadgeImageView.m */; };
-		316F4E5A1CBA2CDB00B2F9A3 /* SCUserSettingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E591CBA2CDB00B2F9A3 /* SCUserSettingModel.m */; };
-		316F4E5E1CBA417300B2F9A3 /* SCAnswerQuestionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E5D1CBA417300B2F9A3 /* SCAnswerQuestionModel.m */; };
-		316F4E661CBA5A9600B2F9A3 /* SCUserRelationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 316F4E651CBA5A9600B2F9A3 /* SCUserRelationModel.m */; };
 		3178FFE41CA5401600796D25 /* SCUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFE31CA5401600796D25 /* SCUINavigationController.m */; };
 		3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178FFEA1CA5494500796D25 /* SCSkyWorldAPI.m */; };
 		317B827D1CA9625E000415E9 /* libHyphenateFullSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317B827B1CA9625E000415E9 /* libHyphenateFullSDK.a */; };
@@ -53,29 +47,20 @@
 		3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3183D0701CA690730088FD67 /* SCViewFactory.m */; };
 		31A9F5151CBA9AF6005DA65D /* QRCodeScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A9F5141CBA9AF6005DA65D /* QRCodeScanViewController.m */; };
 		31A9F5181CBA9D6F005DA65D /* libZXingObjC-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A9F5171CBA9D6F005DA65D /* libZXingObjC-iOS.a */; };
-		31B3C9021CB0E67400CDB105 /* SCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */; };
 		31B3C90C1CB209B100CDB105 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C90B1CB209B100CDB105 /* AppDelegate.m */; };
 		31B3C9361CB214B600CDB105 /* ContactUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C91D1CB214B600CDB105 /* ContactUser.m */; };
 		31B3C9371CB214B600CDB105 /* ContactUser+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C91F1CB214B600CDB105 /* ContactUser+CoreDataProperties.m */; };
 		31B3C9381CB214B600CDB105 /* LoginUserInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9211CB214B600CDB105 /* LoginUserInformation.m */; };
 		31B3C9391CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9231CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m */; };
-		31B3C93A1CB214B600CDB105 /* ReceivedAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9251CB214B600CDB105 /* ReceivedAnswer.m */; };
-		31B3C93B1CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9271CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m */; };
 		31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9291CB214B600CDB105 /* ReceivedQuestion.m */; };
 		31B3C93D1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C92B1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m */; };
 		31B3C93E1CB214B600CDB105 /* SCCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C92D1CB214B600CDB105 /* SCCoreDataManager.m */; };
-		31B3C93F1CB214B600CDB105 /* SendAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C92F1CB214B600CDB105 /* SendAnswer.m */; };
-		31B3C9401CB214B600CDB105 /* SendAnswer+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9311CB214B600CDB105 /* SendAnswer+CoreDataProperties.m */; };
 		31B3C9411CB214B600CDB105 /* SendQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9331CB214B600CDB105 /* SendQuestion.m */; };
 		31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */; };
-		31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */; };
 		31B3C94A1CB28BD200CDB105 /* UserSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9491CB28BD200CDB105 /* UserSettingViewController.m */; };
 		31B3C94D1CB3463700CDB105 /* ProducerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C94C1CB3463700CDB105 /* ProducerEditViewController.m */; };
 		31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */; };
-		31BDF47A1CB5FBD500EDCED0 /* SCBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */; };
-		31BDF47D1CB6007C00EDCED0 /* SCChatMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */; };
 		31BDF48B1CB6420700EDCED0 /* KYDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */; };
-		31C1A5D61CBB65350010F6B4 /* SCSimpleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A5D51CBB65350010F6B4 /* SCSimpleCell.m */; };
 		31C1A5DA1CBB66180010F6B4 /* SCBaseRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A5D91CBB66180010F6B4 /* SCBaseRefreshView.m */; };
 		31C1A5DD1CBB66CE0010F6B4 /* SCBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A5DC1CBB66CE0010F6B4 /* SCBaseTableViewController.m */; };
 		31C1A6151CBB6BAC0010F6B4 /* MLEmoji_Expression.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 31C1A5F11CBB6BAC0010F6B4 /* MLEmoji_Expression.bundle */; };
@@ -121,8 +106,6 @@
 		31C1A7571CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7451CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m */; };
 		31C1A7581CBC7CF70010F6B4 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7471CBC7CF70010F6B4 /* UIImageView+WebCache.m */; };
 		31C1A7591CBC7CF70010F6B4 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7491CBC7CF70010F6B4 /* UIView+WebCacheOperation.m */; };
-		31C1A75D1CBC80EF0010F6B4 /* SCProducerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */; };
-		31C1A7601CBCA3C40010F6B4 /* SCServiceSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A75F1CBCA3C40010F6B4 /* SCServiceSearchModel.m */; };
 		31C1A7641CBCBB3F0010F6B4 /* SCRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7631CBCBB3F0010F6B4 /* SCRefreshFooter.m */; };
 		31C1A7681CBCBCE80010F6B4 /* SCHotTopicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A7671CBCBCE80010F6B4 /* SCHotTopicView.m */; };
 		31C1A76B1CBCDFDB0010F6B4 /* SCRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1A76A1CBCDFDB0010F6B4 /* SCRefreshHeader.m */; };
@@ -158,6 +141,14 @@
 		31D5CDC81CC4A56800D02D1D /* RetrievePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC01CC4A56800D02D1D /* RetrievePassWordViewController.m */; };
 		31D5CDC91CC4A56800D02D1D /* SignupSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC21CC4A56800D02D1D /* SignupSettingViewController.m */; };
 		31D5CDCA1CC4A56800D02D1D /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D5CDC41CC4A56800D02D1D /* SignupViewController.m */; };
+		31F6F7CE1CCDCAA7007AB092 /* EMConversation+MessagesCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7CD1CCDCAA7007AB092 /* EMConversation+MessagesCount.m */; };
+		31F6F7D21CCF3201007AB092 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7D11CCF3201007AB092 /* HomeViewController.m */; };
+		31F6F7D71CCF4882007AB092 /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31F6F7D61CCF4882007AB092 /* Setting.storyboard */; };
+		31F6F7DA1CCF4CE4007AB092 /* SCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7D91CCF4CE4007AB092 /* SCSettingViewController.m */; };
+		31F6F7DE1CCF632D007AB092 /* SCProducerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7DD1CCF632D007AB092 /* SCProducerManager.m */; };
+		31F6F7E21CCF655A007AB092 /* SCOfficalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7E11CCF655A007AB092 /* SCOfficalManager.m */; };
+		31F6F7E61CCF66E4007AB092 /* SCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7E51CCF66E4007AB092 /* SCSettingManager.m */; };
+		31F6F7EA1CCF7250007AB092 /* SCServiceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F6F7E91CCF7250007AB092 /* SCServiceManager.m */; };
 		31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */; };
 		31F8E71E1CA3B24F0049EE23 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */; };
 		31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8E7271CA3D31D0049EE23 /* SCUtils.m */; };
@@ -334,7 +325,6 @@
 		31FAC6BE1CAAB7E30034A0CD /* UserProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC68D1CAAB7E30034A0CD /* UserProfileEditViewController.m */; };
 		31FAC6C71CAABCA70034A0CD /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31FAC6C61CAABCA70034A0CD /* Social.framework */; };
 		31FAC6C91CAABCB60034A0CD /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31FAC6C81CAABCB60034A0CD /* Accounts.framework */; };
-		31FAC7261CAC032E0034A0CD /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC7251CAC032E0034A0CD /* HomeViewController.m */; };
 		31FAC7281CAC0F810034A0CD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31FAC7271CAC0F810034A0CD /* Images.xcassets */; };
 		31FAC7851CAE39410034A0CD /* SCUITabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC7841CAE39410034A0CD /* SCUITabView.m */; };
 		31FAC7881CAE3A0B0034A0CD /* SCUITabPagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31FAC7871CAE3A0B0034A0CD /* SCUITabPagerViewController.m */; };
@@ -512,8 +502,6 @@
 		311E3BD01CC8695D00605A49 /* SCServiceSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCServiceSearchBar.m; path = Views/Service/SCServiceSearchBar.m; sourceTree = "<group>"; };
 		311E3BD21CC876B800605A49 /* SCHotTopicsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHotTopicsView.h; path = Views/Service/SCHotTopicsView.h; sourceTree = "<group>"; };
 		311E3BD31CC876B800605A49 /* SCHotTopicsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHotTopicsView.m; path = Views/Service/SCHotTopicsView.m; sourceTree = "<group>"; };
-		3159D98E1CAE68F200212DAB /* ServiceSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceSearchViewController.h; path = Service/ServiceSearchViewController.h; sourceTree = "<group>"; };
-		3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiceSearchViewController.m; path = Service/ServiceSearchViewController.m; sourceTree = "<group>"; };
 		3159D9921CAE6A8C00212DAB /* OfficalListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OfficalListTableViewController.h; path = Offical/OfficalListTableViewController.h; sourceTree = "<group>"; };
 		3159D9931CAE6A8C00212DAB /* OfficalListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OfficalListTableViewController.m; path = Offical/OfficalListTableViewController.m; sourceTree = "<group>"; };
 		3159D9961CAE6B5C00212DAB /* ProducerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProducerViewController.h; path = Producer/ProducerViewController.h; sourceTree = "<group>"; };
@@ -525,22 +513,12 @@
 		316F4E2A1CB8A53B00B2F9A3 /* SCSkyWorldErrorCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldErrorCode.h; sourceTree = "<group>"; };
 		316F4E2B1CB8AD3500B2F9A3 /* SCSkyWorldError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldError.h; sourceTree = "<group>"; };
 		316F4E2C1CB8AD3500B2F9A3 /* SCSkyWorldError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSkyWorldError.m; sourceTree = "<group>"; };
-		316F4E2F1CB8B82200B2F9A3 /* SCLoginModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCLoginModel.h; path = Models/Login/SCLoginModel.h; sourceTree = "<group>"; };
-		316F4E301CB8B82200B2F9A3 /* SCLoginModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCLoginModel.m; path = Models/Login/SCLoginModel.m; sourceTree = "<group>"; };
-		316F4E321CB8CF3600B2F9A3 /* SCSignupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSignupModel.h; path = Models/Login/SCSignupModel.h; sourceTree = "<group>"; };
-		316F4E331CB8CF3600B2F9A3 /* SCSignupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCSignupModel.m; path = Models/Login/SCSignupModel.m; sourceTree = "<group>"; };
 		316F4E391CB8EF4500B2F9A3 /* SCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCPushManager.h; path = Models/Push/SCPushManager.h; sourceTree = "<group>"; };
 		316F4E3A1CB8EF4500B2F9A3 /* SCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCPushManager.m; path = Models/Push/SCPushManager.m; sourceTree = "<group>"; };
 		316F4E3C1CB91A9700B2F9A3 /* SCConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCConversationCell.h; path = Views/SCConversationCell.h; sourceTree = "<group>"; };
 		316F4E3D1CB91A9700B2F9A3 /* SCConversationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCConversationCell.m; path = Views/SCConversationCell.m; sourceTree = "<group>"; };
 		316F4E3F1CB9295E00B2F9A3 /* SCBadgeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCBadgeImageView.h; path = Views/SCBadgeImageView.h; sourceTree = "<group>"; };
 		316F4E401CB9295E00B2F9A3 /* SCBadgeImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCBadgeImageView.m; path = Views/SCBadgeImageView.m; sourceTree = "<group>"; };
-		316F4E581CBA2CDB00B2F9A3 /* SCUserSettingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCUserSettingModel.h; path = Models/Setting/SCUserSettingModel.h; sourceTree = "<group>"; };
-		316F4E591CBA2CDB00B2F9A3 /* SCUserSettingModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCUserSettingModel.m; path = Models/Setting/SCUserSettingModel.m; sourceTree = "<group>"; };
-		316F4E5C1CBA417300B2F9A3 /* SCAnswerQuestionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCAnswerQuestionModel.h; path = Models/Chat/SCAnswerQuestionModel.h; sourceTree = "<group>"; };
-		316F4E5D1CBA417300B2F9A3 /* SCAnswerQuestionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCAnswerQuestionModel.m; path = Models/Chat/SCAnswerQuestionModel.m; sourceTree = "<group>"; };
-		316F4E641CBA5A9600B2F9A3 /* SCUserRelationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCUserRelationModel.h; path = Models/User/SCUserRelationModel.h; sourceTree = "<group>"; };
-		316F4E651CBA5A9600B2F9A3 /* SCUserRelationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCUserRelationModel.m; path = Models/User/SCUserRelationModel.m; sourceTree = "<group>"; };
 		3178FFE21CA5401600796D25 /* SCUINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUINavigationController.h; sourceTree = "<group>"; };
 		3178FFE31CA5401600796D25 /* SCUINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUINavigationController.m; sourceTree = "<group>"; };
 		3178FFE91CA5494500796D25 /* SCSkyWorldAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPI.h; sourceTree = "<group>"; };
@@ -606,9 +584,6 @@
 		31A9F5141CBA9AF6005DA65D /* QRCodeScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRCodeScanViewController.m; path = Setting/QRCodeScanViewController.m; sourceTree = "<group>"; };
 		31A9F5171CBA9D6F005DA65D /* libZXingObjC-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libZXingObjC-iOS.a"; path = "ZXingObjc/build/Debug-iphoneos/libZXingObjC-iOS.a"; sourceTree = "<group>"; };
 		31B3C8FC1CAF6BE900CDB105 /* SCSkyWorldAPIMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCSkyWorldAPIMacro.h; sourceTree = "<group>"; };
-		31B3C9001CB0E67400CDB105 /* SCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCTableViewCell.h; path = Views/SCTableViewCell.h; sourceTree = "<group>"; };
-		31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCTableViewCell.m; path = Views/SCTableViewCell.m; sourceTree = "<group>"; };
-		31B3C9031CB0F08600CDB105 /* ISCTableCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ISCTableCellModel.h; path = Models/ISCTableCellModel.h; sourceTree = "<group>"; };
 		31B3C90A1CB209B100CDB105 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Application/AppDelegate.h; sourceTree = "<group>"; };
 		31B3C90B1CB209B100CDB105 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Application/AppDelegate.m; sourceTree = "<group>"; };
 		31B3C91C1CB214B600CDB105 /* ContactUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactUser.h; path = CoreData/ContactUser.h; sourceTree = "<group>"; };
@@ -619,42 +594,25 @@
 		31B3C9211CB214B600CDB105 /* LoginUserInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginUserInformation.m; path = CoreData/LoginUserInformation.m; sourceTree = "<group>"; };
 		31B3C9221CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LoginUserInformation+CoreDataProperties.h"; path = "CoreData/LoginUserInformation+CoreDataProperties.h"; sourceTree = "<group>"; };
 		31B3C9231CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LoginUserInformation+CoreDataProperties.m"; path = "CoreData/LoginUserInformation+CoreDataProperties.m"; sourceTree = "<group>"; };
-		31B3C9241CB214B600CDB105 /* ReceivedAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReceivedAnswer.h; path = CoreData/ReceivedAnswer.h; sourceTree = "<group>"; };
-		31B3C9251CB214B600CDB105 /* ReceivedAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReceivedAnswer.m; path = CoreData/ReceivedAnswer.m; sourceTree = "<group>"; };
-		31B3C9261CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ReceivedAnswer+CoreDataProperties.h"; path = "CoreData/ReceivedAnswer+CoreDataProperties.h"; sourceTree = "<group>"; };
-		31B3C9271CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ReceivedAnswer+CoreDataProperties.m"; path = "CoreData/ReceivedAnswer+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31B3C9281CB214B600CDB105 /* ReceivedQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReceivedQuestion.h; path = CoreData/ReceivedQuestion.h; sourceTree = "<group>"; };
 		31B3C9291CB214B600CDB105 /* ReceivedQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReceivedQuestion.m; path = CoreData/ReceivedQuestion.m; sourceTree = "<group>"; };
 		31B3C92A1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ReceivedQuestion+CoreDataProperties.h"; path = "CoreData/ReceivedQuestion+CoreDataProperties.h"; sourceTree = "<group>"; };
 		31B3C92B1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ReceivedQuestion+CoreDataProperties.m"; path = "CoreData/ReceivedQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31B3C92C1CB214B600CDB105 /* SCCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCCoreDataManager.h; path = CoreData/SCCoreDataManager.h; sourceTree = "<group>"; };
 		31B3C92D1CB214B600CDB105 /* SCCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCCoreDataManager.m; path = CoreData/SCCoreDataManager.m; sourceTree = "<group>"; };
-		31B3C92E1CB214B600CDB105 /* SendAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SendAnswer.h; path = CoreData/SendAnswer.h; sourceTree = "<group>"; };
-		31B3C92F1CB214B600CDB105 /* SendAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SendAnswer.m; path = CoreData/SendAnswer.m; sourceTree = "<group>"; };
-		31B3C9301CB214B600CDB105 /* SendAnswer+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SendAnswer+CoreDataProperties.h"; path = "CoreData/SendAnswer+CoreDataProperties.h"; sourceTree = "<group>"; };
-		31B3C9311CB214B600CDB105 /* SendAnswer+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SendAnswer+CoreDataProperties.m"; path = "CoreData/SendAnswer+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31B3C9321CB214B600CDB105 /* SendQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SendQuestion.h; path = CoreData/SendQuestion.h; sourceTree = "<group>"; };
 		31B3C9331CB214B600CDB105 /* SendQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SendQuestion.m; path = CoreData/SendQuestion.m; sourceTree = "<group>"; };
 		31B3C9341CB214B600CDB105 /* SendQuestion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SendQuestion+CoreDataProperties.h"; path = "CoreData/SendQuestion+CoreDataProperties.h"; sourceTree = "<group>"; };
 		31B3C9351CB214B600CDB105 /* SendQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SendQuestion+CoreDataProperties.m"; path = "CoreData/SendQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31B3C9431CB257B200CDB105 /* SCCoreDataMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SCCoreDataMacro.h; path = CoreData/SCCoreDataMacro.h; sourceTree = "<group>"; };
-		31B3C9441CB27FD800CDB105 /* AnswerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnswerDetailViewController.h; path = Service/AnswerDetailViewController.h; sourceTree = "<group>"; };
-		31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnswerDetailViewController.m; path = Service/AnswerDetailViewController.m; sourceTree = "<group>"; };
 		31B3C9481CB28BD200CDB105 /* UserSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserSettingViewController.h; path = Setting/UserSettingViewController.h; sourceTree = "<group>"; };
 		31B3C9491CB28BD200CDB105 /* UserSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserSettingViewController.m; path = Setting/UserSettingViewController.m; sourceTree = "<group>"; };
 		31B3C94B1CB3463700CDB105 /* ProducerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProducerEditViewController.h; path = Producer/ProducerEditViewController.h; sourceTree = "<group>"; };
 		31B3C94C1CB3463700CDB105 /* ProducerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProducerEditViewController.m; path = Producer/ProducerEditViewController.m; sourceTree = "<group>"; };
 		31B3C9611CB3D0F400CDB105 /* SCChatToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCChatToolBar.h; path = Views/SCChatToolBar.h; sourceTree = "<group>"; };
 		31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCChatToolBar.m; path = Views/SCChatToolBar.m; sourceTree = "<group>"; };
-		31BDF4781CB5FBD500EDCED0 /* SCBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCBubbleView.h; path = Views/MessageCell/MessageCellBubbleView/SCBubbleView.h; sourceTree = "<group>"; };
-		31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCBubbleView.m; path = Views/MessageCell/MessageCellBubbleView/SCBubbleView.m; sourceTree = "<group>"; };
-		31BDF47B1CB6007C00EDCED0 /* SCChatMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCChatMessageCell.h; path = Views/MessageCell/SCChatMessageCell.h; sourceTree = "<group>"; };
-		31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCChatMessageCell.m; path = Views/MessageCell/SCChatMessageCell.m; sourceTree = "<group>"; };
-		31BDF47E1CB609A600EDCED0 /* ISCChatMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ISCChatMessageModel.h; path = Models/ISCChatMessageModel.h; sourceTree = "<group>"; };
 		31BDF4891CB6420700EDCED0 /* KYDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KYDrawerController.h; path = 3rdparty/KYDrawerController/KYDrawerController.h; sourceTree = "<group>"; };
 		31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KYDrawerController.m; path = 3rdparty/KYDrawerController/KYDrawerController.m; sourceTree = "<group>"; };
-		31C1A5D41CBB65350010F6B4 /* SCSimpleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSimpleCell.h; path = Views/SimpleCell/SCSimpleCell.h; sourceTree = "<group>"; };
-		31C1A5D51CBB65350010F6B4 /* SCSimpleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCSimpleCell.m; path = Views/SimpleCell/SCSimpleCell.m; sourceTree = "<group>"; };
 		31C1A5D81CBB66180010F6B4 /* SCBaseRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCBaseRefreshView.h; path = Views/BaseView/SCBaseRefreshView.h; sourceTree = "<group>"; };
 		31C1A5D91CBB66180010F6B4 /* SCBaseRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCBaseRefreshView.m; path = Views/BaseView/SCBaseRefreshView.m; sourceTree = "<group>"; };
 		31C1A5DB1CBB66CE0010F6B4 /* SCBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCBaseTableViewController.h; path = Views/BaseView/SCBaseTableViewController.h; sourceTree = "<group>"; };
@@ -738,10 +696,6 @@
 		31C1A7471CBC7CF70010F6B4 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		31C1A7481CBC7CF70010F6B4 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		31C1A7491CBC7CF70010F6B4 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
-		31C1A75B1CBC80EF0010F6B4 /* SCProducerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCProducerModel.h; path = Models/Producer/SCProducerModel.h; sourceTree = "<group>"; };
-		31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCProducerModel.m; path = Models/Producer/SCProducerModel.m; sourceTree = "<group>"; };
-		31C1A75E1CBCA3C40010F6B4 /* SCServiceSearchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCServiceSearchModel.h; path = Models/Service/SCServiceSearchModel.h; sourceTree = "<group>"; };
-		31C1A75F1CBCA3C40010F6B4 /* SCServiceSearchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCServiceSearchModel.m; path = Models/Service/SCServiceSearchModel.m; sourceTree = "<group>"; };
 		31C1A7621CBCBB3F0010F6B4 /* SCRefreshFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCRefreshFooter.h; path = Views/Custom/SCRefreshFooter.h; sourceTree = "<group>"; };
 		31C1A7631CBCBB3F0010F6B4 /* SCRefreshFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCRefreshFooter.m; path = Views/Custom/SCRefreshFooter.m; sourceTree = "<group>"; };
 		31C1A7661CBCBCE80010F6B4 /* SCHotTopicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHotTopicView.h; path = Views/Service/SCHotTopicView.h; sourceTree = "<group>"; };
@@ -808,6 +762,22 @@
 		31D5CDC21CC4A56800D02D1D /* SignupSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignupSettingViewController.m; path = Login/SignupSettingViewController.m; sourceTree = "<group>"; };
 		31D5CDC31CC4A56800D02D1D /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignupViewController.h; path = Login/SignupViewController.h; sourceTree = "<group>"; };
 		31D5CDC41CC4A56800D02D1D /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignupViewController.m; path = Login/SignupViewController.m; sourceTree = "<group>"; };
+		31F6F7CC1CCDCAA7007AB092 /* EMConversation+MessagesCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EMConversation+MessagesCount.h"; path = "Category/EMConversation+MessagesCount.h"; sourceTree = "<group>"; };
+		31F6F7CD1CCDCAA7007AB092 /* EMConversation+MessagesCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EMConversation+MessagesCount.m"; path = "Category/EMConversation+MessagesCount.m"; sourceTree = "<group>"; };
+		31F6F7CF1CCDD7FC007AB092 /* EMConversation+MessagesCount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMConversation+MessagesCount.h"; sourceTree = "<group>"; };
+		31F6F7D01CCF3201007AB092 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		31F6F7D11CCF3201007AB092 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		31F6F7D61CCF4882007AB092 /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Setting.storyboard; path = Setting/Setting.storyboard; sourceTree = "<group>"; };
+		31F6F7D81CCF4CE4007AB092 /* SCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSettingViewController.h; path = Setting/SCSettingViewController.h; sourceTree = "<group>"; };
+		31F6F7D91CCF4CE4007AB092 /* SCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCSettingViewController.m; path = Setting/SCSettingViewController.m; sourceTree = "<group>"; };
+		31F6F7DC1CCF632D007AB092 /* SCProducerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCProducerManager.h; path = Producer/SCProducerManager.h; sourceTree = "<group>"; };
+		31F6F7DD1CCF632D007AB092 /* SCProducerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCProducerManager.m; path = Producer/SCProducerManager.m; sourceTree = "<group>"; };
+		31F6F7E01CCF655A007AB092 /* SCOfficalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCOfficalManager.h; path = Offical/SCOfficalManager.h; sourceTree = "<group>"; };
+		31F6F7E11CCF655A007AB092 /* SCOfficalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCOfficalManager.m; path = Offical/SCOfficalManager.m; sourceTree = "<group>"; };
+		31F6F7E41CCF66E4007AB092 /* SCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSettingManager.h; path = Setting/SCSettingManager.h; sourceTree = "<group>"; };
+		31F6F7E51CCF66E4007AB092 /* SCSettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCSettingManager.m; path = Setting/SCSettingManager.m; sourceTree = "<group>"; };
+		31F6F7E81CCF7250007AB092 /* SCServiceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCServiceManager.h; path = Service/SCServiceManager.h; sourceTree = "<group>"; };
+		31F6F7E91CCF7250007AB092 /* SCServiceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCServiceManager.m; path = Service/SCServiceManager.m; sourceTree = "<group>"; };
 		31F8E71A1CA3A8CF0049EE23 /* SCUITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUITabBarController.h; sourceTree = "<group>"; };
 		31F8E71B1CA3A8CF0049EE23 /* SCUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUITabBarController.m; sourceTree = "<group>"; };
 		31F8E71D1CA3B24F0049EE23 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -1047,8 +1017,6 @@
 		31FAC6BF1CAAB8CD0034A0CD /* ChatDemoUIDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ChatDemoUIDefine.h; path = EaseMob/ChatDemoUIDefine.h; sourceTree = "<group>"; };
 		31FAC6C61CAABCA70034A0CD /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		31FAC6C81CAABCB60034A0CD /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
-		31FAC7241CAC032E0034A0CD /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
-		31FAC7251CAC032E0034A0CD /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		31FAC7271CAC0F810034A0CD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		31FAC7831CAE39410034A0CD /* SCUITabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCUITabView.h; path = Custom/SCUITabView.h; sourceTree = "<group>"; };
 		31FAC7841CAE39410034A0CD /* SCUITabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCUITabView.m; path = Custom/SCUITabView.m; sourceTree = "<group>"; };
@@ -1416,6 +1384,7 @@
 		311BC62C1CA37B19006B4707 /* SamChat */ = {
 			isa = PBXGroup;
 			children = (
+				31F6F7CB1CCDC9B2007AB092 /* Category */,
 				310A9A5F1CAA08EF000616F0 /* EaseMob */,
 				3159D99F1CAEADC600212DAB /* 3rdparty */,
 				317C2D4D1CA909B80035A14E /* Application */,
@@ -1501,24 +1470,6 @@
 			name = 3rdparty;
 			sourceTree = "<group>";
 		};
-		316F4E281CB89E6200B2F9A3 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Protocols;
-			sourceTree = "<group>";
-		};
-		316F4E2E1CB8B80900B2F9A3 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				316F4E2F1CB8B82200B2F9A3 /* SCLoginModel.h */,
-				316F4E301CB8B82200B2F9A3 /* SCLoginModel.m */,
-				316F4E321CB8CF3600B2F9A3 /* SCSignupModel.h */,
-				316F4E331CB8CF3600B2F9A3 /* SCSignupModel.m */,
-			);
-			name = Login;
-			sourceTree = "<group>";
-		};
 		316F4E351CB8EA5800B2F9A3 /* Push */ = {
 			isa = PBXGroup;
 			children = (
@@ -1528,45 +1479,13 @@
 			name = Push;
 			sourceTree = "<group>";
 		};
-		316F4E571CBA2BE000B2F9A3 /* Setting */ = {
-			isa = PBXGroup;
-			children = (
-				316F4E581CBA2CDB00B2F9A3 /* SCUserSettingModel.h */,
-				316F4E591CBA2CDB00B2F9A3 /* SCUserSettingModel.m */,
-			);
-			name = Setting;
-			sourceTree = "<group>";
-		};
-		316F4E5B1CBA414000B2F9A3 /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-				316F4E5C1CBA417300B2F9A3 /* SCAnswerQuestionModel.h */,
-				316F4E5D1CBA417300B2F9A3 /* SCAnswerQuestionModel.m */,
-			);
-			name = Chat;
-			sourceTree = "<group>";
-		};
-		316F4E5F1CBA483E00B2F9A3 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				31C1A75E1CBCA3C40010F6B4 /* SCServiceSearchModel.h */,
-				31C1A75F1CBCA3C40010F6B4 /* SCServiceSearchModel.m */,
-			);
-			name = Service;
-			sourceTree = "<group>";
-		};
-		316F4E631CBA5A6700B2F9A3 /* User */ = {
-			isa = PBXGroup;
-			children = (
-				316F4E641CBA5A9600B2F9A3 /* SCUserRelationModel.h */,
-				316F4E651CBA5A9600B2F9A3 /* SCUserRelationModel.m */,
-			);
-			name = User;
-			sourceTree = "<group>";
-		};
 		3178FFE81CA5494500796D25 /* SkyWorld */ = {
 			isa = PBXGroup;
 			children = (
+				31F6F7E71CCF7236007AB092 /* Service */,
+				31F6F7E31CCF66CB007AB092 /* Setting */,
+				31F6F7DF1CCF6537007AB092 /* Offical */,
+				31F6F7DB1CCF630B007AB092 /* Producer */,
 				31C8B8EF1CC5FC1A0037BEB8 /* Search */,
 				31C8B8EB1CC5FA5B0037BEB8 /* Account */,
 				31B3C8FC1CAF6BE900CDB105 /* SCSkyWorldAPIMacro.h */,
@@ -1600,6 +1519,7 @@
 				317B82581CA9625E000415E9 /* EMChatManagerDelegate.h */,
 				317B82591CA9625E000415E9 /* EMChatroom.h */,
 				317B825A1CA9625E000415E9 /* EMChatroomManagerDelegate.h */,
+				31F6F7CF1CCDD7FC007AB092 /* EMConversation+MessagesCount.h */,
 				317B825B1CA9625E000415E9 /* EMClient+Call.h */,
 				317B825C1CA9625E000415E9 /* EMClient.h */,
 				317B825D1CA9625E000415E9 /* EMClientDelegate.h */,
@@ -1661,18 +1581,10 @@
 				31B3C9211CB214B600CDB105 /* LoginUserInformation.m */,
 				31B3C9221CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.h */,
 				31B3C9231CB214B600CDB105 /* LoginUserInformation+CoreDataProperties.m */,
-				31B3C9241CB214B600CDB105 /* ReceivedAnswer.h */,
-				31B3C9251CB214B600CDB105 /* ReceivedAnswer.m */,
-				31B3C9261CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.h */,
-				31B3C9271CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m */,
 				31B3C9281CB214B600CDB105 /* ReceivedQuestion.h */,
 				31B3C9291CB214B600CDB105 /* ReceivedQuestion.m */,
 				31B3C92A1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.h */,
 				31B3C92B1CB214B600CDB105 /* ReceivedQuestion+CoreDataProperties.m */,
-				31B3C92E1CB214B600CDB105 /* SendAnswer.h */,
-				31B3C92F1CB214B600CDB105 /* SendAnswer.m */,
-				31B3C9301CB214B600CDB105 /* SendAnswer+CoreDataProperties.h */,
-				31B3C9311CB214B600CDB105 /* SendAnswer+CoreDataProperties.m */,
 				31B3C9321CB214B600CDB105 /* SendQuestion.h */,
 				31B3C9331CB214B600CDB105 /* SendQuestion.m */,
 				31B3C9341CB214B600CDB105 /* SendQuestion+CoreDataProperties.h */,
@@ -1700,12 +1612,8 @@
 				31C1A7651CBCBC6A0010F6B4 /* Service */,
 				31C1A7611CBCB8950010F6B4 /* Custom */,
 				31C1A5D71CBB65D10010F6B4 /* BaseView */,
-				31C1A5D31CBB64A20010F6B4 /* SimpleCell */,
-				31BDF4761CB5FB6600EDCED0 /* MessageCell */,
 				3183D06F1CA690730088FD67 /* SCViewFactory.h */,
 				3183D0701CA690730088FD67 /* SCViewFactory.m */,
-				31B3C9001CB0E67400CDB105 /* SCTableViewCell.h */,
-				31B3C9011CB0E67400CDB105 /* SCTableViewCell.m */,
 				31B3C9611CB3D0F400CDB105 /* SCChatToolBar.h */,
 				31B3C9621CB3D0F400CDB105 /* SCChatToolBar.m */,
 				316F4E3C1CB91A9700B2F9A3 /* SCConversationCell.h */,
@@ -1723,6 +1631,9 @@
 				31B3C9491CB28BD200CDB105 /* UserSettingViewController.m */,
 				31A9F5131CBA9AF6005DA65D /* QRCodeScanViewController.h */,
 				31A9F5141CBA9AF6005DA65D /* QRCodeScanViewController.m */,
+				31F6F7D61CCF4882007AB092 /* Setting.storyboard */,
+				31F6F7D81CCF4CE4007AB092 /* SCSettingViewController.h */,
+				31F6F7D91CCF4CE4007AB092 /* SCSettingViewController.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -1736,25 +1647,6 @@
 			name = Chat;
 			sourceTree = "<group>";
 		};
-		31BDF4761CB5FB6600EDCED0 /* MessageCell */ = {
-			isa = PBXGroup;
-			children = (
-				31BDF4771CB5FB8000EDCED0 /* MessageCellBubbleView */,
-				31BDF47B1CB6007C00EDCED0 /* SCChatMessageCell.h */,
-				31BDF47C1CB6007C00EDCED0 /* SCChatMessageCell.m */,
-			);
-			name = MessageCell;
-			sourceTree = "<group>";
-		};
-		31BDF4771CB5FB8000EDCED0 /* MessageCellBubbleView */ = {
-			isa = PBXGroup;
-			children = (
-				31BDF4781CB5FBD500EDCED0 /* SCBubbleView.h */,
-				31BDF4791CB5FBD500EDCED0 /* SCBubbleView.m */,
-			);
-			name = MessageCellBubbleView;
-			sourceTree = "<group>";
-		};
 		31BDF4881CB641C300EDCED0 /* KYDrawerController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1762,15 +1654,6 @@
 				31BDF48A1CB6420700EDCED0 /* KYDrawerController.m */,
 			);
 			name = KYDrawerController;
-			sourceTree = "<group>";
-		};
-		31C1A5D31CBB64A20010F6B4 /* SimpleCell */ = {
-			isa = PBXGroup;
-			children = (
-				31C1A5D41CBB65350010F6B4 /* SCSimpleCell.h */,
-				31C1A5D51CBB65350010F6B4 /* SCSimpleCell.m */,
-			);
-			name = SimpleCell;
 			sourceTree = "<group>";
 		};
 		31C1A5D71CBB65D10010F6B4 /* BaseView */ = {
@@ -1959,15 +1842,6 @@
 			path = 3rdparty/SDWebImage;
 			sourceTree = "<group>";
 		};
-		31C1A75A1CBC80C40010F6B4 /* Producer */ = {
-			isa = PBXGroup;
-			children = (
-				31C1A75B1CBC80EF0010F6B4 /* SCProducerModel.h */,
-				31C1A75C1CBC80EF0010F6B4 /* SCProducerModel.m */,
-			);
-			name = Producer;
-			sourceTree = "<group>";
-		};
 		31C1A7611CBCB8950010F6B4 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -2049,6 +1923,51 @@
 			name = Base;
 			sourceTree = "<group>";
 		};
+		31F6F7CB1CCDC9B2007AB092 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				31F6F7CC1CCDCAA7007AB092 /* EMConversation+MessagesCount.h */,
+				31F6F7CD1CCDCAA7007AB092 /* EMConversation+MessagesCount.m */,
+			);
+			name = Category;
+			sourceTree = "<group>";
+		};
+		31F6F7DB1CCF630B007AB092 /* Producer */ = {
+			isa = PBXGroup;
+			children = (
+				31F6F7DC1CCF632D007AB092 /* SCProducerManager.h */,
+				31F6F7DD1CCF632D007AB092 /* SCProducerManager.m */,
+			);
+			name = Producer;
+			sourceTree = "<group>";
+		};
+		31F6F7DF1CCF6537007AB092 /* Offical */ = {
+			isa = PBXGroup;
+			children = (
+				31F6F7E01CCF655A007AB092 /* SCOfficalManager.h */,
+				31F6F7E11CCF655A007AB092 /* SCOfficalManager.m */,
+			);
+			name = Offical;
+			sourceTree = "<group>";
+		};
+		31F6F7E31CCF66CB007AB092 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				31F6F7E41CCF66E4007AB092 /* SCSettingManager.h */,
+				31F6F7E51CCF66E4007AB092 /* SCSettingManager.m */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
+		31F6F7E71CCF7236007AB092 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				31F6F7E81CCF7250007AB092 /* SCServiceManager.h */,
+				31F6F7E91CCF7250007AB092 /* SCServiceManager.m */,
+			);
+			name = Service;
+			sourceTree = "<group>";
+		};
 		31F8E7091CA37F530049EE23 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2064,8 +1983,8 @@
 				3178FFE31CA5401600796D25 /* SCUINavigationController.m */,
 				31FAC7231CAC02D70034A0CD /* Service */,
 				31FAC7221CAC02BA0034A0CD /* Login */,
-				31FAC7241CAC032E0034A0CD /* HomeViewController.h */,
-				31FAC7251CAC032E0034A0CD /* HomeViewController.m */,
+				31F6F7D01CCF3201007AB092 /* HomeViewController.h */,
+				31F6F7D11CCF3201007AB092 /* HomeViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2073,18 +1992,9 @@
 		31F8E71F1CA3BA790049EE23 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				31C1A75A1CBC80C40010F6B4 /* Producer */,
-				316F4E631CBA5A6700B2F9A3 /* User */,
-				316F4E5F1CBA483E00B2F9A3 /* Service */,
-				316F4E5B1CBA414000B2F9A3 /* Chat */,
-				316F4E571CBA2BE000B2F9A3 /* Setting */,
 				316F4E351CB8EA5800B2F9A3 /* Push */,
-				316F4E2E1CB8B80900B2F9A3 /* Login */,
-				316F4E281CB89E6200B2F9A3 /* Protocols */,
 				317C2D421CA8C0270035A14E /* SCUserProfileManager.h */,
 				317C2D431CA8C0270035A14E /* SCUserProfileManager.m */,
-				31B3C9031CB0F08600CDB105 /* ISCTableCellModel.h */,
-				31BDF47E1CB609A600EDCED0 /* ISCChatMessageModel.h */,
 				31C8B9121CC775810037BEB8 /* SamChatHelper.h */,
 				31C8B9131CC775810037BEB8 /* SamChatHelper.m */,
 				316F4E251CB89E4300B2F9A3 /* SamChatClient.h */,
@@ -2657,10 +2567,6 @@
 		31FAC7231CAC02D70034A0CD /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				3159D98E1CAE68F200212DAB /* ServiceSearchViewController.h */,
-				3159D98F1CAE68F200212DAB /* ServiceSearchViewController.m */,
-				31B3C9441CB27FD800CDB105 /* AnswerDetailViewController.h */,
-				31B3C9451CB27FD800CDB105 /* AnswerDetailViewController.m */,
 				31C8B9051CC756AC0037BEB8 /* SCServiceConversationViewController.h */,
 				31C8B9061CC756AC0037BEB8 /* SCServiceConversationViewController.m */,
 				311E3BCC1CC85C3A00605A49 /* SCSearchConversationViewController.h */,
@@ -2947,6 +2853,7 @@
 				31FAC5DF1CAAB3C50034A0CD /* icon_024_cover.png in Resources */,
 				31FAC5E51CAAB3C50034A0CD /* icon_030_cover.png in Resources */,
 				31FAC5A51CAAB3C50034A0CD /* chatListCellHead@2x.png in Resources */,
+				31F6F7D71CCF4882007AB092 /* Setting.storyboard in Resources */,
 				31FAC5BA1CAAB3C50034A0CD /* imageDownloadFail@2x.png in Resources */,
 				31FAC5E91CAAB3C50034A0CD /* icon_040_cover.png in Resources */,
 				311BC63D1CA37B19006B4707 /* Assets.xcassets in Resources */,
@@ -3060,15 +2967,14 @@
 				31FAC6B31CAAB7E30034A0CD /* EMRobotChatTextBubbleView.m in Sources */,
 				31B3C9371CB214B600CDB105 /* ContactUser+CoreDataProperties.m in Sources */,
 				31FAC6AB1CAAB7E30034A0CD /* ApplyViewController.m in Sources */,
-				31B3C93A1CB214B600CDB105 /* ReceivedAnswer.m in Sources */,
 				31C1A76B1CBCDFDB0010F6B4 /* SCRefreshHeader.m in Sources */,
-				31B3C93B1CB214B600CDB105 /* ReceivedAnswer+CoreDataProperties.m in Sources */,
 				31C8B9141CC775810037BEB8 /* SamChatHelper.m in Sources */,
 				31FAC6B11CAAB7E30034A0CD /* MainViewController.m in Sources */,
 				31C1A74E1CBC7CF70010F6B4 /* SDWebImageDecoder.m in Sources */,
 				31C1A5DA1CBB66180010F6B4 /* SCBaseRefreshView.m in Sources */,
 				31C8B8F21CC5FD280037BEB8 /* SCSearchManager.m in Sources */,
 				31FAC6B61CAAB7E30034A0CD /* RobotListViewController.m in Sources */,
+				31F6F7E21CCF655A007AB092 /* SCOfficalManager.m in Sources */,
 				31C8B9111CC7721F0037BEB8 /* SamChat.xcdatamodeld in Sources */,
 				31FAC6B51CAAB7E30034A0CD /* RobotChatViewController.m in Sources */,
 				31C1A79C1CBE2ED70010F6B4 /* QBAssetsViewController.m in Sources */,
@@ -3080,6 +2986,7 @@
 				31D5CDC61CC4A56800D02D1D /* LoginViewController.m in Sources */,
 				31B3C93E1CB214B600CDB105 /* SCCoreDataManager.m in Sources */,
 				31C1A74D1CBC7CF70010F6B4 /* SDWebImageCompat.m in Sources */,
+				31F6F7D21CCF3201007AB092 /* HomeViewController.m in Sources */,
 				31FAC6B01CAAB7E30034A0CD /* EMLoginViewController.m in Sources */,
 				31FAC6B91CAAB7E30034A0CD /* BlackListViewController.m in Sources */,
 				31C1A6251CBB6BAC0010F6B4 /* TTTAttributedLabel.m in Sources */,
@@ -3091,7 +2998,6 @@
 				31B3C94D1CB3463700CDB105 /* ProducerEditViewController.m in Sources */,
 				31F8E71C1CA3A8CF0049EE23 /* SCUITabBarController.m in Sources */,
 				311BC6351CA37B19006B4707 /* ViewController.m in Sources */,
-				31C1A5D61CBB65350010F6B4 /* SCSimpleCell.m in Sources */,
 				31FAC5951CAAB3C50034A0CD /* BaseTableViewCell.m in Sources */,
 				31FAC5801CAAB3C50034A0CD /* EMAlertView.m in Sources */,
 				31FAC69C1CAAB7E30034A0CD /* CreateGroupViewController.m in Sources */,
@@ -3101,12 +3007,10 @@
 				31FAC6961CAAB7E30034A0CD /* ConversationListController.m in Sources */,
 				31C1A6441CBB6F800010F6B4 /* SDBrowserImageView.m in Sources */,
 				31FAC59C1CAAB3C50034A0CD /* EMSearchDisplayController.m in Sources */,
-				31BDF47D1CB6007C00EDCED0 /* SCChatMessageCell.m in Sources */,
 				31C1A74F1CBC7CF70010F6B4 /* SDWebImageDownloader.m in Sources */,
 				31B3C9421CB214B600CDB105 /* SendQuestion+CoreDataProperties.m in Sources */,
 				31C1A7711CBCE8AF0010F6B4 /* HotTopic.m in Sources */,
 				31C1A7581CBC7CF70010F6B4 /* UIImageView+WebCache.m in Sources */,
-				31BDF47A1CB5FBD500EDCED0 /* SCBubbleView.m in Sources */,
 				31FAC6AA1CAAB7E30034A0CD /* ApplyFriendCell.m in Sources */,
 				31C1A6181CBB6BAC0010F6B4 /* MLEmojiLabel.m in Sources */,
 				316F4E271CB89E4300B2F9A3 /* SamChatClient.m in Sources */,
@@ -3120,9 +3024,8 @@
 				31F8E7281CA3D31D0049EE23 /* SCUtils.m in Sources */,
 				31C1A7741CBD261A0010F6B4 /* SCReceivedAnswerView.m in Sources */,
 				31C1A61A1CBB6BAC0010F6B4 /* NSMutableAttributedString+MLLabel.m in Sources */,
-				316F4E5A1CBA2CDB00B2F9A3 /* SCUserSettingModel.m in Sources */,
-				316F4E661CBA5A9600B2F9A3 /* SCUserRelationModel.m in Sources */,
 				31FAC5981CAAB3C50034A0CD /* EMRemarkImageView.m in Sources */,
+				31F6F7DE1CCF632D007AB092 /* SCProducerManager.m in Sources */,
 				31C1A7561CBC7CF70010F6B4 /* UIImage+WebP.m in Sources */,
 				31C8B8EE1CC5FA750037BEB8 /* SCAccountManager.m in Sources */,
 				31C1A79B1CBE2ED70010F6B4 /* QBAssetCell.m in Sources */,
@@ -3130,8 +3033,6 @@
 				31C1A7681CBCBCE80010F6B4 /* SCHotTopicView.m in Sources */,
 				31C1A61C1CBB6BAC0010F6B4 /* MLExpressionManager.m in Sources */,
 				311E3BD41CC876B800605A49 /* SCHotTopicsView.m in Sources */,
-				316F4E5E1CBA417300B2F9A3 /* SCAnswerQuestionModel.m in Sources */,
-				316F4E341CB8CF3600B2F9A3 /* SCSignupModel.m in Sources */,
 				31FAC6A91CAAB7E30034A0CD /* AddFriendViewController.m in Sources */,
 				3178FFEB1CA5494500796D25 /* SCSkyWorldAPI.m in Sources */,
 				31FAC6991CAAB7E30034A0CD /* ChatGroupDetailViewController.m in Sources */,
@@ -3154,13 +3055,11 @@
 				31C8B90B1CC757420037BEB8 /* SCConversationListViewController.m in Sources */,
 				316F4E3B1CB8EF4500B2F9A3 /* SCPushManager.m in Sources */,
 				31FAC6A11CAAB7E30034A0CD /* PublicGroupDetailViewController.m in Sources */,
-				31FAC7261CAC032E0034A0CD /* HomeViewController.m in Sources */,
 				31C1A7501CBC7CF70010F6B4 /* SDWebImageDownloaderOperation.m in Sources */,
 				31FAC5991CAAB3C50034A0CD /* BaseViewController.m in Sources */,
 				31B3C94A1CB28BD200CDB105 /* UserSettingViewController.m in Sources */,
 				31FAC6B71CAAB7E30034A0CD /* RobotManager.m in Sources */,
 				311BC62F1CA37B19006B4707 /* main.m in Sources */,
-				31B3C93F1CB214B600CDB105 /* SendAnswer.m in Sources */,
 				31FAC69A1CAAB7E30034A0CD /* ContactSelectionViewController.m in Sources */,
 				31FAC5881CAAB3C50034A0CD /* SRRefreshView.m in Sources */,
 				31C1A61D1CBB6BAC0010F6B4 /* MLTextAttachment.m in Sources */,
@@ -3168,10 +3067,10 @@
 				31FAC6A31CAAB7E30034A0CD /* ChatroomDetailViewController.m in Sources */,
 				31FAC6951CAAB7E30034A0CD /* CallViewController.m in Sources */,
 				31FAC5931CAAB3C50034A0CD /* UIResponder+Router.m in Sources */,
+				31F6F7E61CCF66E4007AB092 /* SCSettingManager.m in Sources */,
 				311E3BCE1CC85C3A00605A49 /* SCSearchConversationViewController.m in Sources */,
 				31C1A6451CBB6F800010F6B4 /* SDPhotoBrowser.m in Sources */,
 				316F4E3E1CB91A9700B2F9A3 /* SCConversationCell.m in Sources */,
-				3159D9901CAE68F200212DAB /* ServiceSearchViewController.m in Sources */,
 				31FAC6B21CAAB7E30034A0CD /* UserProfileViewController.m in Sources */,
 				31FAC69F1CAAB7E30034A0CD /* GroupSettingViewController.m in Sources */,
 				3183D0711CA690730088FD67 /* SCViewFactory.m in Sources */,
@@ -3186,9 +3085,7 @@
 				31C1A7991CBE2ED70010F6B4 /* QBAlbumCell.m in Sources */,
 				31FAC6AD1CAAB7E30034A0CD /* InvitationManager.m in Sources */,
 				31C1A7531CBC7CF70010F6B4 /* UIButton+WebCache.m in Sources */,
-				31B3C9401CB214B600CDB105 /* SendAnswer+CoreDataProperties.m in Sources */,
 				31C1A6211CBB6BAC0010F6B4 /* MLLabel.m in Sources */,
-				316F4E311CB8B82200B2F9A3 /* SCLoginModel.m in Sources */,
 				31C1A74A1CBC7CF70010F6B4 /* MKAnnotationView+WebCache.m in Sources */,
 				31C1A5DD1CBB66CE0010F6B4 /* SCBaseTableViewController.m in Sources */,
 				31FAC5971CAAB3C50034A0CD /* EMTextView.m in Sources */,
@@ -3197,24 +3094,22 @@
 				31FAC6A41CAAB7E30034A0CD /* ChatroomListViewController.m in Sources */,
 				317C2D441CA8C0270035A14E /* SCUserProfileManager.m in Sources */,
 				31C1A7A11CBE2ED70010F6B4 /* QBVideoIndicatorView.m in Sources */,
-				31B3C9021CB0E67400CDB105 /* SCTableViewCell.m in Sources */,
 				31B3C93C1CB214B600CDB105 /* ReceivedQuestion.m in Sources */,
 				31C1A7571CBC7CF70010F6B4 /* UIImageView+HighlightedWebCache.m in Sources */,
 				31C8B8EA1CC5F61E0037BEB8 /* SCSkyWorldErrorHelper.m in Sources */,
 				31B3C9631CB3D0F400CDB105 /* SCChatToolBar.m in Sources */,
-				31C1A7601CBCA3C40010F6B4 /* SCServiceSearchModel.m in Sources */,
-				31B3C9461CB27FD800CDB105 /* AnswerDetailViewController.m in Sources */,
-				31C1A75D1CBC80EF0010F6B4 /* SCProducerModel.m in Sources */,
 				31C1A79D1CBE2ED70010F6B4 /* QBCheckmarkView.m in Sources */,
 				31C1A6191CBB6BAC0010F6B4 /* NSAttributedString+MLLabel.m in Sources */,
 				31D5CDC91CC4A56800D02D1D /* SignupSettingViewController.m in Sources */,
 				31FAC6B41CAAB7E30034A0CD /* EMRotbotChatViewCell.m in Sources */,
 				31FAC5811CAAB3C50034A0CD /* EMGifImage.m in Sources */,
 				3159D9981CAE6B5C00212DAB /* ProducerViewController.m in Sources */,
+				31F6F7CE1CCDCAA7007AB092 /* EMConversation+MessagesCount.m in Sources */,
 				317C2D501CA90A1E0035A14E /* AppDelegate+SamChat.m in Sources */,
 				31FAC59D1CAAB3C50034A0CD /* XHMessageTextView.m in Sources */,
 				316F4E411CB9295E00B2F9A3 /* SCBadgeImageView.m in Sources */,
 				31C1A61E1CBB6BAC0010F6B4 /* NSAttributedString+MLExpression.m in Sources */,
+				31F6F7EA1CCF7250007AB092 /* SCServiceManager.m in Sources */,
 				31FAC69B1CAAB7E30034A0CD /* ContactView.m in Sources */,
 				31C1A74B1CBC7CF70010F6B4 /* NSData+ImageContentType.m in Sources */,
 				31C1A79F1CBE2ED70010F6B4 /* QBImagePickerController.m in Sources */,
@@ -3224,6 +3119,7 @@
 				31FAC6A21CAAB7E30034A0CD /* PublicGroupListViewController.m in Sources */,
 				31FAC6BA1CAAB7E30034A0CD /* DebugViewController.m in Sources */,
 				31B3C9411CB214B600CDB105 /* SendQuestion.m in Sources */,
+				31F6F7DA1CCF4CE4007AB092 /* SCSettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

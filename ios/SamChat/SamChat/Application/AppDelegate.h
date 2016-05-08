@@ -18,6 +18,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) HomeViewController *homeController;
-@property (strong, nonatomic) KYDrawerController *drawViewController;
+//@property (strong, nonatomic) KYDrawerController *drawViewController;
 
 @end

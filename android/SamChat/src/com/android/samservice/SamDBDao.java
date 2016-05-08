@@ -58,6 +58,19 @@ public class SamDBDao{
 		return ret;
 	}
 
+	public long updateLoginUserConversationExisted(String username,int existed){
+		long ret = 0;
+		synchronized(dbLock){
+			ret = dbHandle.updateLoginUserConversationExisted(username,existed);
+		}
+
+		if(ret == -1){
+			throw new RuntimeException("db error: login user table");
+		}
+
+		return ret;
+	}
+
 	
 
 	public long add_update_LoginUser_db(LoginUser user){

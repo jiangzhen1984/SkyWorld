@@ -11,9 +11,6 @@
 #import "EaseConversationModel.h"
 #import "EaseConversationCell.h"
 
-#define SAMC_BEGIN
-#define SAMC_END
-
 typedef NS_ENUM(int, DXDeleteConvesationType) {
     DXDeleteConvesationOnly,
     DXDeleteConvesationWithMessages,
@@ -44,9 +41,9 @@ typedef NS_ENUM(int, DXDeleteConvesationType) {
 //           didFailDeletingConversation:(id<IConversationModel>)conversation
 //                          deletionMode:(DXDeleteConvesationType)deletionType;
 
-SAMC_BEGIN
+//SAMC_BEGIN
 - (NSArray *)getAllConversations;
-SAMC_END
+//SAMC_END
 
 
 @end
@@ -103,5 +100,9 @@ SAMC_END
  @result
  */
 - (void)refreshAndSortView;
+
+//SAMC_BEGIN
+@property (strong, nonatomic) NSString *currentListMessageFromView;
+//SAMC_END
 
 @end

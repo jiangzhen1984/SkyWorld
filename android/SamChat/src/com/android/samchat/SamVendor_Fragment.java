@@ -28,13 +28,17 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.Pair;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -224,6 +228,48 @@ public class SamVendor_Fragment extends Fragment{
 			});
 		}
 	}
+
+	private void deleteConversation(EMConversation conversation){
+		String attr = conversation.getExtField();
+		if(attr == null){
+			return;
+		}else if(!attr.contains(EaseConstant.CONVERSATION_ATTR_VIEW_VENDOR)){
+			return;
+		}else if(attr.equals(EaseConstant.CONVERSATION_ATTR_VIEW_VENDOR)){
+			/*delete conversation from db*/
+			EMClient.getInstance().chatManager().deleteConversation(conversation.getUserName(), true);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+		}else{
+			attr = attr.replaceAll(EaseConstant.CONVERSATION_ATTR_VIEW_VENDOR,"");
+			conversation.setExtField(attr);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+			
+		}
+		
+		
+	}
+
+	@Override  
+	public boolean onContextItemSelected(MenuItem item) {  
+		if(!getUserVisibleHint()){
+			return false;
+		}
+		
+		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo(); 
+		EMConversation conversation = conversationList.get(menuInfo.position);
+		deleteConversation(conversation);
+		return true;
+	}  
+
+	@Override  
+	public void onCreateContextMenu(ContextMenu menu, View v,  ContextMenuInfo menuInfo) {  
+		menu.add(0, v.getId(), 0, getString(R.string.delete_conversation));        
+		super.onCreateContextMenu(menu, v, menuInfo);  
+	}  
 		
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -233,6 +279,7 @@ public class SamVendor_Fragment extends Fragment{
 		if(rootView == null){
 			rootView = inflater.inflate(R.layout.fragment_vendor, container,false); 
 			mConversationList = (EaseConversationList)rootView.findViewById(R.id.list); 
+			registerForContextMenu(mConversationList);
 
 			LoginUser cuser = SamService.getInstance().get_current_user();
 			if(cuser.getUserType() == LoginUser.USER){
@@ -257,6 +304,8 @@ public class SamVendor_Fragment extends Fragment{
 					startActivity(newIntent);
 				}
 			};
+
+			
 		}
 		return rootView;
 	}

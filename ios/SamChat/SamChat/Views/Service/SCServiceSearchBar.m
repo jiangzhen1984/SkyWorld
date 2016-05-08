@@ -8,11 +8,14 @@
 
 #import "SCServiceSearchBar.h"
 
+@interface SCServiceSearchBar ()
 
+@property (nonatomic, strong) UITextField *searchTextField;
+
+@end
 
 @implementation SCServiceSearchBar
 
-@synthesize searchContent = _searchContent;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -27,13 +30,24 @@
 {
     self.backgroundColor = [UIColor yellowColor];
     
-    UITextField *searchText = [[UITextField alloc] initWithFrame:CGRectMake(10, 5, self.frame.size.width-10*2, self.frame.size.height-5*2)];
-    searchText.placeholder = @"请输入您的问题或需求";
-    searchText.backgroundColor = [UIColor lightGrayColor];
-    searchText.font = [UIFont systemFontOfSize:14];
-    [searchText addTarget:self.delegate action:@selector(searchEditingDidBegin) forControlEvents:UIControlEventEditingDidBegin];
-    [searchText addTarget:self.delegate action:@selector(searchEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [self addSubview:searchText];
+    _searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 5, self.frame.size.width-10*2, self.frame.size.height-5*2)];
+    _searchTextField.placeholder = @"请输入您的问题或需求";
+    _searchTextField.backgroundColor = [UIColor lightGrayColor];
+    _searchTextField.font = [UIFont systemFontOfSize:14];
+    [_searchTextField addTarget:self.delegate action:@selector(searchEditingDidBegin) forControlEvents:UIControlEventEditingDidBegin];
+    [_searchTextField addTarget:self.delegate action:@selector(searchEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self addSubview:_searchTextField];
+}
+
+
+- (void)setSearchContent:(NSString *)text
+{
+    _searchTextField.text = text;
+}
+
+- (NSString *)searchContent
+{
+    return _searchTextField.text;
 }
 
 @end

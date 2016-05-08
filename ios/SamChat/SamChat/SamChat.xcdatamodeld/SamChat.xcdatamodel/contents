@@ -11,7 +11,6 @@
         <attribute name="unique_id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="usertype" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="answers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReceivedAnswer" inverseName="fromWho" inverseEntity="ReceivedAnswer" syncable="YES"/>
         <relationship name="questions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReceivedQuestion" inverseName="fromWho" inverseEntity="ReceivedQuestion" syncable="YES"/>
     </entity>
     <entity name="HotTopic" representedClassName="HotTopic" syncable="YES">
@@ -36,14 +35,7 @@
         <attribute name="unreadquestioncount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="usertype" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="answers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SendAnswer" inverseName="whoSend" inverseEntity="SendAnswer" syncable="YES"/>
         <relationship name="questions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SendQuestion" inverseName="whoSend" inverseEntity="SendQuestion" syncable="YES"/>
-    </entity>
-    <entity name="ReceivedAnswer" representedClassName="ReceivedAnswer" syncable="YES">
-        <attribute name="answer" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="question_id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="receivedtime" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <relationship name="fromWho" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ContactUser" inverseName="answers" inverseEntity="ContactUser" syncable="YES"/>
     </entity>
     <entity name="ReceivedQuestion" representedClassName="ReceivedQuestion" syncable="YES">
         <attribute name="canceledtime" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -56,13 +48,6 @@
         <attribute name="status" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="fromWho" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ContactUser" inverseName="questions" inverseEntity="ContactUser" syncable="YES"/>
     </entity>
-    <entity name="SendAnswer" representedClassName="SendAnswer" syncable="YES">
-        <attribute name="answer" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="question_id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="sendtime" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="status" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="whoSend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LoginUserInformation" inverseName="answers" inverseEntity="LoginUserInformation" syncable="YES"/>
-    </entity>
     <entity name="SendQuestion" representedClassName="SendQuestion" syncable="YES">
         <attribute name="canceltime" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
@@ -74,12 +59,10 @@
         <relationship name="whoSend" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LoginUserInformation" inverseName="questions" inverseEntity="LoginUserInformation" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ContactUser" positionX="-56" positionY="333" width="128" height="223"/>
+        <element name="ContactUser" positionX="-56" positionY="333" width="128" height="208"/>
         <element name="HotTopic" positionX="259" positionY="36" width="128" height="75"/>
-        <element name="LoginUserInformation" positionX="-56" positionY="-18" width="128" height="330"/>
-        <element name="ReceivedAnswer" positionX="126" positionY="315" width="128" height="103"/>
-        <element name="ReceivedQuestion" positionX="126" positionY="432" width="128" height="178"/>
-        <element name="SendAnswer" positionX="124" positionY="189" width="128" height="118"/>
+        <element name="LoginUserInformation" positionX="-56" positionY="-18" width="128" height="313"/>
+        <element name="ReceivedQuestion" positionX="126" positionY="344" width="128" height="178"/>
         <element name="SendQuestion" positionX="106" positionY="-27" width="128" height="163"/>
     </elements>
 </model>

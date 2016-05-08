@@ -1,6 +1,8 @@
 package com.android.samchat;
 
 
+import com.android.samservice.SamLog;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
@@ -80,6 +82,7 @@ public class DialogActivity extends Activity implements View.OnClickListener{
 	   
 	   public void onClick(View v) {
 		           //String input = null;
+		           SamLog.e("test","onClick not in two button");
 		           switch (v.getId()) {
 		               case OK_BUTTON:
 		            	   this.setResult(1);

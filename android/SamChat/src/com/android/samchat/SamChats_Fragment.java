@@ -25,12 +25,16 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.Pair;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,7 +63,55 @@ public class SamChats_Fragment extends Fragment {
 	private EaseConversationListItemClickListener listItemClickListener;
 
 	protected boolean hidden;
-	
+
+	private void deleteConversation(EMConversation conversation){
+		if(conversation.isGroup()){
+			EMClient.getInstance().chatManager().deleteConversation(conversation.getUserName(), true);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+			return;
+		}
+		
+		String attr = conversation.getExtField();
+		if(attr == null){
+			return;
+		}else if(!attr.contains(EaseConstant.CONVERSATION_ATTR_VIEW_CHAT)){
+			return;
+		}else if(attr.equals(EaseConstant.CONVERSATION_ATTR_VIEW_CHAT)){
+			/*delete conversation from db*/
+			EMClient.getInstance().chatManager().deleteConversation(conversation.getUserName(), true);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+		}else{
+			attr = attr.replaceAll(EaseConstant.CONVERSATION_ATTR_VIEW_CHAT,"");
+			conversation.setExtField(attr);
+			conversationList.clear();
+			conversationList.addAll(loadConversationList());
+			mConversationList.refresh();
+		}
+		
+		
+	}
+
+	@Override  
+	public boolean onContextItemSelected(MenuItem item) {  
+		if(!getUserVisibleHint()){
+			return false;
+		}
+		
+		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo(); 
+		EMConversation conversation = conversationList.get(menuInfo.position);
+		deleteConversation(conversation);
+		return true;
+	}  
+
+	@Override  
+	public void onCreateContextMenu(ContextMenu menu, View v,  ContextMenuInfo menuInfo) {  
+		menu.add(0, v.getId(), 0, getString(R.string.delete_conversation));        
+		super.onCreateContextMenu(menu, v, menuInfo);  
+	} 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +120,7 @@ public class SamChats_Fragment extends Fragment {
 		if(rootView == null){
 			rootView = inflater.inflate(R.layout.fragment_chats, container,false);
 			mConversationList = (EaseConversationList)rootView.findViewById(R.id.list); 
+			registerForContextMenu(mConversationList);
 
 			listItemClickListener = new EaseConversationListItemClickListener() {
 				@Override

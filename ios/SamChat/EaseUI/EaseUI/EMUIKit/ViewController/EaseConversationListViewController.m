@@ -117,9 +117,29 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         EaseConversationModel *model = [self.dataArray objectAtIndex:indexPath.row];
-        [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId deleteMessages:YES];
+//SAMC_BEGIN
+//        [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId deleteMessages:YES];
+//        [self.dataArray removeObjectAtIndex:indexPath.row];
+//        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        EMConversation *conversation = model.conversation;
+        NSDictionary *conversationExt = conversation.ext;
+        [conversationExt setValue:[NSNumber numberWithBool:NO] forKey:self.currentListMessageFromView];
+        conversation.ext = conversationExt;
+        [conversation updateConversationExtToDB];
+        if ([[conversationExt valueForKey:MESSAGE_FROM_VIEW_CHAT] isEqualToNumber:[NSNumber numberWithBool:YES]] ||
+            [[conversationExt valueForKey:MESSAGE_FROM_VIEW_SEARCH] isEqualToNumber:[NSNumber numberWithBool:YES]] ||
+            [[conversationExt valueForKey:MESSAGE_FROM_VIEW_VENDOR] isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+            // do nothing
+        }else{
+            [[EMClient sharedClient].chatManager deleteConversation:model.conversation.conversationId deleteMessages:YES];
+        }
         [self.dataArray removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        if ([self.currentListMessageFromView isEqualToString:MESSAGE_FROM_VIEW_VENDOR]
+            && (self.dataArray.count <= 0)) {
+            [self tableViewDidTriggerHeaderRefresh];
+        }
+//SAMC_END
     }
 }
 
@@ -162,13 +182,13 @@
     }
     dispatch_async(refreshQueue, ^{
         NSArray *conversations;
-SAMC_BEGIN
+//SAMC_BEGIN
         if(_delegate && [_delegate respondsToSelector:@selector(getAllConversations)]){
             conversations = [_delegate getAllConversations];
         }else{
             conversations = [[EMClient sharedClient].chatManager getAllConversations];
         }
-SAMC_END
+//SAMC_END
         NSArray* sorted = [conversations sortedArrayUsingComparator:
                            ^(EMConversation *obj1, EMConversation* obj2){
                                EMMessage *message1 = [obj1 latestMessage];

@@ -2,7 +2,7 @@
 //  LoginUserInformation+CoreDataProperties.h
 //  SamChat
 //
-//  Created by HJ on 4/9/16.
+//  Created by HJ on 4/26/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -29,20 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *phonenumber;
 @property (nullable, nonatomic, retain) NSNumber *status;
 @property (nullable, nonatomic, retain) NSNumber *unique_id;
+@property (nullable, nonatomic, retain) NSNumber *unreadquestioncount;
 @property (nullable, nonatomic, retain) NSString *username;
 @property (nullable, nonatomic, retain) NSNumber *usertype;
-@property (nullable, nonatomic, retain) NSNumber *unreadquestioncount;
-@property (nullable, nonatomic, retain) NSSet<SendAnswer *> *answers;
 @property (nullable, nonatomic, retain) NSSet<SendQuestion *> *questions;
 
 @end
 
 @interface LoginUserInformation (CoreDataGeneratedAccessors)
-
-- (void)addAnswersObject:(SendAnswer *)value;
-- (void)removeAnswersObject:(SendAnswer *)value;
-- (void)addAnswers:(NSSet<SendAnswer *> *)values;
-- (void)removeAnswers:(NSSet<SendAnswer *> *)values;
 
 - (void)addQuestionsObject:(SendQuestion *)value;
 - (void)removeQuestionsObject:(SendQuestion *)value;

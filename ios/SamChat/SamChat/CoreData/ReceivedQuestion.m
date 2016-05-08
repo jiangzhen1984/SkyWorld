@@ -15,8 +15,6 @@
 
 @implementation ReceivedQuestion
 
-@synthesize i_cellHeight = _i_cellHeight;
-
 + (ReceivedQuestion *)receivedQuestionWithSkyWorldInfo:(NSDictionary *)questionDictionary inManagedObjectContext:(NSManagedObjectContext *)context
 {
     LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:[SCUserProfileManager sharedInstance].username
@@ -68,39 +66,49 @@
     return receivedQuestion;
 }
 
-- (NSString *)i_title
++ (NSArray *)receivedQuestionIDsFrom:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    if([self.response isEqualToNumber:RECEIVED_QUESTION_NOTRESPONSED]){
-        return @"新的问题";
-    }else{
-        return @"已回复问题";
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_RECEIVED_QUESTION];
+    request.predicate = [NSPredicate predicateWithFormat:@"(ANY %K == %@) AND (%K==%@)",RECEIVED_QUESTION_FROMWHO_USERNAME,username,RECEIVED_QUESTION_RESPONSE,RECEIVED_QUESTION_NOTRESPONSED];
+    request.propertiesToFetch = @[RECEIVED_QUESTION_QUESTION_ID];
+    request.returnsDistinctResults = YES;
+    request.resultType = NSDictionaryResultType;
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    //DebugLog(@"fetch question ids: %@", matches);
+    NSMutableArray *questionIds = nil;
+    if(matches && [matches count]){
+        questionIds = [[NSMutableArray alloc] init];
+        for (NSDictionary *object in matches) {
+            [questionIds addObject:object[RECEIVED_QUESTION_QUESTION_ID]];
+        }
     }
+    return questionIds;
 }
 
-- (NSString *)i_details
++ (NSArray *)unresponsedQuestionIdsFrom:(NSString *)username markResponsed:(BOOL)flag inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    return self.question;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_RECEIVED_QUESTION];
+    request.predicate = [NSPredicate predicateWithFormat:@"(ANY %K == %@) AND (%K==%@)",RECEIVED_QUESTION_FROMWHO_USERNAME,username,RECEIVED_QUESTION_RESPONSE,RECEIVED_QUESTION_NOTRESPONSED];
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    //DebugLog(@"fetch question ids: %@", matches);
+    NSMutableArray *questionIds = nil;
+    if(matches && [matches count]){
+        questionIds = [[NSMutableArray alloc] init];
+        for (ReceivedQuestion *object in matches) {
+            if(flag){
+                object.response = RECEIVED_QUESTION_RESPONSED;
+            }
+            [questionIds addObject:object.question_id];
+        }
+    }
+    if (flag) {
+        [context save:NULL];
+        [[SCCoreDataManager sharedInstance] saveContext];
+    }
+    return questionIds;
 }
 
-- (NSString *)i_time
-{
-    return [SCUtils convertToDateStringWithTimeStamp:[self.receivedtime integerValue]];
-}
-
-- (NSString *)i_avatarURLPath
-{
-    return self.fromWho.imagefile;
-}
-
-- (BOOL)i_isSender
-{
-    return NO;
-}
-
-//@property (strong, nonatomic) UIImage *i_avatarImage;
-- (NSString *)i_text
-{
-    return self.question;
-}
 
 @end

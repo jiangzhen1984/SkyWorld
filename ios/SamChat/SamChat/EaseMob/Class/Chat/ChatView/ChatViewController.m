@@ -121,19 +121,19 @@
 }
 
 #pragma mark - Conversation Normal Mark
-- (void)setMessageConversationType:(NSDictionary *)messageConversationType
+- (void)setMessageExtDictionary:(NSDictionary *)messageExtDictionary
 {
-    _messageConversationType = messageConversationType;
-    NSString *conversationType = [messageConversationType valueForKey:MESSAGE_CONVERSATION_TYPE];
+    _messageExtDictionary = messageExtDictionary;
+    NSString *messgeFromView = [messageExtDictionary valueForKey:MESSAGE_FROM_VIEW];
     // 当从通讯录发起聊天时，如果之前没有进行过一般的聊天对话，则需要将此对话标记为normal
-    if([conversationType isEqualToString:CONVERSATION_TYPE_NORMAL]){
+    if([messgeFromView isEqualToString:MESSAGE_FROM_VIEW_CHAT]){
         NSMutableDictionary *convertsationExtDic = [[NSMutableDictionary alloc] initWithDictionary:self.conversation.ext];
         if(convertsationExtDic == nil){
-            convertsationExtDic = [[NSMutableDictionary alloc] initWithDictionary:@{CONVERSATION_TYPE_QUESTION:[NSNumber numberWithBool:NO],
-                                                                                    CONVERSATION_TYPE_ANSWER:[NSNumber numberWithBool:NO],
-                                                                                    CONVERSATION_TYPE_NORMAL:[NSNumber numberWithBool:NO]}];
+            convertsationExtDic = [[NSMutableDictionary alloc] initWithDictionary:@{MESSAGE_FROM_VIEW_SEARCH:[NSNumber numberWithBool:NO],
+                                                                                    MESSAGE_FROM_VIEW_CHAT:[NSNumber numberWithBool:NO],
+                                                                                    MESSAGE_FROM_VIEW_VENDOR:[NSNumber numberWithBool:NO]}];
         }
-        [convertsationExtDic setValue:[NSNumber numberWithBool:YES] forKey:CONVERSATION_TYPE_NORMAL];
+        [convertsationExtDic setValue:[NSNumber numberWithBool:YES] forKey:MESSAGE_FROM_VIEW_CHAT];
         self.conversation.ext = convertsationExtDic;
         [self.conversation updateConversationExtToDB];
     }
@@ -248,73 +248,6 @@
                                         easeEmotion:(EaseEmotion*)easeEmotion
 {
     return @{MESSAGE_ATTR_EXPRESSION_ID:easeEmotion.emotionId,MESSAGE_ATTR_IS_BIG_EXPRESSION:@(YES)};
-}
-
-- (NSArray *)loadMoreMessagesFromId:(NSString*)messageId limit:(NSInteger)count
-{
-    NSArray *conversationMessages = [self.conversation loadMoreMessagesFromId:messageId limit:(int)count];
-    if([self shouldMergeQuestions])
-    {
-        NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] confinementObjectContextOfmainContext];
-        NSArray *questionMessages = [SendQuestion messagesFromQuestionWithTimeFrom:self.lastQuestionTime
-                                                                      limit:count
-                                                             conversationId:self.conversation.conversationId
-                                                     inManagedObjectContext:context];
-        EMMessage *message = [questionMessages firstObject];
-        DebugLog(@"questions: %@", message.messageId);
-        NSMutableArray *mergeMessages = [[NSMutableArray alloc] init];
-        // 两个数组里都已经按时间从小到大排列
-        // 现在需要做的时取两个数组合并后时间最大的count个
-        // 并且为了刷新时候的处理，需要设置question message的message id为最近的真实的conversation message的id
-        // 方便下次刷新获取更多的时候可以继续使用这个message id进行数据库查询
-        int conversationIndex = (int)conversationMessages.count-1;
-        int questionIndex = (int)questionMessages.count-1;
-        while ((conversationIndex>=0) && (questionIndex>=0)) {
-            if(mergeMessages.count >= count){
-                // 合并足够数量就退出
-                break;
-            }
-            EMMessage *conversationMessage = conversationMessages[conversationIndex];
-            EMMessage *questionMessage = questionMessages[questionIndex];
-            DebugLog(@"time:%lld, %lld", conversationMessage.timestamp, questionMessage.timestamp);
-            if (conversationMessage.timestamp > questionMessage.timestamp) {
-                [mergeMessages insertObject:conversationMessage atIndex:0];
-                self.lastMessageId = conversationMessage.messageId;
-                conversationIndex--;
-            }else{
-                [mergeMessages insertObject:questionMessage atIndex:0];
-                self.lastQuestionTime = [NSNumber numberWithLongLong:questionMessage.timestamp];
-                questionIndex--;
-            }
-        }
-        while (conversationIndex>=0) {
-            if (mergeMessages.count >= count) {
-                break;
-            }
-            EMMessage *conversationMessage = conversationMessages[conversationIndex];
-            [mergeMessages insertObject:conversationMessage atIndex:0];
-            self.lastMessageId = conversationMessage.messageId;
-            conversationIndex--;
-        }
-        while (questionIndex>=0) {
-            if(mergeMessages.count >= count) {
-                break;
-            }
-            EMMessage *questionMessage = questionMessages[questionIndex];
-            [mergeMessages insertObject:questionMessage atIndex:0];
-            self.lastQuestionTime = [NSNumber numberWithLongLong:questionMessage.timestamp];
-            questionIndex--;
-        }
-
-        conversationMessages = mergeMessages;
-    }
-    return conversationMessages;
-}
-
-- (BOOL)shouldMergeQuestions
-{
-    return self.conversation.ext &&
-    ([[self.conversation.ext valueForKey:CONVERSATION_TYPE_ANSWER] isEqualToNumber:[NSNumber numberWithBool:YES]]);
 }
 
 #pragma mark - EaseMob

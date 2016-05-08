@@ -31,8 +31,10 @@
                                                     inManagedObjectContext:context];
         sendQuestion.question_id = question_id;
     }
+    DebugLog(@"question: %@",questionInfo);
     sendQuestion.question = questionInfo[SEND_QUESTION_QUESTION];
     sendQuestion.status = @1; // valid
+#warning change to server time
     sendQuestion.sendtime = [SCUtils currentTimeStamp];
 
     NSString *sendUsername = [SCUserProfileManager sharedInstance].username;
@@ -44,42 +46,17 @@
     return sendQuestion;
 }
 
-+ (NSArray *)messagesFromQuestionWithTimeFrom:(NSNumber *)timefrom limit:(NSInteger)count conversationId:(NSString *)conversationId inManagedObjectContext:(NSManagedObjectContext *)context
++ (SendQuestion *)sendQuestionWithId:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    if((timefrom == nil) || ([timefrom isEqual:[NSNumber numberWithLongLong:0]])){
-        timefrom = [SCUtils currentTimeStamp];
-    }
-    NSString *currentUsername = [SCUserProfileManager sharedInstance].username;
+    SendQuestion *sendQuestion = nil;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SEND_QUESTION];
-    request.predicate = [NSPredicate predicateWithFormat:@"(%K < %@) AND (%K == %@)",SEND_QUESTION_SENDTIME,timefrom,SEND_QUESTION_SENDERUSERNAME,currentUsername];
-    request.fetchLimit = count;
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SEND_QUESTION_SENDTIME ascending:YES]];
-    
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", SEND_QUESTION_QUESTION_ID, questionId];
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
-    NSMutableArray *messages = nil;
     if ((error==nil) && matches) {
-        messages = [[NSMutableArray alloc] init];
-        for (SendQuestion *question in matches) {
-            NSString *text = [NSString stringWithFormat:@"我的问题：%@", question.question];
-            EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
-            EMMessage *message = [[EMMessage alloc] initWithConversationID:conversationId
-                                                                      from:currentUsername
-                                                                        to:conversationId
-                                                                      body:body
-                                                                       ext:nil];
-            message.chatType = EMChatTypeChat;
-            message.direction = EMMessageDirectionSend;
-            message.timestamp = [question.sendtime longLongValue];
-            message.status = EMMessageStatusSuccessed;
-            message.isReadAcked = YES;
-            message.isDeliverAcked = YES;
-            message.isRead = YES;
-            message.ext = @{MESSAGE_CONVERSATION_TYPE:CONVERSATION_TYPE_QUESTION};
-            [messages addObject:message];
-        }
+        sendQuestion = [matches firstObject];
     }
-    return messages;
+    return sendQuestion;
 }
 
 @end

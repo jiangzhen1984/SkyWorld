@@ -681,7 +681,9 @@ public class EaseMobHelper {
             contactList = demoModel.getContactList();
         }
         
-       // SamLog.e(TAG,"contactList:" + contactList.size());
+        if(contactList == null){
+        	return new HashMap<String, EaseUser>();
+        }
         
         return contactList;
     }
