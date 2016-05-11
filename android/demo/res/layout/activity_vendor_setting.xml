@@ -1,0 +1,226 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/skin_global_bg"
+    android:scrollbars="none">
+  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">  
+      
+    <RelativeLayout 
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/height_top_bar"
+      android:background="@color/common_bg_green">
+       <RelativeLayout
+          android:id="@+id/back_layout"
+          android:layout_width="wrap_content"
+      	  android:layout_height="match_parent">
+    	<ImageView
+    	    android:id="@+id/back"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginRight="@dimen/title_left_margin"
+        	android:layout_marginLeft="@dimen/title_left_margin"
+        	android:layout_centerVertical="true"
+        	android:contentDescription="@null"
+        	android:src="@drawable/back"/>
+    	</RelativeLayout>
+    	
+    	<TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_toRightOf="@id/back_layout"
+             android:layout_centerVertical="true"
+             android:textSize="20sp"
+             android:text="@string/vendor_setting"
+             android:textColor="@color/common_white"/>
+             
+	</RelativeLayout>
+	
+    <LinearLayout
+        android:id="@+id/new_layout"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical" >
+    
+    <RelativeLayout
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_gravity="center_horizontal"
+    	android:layout_marginTop="20dp">
+    
+        <TextView
+            android:id="@+id/welcome_to_be"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_to_be"
+            android:textSize="18sp" />
+    
+    	<TextView
+            android:id="@+id/to_be_vendor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/to_be_samvendor"
+            android:layout_toRightOf="@id/welcome_to_be"
+            android:layout_marginLeft="5dp"
+            android:textSize="18sp" 
+            android:textColor="@color/orange"/>
+
+	</RelativeLayout>
+	
+    
+	
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/input_vendor_info"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18sp" />
+    
+    <LinearLayout
+        android:id="@+id/input_layout"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginLeft="30dp"
+    	android:layout_marginRight="30dp"
+    	android:layout_marginTop="50dp"
+    	android:orientation="vertical" >
+    	
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bussiness_line"
+            android:textSize="18sp"
+            android:textColor="@color/common_gray" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/common_gray" />
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/bussiness_location"
+            android:textSize="18sp"
+            android:textColor="@color/common_gray" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/common_gray" />
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/bussiness_introduction"
+            android:textSize="18sp"
+            android:textColor="@color/common_gray" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/common_gray" />
+        
+    </LinearLayout>
+   
+  </LinearLayout>
+  
+  
+  <RelativeLayout
+    android:id="@+id/modify_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:visibility="gone">
+    
+    <TextView
+        android:id="@+id/my_business_constant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="@string/my_business"
+        android:textSize="18sp"
+        android:textColor="@color/common_bg_green" />
+    
+    <TextView
+        android:id="@+id/my_business"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@id/my_business_constant"
+        android:textSize="18sp"/>
+    
+    <TextView
+        android:id="@+id/introduction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/my_business"
+        android:layout_alignLeft="@id/my_business"
+        android:textSize="15sp"/>
+    
+    <TextView
+        android:id="@+id/location_constant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/location"
+        android:layout_below="@id/introduction"
+        android:layout_alignLeft="@id/my_business_constant"
+        android:textSize="18sp"
+        android:textColor="@color/common_bg_green" />
+    
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_alignLeft="@id/my_business"
+        android:layout_alignTop="@id/location_constant"
+        android:textSize="18sp"/>
+    
+    <TextView
+        android:id="@+id/mainpage_constant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/mainpage"
+        android:layout_below="@id/location"
+        android:layout_alignLeft="@id/location_constant"
+        android:textSize="18sp"
+        android:textColor="@color/common_bg_green" />
+    
+    <TextView
+        android:id="@+id/mainpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_alignLeft="@id/location"
+        android:layout_alignTop="@id/mainpage_constant"
+        android:text="www.samchat.com"
+        android:textSize="18sp"/>
+    
+     <TextView
+        android:id="@+id/modify"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_top_bar"
+        android:layout_alignParentBottom="true"
+        android:text="@string/modify"
+        android:textColor="@color/common_white"
+        android:background="@color/common_bg_green"
+        android:textSize="18sp" 
+        android:gravity="center"/>
+    
+    
+    
+  </RelativeLayout>
+    
+  </LinearLayout>
+</ScrollView>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="height_top_bar">52dp</dimen>
+	<dimen name="title_left_margin">20dp</dimen>
+	<dimen name="top_bar_avatar_marginTop">32dp</dimen>
+</resources>
