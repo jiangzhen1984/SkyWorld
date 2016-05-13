@@ -16,7 +16,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.ListPopupWindow;
+import android.support.v7.internal.widget.ListPopupWindow;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +44,7 @@ import me.nereo.multi_image_selector.utils.FileUtils;
 import me.nereo.multi_image_selector.utils.ScreenUtils;
 
 /**
- * Í¼Æ¬Ñ¡ÔñFragment
+ * Í¼Æ¬Ñ¡ï¿½ï¿½Fragment
  * Created by Nereo on 2015/4/7.
  */
 public class MultiImageSelectorFragment extends Fragment {
@@ -52,28 +53,28 @@ public class MultiImageSelectorFragment extends Fragment {
 
     private static final String KEY_TEMP_FILE = "key_temp_file";
 
-    /** ×î´óÍ¼Æ¬Ñ¡Ôñ´ÎÊý£¬intÀàÐÍ */
+    /** ï¿½ï¿½ï¿½Í¼Æ¬Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½intï¿½ï¿½ï¿½ï¿½ */
     public static final String EXTRA_SELECT_COUNT = "max_select_count";
-    /** Í¼Æ¬Ñ¡ÔñÄ£Ê½£¬intÀàÐÍ */
+    /** Í¼Æ¬Ñ¡ï¿½ï¿½Ä£Ê½ï¿½ï¿½intï¿½ï¿½ï¿½ï¿½ */
     public static final String EXTRA_SELECT_MODE = "select_count_mode";
-    /** ÊÇ·ñÏÔÊ¾Ïà»ú£¬booleanÀàÐÍ */
+    /** ï¿½Ç·ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½booleanï¿½ï¿½ï¿½ï¿½ */
     public static final String EXTRA_SHOW_CAMERA = "show_camera";
-    /** Ä¬ÈÏÑ¡ÔñµÄÊý¾Ý¼¯ */
+    /** Ä¬ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ý¼ï¿½ */
     public static final String EXTRA_DEFAULT_SELECTED_LIST = "default_result";
-    /** µ¥Ñ¡ */
+    /** ï¿½ï¿½Ñ¡ */
     public static final int MODE_SINGLE = 0;
-    /** ¶àÑ¡ */
+    /** ï¿½ï¿½Ñ¡ */
     public static final int MODE_MULTI = 1;
-    // ²»Í¬loader¶¨Òå
+    // ï¿½ï¿½Í¬loaderï¿½ï¿½ï¿½ï¿½
     private static final int LOADER_ALL = 0;
     private static final int LOADER_CATEGORY = 1;
-    // ÇëÇó¼ÓÔØÏµÍ³ÕÕÏà»ú
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½
     private static final int REQUEST_CAMERA = 100;
 
 
-    // ½á¹ûÊý¾Ý
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private ArrayList<String> resultList = new ArrayList<>();
-    // ÎÄ¼þ¼ÐÊý¾Ý
+    // ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private ArrayList<Folder> mResultFolder = new ArrayList<>();
 
     // Í¼Æ¬Grid
@@ -85,11 +86,11 @@ public class MultiImageSelectorFragment extends Fragment {
 
     private ListPopupWindow mFolderPopupWindow;
 
-    // Àà±ð
+    // ï¿½ï¿½ï¿½
     private TextView mCategoryText;
-    // Ô¤ÀÀ°´Å¥
+    // Ô¤ï¿½ï¿½ï¿½ï¿½Å¥
     private Button mPreviewBtn;
-    // µ×²¿View
+    // ï¿½×²ï¿½View
     private View mPopupAnchorView;
 
     private int mDesireImageCount;
@@ -118,13 +119,13 @@ public class MultiImageSelectorFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Ñ¡ÔñÍ¼Æ¬ÊýÁ¿
+        // Ñ¡ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½
         mDesireImageCount = getArguments().getInt(EXTRA_SELECT_COUNT);
 
-        // Í¼Æ¬Ñ¡ÔñÄ£Ê½
+        // Í¼Æ¬Ñ¡ï¿½ï¿½Ä£Ê½
         final int mode = getArguments().getInt(EXTRA_SELECT_MODE);
 
-        // Ä¬ÈÏÑ¡Ôñ
+        // Ä¬ï¿½ï¿½Ñ¡ï¿½ï¿½
         if(mode == MODE_MULTI) {
             ArrayList<String> tmp = getArguments().getStringArrayList(EXTRA_DEFAULT_SELECTED_LIST);
             if(tmp != null && tmp.size()>0) {
@@ -132,18 +133,18 @@ public class MultiImageSelectorFragment extends Fragment {
             }
         }
 
-        // ÊÇ·ñÏÔÊ¾ÕÕÏà»ú
+        // ï¿½Ç·ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½
         mIsShowCamera = getArguments().getBoolean(EXTRA_SHOW_CAMERA, true);
         mImageAdapter = new ImageGridAdapter(getActivity(), mIsShowCamera, 3);
-        // ÊÇ·ñÏÔÊ¾Ñ¡ÔñÖ¸Ê¾Æ÷
+        // ï¿½Ç·ï¿½ï¿½ï¿½Ê¾Ñ¡ï¿½ï¿½Ö¸Ê¾ï¿½ï¿½
         mImageAdapter.showSelectIndicator(mode == MODE_MULTI);
 
         mPopupAnchorView = view.findViewById(R.id.footer);
 
         mCategoryText = (TextView) view.findViewById(R.id.category_btn);
-        // ³õÊ¼»¯£¬¼ÓÔØËùÓÐÍ¼Æ¬
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
         mCategoryText.setText(R.string.folder_all);
-	 mCategoryText.setVisibility(View.GONE);
+	    //mCategoryText.setVisibility(View.GONE);
         mCategoryText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,7 +165,7 @@ public class MultiImageSelectorFragment extends Fragment {
         });
 
         mPreviewBtn = (Button) view.findViewById(R.id.preview);
-        // ³õÊ¼»¯£¬°´Å¥×´Ì¬³õÊ¼»¯
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥×´Ì¬ï¿½ï¿½Ê¼ï¿½ï¿½
         if(resultList == null || resultList.size()<=0){
             mPreviewBtn.setText(R.string.preview);
             mPreviewBtn.setEnabled(false);
@@ -172,7 +173,7 @@ public class MultiImageSelectorFragment extends Fragment {
         mPreviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO Ô¤ÀÀ
+                // TODO Ô¤ï¿½ï¿½
             }
         });
 
@@ -182,16 +183,16 @@ public class MultiImageSelectorFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (mImageAdapter.isShowCamera()) {
-                    // Èç¹ûÏÔÊ¾ÕÕÏà»ú£¬ÔòµÚÒ»¸öGridÏÔÊ¾ÎªÕÕÏà»ú£¬´¦ÀíÌØÊâÂß¼­
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Gridï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
                     if (i == 0) {
                         showCameraAction();
                     } else {
-                        // Õý³£²Ù×÷
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½
                         Image image = (Image) adapterView.getAdapter().getItem(i);
                         selectImageFromGrid(image, mode);
                     }
                 } else {
-                    // Õý³£²Ù×÷
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½
                     Image image = (Image) adapterView.getAdapter().getItem(i);
                     selectImageFromGrid(image, mode);
                 }
@@ -217,7 +218,7 @@ public class MultiImageSelectorFragment extends Fragment {
     }
 
     /**
-     * ´´½¨µ¯³öµÄListView
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ListView
      */
     private void createPopupFolderList() {
         Point point = ScreenUtils.getScreenSize(getActivity());
@@ -258,7 +259,7 @@ public class MultiImageSelectorFragment extends Fragment {
                             if (null != folder) {
                                 mImageAdapter.setData(folder.images);
                                 mCategoryText.setText(folder.name);
-                                // Éè¶¨Ä¬ÈÏÑ¡Ôñ
+                                // ï¿½è¶¨Ä¬ï¿½ï¿½Ñ¡ï¿½ï¿½
                                 if (resultList != null && resultList.size() > 0) {
                                     mImageAdapter.setDefaultSelected(resultList);
                                 }
@@ -266,7 +267,7 @@ public class MultiImageSelectorFragment extends Fragment {
                             mImageAdapter.setShowCamera(false);
                         }
 
-                        // »¬¶¯µ½×î³õÊ¼Î»ÖÃ
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Î»ï¿½ï¿½
                         mGridView.smoothScrollToPosition(0);
                     }
                 }, 100);
@@ -292,7 +293,7 @@ public class MultiImageSelectorFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Ê×´Î¼ÓÔØËùÓÐÍ¼Æ¬
+        // ï¿½×´Î¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬
         //new LoadImageTask().execute();
         getActivity().getSupportLoaderManager().initLoader(LOADER_ALL, null, mLoaderCallback);
     }
@@ -300,7 +301,7 @@ public class MultiImageSelectorFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Ïà»úÅÄÕÕÍê³Éºó£¬·µ»ØÍ¼Æ¬Â·¾¶
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éºó£¬·ï¿½ï¿½ï¿½Í¼Æ¬Â·ï¿½ï¿½
         if(requestCode == REQUEST_CAMERA){
             if(resultCode == Activity.RESULT_OK) {
                 if (mTmpFile != null) {
@@ -330,14 +331,14 @@ public class MultiImageSelectorFragment extends Fragment {
     }
 
     /**
-     * Ñ¡ÔñÏà»ú
+     * Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     private void showCameraAction() {
-        // Ìø×ªµ½ÏµÍ³ÕÕÏà»ú
+        // ï¿½ï¿½×ªï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(cameraIntent.resolveActivity(getActivity().getPackageManager()) != null){
-            // ÉèÖÃÏµÍ³Ïà»úÅÄÕÕºóµÄÊä³öÂ·¾¶
-            // ´´½¨ÁÙÊ±ÎÄ¼þ
+            // ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õºï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä¼ï¿½
             try {
                 mTmpFile = FileUtils.createTmpFile(getActivity());
             } catch (IOException e) {
@@ -347,7 +348,7 @@ public class MultiImageSelectorFragment extends Fragment {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));
                 startActivityForResult(cameraIntent, REQUEST_CAMERA);
             }else{
-                Toast.makeText(getActivity(), "Í¼Æ¬´íÎó", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Í¼Æ¬ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
             }
         }else{
             Toast.makeText(getActivity(), R.string.msg_no_camera, Toast.LENGTH_SHORT).show();
@@ -355,12 +356,12 @@ public class MultiImageSelectorFragment extends Fragment {
     }
 
     /**
-     * Ñ¡ÔñÍ¼Æ¬²Ù×÷
+     * Ñ¡ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½
      * @param image
      */
     private void selectImageFromGrid(Image image, int mode) {
         if(image != null) {
-            // ¶àÑ¡Ä£Ê½
+            // ï¿½ï¿½Ñ¡Ä£Ê½
             if(mode == MODE_MULTI) {
                 if (resultList.contains(image.path)) {
                     resultList.remove(image.path);
@@ -375,7 +376,7 @@ public class MultiImageSelectorFragment extends Fragment {
                         mCallback.onImageUnselected(image.path);
                     }
                 } else {
-                    // ÅÐ¶ÏÑ¡ÔñÊýÁ¿ÎÊÌâ
+                    // ï¿½Ð¶ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     if(mDesireImageCount == resultList.size()){
                         Toast.makeText(getActivity(), R.string.msg_amount_limit, Toast.LENGTH_SHORT).show();
                         return;
@@ -390,7 +391,7 @@ public class MultiImageSelectorFragment extends Fragment {
                 }
                 mImageAdapter.select(image);
             }else if(mode == MODE_SINGLE){
-                // µ¥Ñ¡Ä£Ê½
+                // ï¿½ï¿½Ñ¡Ä£Ê½
                 if(mCallback != null){
                     mCallback.onSingleImageSelected(image.path);
                 }
@@ -450,7 +451,7 @@ public class MultiImageSelectorFragment extends Fragment {
                             images.add(image);
                         }
                         if( !hasFolderGened ) {
-                            // »ñÈ¡ÎÄ¼þ¼ÐÃû³Æ
+                            // ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                             File folderFile = new File(path).getParentFile();
                             if(folderFile != null && folderFile.exists()){
                                 String fp = folderFile.getAbsolutePath();
@@ -473,7 +474,7 @@ public class MultiImageSelectorFragment extends Fragment {
                     }while(data.moveToNext());
 
                     mImageAdapter.setData(images);
-                    // Éè¶¨Ä¬ÈÏÑ¡Ôñ
+                    // ï¿½è¶¨Ä¬ï¿½ï¿½Ñ¡ï¿½ï¿½
                     if(resultList != null && resultList.size()>0){
                         mImageAdapter.setDefaultSelected(resultList);
                     }
@@ -505,7 +506,7 @@ public class MultiImageSelectorFragment extends Fragment {
     }
 
     /**
-     * »Øµ÷½Ó¿Ú
+     * ï¿½Øµï¿½ï¿½Ó¿ï¿½
      */
     public interface Callback{
         void onSingleImageSelected(String path);

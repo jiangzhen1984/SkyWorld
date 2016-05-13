@@ -178,7 +178,7 @@ public class SWUserService extends BaseService {
 			
 			user.setId(((BigInteger)obj[0]).longValue());
 			user.setCellPhone((String)obj[1]);
-			user.setName((String)obj[2]);
+			user.setName((String)obj[3]);
 			user.setAddress((String)obj[4]);
 			user.setMail((String)obj[5]);
 			if (obj[7] != null) {
@@ -197,9 +197,9 @@ public class SWUserService extends BaseService {
 			
 			if (user.getUserType() == UserType.SERVICER) {
 				SKServicer sks = (SKServicer)user;
-				sks.setServiceDesc((String)obj[11]);
-				sks.setArea((String)obj[12]);
-				sks.setLocation((String)obj[13]);
+				sks.setServiceDesc((String)obj[10]);
+				sks.setArea((String)obj[11]);
+				sks.setLocation((String)obj[12]);
 			}
 			
 			list.add(user);
