@@ -106,7 +106,7 @@
     }else{
         NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext;
         __block BOOL flag = [SessionExtension searchTagOfSession:recentSession.session.sessionId inManagedObjectContext:context];
-        if (flag == NO) {
+        if ((flag == NO) && (recentSession.unreadCount > 0)) {
             NSArray *messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:recentSession.session
                                                                                   message:nil
                                                                                     limit:recentSession.unreadCount];
