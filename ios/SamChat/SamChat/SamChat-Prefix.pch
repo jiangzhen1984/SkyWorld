@@ -1,0 +1,36 @@
+//
+//  SamChat-Prefix.pch
+//  SamChat
+//
+//  Created by HJ on 5/4/16.
+//  Copyright © 2016 SkyWorld. All rights reserved.
+//
+
+#ifndef NIMDemo_NIMDemo_Prefix_pch
+#define NIMDemo_NIMDemo_Prefix_pch
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "NIMSDK.h"
+#import "SAMCGlobalMacro.h"
+#import "NIMKit.h"
+
+#import <CocoaLumberjack/CocoaLumberjack.h>
+
+#ifdef DEBUG
+static DDLogLevel ddLogLevel = DDLogLevelVerbose;
+#else
+static DDLogLevel ddLogLevel = DDLogLevelInfo;
+#endif
+
+#define NTES_USE_CLEAR_BAR - (BOOL)useClearBar{return YES;}
+
+#define NTES_FORBID_INTERACTIVE_POP - (BOOL)forbidInteractivePop{return YES;}
+
+
+#import <CoreData/CoreData.h>
+#warning 1111111111111111111111111
+#import "AppMacro.h"
+#endif
+#endif
