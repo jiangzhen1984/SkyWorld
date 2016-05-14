@@ -25,7 +25,7 @@
 #import "SamChatClient.h"
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
-@interface SAMCAppDelegate ()<NIMLoginManagerDelegate>
+@interface SAMCAppDelegate ()<SAMCLoginManagerDelegate>
 @end
 
 @implementation SAMCAppDelegate
@@ -70,7 +70,7 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[[NIMSDK sharedSDK] loginManager] removeDelegate:self];
+    [[SamChatClient sharedClient].accountManager removeDelegate:self];
 }
 
 
@@ -134,10 +134,8 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
     //如果有缓存用户名密码推荐使用自动登录
     if ([account length] && [token length])
     {
-        [[[NIMSDK sharedSDK] loginManager] autoLogin:account
-                                               token:token];
+        [[SamChatClient sharedClient].accountManager autoLogin:account token:token];
         [[NTESServiceManager sharedManager] start];
-        //NTESMainTabController *mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];
         SAMCMainViewController *mainTab = [[SAMCMainViewController alloc] initWithNibName:nil bundle:nil];
         self.window.rootViewController = mainTab;
         
@@ -157,7 +155,7 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
                                                  name:NTESNotificationLogout
                                                object:nil];
     
-    [[[NIMSDK sharedSDK] loginManager] addDelegate:self];
+    [[SamChatClient sharedClient].accountManager addDelegate:self];
 }
 
 - (void)setupLoginViewController
@@ -185,7 +183,7 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 }
 
 
-#pragma NIMLoginManagerDelegate
+#pragma SAMCLoginManagerDelegate
 -(void)onKick:(NIMKickReason)code clientType:(NIMLoginClientType)clientType
 {
     NSString *reason = @"你被踢下线";

@@ -105,7 +105,9 @@
 - (void)autoLogin:(NSString *)account
             token:(NSString *)token
 {
-//TODO
+//TODO: add skyworld autologin
+    [[[NIMSDK sharedSDK] loginManager] autoLogin:account
+                                           token:token];
 }
 
 - (void)logout:(void (^)(NSError *error))completion
