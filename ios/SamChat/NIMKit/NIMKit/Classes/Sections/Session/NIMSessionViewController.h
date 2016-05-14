@@ -28,6 +28,7 @@
 
 //SAMC_BEGIN
 @property (nonatomic, strong) NSDictionary *messageExtDictionary;
+@property (nonatomic,assign) BOOL shouldTagSessionWhenSendMessage; //当会话从通讯录发起时，需要在发送第一条消息时标记会话类型 
 //SAMC_END
 
 /**

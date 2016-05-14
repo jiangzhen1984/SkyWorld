@@ -50,6 +50,7 @@
 #import "SAMCSearchSessionConfig.h"
 #import "SAMCQuestionMessage.h"
 #import "QuestionMessage.h"
+#import "SessionExtension.h"
 #import "SCCoreDataManager.h"
 //SAMC_END
 
@@ -823,6 +824,24 @@ NIMContactSelectDelegate>
     }else{
         [super deleteMsg:sender];
     }
+}
+
+#pragma mark - Override 消息收发接口
+- (void)sendMessage:(NIMMessage *)message
+{
+    if (self.shouldTagSessionWhenSendMessage && (self.messageExtDictionary!=nil)) {
+        self.shouldTagSessionWhenSendMessage = NO;
+        NSNumber *messageFromView = [self.messageExtDictionary valueForKey:MESSAGE_FROM_VIEW];
+        if ([messageFromView isEqualToNumber:MESSAGE_FROM_VIEW_CHAT]) {
+            NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+            [privateContext performBlock:^{
+                [SessionExtension updateSession:self.session.sessionId
+                                        chatTag:YES
+                         inManagedObjectContext:privateContext];
+            }];
+        }
+    }
+    [super sendMessage:message];
 }
 //SAMC_END
 

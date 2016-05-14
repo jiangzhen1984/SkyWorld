@@ -63,6 +63,7 @@ NIMUserManagerDelegate>
         _session = session;
         _pendingMessages = [[NSMutableArray alloc] init];
         _messageExtDictionary = extDict;
+        _shouldTagSessionWhenSendMessage = NO;
     }
     return self;
 }
@@ -73,6 +74,7 @@ NIMUserManagerDelegate>
     if (self) {
         _session = session;
         _pendingMessages = [[NSMutableArray alloc] init];
+        _shouldTagSessionWhenSendMessage = NO;
     }
     return self;
 }

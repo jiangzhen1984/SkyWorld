@@ -275,6 +275,7 @@
     NTESSessionViewController *vc = [[NTESSessionViewController alloc] initWithSession:session];
     //SAMC_BEGIN
     vc.messageExtDictionary = @{MESSAGE_FROM_VIEW:MESSAGE_FROM_VIEW_CHAT};
+    vc.shouldTagSessionWhenSendMessage = YES;
     //SAMC_END
     [nav pushViewController:vc animated:YES];
     UIViewController *root = nav.viewControllers[0];
