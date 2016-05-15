@@ -262,7 +262,6 @@
 		31F66D9B1CDAF1AF003A01E1 /* LoginUserInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D8A1CDAF1AF003A01E1 /* LoginUserInformation.m */; };
 		31F66D9C1CDAF1AF003A01E1 /* ReceivedQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D8C1CDAF1AF003A01E1 /* ReceivedQuestion+CoreDataProperties.m */; };
 		31F66D9D1CDAF1AF003A01E1 /* ReceivedQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D8E1CDAF1AF003A01E1 /* ReceivedQuestion.m */; };
-		31F66D9E1CDAF1AF003A01E1 /* SCCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D911CDAF1AF003A01E1 /* SCCoreDataManager.m */; };
 		31F66D9F1CDAF1AF003A01E1 /* SendQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D931CDAF1AF003A01E1 /* SendQuestion+CoreDataProperties.m */; };
 		31F66DA01CDAF1AF003A01E1 /* SendQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D951CDAF1AF003A01E1 /* SendQuestion.m */; };
 		31F66DA31CDAF1EF003A01E1 /* SamChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 31F66DA11CDAF1EF003A01E1 /* SamChat.xcdatamodeld */; };
@@ -759,9 +758,6 @@
 		31F66D8C1CDAF1AF003A01E1 /* ReceivedQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ReceivedQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31F66D8D1CDAF1AF003A01E1 /* ReceivedQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceivedQuestion.h; sourceTree = "<group>"; };
 		31F66D8E1CDAF1AF003A01E1 /* ReceivedQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceivedQuestion.m; sourceTree = "<group>"; };
-		31F66D8F1CDAF1AF003A01E1 /* SCCoreDataMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCoreDataMacro.h; sourceTree = "<group>"; };
-		31F66D901CDAF1AF003A01E1 /* SCCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCoreDataManager.h; sourceTree = "<group>"; };
-		31F66D911CDAF1AF003A01E1 /* SCCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCoreDataManager.m; sourceTree = "<group>"; };
 		31F66D921CDAF1AF003A01E1 /* SendQuestion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SendQuestion+CoreDataProperties.h"; sourceTree = "<group>"; };
 		31F66D931CDAF1AF003A01E1 /* SendQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SendQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
 		31F66D941CDAF1AF003A01E1 /* SendQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendQuestion.h; sourceTree = "<group>"; };
@@ -2043,9 +2039,6 @@
 				31F66D8C1CDAF1AF003A01E1 /* ReceivedQuestion+CoreDataProperties.m */,
 				31F66D8D1CDAF1AF003A01E1 /* ReceivedQuestion.h */,
 				31F66D8E1CDAF1AF003A01E1 /* ReceivedQuestion.m */,
-				31F66D8F1CDAF1AF003A01E1 /* SCCoreDataMacro.h */,
-				31F66D901CDAF1AF003A01E1 /* SCCoreDataManager.h */,
-				31F66D911CDAF1AF003A01E1 /* SCCoreDataManager.m */,
 				31F66D921CDAF1AF003A01E1 /* SendQuestion+CoreDataProperties.h */,
 				31F66D931CDAF1AF003A01E1 /* SendQuestion+CoreDataProperties.m */,
 				31F66D941CDAF1AF003A01E1 /* SendQuestion.h */,
@@ -2346,7 +2339,6 @@
 				318B68891CDA02B3008260A2 /* UIScrollView+NTESPullToRefresh.m in Sources */,
 				318B68AA1CDA02B3008260A2 /* NTESChatroomMemberListViewController.m in Sources */,
 				318B68DA1CDA02B3008260A2 /* NTESSessionTipConfig.m in Sources */,
-				31F66D9E1CDAF1AF003A01E1 /* SCCoreDataManager.m in Sources */,
 				318B68D81CDA02B3008260A2 /* NTESSessionCustomContentConfig.m in Sources */,
 				318B68D21CDA02B3008260A2 /* NTESJanKenPonAttachment.m in Sources */,
 				318B68F01CDA02B3008260A2 /* NTESWhiteboardDrawView.m in Sources */,

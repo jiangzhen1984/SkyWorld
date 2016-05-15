@@ -8,7 +8,6 @@
 
 #import "HotTopic.h"
 #import "SCUserProfileManager.h"
-#import "SCCoreDataManager.h"
 #import "SAMCHotTopicCellModel.h"
 
 @implementation HotTopic

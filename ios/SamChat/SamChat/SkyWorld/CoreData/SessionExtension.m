@@ -7,7 +7,6 @@
 //
 
 #import "SessionExtension.h"
-#import "SCCoreDataManager.h"
 
 @implementation SessionExtension
 

@@ -10,8 +10,6 @@
 #import "LoginUserInformation.h"
 #import "SCUtils.h"
 #import "SAMCUserProfileManager.h"
-//#import "SCUserProfileManager.h"
-#import "SCCoreDataManager.h"
 #import "SAMCQuestionMessage.h"
 
 @implementation SendQuestion

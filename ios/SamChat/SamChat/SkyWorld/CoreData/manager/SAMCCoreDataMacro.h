@@ -1,13 +1,13 @@
 //
-//  SCCoreDataMacro.h
+//  SAMCCoreDataMacro.h
 //  SamChat
 //
-//  Created by HJ on 4/4/16.
+//  Created by HJ on 5/15/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#ifndef SCCoreDataMacro_h
-#define SCCoreDataMacro_h
+#ifndef SAMCCoreDataMacro_h
+#define SAMCCoreDataMacro_h
 
 #define ENTITY_CONTACT_USER             @"ContactUser"
 #define CONTACT_USER_UNIQUE_ID          @"unique_id"
@@ -86,4 +86,4 @@
 #define QUESTION_MESSAGE_SENDTIME           @"sendtime"
 #define QUESTION_MESSAGE_SENDERUSERNAME     @"senderusername"
 
-#endif /* SCCoreDataMacro_h */
+#endif /* SAMCCoreDataMacro_h */

@@ -7,7 +7,7 @@
 //
 
 #import "SAMCSessionManager.h"
-#import "SCCoreDataManager.h"
+#import "SAMCCoreDataManager.h"
 #import "SessionExtension.h"
 
 @implementation SAMCSessionManager
@@ -18,7 +18,7 @@
     if (sessionType == nil) {
         return;
     }
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+    NSManagedObjectContext *privateContext = [[SAMCCoreDataManager sharedManager] privateChildObjectContextOfmainContext];
     [privateContext performBlock:^{
         if ([sessionType isEqualToNumber:MESSAGE_FROM_VIEW_SEARCH]) {
             [SessionExtension updateSession:message.session.sessionId
@@ -35,14 +35,14 @@
         }
         if ([privateContext hasChanges]) {
             [privateContext save:NULL];
-            [[SCCoreDataManager sharedInstance] saveContext];
+            [[SAMCCoreDataManager sharedManager] saveContext];
         }
     }];
 }
 
 - (void)updateSession:(NSString *)sessionId tagType:(NSNumber *)tagType value:(BOOL)flag
 {
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+    NSManagedObjectContext *privateContext = [[SAMCCoreDataManager sharedManager] privateChildObjectContextOfmainContext];
     [privateContext performBlock:^{
         if ([tagType isEqualToNumber:MESSAGE_FROM_VIEW_SEARCH]) {
             [SessionExtension updateSession:sessionId
@@ -59,32 +59,32 @@
         }
         if ([privateContext hasChanges]) {
             [privateContext save:NULL];
-            [[SCCoreDataManager sharedInstance] saveContext];
+            [[SAMCCoreDataManager sharedManager] saveContext];
         }
     }];
 }
 
 - (BOOL)searchTagOfSession:(NSString *)sessionId
 {
-    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] confinementObjectContextOfmainContext];
+    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] confinementObjectContextOfmainContext];
     return [SessionExtension searchTagOfSession:sessionId inManagedObjectContext:context];
 }
 
 - (BOOL)chatTagOfSession:(NSString *)sessionId
 {
-    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] confinementObjectContextOfmainContext];
+    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] confinementObjectContextOfmainContext];
     return [SessionExtension chatTagOfSession:sessionId inManagedObjectContext:context];
 }
 
 - (BOOL)serviceTagOfSession:(NSString *)sessionId
 {
-    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] confinementObjectContextOfmainContext];
+    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] confinementObjectContextOfmainContext];
     return [SessionExtension serviceTagOfSession:sessionId inManagedObjectContext:context];
 }
 
 - (BOOL)deleteSession:(NSString *)sessionId ifNeededAfterClearTagType:(NSNumber *)tagType
 {
-    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] confinementObjectContextOfmainContext];
+    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] confinementObjectContextOfmainContext];
     if ([tagType isEqualToNumber:MESSAGE_FROM_VIEW_SEARCH]) {
         [SessionExtension updateSession:sessionId
                              serviceTag:NO
@@ -101,7 +101,7 @@
     BOOL result = [SessionExtension deleteSessionIfNeeded:sessionId inManagedObjectContext:context];
     if ([context hasChanges]) {
         [context save:NULL];
-        [[SCCoreDataManager sharedInstance] saveContext];
+        [[SAMCCoreDataManager sharedManager] saveContext];
     }
     return result;
 }

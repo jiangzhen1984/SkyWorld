@@ -9,7 +9,6 @@
 #import "ReceivedQuestion.h"
 #import "ContactUser.h"
 #import "SCUserProfileManager.h"
-#import "SCCoreDataManager.h"
 
 @interface ReceivedQuestion ()
 

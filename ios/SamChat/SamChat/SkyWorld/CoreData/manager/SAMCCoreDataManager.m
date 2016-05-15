@@ -1,20 +1,19 @@
 //
-//  SCCoreDataManager.m
+//  SAMCCoreDataManager.m
 //  SamChat
 //
-//  Created by HJ on 4/4/16.
+//  Created by HJ on 5/15/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#import "SCCoreDataManager.h"
+#import "SAMCCoreDataManager.h"
 #import "NTESFileLocationHelper.h"
 
-static SCCoreDataManager *sharedInstance = nil;
+@implementation SAMCCoreDataManager
 
-@implementation SCCoreDataManager
-
-+ (instancetype)sharedInstance
++ (instancetype)sharedManager
 {
+    static SAMCCoreDataManager *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
@@ -138,7 +137,5 @@ static SCCoreDataManager *sharedInstance = nil;
         }];
     }
 }
-
-
 
 @end

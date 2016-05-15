@@ -7,10 +7,6 @@
 //
 
 #import "SamChatClient.h"
-#import "SCCoreDataManager.h"
-#import "SendQuestion.h"
-#import "SessionExtension.h"
-#import "QuestionMessage.h"
 
 @interface SamChatClient ()<NIMChatManagerDelegate>
 

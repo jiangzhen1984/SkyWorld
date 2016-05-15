@@ -7,8 +7,7 @@
 //
 
 #import "SCUserProfileManager.h"
-#import "SCCoreDataManager.h"
-#import "SCCoreDataMacro.h"
+#import "SAMCCoreDataManager.h"
 #import "SAMCSkyWorldAPI.h"
 #import "SAMCSkyWorldErrorHelper.h"
 #import "AFNetworking.h"
@@ -83,7 +82,7 @@ static SCUserProfileManager *sharedInstance = nil;
 {
     LoginUserInformation *currentLoginUserInformation = nil;
     if(self.username) {
-        NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].mainObjectContext;
+        NSManagedObjectContext *context = [SAMCCoreDataManager sharedManager].mainObjectContext;
         currentLoginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
                                                                       inManagedObjectContext:context];
     }
@@ -103,14 +102,14 @@ static SCUserProfileManager *sharedInstance = nil;
 
 - (void)logOutCurrentUser
 {
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    NSManagedObjectContext *mainContext = [SAMCCoreDataManager sharedManager].mainObjectContext;
     [mainContext performBlockAndWait:^{
         LoginUserInformation *currentLoginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
                                                                                             inManagedObjectContext:mainContext];
         currentLoginUserInformation.status = SC_LOGINUSER_NO_LOGIN;
         currentLoginUserInformation.easemob_status = SC_LOGINUSER_NO_LOGIN;
         currentLoginUserInformation.password = @"";
-        [[SCCoreDataManager sharedInstance] saveContext];
+        [[SAMCCoreDataManager sharedManager] saveContext];
     }];
 }
 
@@ -119,7 +118,7 @@ static SCUserProfileManager *sharedInstance = nil;
     self.username = [response valueForKeyPath:SKYWORLD_USER_USERNAME];
     self.token = response[SKYWORLD_TOKEN];
     //NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateObjectContext];
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    NSManagedObjectContext *mainContext = [SAMCCoreDataManager sharedManager].mainObjectContext;
     [mainContext performBlockAndWait:^{
         LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
                                                                                      inManagedObjectContext:mainContext];
@@ -163,18 +162,18 @@ static SCUserProfileManager *sharedInstance = nil;
             loginUserInformation.usertype = userInfo[SKYWORLD_TYPE];
         }
         [ContactUser contactUserWithLoginUserInformation:loginUserInformation inManagedObjectContext:mainContext];
-        [[SCCoreDataManager sharedInstance] saveContext];
+        [[SAMCCoreDataManager sharedManager] saveContext];
     }];
 }
 
 - (void)updateCurrentLoginUserInformationWithEaseMobStatus:(NSInteger)status
 {
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    NSManagedObjectContext *mainContext = [SAMCCoreDataManager sharedManager].mainObjectContext;
     [mainContext performBlockAndWait:^{
         LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
                                                                                      inManagedObjectContext:mainContext];
         loginUserInformation.easemob_status = [NSNumber numberWithInteger:status];
-        [[SCCoreDataManager sharedInstance] saveContext];
+        [[SAMCCoreDataManager sharedManager] saveContext];
     }];
 }
 
@@ -183,7 +182,7 @@ static SCUserProfileManager *sharedInstance = nil;
     if((!info[SKYWORLD_USERNAME]) || (![info[SKYWORLD_USERNAME] isEqualToString:self.username])){
         return;
     }
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    NSManagedObjectContext *mainContext = [SAMCCoreDataManager sharedManager].mainObjectContext;
     [mainContext performBlockAndWait:^{
         LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
                                                                                      inManagedObjectContext:mainContext];
@@ -206,13 +205,13 @@ static SCUserProfileManager *sharedInstance = nil;
             loginUserInformation.easemob_username = [info valueForKeyPath:SKYWORLD_EASEMOB_USERNAME];
         }
         [ContactUser contactUserWithLoginUserInformation:loginUserInformation inManagedObjectContext:mainContext];
-        [[SCCoreDataManager sharedInstance] saveContext];
+        [[SAMCCoreDataManager sharedManager] saveContext];
     }];
 }
 
 - (void)updateCurrentLoginUserInformationWithUnreadQuestionCountAddOne
 {
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    NSManagedObjectContext *mainContext = [SAMCCoreDataManager sharedManager].mainObjectContext;
     [mainContext performBlockAndWait:^{
         LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
                                                                                      inManagedObjectContext:mainContext];
@@ -223,12 +222,12 @@ static SCUserProfileManager *sharedInstance = nil;
 
 - (void)clearCurrentLoginUserInformationUnreadQuestionCount
 {
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    NSManagedObjectContext *mainContext = [SAMCCoreDataManager sharedManager].mainObjectContext;
     [mainContext performBlockAndWait:^{
         LoginUserInformation *loginUserInformation = [LoginUserInformation loginUserInformationWithUserName:self.username
                                                                                      inManagedObjectContext:mainContext];
         loginUserInformation.unreadquestioncount = @0;
-        [[SCCoreDataManager sharedInstance] saveContext];
+        [[SAMCCoreDataManager sharedManager] saveContext];
     }];
 }
 
@@ -294,7 +293,7 @@ static SCUserProfileManager *sharedInstance = nil;
 
 - (ContactUser *)getUserProfileByUsername:(NSString *)username updateFlag:(BOOL)updateFlag
 {
-    ContactUser *contactUser = [ContactUser contactUserWithUsername:username inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+    ContactUser *contactUser = [ContactUser contactUserWithUsername:username inManagedObjectContext:[SAMCCoreDataManager sharedManager].mainObjectContext];
     if((contactUser == nil) || (updateFlag)){
         [self loadUserProfileInBackground:@[username] saveToLoacal:YES completion:NULL];
     }
@@ -304,7 +303,7 @@ static SCUserProfileManager *sharedInstance = nil;
 - (void)updateUserProfileByUsername:(NSString *)username lastupdate:(NSInteger)lastupdate
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        ContactUser *contactUser = [ContactUser contactUserWithUsername:username inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+        ContactUser *contactUser = [ContactUser contactUserWithUsername:username inManagedObjectContext:[SAMCCoreDataManager sharedManager].mainObjectContext];
         if((contactUser == nil) || ([contactUser.lastupdate integerValue] != lastupdate)){
             [self loadUserProfileInBackground:@[username]
                                  saveToLoacal:YES
@@ -326,10 +325,10 @@ static SCUserProfileManager *sharedInstance = nil;
 #pragma mark - private
 - (void)saveUserToDatabase:(NSDictionary *)user
 {
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+    NSManagedObjectContext *mainContext = [SAMCCoreDataManager sharedManager].mainObjectContext;
     [mainContext performBlockAndWait:^{
         [ContactUser contactUserWithSkyWorldInfo:user inManagedObjectContext:mainContext];
-        [[SCCoreDataManager sharedInstance] saveContext];
+        [[SAMCCoreDataManager sharedManager] saveContext];
     }];
 }
 

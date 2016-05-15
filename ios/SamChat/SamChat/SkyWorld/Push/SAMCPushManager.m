@@ -8,7 +8,7 @@
 
 #import "SAMCPushManager.h"
 #import "SAMCSkyWorldAPIMacro.h"
-#import "SCCoreDataManager.h"
+#import "SAMCCoreDataManager.h"
 #import "ReceivedQuestion.h"
 #import "ContactUser.h"
 
@@ -134,14 +134,14 @@
 
 - (void)receivedNewQuestion:(NSDictionary *)question
 {
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+    NSManagedObjectContext *privateContext = [[SAMCCoreDataManager sharedManager] privateChildObjectContextOfmainContext];
     [privateContext performBlock:^{
         ReceivedQuestion *receivedQuestion = [ReceivedQuestion receivedQuestionWithSkyWorldInfo:question
                                                                          inManagedObjectContext:privateContext];
         if ([privateContext hasChanges]) {
             [privateContext save:NULL];
         }
-        [[SCCoreDataManager sharedInstance] saveContext];
+        [[SAMCCoreDataManager sharedManager] saveContext];
         if ([receivedQuestion.status isEqualToNumber:RECEIVED_QUESTION_VALID]) { // new question
             NSString *questionFrom = receivedQuestion.fromWho.username;
             NIMSession *session = [NIMSession session:questionFrom type:NIMSessionTypeP2P];

@@ -8,8 +8,7 @@
 
 #import "LoginUserInformation.h"
 #import "SCUserProfileManager.h"
-#import "SCCoreDataMacro.h"
-#import "SCCoreDataManager.h"
+#import "SAMCCoreDataManager.h"
 
 @implementation LoginUserInformation
 
@@ -40,7 +39,7 @@
                                                                                      inManagedObjectContext:context];
     loginUserInformation.imagefile = url;
     [ContactUser contactUserWithLoginUserInformation:loginUserInformation inManagedObjectContext:context];
-    [[SCCoreDataManager sharedInstance] saveContext];
+    [[SAMCCoreDataManager sharedManager] saveContext];
 }
 
 

@@ -8,7 +8,6 @@
 
 #import "QuestionMessage.h"
 #import "SendQuestion.h"
-#import "SCCoreDataManager.h"
 #import "SCUtils.h"
 #import "SAMCQuestionMessage.h"
 #import "SAMCUserProfileManager.h"

@@ -11,7 +11,7 @@
 #import "SAMCSkyWorldErrorHelper.h"
 #import "AFNetworking.h"
 #import "ReceivedQuestion.h"
-#import "SCCoreDataManager.h"
+#import "SAMCCoreDataManager.h"
 
 @implementation SAMCProducerManager
 
@@ -59,14 +59,14 @@
 
 - (NSArray *)unresponsedQuestionIdsFrom:(NSString *)username markResponsed:(BOOL)flag
 {
-    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] confinementObjectContextOfmainContext];
+    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] confinementObjectContextOfmainContext];
     NSArray *questionIds = [ReceivedQuestion unresponsedQuestionIdsFrom:username
                                    markResponsed:flag
                           inManagedObjectContext:context];
     if (flag && [context hasChanges]) {
         [context save:NULL];
     }
-    [[SCCoreDataManager sharedInstance] saveContext];
+    [[SAMCCoreDataManager sharedManager] saveContext];
     return questionIds;
 }
 
