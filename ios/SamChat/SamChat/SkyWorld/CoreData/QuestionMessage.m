@@ -42,10 +42,6 @@
             } 
         }
     }];
-    if ([context hasChanges]) {
-        [context save:NULL];
-    }
-    [[SCCoreDataManager sharedInstance] saveContext];
 }
 
 + (NSArray *)messagesFromQuestionMessageWithTimeFrom:(NSNumber *)timefrom
@@ -89,32 +85,21 @@
         for (NSManagedObject *questionMessage in matches) {
             [context deleteObject:questionMessage];
         }
-        if ([context hasChanges]) {
-            [context save:NULL];
-        }
     }
-    [[SCCoreDataManager sharedInstance] saveContext];
 }
 
-+ (void)deleteAllQuestionMessagesWithSessionId:(NSString *)sessionId
++ (void)deleteAllQuestionMessagesWithSessionId:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
-    [privateContext performBlock:^{
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_QUESTION_MESSAGE];
-        request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", QUESTION_MESSAGE_SESSSION_ID, sessionId];
-        [request setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        NSError *error;
-        NSArray *matches = [privateContext executeFetchRequest:request error:&error];
-        if((error == nil) && ([matches count] > 0)){
-            for (NSManagedObject *questionMessage in matches) {
-                [privateContext deleteObject:questionMessage];
-            }
-            if ([privateContext hasChanges]) {
-                [privateContext save:NULL];
-            }
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_QUESTION_MESSAGE];
+    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", QUESTION_MESSAGE_SESSSION_ID, sessionId];
+    [request setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+    NSError *error;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    if((error == nil) && ([matches count] > 0)){
+        for (NSManagedObject *questionMessage in matches) {
+            [context deleteObject:questionMessage];
         }
-        [[SCCoreDataManager sharedInstance] saveContext];
-    }];
+    }
 }
 
 @end

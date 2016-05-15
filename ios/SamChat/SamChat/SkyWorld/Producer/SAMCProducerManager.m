@@ -10,10 +10,12 @@
 #import "SAMCSkyWorldAPI.h"
 #import "SAMCSkyWorldErrorHelper.h"
 #import "AFNetworking.h"
+#import "ReceivedQuestion.h"
+#import "SCCoreDataManager.h"
 
 @implementation SAMCProducerManager
 
-+ (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, NSError *error))completion
+- (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, NSError *error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     NSString *area = info[SKYWORLD_AREA] ?:@"";
@@ -53,6 +55,19 @@
              DDLogDebug(@"Error: %@", error);
              completion(false, [SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
          }];
+}
+
+- (NSArray *)unresponsedQuestionIdsFrom:(NSString *)username markResponsed:(BOOL)flag
+{
+    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] confinementObjectContextOfmainContext];
+    NSArray *questionIds = [ReceivedQuestion unresponsedQuestionIdsFrom:username
+                                   markResponsed:flag
+                          inManagedObjectContext:context];
+    if (flag && [context hasChanges]) {
+        [context save:NULL];
+    }
+    [[SCCoreDataManager sharedInstance] saveContext];
+    return questionIds;
 }
 
 @end

@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (SendQuestion *)sendQuestionWithInfo:(NSDictionary *)questionInfo inManagedObjectContext:(NSManagedObjectContext *)context;
 + (SendQuestion *)sendQuestionWithId:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (NSArray *)messagesFromQuestionWithTimeFrom:(NSNumber *)timefrom limit:(NSInteger)limit session:(NIMSession *)session inManagedObjectContext:(NSManagedObjectContext *)context;
+//+ (NSArray *)messagesFromQuestionWithTimeFrom:(NSNumber *)timefrom limit:(NSInteger)limit session:(NIMSession *)session inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

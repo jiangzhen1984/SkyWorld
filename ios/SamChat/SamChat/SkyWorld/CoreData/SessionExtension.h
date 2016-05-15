@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)chatTagOfSession:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context;
 + (BOOL)serviceTagOfSession:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context;
 
-+ (BOOL)shouldDeleteSession:(NSString *)sessionId;
++ (BOOL)deleteSessionIfNeeded:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 

@@ -10,6 +10,7 @@
 
 @interface SAMCProducerManager : NSObject
 
-+ (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, NSError *error))completion;
+- (void)upgradeToProducerWithInformationDictionary:(NSDictionary *)info completion:(void (^)(BOOL success, NSError *error))completion;
+- (NSArray *)unresponsedQuestionIdsFrom:(NSString *)username markResponsed:(BOOL)flag;
 
 @end

@@ -12,6 +12,9 @@
 #import "AFNetworking.h"
 #import "SendQuestion.h"
 #import "SCCoreDataManager.h"
+#import "HotTopic.h"
+#import "QuestionMessage.h"
+#import "SAMCQuestionMessage.h"
 
 @interface SAMCSearchManager ()
 
@@ -72,10 +75,14 @@
                  NSDictionary *questionInfo = @{SEND_QUESTION_QUESTION:question,
                                                 SEND_QUESTION_QUESTION_ID:questionId};
                  
-                 NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-                 [mainContext performBlockAndWait:^{
+                 NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+                 [privateContext performBlock:^{
                      [SendQuestion sendQuestionWithInfo:questionInfo
-                                 inManagedObjectContext:mainContext];
+                                 inManagedObjectContext:privateContext];
+                     if ([privateContext hasChanges]) {
+                         [privateContext save:NULL];
+                         [[SCCoreDataManager sharedInstance] saveContext];
+                     }
                  }];
                  completion(nil);
              }
@@ -85,5 +92,81 @@
          completion([SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
      }];
 }
+
+#pragma mark - HotTopic Core Data 
+- (NSArray *)hotTopicsWithType:(NSInteger)type
+{
+    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] confinementObjectContextOfmainContext];
+    return [HotTopic hotTopicsWithType:type inManagedObjectContext:context];
+}
+
+- (void)updateHotTopicsWithArray:(NSArray<SAMCHotTopicCellModel*> *)topics
+{
+    NSManagedObjectContext *context = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+    [context performBlock:^{
+        [HotTopic updateHotTopicsWithArray:topics inManagedObjectContext:context];
+        if ([context hasChanges]) {
+            [context save:NULL];
+            [[SCCoreDataManager sharedInstance] saveContext];
+        }
+    }];
+}
+
+#pragma mark - QuestionMessage Core Data
+- (void)insertQuestionWitdIdsString:(NSString *)questionIdsString toSession:(NIMSession *)session
+{
+    NSArray *questionIds = [questionIdsString componentsSeparatedByString:@" "];
+    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+    [privateContext performBlock:^{
+        [QuestionMessage insertQuestionWithIds:questionIds
+                                     sessionId:session.sessionId
+                        inManagedObjectContext:privateContext];
+        if ([privateContext hasChanges]) {
+            [privateContext save:NULL];
+            [[SCCoreDataManager sharedInstance] saveContext];
+        }
+    }];
+}
+
+- (NSArray<SAMCQuestionMessage*> *)messagesFromQuestionMessageWithTimeFrom:(NSNumber *)timefrom
+                                                                     limit:(NSInteger)limit
+                                                                   session:(NIMSession *)session
+{
+    NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext;
+    NSArray<SAMCQuestionMessage *> *questionMessages = [QuestionMessage messagesFromQuestionMessageWithTimeFrom:timefrom
+                                                                                                          limit:limit
+                                                                                                        session:session
+                                                                                         inManagedObjectContext:context];
+    return questionMessages;
+}
+
+- (void)deleteQuestionMessageWithId:(NSString *)questionId
+                          sessionId:(NSString *)sessionId
+{
+    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+    [privateContext performBlock:^{
+        [QuestionMessage deleteQuestionMessageWithId:questionId
+                                           sessionId:sessionId
+                              inManagedObjectContext:privateContext];
+        if ([privateContext hasChanges]) {
+            [privateContext save:NULL];
+            [[SCCoreDataManager sharedInstance] saveContext];
+        }
+    }];
+}
+
+- (void)deleteAllQuestionMessagesWithSessionId:(NSString *)sessionId
+{
+    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
+    [privateContext performBlock:^{
+        [QuestionMessage deleteAllQuestionMessagesWithSessionId:sessionId
+                                         inManagedObjectContext:privateContext];
+        if ([privateContext hasChanges]) {
+            [privateContext save:NULL];
+            [[SCCoreDataManager sharedInstance] saveContext];
+        }
+    }];
+}
+
 
 @end

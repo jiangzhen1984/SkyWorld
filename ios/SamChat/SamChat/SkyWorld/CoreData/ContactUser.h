@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "LoginUserInformation.h"
 
-@class ReceivedAnswer, ReceivedQuestion;
+@class ReceivedQuestion;
 
 
 

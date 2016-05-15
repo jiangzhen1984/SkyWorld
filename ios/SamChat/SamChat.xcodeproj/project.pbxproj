@@ -241,6 +241,9 @@
 		3194A0971CE5BC0E000607C9 /* SAMCChatSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194A0961CE5BC0E000607C9 /* SAMCChatSearchResultController.m */; };
 		3194A09B1CE5CDBE000607C9 /* SAMCQRCodeScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194A09A1CE5CDBE000607C9 /* SAMCQRCodeScanViewController.m */; };
 		31A3CEB81CDB23C200ECFD72 /* GCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A3CEB71CDB23C200ECFD72 /* GCDMulticastDelegate.m */; };
+		31A4990D1CE82A1000CB7F05 /* SAMCCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A4990C1CE82A1000CB7F05 /* SAMCCoreDataManager.m */; };
+		31A499121CE849CC00CB7F05 /* SAMCSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A499111CE849CC00CB7F05 /* SAMCSessionManager.m */; };
+		31A499161CE8592500CB7F05 /* SAMCHotTopicCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A499151CE8592500CB7F05 /* SAMCHotTopicCellModel.m */; };
 		31BF533C1CDAE00800406E1B /* SAMCAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF53241CDAE00800406E1B /* SAMCAccountManager.m */; };
 		31BF533D1CDAE00800406E1B /* SAMCOfficalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF53271CDAE00800406E1B /* SAMCOfficalManager.m */; };
 		31BF533E1CDAE00800406E1B /* SAMCProducerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF532A1CDAE00800406E1B /* SAMCProducerManager.m */; };
@@ -712,6 +715,13 @@
 		3194A09A1CE5CDBE000607C9 /* SAMCQRCodeScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCQRCodeScanViewController.m; path = Controllers/QRCode/SAMCQRCodeScanViewController.m; sourceTree = "<group>"; };
 		31A3CEB61CDB23C200ECFD72 /* GCDMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDMulticastDelegate.h; sourceTree = "<group>"; };
 		31A3CEB71CDB23C200ECFD72 /* GCDMulticastDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDMulticastDelegate.m; sourceTree = "<group>"; };
+		31A4990B1CE82A1000CB7F05 /* SAMCCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCoreDataManager.h; path = manager/SAMCCoreDataManager.h; sourceTree = "<group>"; };
+		31A4990C1CE82A1000CB7F05 /* SAMCCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCoreDataManager.m; path = manager/SAMCCoreDataManager.m; sourceTree = "<group>"; };
+		31A499101CE849CC00CB7F05 /* SAMCSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSessionManager.h; path = Session/SAMCSessionManager.h; sourceTree = "<group>"; };
+		31A499111CE849CC00CB7F05 /* SAMCSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSessionManager.m; path = Session/SAMCSessionManager.m; sourceTree = "<group>"; };
+		31A499141CE8592500CB7F05 /* SAMCHotTopicCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCHotTopicCellModel.h; path = Controllers/Search/Model/SAMCHotTopicCellModel.h; sourceTree = "<group>"; };
+		31A499151CE8592500CB7F05 /* SAMCHotTopicCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCHotTopicCellModel.m; path = Controllers/Search/Model/SAMCHotTopicCellModel.m; sourceTree = "<group>"; };
+		31A499171CE85C7F00CB7F05 /* SAMCCoreDataMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SAMCCoreDataMacro.h; path = manager/SAMCCoreDataMacro.h; sourceTree = "<group>"; };
 		31BF53231CDAE00800406E1B /* SAMCAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAccountManager.h; sourceTree = "<group>"; };
 		31BF53241CDAE00800406E1B /* SAMCAccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCAccountManager.m; sourceTree = "<group>"; };
 		31BF53261CDAE00800406E1B /* SAMCOfficalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCOfficalManager.h; sourceTree = "<group>"; };
@@ -816,6 +826,7 @@
 		311EC21D1CDC5BFF00083061 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				31A499131CE8590500CB7F05 /* Model */,
 				311EC22F1CDC821400083061 /* View */,
 				311EC21E1CDC5C7500083061 /* SAMCSearchListViewController.h */,
 				311EC21F1CDC5C7500083061 /* SAMCSearchListViewController.m */,
@@ -1893,9 +1904,38 @@
 			name = QRCode;
 			sourceTree = "<group>";
 		};
+		31A4990A1CE829E000CB7F05 /* manager */ = {
+			isa = PBXGroup;
+			children = (
+				31A499171CE85C7F00CB7F05 /* SAMCCoreDataMacro.h */,
+				31A4990B1CE82A1000CB7F05 /* SAMCCoreDataManager.h */,
+				31A4990C1CE82A1000CB7F05 /* SAMCCoreDataManager.m */,
+			);
+			name = manager;
+			sourceTree = "<group>";
+		};
+		31A4990F1CE8498B00CB7F05 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				31A499101CE849CC00CB7F05 /* SAMCSessionManager.h */,
+				31A499111CE849CC00CB7F05 /* SAMCSessionManager.m */,
+			);
+			name = Session;
+			sourceTree = "<group>";
+		};
+		31A499131CE8590500CB7F05 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				31A499141CE8592500CB7F05 /* SAMCHotTopicCellModel.h */,
+				31A499151CE8592500CB7F05 /* SAMCHotTopicCellModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		31BF53211CDAE00800406E1B /* SkyWorld */ = {
 			isa = PBXGroup;
 			children = (
+				31A4990F1CE8498B00CB7F05 /* Session */,
 				316C139F1CDB553E00905499 /* SAMCUserProfileManager.h */,
 				316C13A01CDB553E00905499 /* SAMCUserProfileManager.m */,
 				31BF532B1CDAE00800406E1B /* SAMCSkyWorldAPI.h */,
@@ -1977,6 +2017,7 @@
 		31F66D7E1CDAF1AF003A01E1 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				31A4990A1CE829E000CB7F05 /* manager */,
 				311EC2591CDCDBF100083061 /* SessionExtension+CoreDataProperties.h */,
 				311EC25A1CDCDBF100083061 /* SessionExtension+CoreDataProperties.m */,
 				311EC25B1CDCDBF100083061 /* SessionExtension.h */,
@@ -2336,6 +2377,7 @@
 				31BF534B1CDAE0A900406E1B /* SAMCPushManager.m in Sources */,
 				311EC22A1CDC60BD00083061 /* SAMCServiceListViewController.m in Sources */,
 				31F66D961CDAF1AF003A01E1 /* ContactUser+CoreDataProperties.m in Sources */,
+				31A4990D1CE82A1000CB7F05 /* SAMCCoreDataManager.m in Sources */,
 				31F66D9C1CDAF1AF003A01E1 /* ReceivedQuestion+CoreDataProperties.m in Sources */,
 				318B69231CDA02B3008260A2 /* NTESDevice.m in Sources */,
 				318B68C31CDA02B3008260A2 /* NTESCustomNotificationObject.m in Sources */,
@@ -2396,6 +2438,7 @@
 				31F66D971CDAF1AF003A01E1 /* ContactUser.m in Sources */,
 				318B68C81CDA02B3008260A2 /* NTESSystemNotificationViewController.m in Sources */,
 				318B68AD1CDA02B3008260A2 /* NTESLiveInfoViewController.m in Sources */,
+				31A499161CE8592500CB7F05 /* SAMCHotTopicCellModel.m in Sources */,
 				318B69171CDA02B3008260A2 /* NTESBirthPickerView.m in Sources */,
 				318B68E01CDA02B3008260A2 /* NTESSessionWhiteBoardContentView.m in Sources */,
 				318B691C1CDA02B3008260A2 /* NTESDemoRegisterTask.m in Sources */,
@@ -2408,6 +2451,7 @@
 				318B68B11CDA02B3008260A2 /* NTESChatroomSegmentedControl.m in Sources */,
 				318B688E1CDA02B3008260A2 /* UIView+Swizzling.m in Sources */,
 				318B69151CDA02B3008260A2 /* NTESUserInfoSettingViewController.m in Sources */,
+				31A499121CE849CC00CB7F05 /* SAMCSessionManager.m in Sources */,
 				3194A0971CE5BC0E000607C9 /* SAMCChatSearchResultController.m in Sources */,
 				318B688C1CDA02B3008260A2 /* UINavigationController+Swizzling.m in Sources */,
 				318B68FE1CDA02B3008260A2 /* NTESMutiClientsHeaderView.m in Sources */,

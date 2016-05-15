@@ -20,7 +20,9 @@
 
 @synthesize accountManager = _accountManager;
 @synthesize searchManager = _searchManager;
+@synthesize producerManager = _producerManager;
 @synthesize pushManager = _pushManager;
+@synthesize sessionManager = _sessionManager;
 
 + (instancetype)sharedClient
 {
@@ -63,6 +65,14 @@
     return _searchManager;
 }
 
+- (SAMCProducerManager *)producerManager
+{
+    if (_producerManager) {
+        _producerManager = [[SAMCProducerManager alloc] init];
+    }
+    return _producerManager;
+}
+
 - (SAMCPushManager *)pushManager
 {
     if (_pushManager == nil) {
@@ -71,6 +81,15 @@
     return _pushManager;
 }
 
+- (SAMCSessionManager *)sessionManager
+{
+    if (_sessionManager == nil) {
+        _sessionManager = [[SAMCSessionManager alloc] init];
+    }
+    return _sessionManager;
+}
+
+
 #pragma mark - NIMChatManagerDelegate
 - (void)onRecvMessages:(NSArray *)messages
 {
@@ -78,67 +97,16 @@
         NIMSession *session = message.session;
         if ((session.sessionType == NIMSessionTypeP2P) && (message.remoteExt != nil)) {
             // 根据接受到的消息扩展内容，对会话进行标记
-            [self setExtOfSessionWithMessage:message];
+            [[SamChatClient sharedClient].sessionManager setExtOfSessionWithMessage:message];
             NSString *questionIdString = [message.remoteExt valueForKey:MESSAGE_QUESTIONS];
             if (questionIdString) {
                 // 根据收到的消息中question id内容，将question插入到会话当中
                 // TODO: delete?
-                [self insertQuestionWitdIdsString:questionIdString toSession:message.session];
+                [self.searchManager insertQuestionWitdIdsString:questionIdString toSession:message.session];
             }
         }
     }];
 }
 
-#pragma mark - Private
-- (void)setExtOfSessionWithMessage:(NIMMessage *)message
-{
-    NSNumber *sessionType = [message.remoteExt valueForKey:MESSAGE_FROM_VIEW];
-    if (sessionType == nil) {
-        return;
-    }
-    //TODO: should add conversation list change notification ?
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
-    if ([sessionType isEqualToNumber:MESSAGE_FROM_VIEW_SEARCH]) {
-        [privateContext performBlockAndWait:^{
-            [SessionExtension updateSession:message.session.sessionId
-                                 serviceTag:YES
-                     inManagedObjectContext:privateContext];
-        }];
-    }else if([sessionType isEqualToNumber:MESSAGE_FROM_VIEW_CHAT]) {
-        [privateContext performBlockAndWait:^{
-            [SessionExtension updateSession:message.session.sessionId
-                                    chatTag:YES
-                     inManagedObjectContext:privateContext];
-        }];
-    }else if([sessionType isEqualToNumber:MESSAGE_FROM_VIEW_VENDOR]) {
-        [privateContext performBlockAndWait:^{
-            [SessionExtension updateSession:message.session.sessionId
-                                  searchTag:YES
-                     inManagedObjectContext:privateContext];
-        }];
-    }
-}
-
-- (void)insertQuestionWitdIdsString:(NSString *)questionIdsString toSession:(NIMSession *)session
-{
-    NSArray *questionIds = [questionIdsString componentsSeparatedByString:@" "];
-    NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
-    [privateContext performBlock:^{
-        [QuestionMessage insertQuestionWithIds:questionIds
-                                     sessionId:session.sessionId
-                        inManagedObjectContext:privateContext];
-    }];
-//    NSArray *questionIds = [questionIdsString componentsSeparatedByString:@" "];
-//    for (NSString *questionId in questionIds) {
-//        NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-//        SendQuestion *question = [SendQuestion sendQuestionWithId:questionId inManagedObjectContext:mainContext];
-//        NSString *text = [NSString stringWithFormat:@"我的问题：%@", question.question];
-//        NIMMessage *message = [[NIMMessage alloc] init];
-//        message.text = text;
-//        [[NIMSDK sharedSDK].conversationManager saveMessage:message
-//                                                 forSession:session
-//                                                 completion:NULL];
-//    }
-}
 
 @end

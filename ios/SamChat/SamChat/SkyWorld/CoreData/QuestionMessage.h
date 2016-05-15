@@ -13,12 +13,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QuestionMessage : NSManagedObject
 
-+ (void)insertQuestionWithIds:(NSArray *)questionIds sessionId:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context;
++ (void)insertQuestionWithIds:(NSArray *)questionIds
+                    sessionId:(NSString *)sessionId
+       inManagedObjectContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)messagesFromQuestionMessageWithTimeFrom:(NSNumber *)timefrom limit:(NSInteger)limit session:(NIMSession *)session inManagedObjectContext:(NSManagedObjectContext *)context;
++ (NSArray *)messagesFromQuestionMessageWithTimeFrom:(NSNumber *)timefrom
+                                               limit:(NSInteger)limit
+                                             session:(NIMSession *)session
+                              inManagedObjectContext:(NSManagedObjectContext *)context;
 
 + (void)deleteQuestionMessageWithId:(NSString *)questionId sessionId:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (void)deleteAllQuestionMessagesWithSessionId:(NSString *)sessionId;
++ (void)deleteAllQuestionMessagesWithSessionId:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context;;
 
 @end
 

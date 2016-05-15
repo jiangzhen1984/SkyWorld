@@ -18,10 +18,9 @@
 #import "NTESWhiteboardAttachment.h"
 #import "NTESSessionUtil.h"
 #import "NTESPersonalCardViewController.h"
-#import "SessionExtension.h"
-#import "SCCoreDataManager.h"
 #import "SAMCChatSearchResultController.h"
 #import "SAMCQRCodeScanViewController.h"
+#import "SamChatClient.h"
 
 #define SessionListTitle @"天际聊天"
 
@@ -96,8 +95,7 @@
     if (recentSession.session.sessionType != NIMSessionTypeP2P) {
         return YES;
     }else{
-        NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext;
-        __block BOOL flag = [SessionExtension chatTagOfSession:recentSession.session.sessionId inManagedObjectContext:context];
+        __block BOOL flag = [[SamChatClient sharedClient].sessionManager chatTagOfSession:recentSession.session.sessionId];
         if (flag == NO && (recentSession.unreadCount > 0)) {
             NSArray *messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:recentSession.session
                                                                                   message:nil
@@ -133,18 +131,15 @@
         [super onDeleteRecentAtIndexPath:recent atIndexPath:indexPath];
         self.emptyTipLabel.hidden = self.recentSessions.count;
     }else{
-        NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-        [SessionExtension updateSession:recent.session.sessionId
-                                chatTag:NO
-                 inManagedObjectContext:mainContext];
-        
+        BOOL deleteFlag = [[SamChatClient sharedClient].sessionManager deleteSession:recent.session.sessionId
+                                                           ifNeededAfterClearTagType:MESSAGE_FROM_VIEW_CHAT];
         //清理本地数据
         [self.recentSessions removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
         id<NIMConversationManager> manager = [[NIMSDK sharedSDK] conversationManager];
         [manager markAllMessagesReadInSession:recent.session];
-        if ([SessionExtension shouldDeleteSession:recent.session.sessionId]) {
+        if (deleteFlag) {
             //id<NIMConversationManager> manager = [[NIMSDK sharedSDK] conversationManager];
             //[manager deleteRecentSession:recent];
             [manager deleteAllmessagesInSession:recent.session removeRecentSession:YES];

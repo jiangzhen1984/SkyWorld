@@ -49,9 +49,7 @@
 //SAMC_BEGIN
 #import "SAMCSearchSessionConfig.h"
 #import "SAMCQuestionMessage.h"
-#import "QuestionMessage.h"
-#import "SessionExtension.h"
-#import "SCCoreDataManager.h"
+#import "SamChatClient.h"
 //SAMC_END
 
 typedef enum : NSUInteger {
@@ -815,12 +813,8 @@ NIMContactSelectDelegate>
     if ([message isMemberOfClass:[SAMCQuestionMessage class]]) {
         SAMCQuestionMessage *questionMessage = (SAMCQuestionMessage *)message;
         [self uiDeleteMessage:message];
-        NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
-        [privateContext performBlock:^{
-            [QuestionMessage deleteQuestionMessageWithId:questionMessage.questionId
-                                               sessionId:self.session.sessionId
-                                  inManagedObjectContext:privateContext];
-        }];
+        [[SamChatClient sharedClient].searchManager deleteQuestionMessageWithId:questionMessage.questionId
+                                                                      sessionId:self.session.sessionId];
     }else{
         [super deleteMsg:sender];
     }
@@ -833,12 +827,9 @@ NIMContactSelectDelegate>
         self.shouldTagSessionWhenSendMessage = NO;
         NSNumber *messageFromView = [self.messageExtDictionary valueForKey:MESSAGE_FROM_VIEW];
         if ([messageFromView isEqualToNumber:MESSAGE_FROM_VIEW_CHAT]) {
-            NSManagedObjectContext *privateContext = [[SCCoreDataManager sharedInstance] privateChildObjectContextOfmainContext];
-            [privateContext performBlock:^{
-                [SessionExtension updateSession:self.session.sessionId
-                                        chatTag:YES
-                         inManagedObjectContext:privateContext];
-            }];
+            [[SamChatClient sharedClient].sessionManager updateSession:self.session.sessionId
+                                                               tagType:MESSAGE_FROM_VIEW_CHAT
+                                                                 value:YES];
         }
     }
     [super sendMessage:message];

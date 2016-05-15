@@ -18,9 +18,7 @@
 #import "NTESWhiteboardAttachment.h"
 #import "NTESSessionUtil.h"
 #import "NTESPersonalCardViewController.h"
-#import "ReceivedQuestion.h"
-#import "SCCoreDataManager.h"
-#import "SessionExtension.h"
+#import "SamChatClient.h"
 
 #define SessionListTitle @"天际商家"
 
@@ -75,8 +73,7 @@
     if (recentSession.session.sessionType != NIMSessionTypeP2P) {
         return NO;
     }else{
-        NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext;
-        __block BOOL flag = [SessionExtension serviceTagOfSession:recentSession.session.sessionId inManagedObjectContext:context];
+        __block BOOL flag = [[SamChatClient sharedClient].sessionManager serviceTagOfSession:recentSession.session.sessionId];
         if ((flag == NO) && (recentSession.unreadCount > 0)) {
             NSArray *messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:recentSession.session
                                                                                   message:nil
@@ -109,10 +106,8 @@
 
 - (void)onDeleteRecentAtIndexPath:(NIMRecentSession *)recent atIndexPath:(NSIndexPath *)indexPath{
     //[super onDeleteRecentAtIndexPath:recent atIndexPath:indexPath];
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-    [SessionExtension updateSession:recent.session.sessionId
-                         serviceTag:NO
-             inManagedObjectContext:mainContext];
+    BOOL deleteFlag = [[SamChatClient sharedClient].sessionManager deleteSession:recent.session.sessionId
+                                                       ifNeededAfterClearTagType:MESSAGE_FROM_VIEW_SEARCH];
     
     //清理本地数据
     [self.recentSessions removeObjectAtIndex:indexPath.row];
@@ -120,7 +115,7 @@
     
     id<NIMConversationManager> manager = [[NIMSDK sharedSDK] conversationManager];
     [manager markAllMessagesReadInSession:recent.session];
-    if ([SessionExtension shouldDeleteSession:recent.session.sessionId]) {
+    if (deleteFlag) {
         //id<NIMConversationManager> manager = [[NIMSDK sharedSDK] conversationManager];
         //[manager deleteRecentSession:recent];
         [manager deleteAllmessagesInSession:recent.session removeRecentSession:YES];
@@ -254,9 +249,7 @@
 {
     NSMutableDictionary *extDic = [NSMutableDictionary dictionaryWithDictionary:@{MESSAGE_FROM_VIEW:MESSAGE_FROM_VIEW_VENDOR}];
     NSString *username = sessionId;
-    NSArray *questionIds = [ReceivedQuestion unresponsedQuestionIdsFrom:username
-                                                          markResponsed:YES
-                                                 inManagedObjectContext:[SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext];
+    NSArray *questionIds = [[SamChatClient sharedClient].producerManager unresponsedQuestionIdsFrom:username markResponsed:YES];
     if(questionIds && (questionIds.count>0)){
         NSMutableString *idString = [[NSMutableString alloc] initWithString:questionIds[0]];
         for (int i=1; i<questionIds.count; i++) {

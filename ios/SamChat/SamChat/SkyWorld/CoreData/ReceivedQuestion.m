@@ -13,6 +13,8 @@
 
 @interface ReceivedQuestion ()
 
+
+
 @end
 
 @implementation ReceivedQuestion
@@ -50,45 +52,41 @@
     receivedQuestion.receiverusername = loginUserInformation.username;
     receivedQuestion.fromWho = [ContactUser contactUserWithSkyWorldInfo:questionDictionary[SKYWORLD_ASKER]
                                                  inManagedObjectContext:context];
-    if ([context hasChanges]) {
-        [context save:NULL];
-    }
-    [[SCCoreDataManager sharedInstance] saveContext];
     return receivedQuestion;
 }
 
-+ (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context
-{
-    ReceivedQuestion *receivedQuestion = nil;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_RECEIVED_QUESTION];
-    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", RECEIVED_QUESTION_QUESTION_ID, questionId];
-    NSError *error;
-    NSArray *matches = [context executeFetchRequest:request error:&error];
-    if(matches && [matches count]){
-        receivedQuestion = [matches firstObject];
-    }
-    return receivedQuestion;
-}
+//+ (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context
+//{
+//    ReceivedQuestion *receivedQuestion = nil;
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_RECEIVED_QUESTION];
+//    request.predicate = [NSPredicate predicateWithFormat:@"%K == %@", RECEIVED_QUESTION_QUESTION_ID, questionId];
+//    NSError *error;
+//    NSArray *matches = [context executeFetchRequest:request error:&error];
+//    if(matches && [matches count]){
+//        receivedQuestion = [matches firstObject];
+//    }
+//    return receivedQuestion;
+//}
 
-+ (NSArray *)receivedQuestionIDsFrom:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_RECEIVED_QUESTION];
-    request.predicate = [NSPredicate predicateWithFormat:@"(ANY %K == %@) AND (%K==%@)",RECEIVED_QUESTION_FROMWHO_USERNAME,username,RECEIVED_QUESTION_RESPONSE,RECEIVED_QUESTION_NOTRESPONSED];
-    request.propertiesToFetch = @[RECEIVED_QUESTION_QUESTION_ID];
-    request.returnsDistinctResults = YES;
-    request.resultType = NSDictionaryResultType;
-    NSError *error;
-    NSArray *matches = [context executeFetchRequest:request error:&error];
-    //DebugLog(@"fetch question ids: %@", matches);
-    NSMutableArray *questionIds = nil;
-    if(matches && [matches count]){
-        questionIds = [[NSMutableArray alloc] init];
-        for (NSDictionary *object in matches) {
-            [questionIds addObject:object[RECEIVED_QUESTION_QUESTION_ID]];
-        }
-    }
-    return questionIds;
-}
+//+ (NSArray *)receivedQuestionIDsFrom:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context
+//{
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_RECEIVED_QUESTION];
+//    request.predicate = [NSPredicate predicateWithFormat:@"(ANY %K == %@) AND (%K==%@)",RECEIVED_QUESTION_FROMWHO_USERNAME,username,RECEIVED_QUESTION_RESPONSE,RECEIVED_QUESTION_NOTRESPONSED];
+//    request.propertiesToFetch = @[RECEIVED_QUESTION_QUESTION_ID];
+//    request.returnsDistinctResults = YES;
+//    request.resultType = NSDictionaryResultType;
+//    NSError *error;
+//    NSArray *matches = [context executeFetchRequest:request error:&error];
+//    //DebugLog(@"fetch question ids: %@", matches);
+//    NSMutableArray *questionIds = nil;
+//    if(matches && [matches count]){
+//        questionIds = [[NSMutableArray alloc] init];
+//        for (NSDictionary *object in matches) {
+//            [questionIds addObject:object[RECEIVED_QUESTION_QUESTION_ID]];
+//        }
+//    }
+//    return questionIds;
+//}
 
 + (NSArray *)unresponsedQuestionIdsFrom:(NSString *)username markResponsed:(BOOL)flag inManagedObjectContext:(NSManagedObjectContext *)context
 {
@@ -106,10 +104,6 @@
             }
             [questionIds addObject:object.question_id];
         }
-    }
-    if (flag) {
-        [context save:NULL];
-        [[SCCoreDataManager sharedInstance] saveContext];
     }
     return questionIds;
 }

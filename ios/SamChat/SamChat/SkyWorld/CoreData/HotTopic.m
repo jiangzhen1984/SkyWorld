@@ -9,6 +9,7 @@
 #import "HotTopic.h"
 #import "SCUserProfileManager.h"
 #import "SCCoreDataManager.h"
+#import "SAMCHotTopicCellModel.h"
 
 @implementation HotTopic
 
@@ -24,7 +25,7 @@
     NSArray *matches = [context executeFetchRequest:request error:&error];
     if((error==nil) && matches){
         for (HotTopic *object in matches) {
-            HotTopicCellModel *topic = [[HotTopicCellModel alloc] init];
+            SAMCHotTopicCellModel *topic = [[SAMCHotTopicCellModel alloc] init];
             topic.type = [object.type integerValue];
             topic.name = object.name;
             [topics addObject:topic];
@@ -33,18 +34,27 @@
     return topics;
 }
 
++ (void)updateHotTopicsWithArray:(NSArray<SAMCHotTopicCellModel*> *)topics inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    if((topics==nil) || ([topics count] <= 0)){
+        return;
+    }
+    [HotTopic clearEntityInManagedObjectContext:context];
+    [HotTopic insertHotTopicsWithArray:topics inManagedObjectContext:context];
+}
+
+#pragma mark - Private
 + (void)insertHotTopicsWithArray:(NSArray *)topics inManagedObjectContext:(NSManagedObjectContext *)context
 {
     for (id topic in topics) {
-        if(![topic isKindOfClass:[HotTopicCellModel class]]){
+        if(![topic isKindOfClass:[SAMCHotTopicCellModel class]]){
             return;
         }
         HotTopic *hotTopic = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_HOT_TOPIC
                                                            inManagedObjectContext:context];
-        hotTopic.type = [NSNumber numberWithInteger:((HotTopicCellModel*)topic).type];
-        hotTopic.name = ((HotTopicCellModel*)topic).name;
+        hotTopic.type = [NSNumber numberWithInteger:((SAMCHotTopicCellModel*)topic).type];
+        hotTopic.name = ((SAMCHotTopicCellModel*)topic).name;
     }
-    [context save:NULL];
 }
 
 + (void)clearEntityInManagedObjectContext:(NSManagedObjectContext *)context
@@ -57,28 +67,7 @@
         for (NSManagedObject *topic in topics) {
             [context deleteObject:topic];
         }
-        [context save:NULL];
     }
 }
-
-+ (void)updateHotTopicsInPrivateManagedObjectContextWithArray:(NSArray *)topics
-{
-    if((topics==nil) || ([topics count] <= 0)){
-        return;
-    }
-    NSManagedObjectContext *backgroundContext = [SCCoreDataManager sharedInstance].backgroundObjectContext;
-    [backgroundContext performBlock:^{
-        [HotTopic clearEntityInManagedObjectContext:backgroundContext];
-        [HotTopic insertHotTopicsWithArray:topics inManagedObjectContext:backgroundContext];
-    }];
-    [[SCCoreDataManager sharedInstance] saveContext];
-}
-
-
-@end
-
-
-@implementation HotTopicCellModel
-
 
 @end

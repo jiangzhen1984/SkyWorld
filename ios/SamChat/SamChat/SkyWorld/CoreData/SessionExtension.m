@@ -23,8 +23,6 @@
         return;
     }
     sessionExtension.search_tag = [NSNumber numberWithBool:flag];
-    [context save:NULL];
-    [[SCCoreDataManager sharedInstance] saveContext];
 }
 
 + (void)updateSession:(NSString *)sessionId chatTag:(BOOL)flag inManagedObjectContext:(NSManagedObjectContext *)context
@@ -39,8 +37,6 @@
         return;
     }
     sessionExtension.chat_tag = [NSNumber numberWithBool:flag];
-    [context save:NULL];
-    [[SCCoreDataManager sharedInstance] saveContext];
 }
 
 + (void)updateSession:(NSString *)sessionId serviceTag:(BOOL)flag inManagedObjectContext:(NSManagedObjectContext *)context
@@ -55,8 +51,6 @@
         return;
     }
     sessionExtension.service_tag = [NSNumber numberWithBool:flag];
-    [context save:NULL];
-    [[SCCoreDataManager sharedInstance] saveContext];
 }
 
 + (BOOL)searchTagOfSession:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context
@@ -98,10 +92,9 @@
     }
 }
 
-+ (BOOL)shouldDeleteSession:(NSString *)sessionId
++ (BOOL)deleteSessionIfNeeded:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context
 {
     BOOL result = YES;
-    NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SESSION_EXTENSTION];
     request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",SESSION_EXTENSION_SESSION_ID, sessionId];
     NSError *error;
@@ -114,8 +107,6 @@
             result = NO;
         }else{
             [context deleteObject:sessionExtension];
-            [context save:NULL];
-            [[SCCoreDataManager sharedInstance] saveContext];
         }
     }
     return result;

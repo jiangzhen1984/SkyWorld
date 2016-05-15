@@ -21,9 +21,6 @@
 #import "SCServiceSearchBar.h"
 #import "SCHotTopicsView.h"
 #import "SamChatClient.h"
-#import "SessionExtension.h"
-#import "SCCoreDataManager.h"
-#import "QuestionMessage.h"
 
 #define SessionListTitle @"天际搜索"
 
@@ -104,8 +101,7 @@
     if (recentSession.session.sessionType != NIMSessionTypeP2P) {
         return NO;
     }else{
-        NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext;
-        __block BOOL flag = [SessionExtension searchTagOfSession:recentSession.session.sessionId inManagedObjectContext:context];
+        __block BOOL flag = [[SamChatClient sharedClient].sessionManager searchTagOfSession:recentSession.session.sessionId];
         if ((flag == NO) && (recentSession.unreadCount > 0)) {
             NSArray *messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:recentSession.session
                                                                                   message:nil
@@ -141,22 +137,19 @@
 
 - (void)onDeleteRecentAtIndexPath:(NIMRecentSession *)recent atIndexPath:(NSIndexPath *)indexPath{
     //[super onDeleteRecentAtIndexPath:recent atIndexPath:indexPath];
-    NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-    [SessionExtension updateSession:recent.session.sessionId
-                          searchTag:NO
-             inManagedObjectContext:mainContext];
-    
+    BOOL deleteFlag = [[SamChatClient sharedClient].sessionManager deleteSession:recent.session.sessionId
+                                                       ifNeededAfterClearTagType:MESSAGE_FROM_VIEW_VENDOR];
     //清理本地数据
     [self.recentSessions removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
     id<NIMConversationManager> manager = [[NIMSDK sharedSDK] conversationManager];
     [manager markAllMessagesReadInSession:recent.session];
-    if ([SessionExtension shouldDeleteSession:recent.session.sessionId]) {
+    if (deleteFlag) {
         //id<NIMConversationManager> manager = [[NIMSDK sharedSDK] conversationManager];
         //[manager deleteRecentSession:recent];
         [manager deleteAllmessagesInSession:recent.session removeRecentSession:YES];
-        [QuestionMessage deleteAllQuestionMessagesWithSessionId:recent.session.sessionId];
+        [[SamChatClient sharedClient].searchManager deleteAllQuestionMessagesWithSessionId:recent.session.sessionId];
         //如果删除本地会话后就不允许漫游当前会话，则需要进行一次删除服务器会话的操作
         if (self.autoRemoveRemoteSession)
         {

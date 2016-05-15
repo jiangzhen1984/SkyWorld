@@ -7,8 +7,7 @@
 //
 
 #import "SCHotTopicsView.h"
-#import "SCCoreDataManager.h"
-#import "HotTopic.h"
+#import "SAMCHotTopicCellModel.h"
 #import "SamChatClient.h"
 
 @interface SCHotTopicsView ()<UITableViewDataSource, UITableViewDelegate>
@@ -103,8 +102,7 @@
 - (NSMutableArray *)hotTopics
 {
     if(_hotTopics == nil){
-        NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-        _hotTopics = [NSMutableArray arrayWithArray:[HotTopic hotTopicsWithType:0 inManagedObjectContext:mainContext]];
+        _hotTopics = [NSMutableArray arrayWithArray:[[SamChatClient sharedClient].searchManager hotTopicsWithType:0]];
         [self asyncLoadHotTopicsFromServerWithReset:YES];
     }
     return _hotTopics;
@@ -129,7 +127,7 @@
                [self.hotTopics removeAllObjects];
            }
            [self.hotTopics addObjectsFromArray:topics];
-           [HotTopic updateHotTopicsInPrivateManagedObjectContextWithArray:topics];
+            [[SamChatClient sharedClient].searchManager updateHotTopicsWithArray:topics];
            [self.tableView reloadData];
         }
     }];
@@ -157,7 +155,7 @@
     NSMutableArray *topics = [[NSMutableArray alloc] init];
     for (id topicDictionary in topicsJson) {
         if([topicDictionary isKindOfClass:[NSDictionary class]]){
-            HotTopicCellModel *topic = [[HotTopicCellModel alloc] init];
+            SAMCHotTopicCellModel *topic = [[SAMCHotTopicCellModel alloc] init];
             topic.type = [((NSDictionary *)topicDictionary)[SKYWORLD_TOPIC_TYPE] integerValue];
             topic.name = ((NSDictionary *)topicDictionary)[SKYWORLD_NAME];
             if((topic.name) && (topic.name.length > 0)){
@@ -184,7 +182,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:HotQuestionCellIdentifier];
     }
     //cell.textLabel.text = self.hotTopics[indexPath.row];
-    HotTopicCellModel *topic = self.hotTopics[indexPath.row];
+    SAMCHotTopicCellModel *topic = self.hotTopics[indexPath.row];
     cell.textLabel.text = topic.name;
     return cell;
 }
@@ -207,7 +205,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(self.delegate){
-        [self.delegate didSelectHotTopic:((HotTopicCellModel *)self.hotTopics[indexPath.row]).name];
+        [self.delegate didSelectHotTopic:((SAMCHotTopicCellModel *)self.hotTopics[indexPath.row]).name];
     }
 }
 

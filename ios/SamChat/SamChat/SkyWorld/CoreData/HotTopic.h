@@ -8,25 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "SAMCHotTopicCellModel.h"
 
-@class HotTopicCellModel;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HotTopic : NSManagedObject
 
 + (NSArray *)hotTopicsWithType:(NSInteger)type inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (void)insertHotTopicsWithArray:(NSArray *)topics inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (void)clearEntityInManagedObjectContext:(NSManagedObjectContext *)context;
-+ (void)updateHotTopicsInPrivateManagedObjectContextWithArray:(NSArray *)topics;
++ (void)updateHotTopicsWithArray:(NSArray<SAMCHotTopicCellModel*> *)topics inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
 
-@interface HotTopicCellModel : NSObject
-
-@property (nonatomic, assign) NSInteger type;
-@property (nonatomic, strong) NSString *name;
-
-@end
 
 NS_ASSUME_NONNULL_END
 

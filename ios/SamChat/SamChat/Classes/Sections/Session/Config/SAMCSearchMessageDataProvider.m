@@ -7,10 +7,8 @@
 //
 
 #import "SAMCSearchMessageDataProvider.h"
-#import "SendQuestion.h"
-#import "QuestionMessage.h"
-#import "SCCoreDataManager.h"
 #import "SAMCQuestionMessage.h"
+#import "SamChatClient.h"
 
 @interface SAMCSearchMessageDataProvider ()
 
@@ -46,15 +44,9 @@
     NSArray<NIMMessage *> *ntesMessages = [[[NIMSDK sharedSDK] conversationManager] messagesInSession:self.session
                                                                                                  message:firstNtesMessage
                                                                                                    limit:limit];
-    NSManagedObjectContext *context = [SCCoreDataManager sharedInstance].confinementObjectContextOfmainContext;
-//    NSArray<SAMCQuestionMessage *> *questionMessages = [SendQuestion messagesFromQuestionWithTimeFrom:[NSNumber numberWithFloat:firstMessage.timestamp]
-//                                                                                                limit:limit
-//                                                                                              session:self.session
-//                                                                               inManagedObjectContext:context];
-    NSArray<SAMCQuestionMessage *> *questionMessages = [QuestionMessage messagesFromQuestionMessageWithTimeFrom:[NSNumber numberWithFloat:firstMessage.timestamp]
-                                                                                                          limit:limit
-                                                                                                        session:self.session
-                                                                                         inManagedObjectContext:context];
+    NSArray<SAMCQuestionMessage *> *questionMessages = [[SamChatClient sharedClient].searchManager messagesFromQuestionMessageWithTimeFrom:[NSNumber numberWithFloat:firstMessage.timestamp]
+                                                                                  limit:limit
+                                                                                session:self.session];
     
     // 两个数组里都已经按时间从小到大排列
     // 现在需要做的时取两个数组合并后时间最大的count个

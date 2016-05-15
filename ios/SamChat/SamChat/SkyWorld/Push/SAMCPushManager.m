@@ -13,10 +13,8 @@
 #import "ContactUser.h"
 
 @interface SAMCPushManager ()
-{
-    dispatch_queue_t _pushQueue;
-}
 
+@property (nonatomic, strong) dispatch_queue_t pushQueue;
 @property (nonatomic, assign) BOOL pulling;
 
 @end
@@ -116,7 +114,7 @@
     self.pulling = false;
 }
 
-#pragma mark - SCPushDelegate
+#pragma mark - Data Process
 - (void)didReceivePushData:(NSDictionary *)pushData
 {
     NSString *category = [pushData valueForKeyPath:SKYWORLD_HEADER_CATEGORY];
@@ -140,6 +138,10 @@
     [privateContext performBlock:^{
         ReceivedQuestion *receivedQuestion = [ReceivedQuestion receivedQuestionWithSkyWorldInfo:question
                                                                          inManagedObjectContext:privateContext];
+        if ([privateContext hasChanges]) {
+            [privateContext save:NULL];
+        }
+        [[SCCoreDataManager sharedInstance] saveContext];
         if ([receivedQuestion.status isEqualToNumber:RECEIVED_QUESTION_VALID]) { // new question
             NSString *questionFrom = receivedQuestion.fromWho.username;
             NIMSession *session = [NIMSession session:questionFrom type:NIMSessionTypeP2P];

@@ -47,8 +47,6 @@
     sendQuestion.whoSend = [LoginUserInformation loginUserInformationWithUserName:sendUsername
                                                            inManagedObjectContext:context];
     sendQuestion.senderusername = sendUsername;
-    
-    [[SCCoreDataManager sharedInstance] saveContext];
     return sendQuestion;
 }
 
@@ -66,31 +64,31 @@
     return sendQuestion;
 }
 
-+ (NSArray *)messagesFromQuestionWithTimeFrom:(NSNumber *)timefrom
-                                        limit:(NSInteger)limit
-                                      session:(NIMSession *)session
-                       inManagedObjectContext:(NSManagedObjectContext *)context
-{
-    if((timefrom == nil) || ([timefrom isEqual:[NSNumber numberWithLongLong:0]])){
-       timefrom = [SCUtils currentTimeStamp];
-    }
-    NSString *currentUsername = [SAMCUserProfileManager sharedManager].currentLoginData.account;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SEND_QUESTION];
-    request.predicate = [NSPredicate predicateWithFormat:@"(%K < %@) AND (%K == %@)",SEND_QUESTION_SENDTIME,timefrom,SEND_QUESTION_SENDERUSERNAME,currentUsername];
-    request.fetchLimit = limit;
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SEND_QUESTION_SENDTIME ascending:YES]];
-    
-    NSError *error;
-    NSArray *matches = [context executeFetchRequest:request error:&error];
-    NSMutableArray *messages = nil;
-    if ((error==nil) && matches) {
-        messages = [[NSMutableArray alloc] init];
-        for (SendQuestion *question in matches) {
-            SAMCQuestionMessage *message = [[SAMCQuestionMessage alloc] initWithSendQuestion:question];
-            [messages addObject:message];
-        }
-    }
-    return messages;
-}
+//+ (NSArray *)messagesFromQuestionWithTimeFrom:(NSNumber *)timefrom
+//                                        limit:(NSInteger)limit
+//                                      session:(NIMSession *)session
+//                       inManagedObjectContext:(NSManagedObjectContext *)context
+//{
+//    if((timefrom == nil) || ([timefrom isEqual:[NSNumber numberWithLongLong:0]])){
+//       timefrom = [SCUtils currentTimeStamp];
+//    }
+//    NSString *currentUsername = [SAMCUserProfileManager sharedManager].currentLoginData.account;
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SEND_QUESTION];
+//    request.predicate = [NSPredicate predicateWithFormat:@"(%K < %@) AND (%K == %@)",SEND_QUESTION_SENDTIME,timefrom,SEND_QUESTION_SENDERUSERNAME,currentUsername];
+//    request.fetchLimit = limit;
+//    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:SEND_QUESTION_SENDTIME ascending:YES]];
+//    
+//    NSError *error;
+//    NSArray *matches = [context executeFetchRequest:request error:&error];
+//    NSMutableArray *messages = nil;
+//    if ((error==nil) && matches) {
+//        messages = [[NSMutableArray alloc] init];
+//        for (SendQuestion *question in matches) {
+//            SAMCQuestionMessage *message = [[SAMCQuestionMessage alloc] initWithSendQuestion:question];
+//            [messages addObject:message];
+//        }
+//    }
+//    return messages;
+//}
 
 @end

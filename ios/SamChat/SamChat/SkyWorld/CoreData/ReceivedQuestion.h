@@ -14,10 +14,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ReceivedQuestion : NSManagedObject
-+ (ReceivedQuestion *)receivedQuestionWithSkyWorldInfo:(NSDictionary *)questionDictionary inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)receivedQuestionIDsFrom:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context;
++ (ReceivedQuestion *)receivedQuestionWithSkyWorldInfo:(NSDictionary *)questionDictionary inManagedObjectContext:(NSManagedObjectContext *)context;
+//+ (ReceivedQuestion *)receivedQuestionWithQuestionID:(NSString *)questionId inManagedObjectContext:(NSManagedObjectContext *)context;
+
+//+ (NSArray *)receivedQuestionIDsFrom:(NSString *)username inManagedObjectContext:(NSManagedObjectContext *)context;
 + (NSArray *)unresponsedQuestionIdsFrom:(NSString *)username markResponsed:(BOOL)flag inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
