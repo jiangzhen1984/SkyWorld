@@ -46,6 +46,9 @@
 
 - (void)dealloc{
     [[NIMSDK sharedSDK].loginManager removeDelegate:self];
+    if (_hotpicsView) {
+        _hotpicsView.delegate = nil;
+    }
 }
 
 
@@ -53,7 +56,7 @@
     [super viewDidLoad];
     self.currentListMessageFromView = MESSAGE_FROM_VIEW_VENDOR;
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
-    self.header = [[NTESListHeader alloc] initWithFrame:CGRectMake(0, 44, self.view.width, 0)];
+    self.header = [[NTESListHeader alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
     self.header.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.header.delegate = self;
     [self.view addSubview:self.header];
@@ -76,7 +79,6 @@
         // TODO: y change to header's top
         CGFloat top = 108;
         _hotpicsView = [[SCHotTopicsView alloc] initWithFrame:CGRectMake(0, top, self.view.frame.size.width, self.view.frame.size.height-108)];
-        _hotpicsView.backgroundColor = [UIColor yellowColor];
         _hotpicsView.delegate = self;
     }
     return _hotpicsView;
@@ -91,6 +93,7 @@
         self.tableView.hidden = NO;
         [self.tableView reloadData];
         if (_hotpicsView) {
+            _hotpicsView.delegate = nil;
             [_hotpicsView removeFromSuperview];
             _hotpicsView = nil;
         }
@@ -256,7 +259,8 @@
 - (void)refreshSubview{
     [self.titleLabel sizeToFit];
     self.titleLabel.centerX   = self.navigationItem.titleView.width * .5f;
-    self.tableView.top = self.header.height+self.header.frame.origin.y;
+    //self.tableView.top = self.header.height+self.header.frame.origin.y;
+    self.tableView.top = self.header.height + 44;
     self.tableView.height = self.view.height - self.tableView.top;
     self.header.bottom    = self.tableView.top + self.tableView.contentInset.top;
 }
