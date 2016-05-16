@@ -96,8 +96,12 @@
 #pragma mark - HotTopic Core Data 
 - (NSArray *)hotTopicsWithType:(NSInteger)type
 {
-    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] confinementObjectContextOfmainContext];
-    return [HotTopic hotTopicsWithType:type inManagedObjectContext:context];
+    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] privateChildObjectContextOfmainContext];
+    __block NSArray *topics = nil;
+    [context performBlockAndWait:^{
+        topics = [HotTopic hotTopicsWithType:type inManagedObjectContext:context];
+    }];
+    return topics;
 }
 
 - (void)updateHotTopicsWithArray:(NSArray<SAMCHotTopicCellModel*> *)topics
@@ -132,11 +136,14 @@
                                                                      limit:(NSInteger)limit
                                                                    session:(NIMSession *)session
 {
-    NSManagedObjectContext *context = [SAMCCoreDataManager sharedManager].confinementObjectContextOfmainContext;
-    NSArray<SAMCQuestionMessage *> *questionMessages = [QuestionMessage messagesFromQuestionMessageWithTimeFrom:timefrom
-                                                                                                          limit:limit
-                                                                                                        session:session
-                                                                                         inManagedObjectContext:context];
+    __block NSArray<SAMCQuestionMessage *> *questionMessages = nil;
+    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] privateChildObjectContextOfmainContext];
+    [context performBlockAndWait:^{
+        questionMessages = [QuestionMessage messagesFromQuestionMessageWithTimeFrom:timefrom
+                                                                              limit:limit
+                                                                            session:session
+                                                             inManagedObjectContext:context];
+    }];
     return questionMessages;
 }
 

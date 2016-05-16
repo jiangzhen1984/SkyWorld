@@ -59,14 +59,17 @@
 
 - (NSArray *)unresponsedQuestionIdsFrom:(NSString *)username markResponsed:(BOOL)flag
 {
-    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] confinementObjectContextOfmainContext];
-    NSArray *questionIds = [ReceivedQuestion unresponsedQuestionIdsFrom:username
-                                   markResponsed:flag
-                          inManagedObjectContext:context];
-    if (flag && [context hasChanges]) {
-        [context save:NULL];
-    }
-    [[SAMCCoreDataManager sharedManager] saveContext];
+    NSManagedObjectContext *context = [[SAMCCoreDataManager sharedManager] privateChildObjectContextOfmainContext];
+    __block NSArray *questionIds = nil;
+    [context performBlockAndWait:^{
+        questionIds = [ReceivedQuestion unresponsedQuestionIdsFrom:username
+                                                     markResponsed:flag
+                                            inManagedObjectContext:context];
+        if (flag && [context hasChanges]) {
+            [context save:NULL];
+            [[SAMCCoreDataManager sharedManager] saveContext];
+        }
+    }];
     return questionIds;
 }
 
