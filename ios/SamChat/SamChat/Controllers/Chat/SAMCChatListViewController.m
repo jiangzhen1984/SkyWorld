@@ -55,7 +55,6 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     self.currentListMessageFromView = MESSAGE_FROM_VIEW_CHAT;
-    self.edgesForExtendedLayout = UIRectEdgeBottom;
     
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
     [[NIMSDK sharedSDK].teamManager addDelegate:self];

@@ -64,7 +64,7 @@
 
 - (void)setupSubviews
 {
-    _serviceSearchBar = [[SCServiceSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    _serviceSearchBar = [[SCServiceSearchBar alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 44)];
     _serviceSearchBar.delegate = self;
     [self.view addSubview:_serviceSearchBar];
 }
@@ -74,8 +74,9 @@
 {
     if(_hotpicsView == nil){
         // TODO: y change to header's top
-        CGFloat top = self.header.height+self.header.frame.origin.y;
-        _hotpicsView = [[SCHotTopicsView alloc] initWithFrame:CGRectMake(0, top, self.view.frame.size.width, self.view.frame.size.height-44)];
+        CGFloat top = 108;
+        _hotpicsView = [[SCHotTopicsView alloc] initWithFrame:CGRectMake(0, top, self.view.frame.size.width, self.view.frame.size.height-108)];
+        _hotpicsView.backgroundColor = [UIColor yellowColor];
         _hotpicsView.delegate = self;
     }
     return _hotpicsView;
