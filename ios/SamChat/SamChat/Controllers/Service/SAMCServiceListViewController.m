@@ -19,6 +19,7 @@
 #import "NTESSessionUtil.h"
 #import "NTESPersonalCardViewController.h"
 #import "SAMCServiceSearchResultController.h"
+#import "SAMCCustomContactViewController.h"
 #import "SamChatClient.h"
 
 #define SessionListTitle @"天际商家"
@@ -61,6 +62,11 @@
     
     self.tableView.tableHeaderView = self.searchBar;
     self.searchResultController = [[SAMCServiceSearchResultController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+                                                                                  target:self
+                                                                                  action:@selector(pushCustomerContacts)];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
     
     self.emptyTipLabel = [[UILabel alloc] init];
     self.emptyTipLabel.text = @"还没有会话，在通讯录中找个人聊聊吧";
@@ -267,6 +273,13 @@
         [extDic addEntriesFromDictionary:@{MESSAGE_QUESTIONS:idString}];
     }
     return extDic;
+}
+
+#pragma mark - Navigation Item Action
+- (void)pushCustomerContacts
+{
+    SAMCCustomContactViewController *vc = [[SAMCCustomContactViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Private
