@@ -220,6 +220,8 @@ typedef NS_ENUM(NSInteger, SAMCMainTabType) {
                     chatUnreadCount ++;
                 }else if([messageFromView isEqualToNumber:MESSAGE_FROM_VIEW_SEARCH]) {
                     serviceUnreadCount ++;
+                }else{
+                    chatUnreadCount ++; // default set to type normal chat
                 }
             }];
         }

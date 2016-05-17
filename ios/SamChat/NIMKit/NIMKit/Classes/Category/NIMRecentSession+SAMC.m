@@ -35,8 +35,11 @@
         }
         if (messagesFromView != nil) {
             [messages enumerateObjectsUsingBlock:^(NIMMessage *message, NSUInteger idx, BOOL * _Nonnull stop) {
-                if ([[message.remoteExt valueForKey:MESSAGE_FROM_VIEW] isEqualToNumber:messagesFromView]) {
+                NSNumber *messageFromView = [message.remoteExt valueForKey:MESSAGE_FROM_VIEW];
+                if ([messageFromView isEqualToNumber:messagesFromView]) {
                     count ++;
+                }else if ((messageFromView == nil) && [messagesFromView isEqualToNumber:MESSAGE_FROM_VIEW_CHAT]){
+                    count ++; // count default message to type normal chat
                 }
             }];
         }
