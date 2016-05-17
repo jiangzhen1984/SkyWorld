@@ -18,15 +18,21 @@
 #import "NTESWhiteboardAttachment.h"
 #import "NTESSessionUtil.h"
 #import "NTESPersonalCardViewController.h"
+#import "SAMCServiceSearchResultController.h"
 #import "SamChatClient.h"
 
 #define SessionListTitle @"天际商家"
 
-@interface SAMCServiceListViewController ()<NIMLoginManagerDelegate,NTESListHeaderDelegate>
+@interface SAMCServiceListViewController ()<NIMLoginManagerDelegate,NTESListHeaderDelegate,UISearchBarDelegate>
 
 @property (nonatomic,strong) UILabel *titleLabel;
 
 @property (nonatomic,strong) NTESListHeader *header;
+
+@property (nonatomic, strong) UISearchBar *searchBar;
+
+@property (nonatomic, strong) SAMCServiceSearchResultController *searchResultController;
+
 @end
 
 @implementation SAMCServiceListViewController
@@ -52,6 +58,9 @@
     self.header.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.header.delegate = self;
     [self.view addSubview:self.header];
+    
+    self.tableView.tableHeaderView = self.searchBar;
+    self.searchResultController = [[SAMCServiceSearchResultController alloc] initWithSearchBar:self.searchBar contentsController:self];
     
     self.emptyTipLabel = [[UILabel alloc] init];
     self.emptyTipLabel.text = @"还没有会话，在通讯录中找个人聊聊吧";
@@ -258,6 +267,49 @@
         [extDic addEntriesFromDictionary:@{MESSAGE_QUESTIONS:idString}];
     }
     return extDic;
+}
+
+#pragma mark - Private
+- (UISearchBar *)searchBar
+{
+    if (_searchBar == nil) {
+        _searchBar = [[UISearchBar alloc] initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        _searchBar.delegate = self;
+        _searchBar.placeholder = @"search";
+        _searchBar.backgroundColor = [UIColor colorWithRed:0.747 green:0.756 blue:0.751 alpha:1.000];
+    }
+    return _searchBar;
+}
+
+#pragma mark - UISearchBarDelegate
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    
+    return YES;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    //TODO: add search 
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    return YES;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    searchBar.text = @"";
+    //    [[RealtimeSearchUtil currentUtil] realtimeSearchStop];
+    [searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
 }
 
 @end
