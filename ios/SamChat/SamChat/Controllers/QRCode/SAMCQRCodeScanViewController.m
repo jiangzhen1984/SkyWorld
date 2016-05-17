@@ -8,6 +8,7 @@
 
 #import "SAMCQRCodeScanViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "SAMCMyQRCodeViewController.h"
 
 @interface SAMCQRCodeScanViewController () <ZXCaptureDelegate>
 
@@ -30,9 +31,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        self.edgesForExtendedLayout =  UIRectEdgeBottom;
-    }
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
+                                                                                  target:self
+                                                                                  action:@selector(showMyQrCode)];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
+    
     CGFloat width = self.view.frame.size.width-60;
     self.scanRectView = [[UIView alloc] initWithFrame:CGRectMake(30, 200, width, width)];
     self.scanRectView.backgroundColor = [UIColor yellowColor];
@@ -251,6 +254,13 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self.capture start];
     });
+}
+
+#pragma mark - Navigation Item Action
+- (void)showMyQrCode
+{
+    SAMCMyQRCodeViewController *vc = [[SAMCMyQRCodeViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
