@@ -103,7 +103,7 @@ static dispatch_queue_t messageProcessQueue;
 {
     __weak typeof(self) weakSelf = self;
     dispatch_async(messageProcessQueue, ^{
-        [messages enumerateObjectsUsingBlock:^(NIMMessage *message, NSUInteger idx, BOOL * _Nonnull stop) {
+        for (NIMMessage *message in messages) {
             NIMSession *session = message.session;
             if ((session.sessionType == NIMSessionTypeP2P) && (message.remoteExt != nil)) {
                 // 根据接受到的消息扩展内容，对会话进行标记
@@ -111,11 +111,10 @@ static dispatch_queue_t messageProcessQueue;
                 NSString *questionIdString = [message.remoteExt valueForKey:MESSAGE_QUESTIONS];
                 if (questionIdString) {
                     // 根据收到的消息中question id内容，将question插入到会话当中
-                    // TODO: delete?
                     [weakSelf.searchManager insertQuestionWitdIdsString:questionIdString toSession:message.session];
                 }
             }
-        }];
+        }
     });
 }
 
