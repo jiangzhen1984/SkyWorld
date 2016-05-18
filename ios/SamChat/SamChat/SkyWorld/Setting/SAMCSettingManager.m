@@ -1,24 +1,34 @@
 //
-//  SCSettingManager.m
+//  SAMCSettingManager.m
 //  SamChat
 //
-//  Created by HJ on 4/26/16.
+//  Created by HJ on 5/18/16.
 //  Copyright © 2016 SkyWorld. All rights reserved.
 //
 
-#import "SCSettingManager.h"
+#import "SAMCSettingManager.h"
 #import "SAMCSkyWorldAPI.h"
 #import "SAMCSkyWorldErrorHelper.h"
 #import "AFNetworking.h"
+#import "SCUtils.h"
 
-@implementation SCSettingManager
+@implementation SAMCSettingManager
 
-+ (void)feedbackWithComment:(NSString *)comment completion:(void (^)(BOOL success, NSError *error))completion
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.findNewVersion = false;
+    }
+    return self;
+}
+
+- (void)feedbackWithComment:(NSString *)comment completion:(void (^)(NSError *error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     if((comment==nil) || (comment.length<=0)){
         // should check in controller
-        completion(false, [SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
+        completion([SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
         return;
     }
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -30,19 +40,19 @@
                 NSDictionary *response = responseObject;
                 NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
                 if(errorCode){
-                    completion(false, [SAMCSkyWorldErrorHelper errorWithCode:errorCode]);
+                    completion([SAMCSkyWorldErrorHelper errorWithCode:errorCode]);
                 }else{
-                    completion(true, nil);
+                    completion(nil);
                 }
             }else{
-                completion(false, [SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
+                completion([SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            completion(false, [SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
+            completion([SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
         }];
 }
 
-+ (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(BOOL success, NSError *error))completion
+- (void)uploadUserAvatarInBackground:(UIImage*)image completion:(void (^)(NSError *error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
 #warning 11111111111111111111111111111
@@ -72,30 +82,38 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
         NSString *avatarUrlString = [response valueForKeyPath:SKYWORLD_USER_AVATAR_ORIGIN];
         if((errorCode) || (avatarUrlString==nil)){
-            completion(false, [SAMCSkyWorldErrorHelper errorWithCode:errorCode]);
+            completion([SAMCSkyWorldErrorHelper errorWithCode:errorCode]);
             return;
         }
 #warning 11111111111111111111111111111
-//        NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
-//        [mainContext performBlockAndWait:^{
-//            [LoginUserInformation updateImageFileWithString:avatarUrlString inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
-//        }];
-        completion(true, nil);
+        //        NSManagedObjectContext *mainContext = [SCCoreDataManager sharedInstance].mainObjectContext;
+        //        [mainContext performBlockAndWait:^{
+        //            [LoginUserInformation updateImageFileWithString:avatarUrlString inManagedObjectContext:[SCCoreDataManager sharedInstance].mainObjectContext];
+        //        }];
+        completion(nil);
     }else{
-        completion(false, [SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
+        completion([SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
     }
 } failure:^(NSURLSessionDataTask *task, NSError *error) {
     DDLogDebug(@"avatar failed:%@", error);
-    completion(false, [SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
+    completion([SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
 }];
 }
 
 #pragma mark - Check Version
-+ (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion
+- (void)checkVersionCompletion:(void (^)(BOOL findNew, NSString *versionInfo))completion
 {
-    if(!completion){
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *latestCheckTime = [userDefaults objectForKey:SC_LATEST_VERSION_CHECK_TIME];
+    NSNumber * currentTimeStamp = [SCUtils currentTimeStamp];
+    if ((latestCheckTime != nil) &&
+        (([currentTimeStamp longLongValue] - [latestCheckTime longLongValue]) < 24*60*60*1000)) {
+        // check only once in 24hours
+        completion(false, nil);
         return;
     }
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:[SAMCSkyWorldAPI urlGetLatestIOSClientVersion]
       parameters:nil
@@ -109,7 +127,7 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                     completion(false, nil);
                     return;
                 }
-                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                //NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 NSNumber *latestAlertVersion = [userDefaults objectForKey:SC_LATEST_ALERT_VERSION];
                 NSString *currentVersionString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
                 NSNumber *currentVersion = [NSNumber numberWithInteger:[currentVersionString integerValue]];
@@ -117,12 +135,14 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                     latestAlertVersion = currentVersion;
                 }
                 if([latestAlertVersion compare:latestVersion] != NSOrderedSame){
+                    self.findNewVersion = true;
                     completion(true, [latestVersion stringValue]);
                 }else{
                     completion(false, nil);
                 }
                 latestAlertVersion = latestVersion;
                 [userDefaults setObject:latestAlertVersion forKey:SC_LATEST_ALERT_VERSION];
+                [userDefaults setObject:currentTimeStamp forKey:SC_LATEST_VERSION_CHECK_TIME];
             }else{
                 completion(false, nil);
             }
@@ -131,5 +151,6 @@ constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
             completion(false, nil);
         }];
 }
+
 
 @end

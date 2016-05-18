@@ -13,6 +13,7 @@
 #import "SAMCProducerManager.h"
 #import "SAMCPushManager.h"
 #import "SAMCSessionManager.h"
+#import "SAMCSettingManager.h"
 
 @interface SamChatClient : NSObject<NIMChatManagerDelegate>
 
@@ -21,6 +22,7 @@
 @property (nonatomic, strong, readonly) SAMCProducerManager *producerManager;
 @property (nonatomic, strong, readonly) SAMCPushManager *pushManager;
 @property (nonatomic, strong, readonly) SAMCSessionManager *sessionManager;
+@property (nonatomic, strong, readonly) SAMCSettingManager *settingManager;
 
 + (instancetype)sharedClient;
 

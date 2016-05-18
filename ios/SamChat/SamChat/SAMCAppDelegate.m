@@ -78,15 +78,37 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 - (void)applicationWillResignActive:(UIApplication *)application {
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
     NSInteger count = [[[NIMSDK sharedSDK] conversationManager] allUnreadCount];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+    
+    if ([SamChatClient sharedClient].settingManager.findNewVersion) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+            if (localNotification) {
+                localNotification.fireDate = [[[NSDate alloc] init] dateByAddingTimeInterval:2];
+                localNotification.timeZone = [NSTimeZone defaultTimeZone];
+                localNotification.alertBody = @"天际客户端有新的版本，点击到 App Store 升级。";
+                localNotification.alertAction = @"升级";
+                localNotification.soundName = @"";
+                [application scheduleLocalNotification:localNotification];
+            }
+        });
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    double delayInSeconds = 5.0;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[SamChatClient sharedClient].settingManager checkVersionCompletion:^(BOOL findNew, NSString *versionInfo) {
+            DDLogDebug(@"check version complete: %d", findNew);
+        }];
+    });
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -97,14 +119,23 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
     [[NIMSDK sharedSDK] updateApnsToken:deviceToken];   
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
-    DDLogInfo(@"receive remote notification:  %@", userInfo);
-}
-
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     DDLogError(@"fail to get apns token :%@",error);
 }
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    DDLogInfo(@"receive remote notification:  %@", userInfo);
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    DDLogDebug(@"receive local notification:  %@", notification);
+    NSString *appStoreId = @"375380948"; // TODO: replace it
+    NSString *url = [NSString stringWithFormat:@"https://itunes.apple.com/app/id%@", appStoreId];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+}
+
 
 
 #pragma mark - misc

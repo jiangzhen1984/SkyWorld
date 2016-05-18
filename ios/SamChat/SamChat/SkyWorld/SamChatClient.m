@@ -19,6 +19,7 @@
 @synthesize producerManager = _producerManager;
 @synthesize pushManager = _pushManager;
 @synthesize sessionManager = _sessionManager;
+@synthesize settingManager = _settingManager;
 
 + (instancetype)sharedClient
 {
@@ -83,6 +84,14 @@
         _sessionManager = [[SAMCSessionManager alloc] init];
     }
     return _sessionManager;
+}
+
+- (SAMCSettingManager *)settingManager
+{
+    if (_settingManager == nil) {
+        _settingManager = [[SAMCSettingManager alloc] init];
+    }
+    return _settingManager;
 }
 
 

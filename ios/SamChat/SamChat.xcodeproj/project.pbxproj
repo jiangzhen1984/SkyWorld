@@ -250,9 +250,15 @@
 		31BF533F1CDAE00800406E1B /* SAMCSkyWorldAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF532C1CDAE00800406E1B /* SAMCSkyWorldAPI.m */; };
 		31BF53411CDAE00800406E1B /* SAMCSkyWorldErrorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF53321CDAE00800406E1B /* SAMCSkyWorldErrorHelper.m */; };
 		31BF53431CDAE00800406E1B /* SAMCSearchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF53381CDAE00800406E1B /* SAMCSearchManager.m */; };
-		31BF53441CDAE00800406E1B /* SCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF533B1CDAE00800406E1B /* SCSettingManager.m */; };
 		31BF53471CDAE06100406E1B /* SamChatClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF53461CDAE06100406E1B /* SamChatClient.m */; };
 		31BF534B1CDAE0A900406E1B /* SAMCPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BF534A1CDAE0A900406E1B /* SAMCPushManager.m */; };
+		31E682051CE9AA72001F92F3 /* SAMCCountryCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E682021CE9AA72001F92F3 /* SAMCCountryCodeController.m */; };
+		31E682061CE9AA72001F92F3 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31E682031CE9AA72001F92F3 /* CountryCodeListCh.plist */; };
+		31E682071CE9AA72001F92F3 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31E682041CE9AA72001F92F3 /* CountryCodeListEn.plist */; };
+		31E6820A1CEAB1F8001F92F3 /* SAMCMyQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E682091CEAB1F8001F92F3 /* SAMCMyQRCodeViewController.m */; };
+		31E6820D1CEAE306001F92F3 /* SAMCServiceSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E6820C1CEAE306001F92F3 /* SAMCServiceSearchResultController.m */; };
+		31E682111CEAE939001F92F3 /* SAMCCustomContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E682101CEAE939001F92F3 /* SAMCCustomContactViewController.m */; };
+		31E682141CEBF82A001F92F3 /* SAMCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E682131CEBF82A001F92F3 /* SAMCSettingManager.m */; };
 		31F66D7D1CDAF07D003A01E1 /* SCUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D7C1CDAF07D003A01E1 /* SCUserProfileManager.m */; };
 		31F66D961CDAF1AF003A01E1 /* ContactUser+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D801CDAF1AF003A01E1 /* ContactUser+CoreDataProperties.m */; };
 		31F66D971CDAF1AF003A01E1 /* ContactUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D821CDAF1AF003A01E1 /* ContactUser.m */; };
@@ -734,12 +740,22 @@
 		31BF53321CDAE00800406E1B /* SAMCSkyWorldErrorHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSkyWorldErrorHelper.m; sourceTree = "<group>"; };
 		31BF53371CDAE00800406E1B /* SAMCSearchManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSearchManager.h; sourceTree = "<group>"; };
 		31BF53381CDAE00800406E1B /* SAMCSearchManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSearchManager.m; sourceTree = "<group>"; };
-		31BF533A1CDAE00800406E1B /* SCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSettingManager.h; sourceTree = "<group>"; };
-		31BF533B1CDAE00800406E1B /* SCSettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSettingManager.m; sourceTree = "<group>"; };
 		31BF53451CDAE06100406E1B /* SamChatClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SamChatClient.h; sourceTree = "<group>"; };
 		31BF53461CDAE06100406E1B /* SamChatClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SamChatClient.m; sourceTree = "<group>"; };
 		31BF53491CDAE0A900406E1B /* SAMCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCPushManager.h; sourceTree = "<group>"; };
 		31BF534A1CDAE0A900406E1B /* SAMCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCPushManager.m; sourceTree = "<group>"; };
+		31E682011CE9AA72001F92F3 /* SAMCCountryCodeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCountryCodeController.h; path = CountryCode/SAMCCountryCodeController.h; sourceTree = "<group>"; };
+		31E682021CE9AA72001F92F3 /* SAMCCountryCodeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCountryCodeController.m; path = CountryCode/SAMCCountryCodeController.m; sourceTree = "<group>"; };
+		31E682031CE9AA72001F92F3 /* CountryCodeListCh.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = CountryCodeListCh.plist; path = CountryCode/CountryCodeListCh.plist; sourceTree = "<group>"; };
+		31E682041CE9AA72001F92F3 /* CountryCodeListEn.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = CountryCodeListEn.plist; path = CountryCode/CountryCodeListEn.plist; sourceTree = "<group>"; };
+		31E682081CEAB1F8001F92F3 /* SAMCMyQRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCMyQRCodeViewController.h; path = Controllers/QRCode/SAMCMyQRCodeViewController.h; sourceTree = "<group>"; };
+		31E682091CEAB1F8001F92F3 /* SAMCMyQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCMyQRCodeViewController.m; path = Controllers/QRCode/SAMCMyQRCodeViewController.m; sourceTree = "<group>"; };
+		31E6820B1CEAE306001F92F3 /* SAMCServiceSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCServiceSearchResultController.h; path = Controllers/Service/SAMCServiceSearchResultController.h; sourceTree = "<group>"; };
+		31E6820C1CEAE306001F92F3 /* SAMCServiceSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCServiceSearchResultController.m; path = Controllers/Service/SAMCServiceSearchResultController.m; sourceTree = "<group>"; };
+		31E6820F1CEAE939001F92F3 /* SAMCCustomContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCustomContactViewController.h; path = Controllers/Contact/SAMCCustomContactViewController.h; sourceTree = "<group>"; };
+		31E682101CEAE939001F92F3 /* SAMCCustomContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCustomContactViewController.m; path = Controllers/Contact/SAMCCustomContactViewController.m; sourceTree = "<group>"; };
+		31E682121CEBF82A001F92F3 /* SAMCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSettingManager.h; sourceTree = "<group>"; };
+		31E682131CEBF82A001F92F3 /* SAMCSettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSettingManager.m; sourceTree = "<group>"; };
 		31F66D7B1CDAF07D003A01E1 /* SCUserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUserProfileManager.h; sourceTree = "<group>"; };
 		31F66D7C1CDAF07D003A01E1 /* SCUserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUserProfileManager.m; sourceTree = "<group>"; };
 		31F66D7F1CDAF1AF003A01E1 /* ContactUser+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ContactUser+CoreDataProperties.h"; sourceTree = "<group>"; };
@@ -846,6 +862,8 @@
 			children = (
 				311EC2281CDC60BD00083061 /* SAMCServiceListViewController.h */,
 				311EC2291CDC60BD00083061 /* SAMCServiceListViewController.m */,
+				31E6820B1CEAE306001F92F3 /* SAMCServiceSearchResultController.h */,
+				31E6820C1CEAE306001F92F3 /* SAMCServiceSearchResultController.m */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -1004,6 +1022,7 @@
 		316C13A21CDB6BC100905499 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				31E6820E1CEAE8EA001F92F3 /* Contact */,
 				3194A0981CE5CD91000607C9 /* QRCode */,
 				311EC2161CDC3A8100083061 /* Main */,
 				311EC21D1CDC5BFF00083061 /* Search */,
@@ -1017,6 +1036,7 @@
 		316C13A31CDB6C0C00905499 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				31E682001CE9AA29001F92F3 /* CountryCode */,
 				316C13A41CDB6C0C00905499 /* LoginCtrl.storyboard */,
 				316C13A51CDB6C0C00905499 /* SAMCLoginViewController.h */,
 				316C13A61CDB6C0C00905499 /* SAMCLoginViewController.m */,
@@ -1896,6 +1916,8 @@
 			children = (
 				3194A0991CE5CDBE000607C9 /* SAMCQRCodeScanViewController.h */,
 				3194A09A1CE5CDBE000607C9 /* SAMCQRCodeScanViewController.m */,
+				31E682081CEAB1F8001F92F3 /* SAMCMyQRCodeViewController.h */,
+				31E682091CEAB1F8001F92F3 /* SAMCMyQRCodeViewController.m */,
 			);
 			name = QRCode;
 			sourceTree = "<group>";
@@ -1995,8 +2017,8 @@
 		31BF53391CDAE00800406E1B /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				31BF533A1CDAE00800406E1B /* SCSettingManager.h */,
-				31BF533B1CDAE00800406E1B /* SCSettingManager.m */,
+				31E682121CEBF82A001F92F3 /* SAMCSettingManager.h */,
+				31E682131CEBF82A001F92F3 /* SAMCSettingManager.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -2008,6 +2030,26 @@
 				31BF534A1CDAE0A900406E1B /* SAMCPushManager.m */,
 			);
 			path = Push;
+			sourceTree = "<group>";
+		};
+		31E682001CE9AA29001F92F3 /* CountryCode */ = {
+			isa = PBXGroup;
+			children = (
+				31E682011CE9AA72001F92F3 /* SAMCCountryCodeController.h */,
+				31E682021CE9AA72001F92F3 /* SAMCCountryCodeController.m */,
+				31E682031CE9AA72001F92F3 /* CountryCodeListCh.plist */,
+				31E682041CE9AA72001F92F3 /* CountryCodeListEn.plist */,
+			);
+			name = CountryCode;
+			sourceTree = "<group>";
+		};
+		31E6820E1CEAE8EA001F92F3 /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				31E6820F1CEAE939001F92F3 /* SAMCCustomContactViewController.h */,
+				31E682101CEAE939001F92F3 /* SAMCCustomContactViewController.m */,
+			);
+			name = Contact;
 			sourceTree = "<group>";
 		};
 		31F66D7E1CDAF1AF003A01E1 /* CoreData */ = {
@@ -2221,6 +2263,7 @@
 				318B66EA1CDA0226008260A2 /* video_chat_tip_sender.aac in Resources */,
 				318B66E81CDA0226008260A2 /* video_chat_tip_onTimer.aac in Resources */,
 				318B68E81CDA02B3008260A2 /* NTESGalleryViewController.xib in Resources */,
+				31E682071CE9AA72001F92F3 /* CountryCodeListEn.plist in Resources */,
 				316C13AF1CDB6C0C00905499 /* LoginCtrl.storyboard in Resources */,
 				318B68E61CDA02B3008260A2 /* NTESFileTransSelectViewController.xib in Resources */,
 				3163BF861CDA2760001C9083 /* LaunchScreen.storyboard in Resources */,
@@ -2230,6 +2273,7 @@
 				311EC2221CDC5F9C00083061 /* Settings.bundle in Resources */,
 				318B69071CDA02B3008260A2 /* NTESNoDisturbSettingViewController.xib in Resources */,
 				318B68C11CDA02B3008260A2 /* NTESContactViewController.xib in Resources */,
+				31E682061CE9AA72001F92F3 /* CountryCodeListCh.plist in Resources */,
 				318B690B1CDA02B3008260A2 /* NTESAboutViewController.xib in Resources */,
 				318B66E91CDA0226008260A2 /* video_chat_tip_receiver.aac in Resources */,
 				318B66F41CDA0244008260A2 /* pinyin.bin in Resources */,
@@ -2343,6 +2387,7 @@
 				318B68D21CDA02B3008260A2 /* NTESJanKenPonAttachment.m in Sources */,
 				318B68F01CDA02B3008260A2 /* NTESWhiteboardDrawView.m in Sources */,
 				311EC27E1CDF6D7100083061 /* SAMCSearchSessionConfig.m in Sources */,
+				31E6820D1CEAE306001F92F3 /* SAMCServiceSearchResultController.m in Sources */,
 				3194A09B1CE5CDBE000607C9 /* SAMCQRCodeScanViewController.m in Sources */,
 				318B68911CDA02B3008260A2 /* NTESCommonTableDelegate.m in Sources */,
 				311EC2491CDC84D600083061 /* SCRefreshFooter.m in Sources */,
@@ -2353,6 +2398,8 @@
 				318B69191CDA02B3008260A2 /* NTESSettingPortraitCell.m in Sources */,
 				318B68F91CDA02B3008260A2 /* NTESGLView.m in Sources */,
 				318B68BA1CDA02B3008260A2 /* NTESGroupedUsrInfo.m in Sources */,
+				31E6820A1CEAB1F8001F92F3 /* SAMCMyQRCodeViewController.m in Sources */,
+				31E682111CEAE939001F92F3 /* SAMCCustomContactViewController.m in Sources */,
 				318B68DF1CDA02B3008260A2 /* NTESSessionSnapchatContentView.m in Sources */,
 				318B68D01CDA02B3008260A2 /* NTESChartletAttachment.m in Sources */,
 				318B68B01CDA02B3008260A2 /* NTESChatroomMemberCell.m in Sources */,
@@ -2382,6 +2429,7 @@
 				318B68F11CDA02B3008260A2 /* NTESVideoViewController.m in Sources */,
 				318B69011CDA02B3008260A2 /* NTESSessionListViewController.m in Sources */,
 				311EC2521CDC853000083061 /* UIView+SDAutoLayout.m in Sources */,
+				31E682051CE9AA72001F92F3 /* SAMCCountryCodeController.m in Sources */,
 				316C13B21CDB6C0C00905499 /* RetrievePassWordViewController.m in Sources */,
 				316C13B31CDB6C0C00905499 /* SignupSettingViewController.m in Sources */,
 				318B692B1CDA02B3008260A2 /* NTESSpellingCenter.m in Sources */,
@@ -2497,10 +2545,10 @@
 				318B68901CDA02B3008260A2 /* NTESMainTabController.m in Sources */,
 				318B69281CDA02B3008260A2 /* NTESTimerHolder.m in Sources */,
 				311EC23B1CDC824600083061 /* SCServiceSearchBar.m in Sources */,
+				31E682141CEBF82A001F92F3 /* SAMCSettingManager.m in Sources */,
 				318B69111CDA02B3008260A2 /* NTESGenderSettingViewController.m in Sources */,
 				316C13B01CDB6C0C00905499 /* SAMCLoginViewController.m in Sources */,
 				31BF533F1CDAE00800406E1B /* SAMCSkyWorldAPI.m in Sources */,
-				31BF53441CDAE00800406E1B /* SCSettingManager.m in Sources */,
 				318B69181CDA02B3008260A2 /* NTESSettingCheckCell.m in Sources */,
 				316E49511CE60C000055AF52 /* QuestionMessage.m in Sources */,
 				318B68AB1CDA02B3008260A2 /* NTESChatroomMessageDataProvider.m in Sources */,
