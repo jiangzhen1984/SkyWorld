@@ -108,20 +108,21 @@
 
 + (BOOL)deleteSessionIfNeeded:(NSString *)sessionId inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    BOOL result = YES;
+    __block BOOL result = YES;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:ENTITY_SESSION_EXTENSTION];
     request.predicate = [NSPredicate predicateWithFormat:@"%K == %@",SESSION_EXTENSION_SESSION_ID, sessionId];
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
     if ((error == nil) && ([matches count] > 0)) {
-        SessionExtension *sessionExtension = [matches firstObject];
-        if (([sessionExtension.search_tag isEqualToNumber:[NSNumber numberWithBool:YES]])
-            || ([sessionExtension.chat_tag isEqualToNumber:[NSNumber numberWithBool:YES]])
-            || ([sessionExtension.service_tag isEqualToNumber:[NSNumber numberWithBool:YES]])) {
-            result = NO;
-        }else{
-            [context deleteObject:sessionExtension];
-        }
+        [matches enumerateObjectsUsingBlock:^(SessionExtension *sessionExtension, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (([sessionExtension.search_tag isEqualToNumber:[NSNumber numberWithBool:YES]])
+                || ([sessionExtension.chat_tag isEqualToNumber:[NSNumber numberWithBool:YES]])
+                || ([sessionExtension.service_tag isEqualToNumber:[NSNumber numberWithBool:YES]])) {
+                result = NO;
+            }else{
+                [context deleteObject:sessionExtension];
+            }
+        }];
     }
     return result;
 }
@@ -135,9 +136,7 @@
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
-    if((!matches) || error || ([matches count] > 1)){
-        return nil;
-    }else if([matches count]){
+    if ((error == nil) && ([matches count] > 0)) {
         sessionExtension = [matches firstObject];
     }else{
         sessionExtension = [NSEntityDescription insertNewObjectForEntityForName:ENTITY_SESSION_EXTENSTION

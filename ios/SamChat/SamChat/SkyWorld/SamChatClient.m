@@ -8,6 +8,8 @@
 
 #import "SamChatClient.h"
 
+static dispatch_queue_t messageProcessQueue;
+
 @interface SamChatClient ()<NIMChatManagerDelegate>
 
 @end
@@ -27,6 +29,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[SamChatClient alloc] init];
+        messageProcessQueue = dispatch_queue_create("com.skyworld.samchat.messageprocess", DISPATCH_QUEUE_SERIAL);
     });
     return instance;
 }
@@ -98,19 +101,22 @@
 #pragma mark - NIMChatManagerDelegate
 - (void)onRecvMessages:(NSArray *)messages
 {
-    [messages enumerateObjectsUsingBlock:^(NIMMessage *message, NSUInteger idx, BOOL * _Nonnull stop) {
-        NIMSession *session = message.session;
-        if ((session.sessionType == NIMSessionTypeP2P) && (message.remoteExt != nil)) {
-            // 根据接受到的消息扩展内容，对会话进行标记
-            [[SamChatClient sharedClient].sessionManager setExtOfSessionWithMessage:message];
-            NSString *questionIdString = [message.remoteExt valueForKey:MESSAGE_QUESTIONS];
-            if (questionIdString) {
-                // 根据收到的消息中question id内容，将question插入到会话当中
-                // TODO: delete?
-                [self.searchManager insertQuestionWitdIdsString:questionIdString toSession:message.session];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(messageProcessQueue, ^{
+        [messages enumerateObjectsUsingBlock:^(NIMMessage *message, NSUInteger idx, BOOL * _Nonnull stop) {
+            NIMSession *session = message.session;
+            if ((session.sessionType == NIMSessionTypeP2P) && (message.remoteExt != nil)) {
+                // 根据接受到的消息扩展内容，对会话进行标记
+                [[SamChatClient sharedClient].sessionManager setExtOfSessionWithMessage:message];
+                NSString *questionIdString = [message.remoteExt valueForKey:MESSAGE_QUESTIONS];
+                if (questionIdString) {
+                    // 根据收到的消息中question id内容，将question插入到会话当中
+                    // TODO: delete?
+                    [weakSelf.searchManager insertQuestionWitdIdsString:questionIdString toSession:message.session];
+                }
             }
-        }
-    }];
+        }];
+    });
 }
 
 

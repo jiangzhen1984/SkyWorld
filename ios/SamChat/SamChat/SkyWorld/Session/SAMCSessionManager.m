@@ -19,7 +19,7 @@
         return;
     }
     NSManagedObjectContext *privateContext = [[SAMCCoreDataManager sharedManager] privateChildObjectContextOfmainContext];
-    [privateContext performBlock:^{
+    [privateContext performBlockAndWait:^{
         if ([sessionType isEqualToNumber:MESSAGE_FROM_VIEW_SEARCH]) {
             [SessionExtension updateSession:message.session.sessionId
                                  serviceTag:YES
