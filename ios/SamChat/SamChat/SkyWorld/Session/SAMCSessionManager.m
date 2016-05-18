@@ -43,7 +43,7 @@
 - (void)updateSession:(NSString *)sessionId tagType:(NSNumber *)tagType value:(BOOL)flag
 {
     NSManagedObjectContext *privateContext = [[SAMCCoreDataManager sharedManager] privateChildObjectContextOfmainContext];
-    [privateContext performBlock:^{
+    [privateContext performBlockAndWait:^{
         if ([tagType isEqualToNumber:MESSAGE_FROM_VIEW_SEARCH]) {
             [SessionExtension updateSession:sessionId
                                  serviceTag:flag
