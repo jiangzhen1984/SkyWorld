@@ -19,15 +19,15 @@
 #import "NTESSessionUtil.h"
 #import "NTESPersonalCardViewController.h"
 #import "SCServiceSearchBar.h"
-#import "SCHotTopicsView.h"
 #import "SamChatClient.h"
+#import "SAMCHotTopicsView.h"
 
 #define SessionListTitle @"天际搜索"
 
-@interface SAMCSearchListViewController ()<NIMLoginManagerDelegate,NTESListHeaderDelegate,SCServiceSearchBarDelegate,SCHotTopicsDelegete>
+@interface SAMCSearchListViewController ()<NIMLoginManagerDelegate,NTESListHeaderDelegate,SCServiceSearchBarDelegate,SAMCHotTopicsDelegete>
 
 @property (strong, nonatomic) SCServiceSearchBar *serviceSearchBar;
-@property (strong, nonatomic) SCHotTopicsView *hotpicsView;
+@property (nonatomic, strong) SAMCHotTopicsView *hotTopicsView;
 
 @property (nonatomic,strong) UILabel *titleLabel;
 
@@ -46,11 +46,10 @@
 
 - (void)dealloc{
     [[NIMSDK sharedSDK].loginManager removeDelegate:self];
-    if (_hotpicsView) {
-        _hotpicsView.delegate = nil;
+    if (_hotTopicsView) {
+        _hotTopicsView.delegate = nil;
     }
 }
-
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -73,29 +72,27 @@
 }
 
 #pragma mark - lazy loading
-- (SCHotTopicsView *)hotpicsView
+- (SAMCHotTopicsView *)hotTopicsView
 {
-    if(_hotpicsView == nil){
-        // TODO: y change to header's top
-        CGFloat top = 108;
-        _hotpicsView = [[SCHotTopicsView alloc] initWithFrame:CGRectMake(0, top, self.view.frame.size.width, self.view.frame.size.height-108)];
-        _hotpicsView.delegate = self;
+    if (_hotTopicsView == nil) {
+        _hotTopicsView = [[SAMCHotTopicsView alloc] initWithFrame:CGRectMake(0, 108, self.view.frame.size.width, self.view.frame.size.height-108-44)];
+        _hotTopicsView.delegate = self;
     }
-    return _hotpicsView;
+    return _hotTopicsView;
 }
 
 - (void)reload{
     //[super reload];
     if (!self.recentSessions.count) {
         self.tableView.hidden = YES;
-        [self.view addSubview:self.hotpicsView];
+        [self.view addSubview:self.hotTopicsView];
     }else{
         self.tableView.hidden = NO;
         [self.tableView reloadData];
-        if (_hotpicsView) {
-            _hotpicsView.delegate = nil;
-            [_hotpicsView removeFromSuperview];
-            _hotpicsView = nil;
+        if (_hotTopicsView) {
+            [_hotTopicsView removeFromSuperview];
+            _hotTopicsView.delegate = nil;
+            _hotTopicsView = nil;
         }
     }
 }
@@ -201,7 +198,7 @@
     }];
 }
 
-#pragma mark - SCHotTopicsDelegete
+#pragma mark - SAMCHotTopicsDelegete
 - (void)didSelectHotTopic:(NSString *)topicContent
 {
     DDLogDebug(@"select topic: %@", topicContent);

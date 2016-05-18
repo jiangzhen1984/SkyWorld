@@ -12,14 +12,7 @@
 		311EC2221CDC5F9C00083061 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 311EC2211CDC5F9C00083061 /* Settings.bundle */; };
 		311EC2261CDC605F00083061 /* SAMCChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2251CDC605F00083061 /* SAMCChatListViewController.m */; };
 		311EC22A1CDC60BD00083061 /* SAMCServiceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2291CDC60BD00083061 /* SAMCServiceListViewController.m */; };
-		311EC2381CDC824600083061 /* SCHotTopicsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2311CDC824600083061 /* SCHotTopicsView.m */; };
 		311EC23B1CDC824600083061 /* SCServiceSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2371CDC824600083061 /* SCServiceSearchBar.m */; };
-		311EC2471CDC84D600083061 /* SCBaseRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC23F1CDC84D600083061 /* SCBaseRefreshView.m */; };
-		311EC2481CDC84D600083061 /* SCBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2411CDC84D600083061 /* SCBaseTableViewController.m */; };
-		311EC2491CDC84D600083061 /* SCRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2441CDC84D600083061 /* SCRefreshFooter.m */; };
-		311EC24A1CDC84D600083061 /* SCRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2461CDC84D600083061 /* SCRefreshHeader.m */; };
-		311EC2511CDC853000083061 /* UITableView+SDAutoTableViewCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC24E1CDC853000083061 /* UITableView+SDAutoTableViewCellHeight.m */; };
-		311EC2521CDC853000083061 /* UIView+SDAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2501CDC853000083061 /* UIView+SDAutoLayout.m */; };
 		311EC25D1CDCDBF100083061 /* SessionExtension+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC25A1CDCDBF100083061 /* SessionExtension+CoreDataProperties.m */; };
 		311EC25E1CDCDBF100083061 /* SessionExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC25C1CDCDBF100083061 /* SessionExtension.m */; };
 		311EC2661CDF320900083061 /* SAMCQuestionMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 311EC2651CDF320900083061 /* SAMCQuestionMessage.m */; };
@@ -259,6 +252,7 @@
 		31E6820D1CEAE306001F92F3 /* SAMCServiceSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E6820C1CEAE306001F92F3 /* SAMCServiceSearchResultController.m */; };
 		31E682111CEAE939001F92F3 /* SAMCCustomContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E682101CEAE939001F92F3 /* SAMCCustomContactViewController.m */; };
 		31E682141CEBF82A001F92F3 /* SAMCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E682131CEBF82A001F92F3 /* SAMCSettingManager.m */; };
+		31E682171CEC1225001F92F3 /* SAMCHotTopicsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E682161CEC1225001F92F3 /* SAMCHotTopicsView.m */; };
 		31F66D7D1CDAF07D003A01E1 /* SCUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D7C1CDAF07D003A01E1 /* SCUserProfileManager.m */; };
 		31F66D961CDAF1AF003A01E1 /* ContactUser+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D801CDAF1AF003A01E1 /* ContactUser+CoreDataProperties.m */; };
 		31F66D971CDAF1AF003A01E1 /* ContactUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F66D821CDAF1AF003A01E1 /* ContactUser.m */; };
@@ -304,22 +298,8 @@
 		311EC2251CDC605F00083061 /* SAMCChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCChatListViewController.m; path = Controllers/Chat/SAMCChatListViewController.m; sourceTree = "<group>"; };
 		311EC2281CDC60BD00083061 /* SAMCServiceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCServiceListViewController.h; path = Controllers/Service/SAMCServiceListViewController.h; sourceTree = "<group>"; };
 		311EC2291CDC60BD00083061 /* SAMCServiceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCServiceListViewController.m; path = Controllers/Service/SAMCServiceListViewController.m; sourceTree = "<group>"; };
-		311EC2301CDC824600083061 /* SCHotTopicsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHotTopicsView.h; path = Controllers/Search/View/SCHotTopicsView.h; sourceTree = "<group>"; };
-		311EC2311CDC824600083061 /* SCHotTopicsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHotTopicsView.m; path = Controllers/Search/View/SCHotTopicsView.m; sourceTree = "<group>"; };
 		311EC2361CDC824600083061 /* SCServiceSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCServiceSearchBar.h; path = Controllers/Search/View/SCServiceSearchBar.h; sourceTree = "<group>"; };
 		311EC2371CDC824600083061 /* SCServiceSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCServiceSearchBar.m; path = Controllers/Search/View/SCServiceSearchBar.m; sourceTree = "<group>"; };
-		311EC23E1CDC84D600083061 /* SCBaseRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBaseRefreshView.h; sourceTree = "<group>"; };
-		311EC23F1CDC84D600083061 /* SCBaseRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBaseRefreshView.m; sourceTree = "<group>"; };
-		311EC2401CDC84D600083061 /* SCBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBaseTableViewController.h; sourceTree = "<group>"; };
-		311EC2411CDC84D600083061 /* SCBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBaseTableViewController.m; sourceTree = "<group>"; };
-		311EC2431CDC84D600083061 /* SCRefreshFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRefreshFooter.h; sourceTree = "<group>"; };
-		311EC2441CDC84D600083061 /* SCRefreshFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRefreshFooter.m; sourceTree = "<group>"; };
-		311EC2451CDC84D600083061 /* SCRefreshHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRefreshHeader.h; sourceTree = "<group>"; };
-		311EC2461CDC84D600083061 /* SCRefreshHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRefreshHeader.m; sourceTree = "<group>"; };
-		311EC24D1CDC853000083061 /* UITableView+SDAutoTableViewCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+SDAutoTableViewCellHeight.h"; sourceTree = "<group>"; };
-		311EC24E1CDC853000083061 /* UITableView+SDAutoTableViewCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+SDAutoTableViewCellHeight.m"; sourceTree = "<group>"; };
-		311EC24F1CDC853000083061 /* UIView+SDAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDAutoLayout.h"; sourceTree = "<group>"; };
-		311EC2501CDC853000083061 /* UIView+SDAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDAutoLayout.m"; sourceTree = "<group>"; };
 		311EC2591CDCDBF100083061 /* SessionExtension+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SessionExtension+CoreDataProperties.h"; sourceTree = "<group>"; };
 		311EC25A1CDCDBF100083061 /* SessionExtension+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SessionExtension+CoreDataProperties.m"; sourceTree = "<group>"; };
 		311EC25B1CDCDBF100083061 /* SessionExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionExtension.h; sourceTree = "<group>"; };
@@ -756,6 +736,8 @@
 		31E682101CEAE939001F92F3 /* SAMCCustomContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCustomContactViewController.m; path = Controllers/Contact/SAMCCustomContactViewController.m; sourceTree = "<group>"; };
 		31E682121CEBF82A001F92F3 /* SAMCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSettingManager.h; sourceTree = "<group>"; };
 		31E682131CEBF82A001F92F3 /* SAMCSettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSettingManager.m; sourceTree = "<group>"; };
+		31E682151CEC1225001F92F3 /* SAMCHotTopicsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCHotTopicsView.h; path = Controllers/Search/View/SAMCHotTopicsView.h; sourceTree = "<group>"; };
+		31E682161CEC1225001F92F3 /* SAMCHotTopicsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCHotTopicsView.m; path = Controllers/Search/View/SAMCHotTopicsView.m; sourceTree = "<group>"; };
 		31F66D7B1CDAF07D003A01E1 /* SCUserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCUserProfileManager.h; sourceTree = "<group>"; };
 		31F66D7C1CDAF07D003A01E1 /* SCUserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCUserProfileManager.m; sourceTree = "<group>"; };
 		31F66D7F1CDAF1AF003A01E1 /* ContactUser+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ContactUser+CoreDataProperties.h"; sourceTree = "<group>"; };
@@ -871,10 +853,10 @@
 		311EC22F1CDC821400083061 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				311EC2301CDC824600083061 /* SCHotTopicsView.h */,
-				311EC2311CDC824600083061 /* SCHotTopicsView.m */,
 				311EC2361CDC824600083061 /* SCServiceSearchBar.h */,
 				311EC2371CDC824600083061 /* SCServiceSearchBar.m */,
+				31E682151CEC1225001F92F3 /* SAMCHotTopicsView.h */,
+				31E682161CEC1225001F92F3 /* SAMCHotTopicsView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -891,10 +873,6 @@
 		311EC23D1CDC84D600083061 /* BaseView */ = {
 			isa = PBXGroup;
 			children = (
-				311EC23E1CDC84D600083061 /* SCBaseRefreshView.h */,
-				311EC23F1CDC84D600083061 /* SCBaseRefreshView.m */,
-				311EC2401CDC84D600083061 /* SCBaseTableViewController.h */,
-				311EC2411CDC84D600083061 /* SCBaseTableViewController.m */,
 			);
 			name = BaseView;
 			path = Views/BaseView;
@@ -903,10 +881,6 @@
 		311EC2421CDC84D600083061 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
-				311EC2431CDC84D600083061 /* SCRefreshFooter.h */,
-				311EC2441CDC84D600083061 /* SCRefreshFooter.m */,
-				311EC2451CDC84D600083061 /* SCRefreshHeader.h */,
-				311EC2461CDC84D600083061 /* SCRefreshHeader.m */,
 			);
 			name = Custom;
 			path = Views/Custom;
@@ -915,21 +889,8 @@
 		311EC24B1CDC851500083061 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
-				311EC24C1CDC853000083061 /* SDAutoLayout */,
 			);
 			name = Vendors;
-			sourceTree = "<group>";
-		};
-		311EC24C1CDC853000083061 /* SDAutoLayout */ = {
-			isa = PBXGroup;
-			children = (
-				311EC24D1CDC853000083061 /* UITableView+SDAutoTableViewCellHeight.h */,
-				311EC24E1CDC853000083061 /* UITableView+SDAutoTableViewCellHeight.m */,
-				311EC24F1CDC853000083061 /* UIView+SDAutoLayout.h */,
-				311EC2501CDC853000083061 /* UIView+SDAutoLayout.m */,
-			);
-			name = SDAutoLayout;
-			path = Vendors/SDAutoLayout;
 			sourceTree = "<group>";
 		};
 		311EC2631CDF31E500083061 /* Models */ = {
@@ -2390,7 +2351,6 @@
 				31E6820D1CEAE306001F92F3 /* SAMCServiceSearchResultController.m in Sources */,
 				3194A09B1CE5CDBE000607C9 /* SAMCQRCodeScanViewController.m in Sources */,
 				318B68911CDA02B3008260A2 /* NTESCommonTableDelegate.m in Sources */,
-				311EC2491CDC84D600083061 /* SCRefreshFooter.m in Sources */,
 				31BF533E1CDAE00800406E1B /* SAMCProducerManager.m in Sources */,
 				318B68991CDA02B3008260A2 /* NTESPageView.m in Sources */,
 				318B690E1CDA02B3008260A2 /* NTESAliasSettingViewController.m in Sources */,
@@ -2421,14 +2381,11 @@
 				318B69231CDA02B3008260A2 /* NTESDevice.m in Sources */,
 				318B68C31CDA02B3008260A2 /* NTESCustomNotificationObject.m in Sources */,
 				31F66D9A1CDAF1AF003A01E1 /* LoginUserInformation+CoreDataProperties.m in Sources */,
-				311EC2481CDC84D600083061 /* SCBaseTableViewController.m in Sources */,
 				318B69121CDA02B3008260A2 /* NTESMobileSettingViewController.m in Sources */,
 				318B68E31CDA02B3008260A2 /* NTESFilePreViewController.m in Sources */,
 				318B689C1CDA02B3008260A2 /* NTESJionTeamViewController.m in Sources */,
-				311EC2471CDC84D600083061 /* SCBaseRefreshView.m in Sources */,
 				318B68F11CDA02B3008260A2 /* NTESVideoViewController.m in Sources */,
 				318B69011CDA02B3008260A2 /* NTESSessionListViewController.m in Sources */,
-				311EC2521CDC853000083061 /* UIView+SDAutoLayout.m in Sources */,
 				31E682051CE9AA72001F92F3 /* SAMCCountryCodeController.m in Sources */,
 				316C13B21CDB6C0C00905499 /* RetrievePassWordViewController.m in Sources */,
 				316C13B31CDB6C0C00905499 /* SignupSettingViewController.m in Sources */,
@@ -2470,7 +2427,6 @@
 				318B68BD1CDA02B3008260A2 /* NTESUserListCell.m in Sources */,
 				318B68AE1CDA02B3008260A2 /* NTESLiveViewController.m in Sources */,
 				31F66D9F1CDAF1AF003A01E1 /* SendQuestion+CoreDataProperties.m in Sources */,
-				311EC2381CDC824600083061 /* SCHotTopicsView.m in Sources */,
 				318B688B1CDA02B3008260A2 /* UINavigationBar+Swizzling.m in Sources */,
 				318B68DC1CDA02B3008260A2 /* NTESSearchMessageEntraceCell.m in Sources */,
 				318B689F1CDA02B3008260A2 /* NTESSearchTeamViewController.m in Sources */,
@@ -2498,6 +2454,7 @@
 				318B68FF1CDA02B3008260A2 /* NTESTextHeaderView.m in Sources */,
 				318B68CF1CDA02B3008260A2 /* NTESSessionConfig.m in Sources */,
 				311EC21C1CDC3B0C00083061 /* SAMCMainViewController.m in Sources */,
+				31E682171CEC1225001F92F3 /* SAMCHotTopicsView.m in Sources */,
 				31A3CEB81CDB23C200ECFD72 /* GCDMulticastDelegate.m in Sources */,
 				318B68A91CDA02B3008260A2 /* NTESChatroomMaker.m in Sources */,
 				31F66DA31CDAF1EF003A01E1 /* SamChat.xcdatamodeld in Sources */,
@@ -2532,7 +2489,6 @@
 				31BF533D1CDAE00800406E1B /* SAMCOfficalManager.m in Sources */,
 				318B68BE1CDA02B3008260A2 /* NTESBlackListViewController.m in Sources */,
 				316E49501CE60C000055AF52 /* QuestionMessage+CoreDataProperties.m in Sources */,
-				311EC24A1CDC84D600083061 /* SCRefreshHeader.m in Sources */,
 				31F66DA01CDAF1AF003A01E1 /* SendQuestion.m in Sources */,
 				318B68DB1CDA02B3008260A2 /* NTESSearchMessageContentCell.m in Sources */,
 				318B68BF1CDA02B3008260A2 /* NTESContactAddFriendViewController.m in Sources */,
@@ -2566,7 +2522,6 @@
 				318B69221CDA02B3008260A2 /* NTESDemoConfig.m in Sources */,
 				318B68EC1CDA02B3008260A2 /* NTESSessionRemoteHistoryViewController.m in Sources */,
 				318B69261CDA02B3008260A2 /* NTESService.m in Sources */,
-				311EC2511CDC853000083061 /* UITableView+SDAutoTableViewCellHeight.m in Sources */,
 				316C13B41CDB6C0C00905499 /* SignupViewController.m in Sources */,
 				318B690A1CDA02B3008260A2 /* NTESAboutViewController.m in Sources */,
 				31F66D991CDAF1AF003A01E1 /* HotTopic.m in Sources */,
