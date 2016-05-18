@@ -18,6 +18,7 @@ public class DemoCache {
 
     /*SAMC_BEGIN()*/
     private static NimApplication app;
+    private static boolean firstEntry=true;
     /*SAMC_END()*/
 
     public static void clear() {
@@ -56,6 +57,14 @@ public class DemoCache {
 
     public static NimApplication getApp(){
          return DemoCache.app;
+    }
+
+    public static void setFirstEntry(boolean first){
+         DemoCache.firstEntry = first;
+    }
+
+    public static boolean getFirstEntry(){
+         return DemoCache.firstEntry;
     }
     /*SAMC_END()*/
 }

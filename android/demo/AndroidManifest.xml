@@ -114,6 +114,43 @@
             </intent-filter>
         </activity>
         
+         <activity
+            android:name="com.android.samchat.activity.BasicInfoUpdateActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" 
+            android:screenOrientation="portrait">
+            <intent-filter>
+              
+            </intent-filter>
+        </activity>
+        
+         <activity
+            android:name="com.android.samchat.activity.MineActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" 
+            android:screenOrientation="portrait">
+            <intent-filter>
+              
+            </intent-filter>
+        </activity>
+        
+         <activity
+            android:name="com.android.samchat.activity.SexSelectActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" 
+            android:screenOrientation="portrait">
+            <intent-filter>
+              
+            </intent-filter>
+        </activity>
+        
+        <activity
+    		android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" 
+    		android:screenOrientation="portrait"
+    		android:theme="@android:style/Theme.Light.NoTitleBar"/>
+         <!--android:configChanges="orientation|screenSize"  -->
+
+        
+         
+        
+        
         <activity
             android:name="com.android.samchat.activity.DialogActivity"
             android:theme="@style/transparent_dialog_style"

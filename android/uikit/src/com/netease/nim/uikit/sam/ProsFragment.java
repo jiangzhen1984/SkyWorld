@@ -21,6 +21,7 @@ import com.netease.nim.uikit.NimConstants;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.cache.FriendDataCache;
 import com.netease.nim.uikit.cache.TeamDataCache;
+import com.netease.nim.uikit.common.activity.TActionBarActivity;
 import com.netease.nim.uikit.common.adapter.TAdapterDelegate;
 import com.netease.nim.uikit.common.adapter.TViewHolder;
 import com.netease.nim.uikit.common.fragment.TFragment;
@@ -292,9 +293,11 @@ public class ProsFragment extends TFragment implements TAdapterDelegate {
 
             @Override
             public void run() {
-                if (msgLoaded) {
+                /*SAMC_BEGIN()*/
+                if (msgLoaded || getActivity() == null || ((TActionBarActivity)getActivity()).isDestroyedCompatible()) {
                     return;
                 }
+                /*SAMC_END()*/
                 // ��ѯ�����ϵ���б����
                 NIMClient.getService(MsgService.class).queryRecentContacts().setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
 

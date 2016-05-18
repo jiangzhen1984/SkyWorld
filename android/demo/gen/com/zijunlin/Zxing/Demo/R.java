@@ -34,7 +34,7 @@ public final class R {
 		public static final int viewfinder_mask = 0x7f060017;
 	}
 	public static final class drawable {
-		public static final int icon = 0x7f020103;
+		public static final int icon = 0x7f020106;
 	}
 	public static final class id {
 		public static final int auto_focus = 0x7f070000;
@@ -49,12 +49,12 @@ public final class R {
 		public static final int return_scan_result = 0x7f070009;
 		public static final int search_book_contents_failed = 0x7f07000a;
 		public static final int search_book_contents_succeeded = 0x7f07000b;
-		public static final int test_iv = 0x7f07026e;
-		public static final int txtResult = 0x7f07026f;
+		public static final int test_iv = 0x7f070288;
+		public static final int txtResult = 0x7f070289;
 	}
 	public static final class layout {
-		public static final int main = 0x7f03004b;
-		public static final int test = 0x7f0300d0;
+		public static final int main = 0x7f03004e;
+		public static final int test = 0x7f0300d3;
 	}
 	public static final class raw {
 		public static final int beep = 0x7f050006;

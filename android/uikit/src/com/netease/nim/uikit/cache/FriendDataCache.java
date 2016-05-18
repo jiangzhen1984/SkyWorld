@@ -24,8 +24,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 
 /**
- * å¥½å‹å…³ç³»ç¼“å­˜
- * æ³¨æ„ï¼šè·å–é€šè®¯å½•åˆ—è¡¨å³æ˜¯æ ¹æ®Friendåˆ—è¡¨å¸å·ï¼Œå»å–å¯¹åº”çš„UserInfo
+ * ºÃÓÑ¹ØÏµ»º´æ
+ * ×¢Òâ£º»ñÈ¡Í¨Ñ¶Â¼ÁĞ±í¼´ÊÇ¸ù¾İFriendÁĞ±íÕÊºÅ£¬È¥È¡¶ÔÓ¦µÄUserInfo
  * <p/>
  * Created by huangjun on 2015/9/14.
  */
@@ -36,7 +36,7 @@ public class FriendDataCache {
     }
 
     /**
-     * å±æ€§
+     * ÊôĞÔ
      */
     private Set<String> friendAccountSet = new CopyOnWriteArraySet<>();
 
@@ -45,7 +45,7 @@ public class FriendDataCache {
     private List<FriendDataChangedObserver> friendObservers = new ArrayList<>();
 
     /**
-     * åˆå§‹åŒ–&æ¸…ç†
+     * ³õÊ¼»¯&ÇåÀí
      */
 
     public void clear() {
@@ -53,26 +53,26 @@ public class FriendDataCache {
     }
 
     public void buildCache() {
-        // è·å–æˆ‘æ‰€æœ‰çš„å¥½å‹å…³ç³»
+        // »ñÈ¡ÎÒËùÓĞµÄºÃÓÑ¹ØÏµ
         List<Friend> friends = NIMClient.getService(FriendService.class).getFriends();
         for (Friend f : friends) {
             friendMap.put(f.getAccount(), f);
         }
 
-        // è·å–æˆ‘æ‰€æœ‰å¥½å‹çš„å¸å·
+        // »ñÈ¡ÎÒËùÓĞºÃÓÑµÄÕÊºÅ
         List<String> accounts = NIMClient.getService(FriendService.class).getFriendAccounts();
         if (accounts == null || accounts.isEmpty()) {
             return;
         }
 
-        // æ’é™¤é»‘åå•
+        // ÅÅ³ıºÚÃûµ¥
         List<String> blacks = NIMClient.getService(FriendService.class).getBlackList();
         accounts.removeAll(blacks);
 
-        // æ’é™¤æ‰è‡ªå·±
+        // ÅÅ³ıµô×Ô¼º
         accounts.remove(NimUIKit.getAccount());
 
-        // ç¡®å®šç¼“å­˜
+        // È·¶¨»º´æ
         friendAccountSet.addAll(accounts);
 
         LogUtil.i(UIKitLogTag.FRIEND_CACHE, "build FriendDataCache completed, friends count = " + friendAccountSet.size());
@@ -84,7 +84,7 @@ public class FriendDataCache {
     }
 
     /**
-     * ****************************** å¥½å‹æŸ¥è¯¢æ¥å£ ******************************
+     * ****************************** ºÃÓÑ²éÑ¯½Ó¿Ú ******************************
      */
 
     public List<String> getMyFriendAccounts() {
@@ -111,11 +111,11 @@ public class FriendDataCache {
     }
 
     /**
-     * ****************************** ç¼“å­˜å¥½å‹å…³ç³»å˜æ›´ç›‘å¬&é€šçŸ¥ ******************************
+     * ****************************** »º´æºÃÓÑ¹ØÏµ±ä¸ü¼àÌı&Í¨Öª ******************************
      */
 
     /**
-     * ç¼“å­˜ç›‘å¬SDK
+     * »º´æ¼àÌıSDK
      */
     public void registerObservers(boolean register) {
         NIMClient.getService(FriendServiceObserve.class).observeFriendChangedNotify(friendChangedNotifyObserver, register);
@@ -123,7 +123,7 @@ public class FriendDataCache {
     }
 
     /**
-     * APPç›‘å¬ç¼“å­˜
+     * APP¼àÌı»º´æ
      */
     public void registerFriendDataChangedObserver(FriendDataChangedObserver o, boolean register) {
         if (o == null) {
@@ -150,7 +150,7 @@ public class FriendDataCache {
     }
 
     /**
-     * ç›‘å¬å¥½å‹å…³ç³»å˜åŒ–
+     * ¼àÌıºÃÓÑ¹ØÏµ±ä»¯
      */
     private Observer<FriendChangedNotify> friendChangedNotifyObserver = new Observer<FriendChangedNotify>() {
         @Override
@@ -160,7 +160,7 @@ public class FriendDataCache {
             List<String> friendAccounts = new ArrayList<>(addedOrUpdatedFriends.size());
             List<String> deletedFriendAccounts = friendChangedNotify.getDeletedFriends();
 
-            // å¦‚æœåœ¨é»‘åå•ä¸­ï¼Œé‚£ä¹ˆä¸åŠ åˆ°å¥½å‹åˆ—è¡¨ä¸­
+            // Èç¹ûÔÚºÚÃûµ¥ÖĞ£¬ÄÇÃ´²»¼Óµ½ºÃÓÑÁĞ±íÖĞ
             String account;
             for (Friend f : addedOrUpdatedFriends) {
                 account = f.getAccount();
@@ -174,7 +174,7 @@ public class FriendDataCache {
                 myFriendAccounts.add(account);
             }
 
-            // æ›´æ–°æˆ‘çš„å¥½å‹å…³ç³»
+            // ¸üĞÂÎÒµÄºÃÓÑ¹ØÏµ
             if (!myFriendAccounts.isEmpty()) {
                 // update cache
                 friendAccountSet.addAll(myFriendAccounts);
@@ -183,14 +183,14 @@ public class FriendDataCache {
                 DataCacheManager.Log(myFriendAccounts, "on add friends", UIKitLogTag.FRIEND_CACHE);
             }
 
-            // é€šçŸ¥å¥½å‹å…³ç³»æ›´æ–°
+            // Í¨ÖªºÃÓÑ¹ØÏµ¸üĞÂ
             if (!friendAccounts.isEmpty()) {
                 for (FriendDataChangedObserver o : friendObservers) {
                     o.onAddedOrUpdatedFriends(friendAccounts);
                 }
             }
 
-            // å¤„ç†è¢«åˆ é™¤çš„å¥½å‹å…³ç³»
+            // ´¦Àí±»É¾³ıµÄºÃÓÑ¹ØÏµ
             if (!deletedFriendAccounts.isEmpty()) {
                 // update cache
                 friendAccountSet.removeAll(deletedFriendAccounts);
@@ -211,7 +211,7 @@ public class FriendDataCache {
     };
 
     /**
-     * ç›‘å¬é»‘åå•å˜åŒ–(å†³å®šæ˜¯å¦åŠ å…¥æˆ–è€…ç§»å‡ºå¥½å‹åˆ—è¡¨)
+     * ¼àÌıºÚÃûµ¥±ä»¯(¾ö¶¨ÊÇ·ñ¼ÓÈë»òÕßÒÆ³öºÃÓÑÁĞ±í)
      */
     private Observer<BlackListChangedNotify> blackListChangedNotifyObserver = new Observer<BlackListChangedNotify>() {
         @Override
@@ -220,7 +220,7 @@ public class FriendDataCache {
             List<String> removedAccounts = blackListChangedNotify.getRemovedAccounts();
 
             if (!addedAccounts.isEmpty()) {
-                // æ‹‰é»‘ï¼Œå³ä»å¥½å‹åå•ä¸­ç§»é™¤
+                // À­ºÚ£¬¼´´ÓºÃÓÑÃûµ¥ÖĞÒÆ³ı
                 friendAccountSet.removeAll(addedAccounts);
 
                 // log
@@ -231,14 +231,14 @@ public class FriendDataCache {
                     o.onAddUserToBlackList(addedAccounts);
                 }
 
-                // æ‹‰é»‘ï¼Œè¦ä»æœ€è¿‘è”ç³»äººåˆ—è¡¨ä¸­åˆ é™¤è¯¥å¥½å‹
+                // À­ºÚ£¬Òª´Ó×î½üÁªÏµÈËÁĞ±íÖĞÉ¾³ı¸ÃºÃÓÑ
                 for (String account : addedAccounts) {
                     NIMClient.getService(MsgService.class).deleteRecentContact2(account, SessionTypeEnum.P2P);
                 }
             }
 
             if (!removedAccounts.isEmpty()) {
-                // ç§»å‡ºé»‘åå•ï¼Œåˆ¤æ–­æ˜¯å¦åŠ å…¥å¥½å‹åå•
+                // ÒÆ³öºÚÃûµ¥£¬ÅĞ¶ÏÊÇ·ñ¼ÓÈëºÃÓÑÃûµ¥
                 for (String account : removedAccounts) {
                     if (NIMClient.getService(FriendService.class).isMyFriend(account)) {
                         friendAccountSet.add(account);
@@ -248,7 +248,7 @@ public class FriendDataCache {
                 // log
                 DataCacheManager.Log(removedAccounts, "on remove users from black list", UIKitLogTag.FRIEND_CACHE);
 
-                // é€šçŸ¥è§‚å¯Ÿè€…
+                // Í¨Öª¹Û²ìÕß
                 for (FriendDataChangedObserver o : friendObservers) {
                     o.onRemoveUserFromBlackList(removedAccounts);
                 }
@@ -257,7 +257,7 @@ public class FriendDataCache {
     };
 
     /**
-     * ************************************ å•ä¾‹ **********************************************
+     * ************************************ µ¥Àı **********************************************
      */
 
     static class InstanceHolder {

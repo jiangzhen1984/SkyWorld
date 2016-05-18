@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.samchat.activity.MineActivity;
+import com.android.samchat.activity.SignInActivity;
 import com.android.samchat.activity.VendorSettingActivity;
 import com.android.samservice.SamService;
 import com.android.samservice.info.RespQuest;
@@ -21,6 +23,7 @@ import com.netease.nim.uikit.NimMobHelper;
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.avchat.AVChatProfile;
 import com.netease.nim.demo.avchat.activity.AVChatActivity;
+import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.contact.activity.AddFriendActivity;
 import com.netease.nim.demo.login.LoginActivity;
 import com.netease.nim.demo.main.fragment.HomeFragment;
@@ -190,6 +193,9 @@ public class MainActivity extends TActionBarActivity {
             case R.id.pro_setting:
                 launchVendorSettingActivity();
                 break;
+            case R.id.my_space:
+                launchMySpaceActivity();
+                break;
             default:
                 break;
         }
@@ -256,13 +262,29 @@ public class MainActivity extends TActionBarActivity {
 
     // ×¢Ïú
     private void onLogout() {
-        // ÇåÀí»º´æ&×¢Ïú¼àÌý
+        // ÇåÀí»º´æ&×¢Ïú¼àÌý&Çå³ý×´Ì¬
         LogoutHelper.logout();
 
-        // Æô¶¯µÇÂ¼
-        LoginActivity.start(this);
+        /*SAMC_BEGIN()*/
+        //LoginActivity.start(getActivity(), true);
+        SamService.getInstance().getDao().clear_LoginUser_db();
+        Preferences.saveUserToken("");
+        Preferences.saveUserAccount("");
+        SamService.getInstance().stopSamService();
+        launchSignInActivity();
+        /*SAMC_END()*/
         finish();
     }
+
+    /*SAMC_BEGIN()*/
+    private void launchSignInActivity()
+    {
+         Intent newIntent = new Intent(this,SignInActivity.class);
+         int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP;
+         newIntent.setFlags(intentFlags);
+         startActivity(newIntent);
+    }
+    /*SAMC_END()*/
 
     /*SAMC_BEGIN(add immessage receiver observer to update tag for RecentContact)*/
 
@@ -409,6 +431,13 @@ public class MainActivity extends TActionBarActivity {
     /*SAMC_END(add immessage receiver observer to update tag for RecentContact)*/	
 
     /*SAMC_BEGIN()*/
+    private void launchMySpaceActivity(){
+		Intent newIntent = new Intent(this,MineActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+	}
+
     private void launchVendorSettingActivity(){
 		Intent newIntent = new Intent(this,VendorSettingActivity.class);
 		int intentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP;

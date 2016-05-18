@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.samchat.activity.DialogActivity;
+import com.android.samchat.activity.SignInActivity;
 import com.android.samchat.adapter.SearchListAdapter;
 import com.android.samchat.dialog.SamProcessDialog;
 import com.android.samchat.swipe.AutoNormalSwipeRefreshLayout;
@@ -473,9 +474,26 @@ public class SamSearchFragment extends MainTabFragment {
         // 清理缓存&注销监听&清除状态
         LogoutHelper.logout();
 
-        LoginActivity.start(getActivity(), true);
+        /*SAMC_BEGIN()*/
+        //LoginActivity.start(getActivity(), true);
+        SamService.getInstance().getDao().clear_LoginUser_db();
+        Preferences.saveUserToken("");
+        Preferences.saveUserAccount("");
+        SamService.getInstance().stopSamService();
+        launchSignInActivity();
+        /*SAMC_END()*/
         getActivity().finish();
     }
+
+	/*SAMC_BEGIN()*/
+	private void launchSignInActivity()
+	{
+		Intent newIntent = new Intent(getActivity(),SignInActivity.class);
+		int intentFlags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP;
+		newIntent.setFlags(intentFlags);
+		startActivity(newIntent);
+	}
+	/*SAMC_END()*/
 
     // 将最近联系人列表fragment动态集成进来。 开发者也可以使用在xml中配置的方式静态集成。
     private void addSearchFragment() {

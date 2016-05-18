@@ -12,7 +12,9 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.samservice.SMCallBack;
 import com.android.samservice.SamService;
+import com.android.samservice.info.AvatarRecord;
 import com.android.samservice.info.ContactUser;
 import com.android.samservice.info.LoginUser;
 import com.android.samservice.info.RespQuest;
@@ -55,7 +57,9 @@ import com.netease.nimlib.sdk.rts.RTSManager;
 import com.netease.nimlib.sdk.rts.model.RTSData;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+import com.netease.nim.uikit.sam.userinfo.SamUserInfoManager;
 import com.netease.nim.uikit.samwraper.SendQuestionWraper;
+import com.nostra13.universalimageloader.core.download.ImageDownloader.Scheme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +88,15 @@ public class NimApplication extends Application {
 
     /*SAMC_BEGIN()*/
     public void NimInit(){
+            if(!DemoCache.getFirstEntry()){
+                LogUtil.i("test","not FirstEntry");
+                return;
+            }else{
+                LogUtil.i("test","FirstEntry");
+                DemoCache.setFirstEntry(false);
+            }
+			
+	
             NIMClient.init(this, getLoginInfo(), getOptions());
             // init pinyin
             PinYin.init(this);
@@ -115,7 +128,8 @@ public class NimApplication extends Application {
 
         if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
             DemoCache.setAccount(account.toLowerCase());
-            return new LoginInfo(account, token);
+            //return new LoginInfo(account, token);
+            return new LoginInfo(account,"123467");
         } else {
             return null;
         }
@@ -271,6 +285,7 @@ public class NimApplication extends Application {
     }
 
     private void initUIKit() {
+        /*SAMC_BEGIN()*/
         NimUIKit.registerSamServiceListener(new SamServiceListener(){
             public List<SendQuestionWraper> getSendQuestionWraper(String responser){
                  List<SendQuestionWraper> sq_list = new ArrayList<SendQuestionWraper>();
@@ -297,7 +312,30 @@ public class NimApplication extends Application {
 
                  return questions;
              }
+
+             public String getAvatar(String account){
+                 String avatar = null;
+                 AvatarRecord rd = SamService.getInstance().getDao().query_AvatarRecord_db_by_username(account);
+                 if(rd != null){
+                     avatar = Scheme.FILE.wrap(SamService.sam_cache_path+SamService.AVATAR_FOLDER+"/"+rd.getavatarname());
+                     //avatar = "http://139.129.57.77/avatar/2016/5/13/origin_1463121173430.png";
+                 }else{
+                     SamService.getInstance().query_user_info_from_server(account,new SMCallBack(){
+                         @Override
+                         public void onSuccess(final Object obj) {}
+
+                         @Override
+                         public void onFailed(int code) {}
+
+                         @Override
+                         public void onError(int code) {}
+
+                     });
+                 }
+                 return avatar;
+             }
         });
+        /*SAMC_END()*/
 		
         // 初始化，需要传入用户信息提供者
         NimUIKit.init(this, infoProvider, contactProvider);
@@ -315,12 +353,17 @@ public class NimApplication extends Application {
     private UserInfoProvider infoProvider = new UserInfoProvider() {
         @Override
         public UserInfo getUserInfo(String account) {
-            UserInfo user = NimUserInfoCache.getInstance().getUserInfo(account);
+            /*SAMC_BEGIN()*/
+            /*UserInfo user = NimUserInfoCache.getInstance().getUserInfo(account);
             if (user == null) {
                 NimUserInfoCache.getInstance().getUserInfoFromRemote(account, null);
             }
+            return user;*/
+            return SamUserInfoManager.getInstance().getUserInfo(account);
 
-            return user;
+            /*SAMC_END()*/
+
+            
         }
 
         @Override
@@ -351,11 +394,17 @@ public class NimApplication extends Application {
         public String getDisplayNameForMessageNotifier(String account, String sessionId, SessionTypeEnum sessionType) {
             String nick = null;
             if (sessionType == SessionTypeEnum.P2P) {
-                nick = NimUserInfoCache.getInstance().getAlias(account);
+                /*SAMC_BEGIN()*/
+                /*nick = NimUserInfoCache.getInstance().getAlias(account);*/
+                nick = account;
+                /*SAMC_END()*/
             } else if (sessionType == SessionTypeEnum.Team) {
                 nick = TeamDataCache.getInstance().getTeamNick(sessionId, account);
                 if (TextUtils.isEmpty(nick)) {
-                    nick = NimUserInfoCache.getInstance().getAlias(account);
+                    /*SAMC_BEGIN()*/
+                    /*nick = NimUserInfoCache.getInstance().getAlias(account);*/
+                    nick = account;
+                    /*SAMC_END()*/
                 }
             }
             // 返回null，交给sdk处理。如果对方有设置nick，sdk会显示nick

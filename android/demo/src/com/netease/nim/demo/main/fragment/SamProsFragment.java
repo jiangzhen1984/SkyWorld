@@ -150,7 +150,9 @@ public class SamProsFragment extends MainTabFragment {
         @Override
         public void onEvent(StatusCode code) {
             if (code.wontAutoLogin()) {
-                kickOut(code);
+                /*SAMC_BEGIN()*/
+                //kickOut(code);
+                /*SAMC_END()*/
             } else {
                 if (code == StatusCode.NET_BROKEN) {
                     notifyBar.setVisibility(View.VISIBLE);
@@ -194,7 +196,8 @@ public class SamProsFragment extends MainTabFragment {
         }
     };
 
-    private void kickOut(StatusCode code) {
+    /*SAMC_BEGIN()*/
+    /*private void kickOut(StatusCode code) {
         Preferences.saveUserToken("");
 
         if (code == StatusCode.PWD_ERROR) {
@@ -213,7 +216,8 @@ public class SamProsFragment extends MainTabFragment {
 
         LoginActivity.start(getActivity(), true);
         getActivity().finish();
-    }
+    }*/
+    /*SAMC_END()*/
 
     // 将最近联系人列表fragment动态集成进来。 开发者也可以使用在xml中配置的方式静态集成。
     private void addProsFragment() {

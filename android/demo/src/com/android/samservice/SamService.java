@@ -395,9 +395,11 @@ public class SamService{
 
 	synchronized public void store_current_token(String token){
 			current_token = token;
+			SamLog.e(TAG,"store current_token:"+token);
 	}
 
 	synchronized public String get_current_token(){
+		SamLog.e(TAG,"current_token:"+current_token);
 		return current_token;
 	}
 	
@@ -422,11 +424,10 @@ public class SamService{
 	}else{
 		sam_download_path = mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 	}
-
-	
     	
     	sam_download_path = mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
+       //sam_cache_path = Environment.getExternalStorageDirectory() + "/nim"+"/cache";
     	
     	SamLog.e(TAG,"sam_cache_path:"+sam_cache_path);
     	SamLog.e(TAG,"sam_download_path:"+sam_download_path);
@@ -520,7 +521,7 @@ public class SamService{
 		if(mWaitThread!=null){
 			mWaitThread.StopThread();
 			SamLog.e(TAG,"before waitStopLock");
-			waitStopLock();
+			//waitStopLock();
 			SamLog.e(TAG,"after waitStopLock");
 			
 		}
@@ -546,9 +547,10 @@ public class SamService{
 		mSamPushServiceHandler.removeMessages(MSG_PUSH_MSG_EASEMOB_INFO);
 		mPushThread.getLooper().quit();
 
+		mHandlerTimeOutHandler.removeMessages(MSG_HANDLE_TIMEOUT);
+		mHandlerTimeOutThread.getLooper().quit();
+
 		synchronized(pushLock){
-			mHandlerTimeOutHandler.removeMessages(MSG_HANDLE_TIMEOUT);
-			mHandlerTimeOutThread.getLooper().quit();
 			mSamPushServiceHandler = null;
 		}
 
@@ -1680,7 +1682,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 1");
 			cbobj.smcb.onError(R_FOLLOW_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
@@ -1756,7 +1758,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 2");
 			cbobj.smcb.onError(R_COMMENT_FG_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
@@ -1822,7 +1824,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 3");
 			cbobj.smcb.onError(R_QUERY_FG_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
@@ -1932,7 +1934,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 4");
 			cbobj.smcb.onError(R_UPLOAD_FG_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
@@ -1999,7 +2001,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 5");
 			cbobj.smcb.onError(R_SEND_COMMENTS_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
@@ -2067,7 +2069,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 6");
 			cbobj.smcb.onError(R_UPLOAD_AVATAR_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
@@ -2232,7 +2234,19 @@ public class SamService{
 		String token = get_current_token();
 
 		if(!quiobj.withOutToken && token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "special case: stop service but app still do operation");
+			cancelTimeOut(samobj);
+			boolean continue_run = true;
+			synchronized(samobj){
+				if(samobj.request_status == SamCoreObj.STATUS_INIT){
+					samobj.request_status = SamCoreObj.STATUS_DONE;
+				}else if(samobj.request_status == SamCoreObj.STATUS_TIMEOUT){
+					continue_run = false;
+				}
+			}
+
+			if(!continue_run) return;
+				
 			cbobj.smcb.onError(R_QUERY_USERINFO_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
@@ -2452,7 +2466,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 8");
 			cbobj.smcb.onError(R_UPGRADE_ERROR_TOKEN_FILE_NULL);
 			return;
 		}
@@ -2552,7 +2566,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 9");
 			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_CANCEL_QUESTION_ERROR, R_CANCEL_QUESTION_ERROR_TOKEN_FILE_NULL);
 			hndl.sendMessage(msg);
 			return;
@@ -2664,7 +2678,7 @@ public class SamService{
 		String token = get_current_token();
 
 		if(token == null){
-			SamLog.e(TAG, "token is null, should never run to here");
+			SamLog.e(TAG, "token is null, should never run to here 10");
 			Message msg = hndl.obtainMessage(cbobj.cbMsg, R_SEND_QUESTION_ERROR, R_SEND_QUESTION_ERROR_TOKEN_FILE_NULL,samobj);
 			hndl.sendMessage(msg);
 			return;
@@ -2847,6 +2861,10 @@ public class SamService{
 					cancelHeartTimeOut();
 					waitNetwork();
 				}
+
+				if(!run){
+					break;
+				}
 				/*connect to server*/
 				if(current_token == null){
 					SamLog.e(TAG,"WaitThread: current token is null");
@@ -2913,11 +2931,12 @@ public class SamService{
 
 			SamLog.e(TAG,"WaitThread exit !!!!");
 
-			notifyStopLock();
+			//notifyStopLock();
     		} 
 
 		public void StopThread(){
 			run = false;
+			notifyNetwork();
 			InterruptWaitThread();
 			
 		}

@@ -137,6 +137,7 @@ public class ImageLoaderKit {
         }
 
         String url = HeadImageView.getAvatarCacheKey(userInfo.getAvatar());
+        LogUtil.i("test",url);
         ImageLoader.getInstance().loadImage(url,
                 new ImageSize(HeadImageView.DEFAULT_AVATAR_THUMB_SIZE, HeadImageView.DEFAULT_AVATAR_THUMB_SIZE),
                 avatarLoadOption, null);

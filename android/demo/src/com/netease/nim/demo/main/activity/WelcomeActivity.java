@@ -206,28 +206,6 @@ public class WelcomeActivity extends TActivity {
 		onIntent();
 	}
 
-	private void login_nim_withoutSam(){
-
-		SamService.getInstance().startWaitThread();
-
-		List<LoginUser> userList = SamService.getInstance().getDao().query_AllLoginUser_db();
-		if(userList.size() == 0){
-			invalideAllLoginRecord();
-			clearPreferences();
-	            	launchSignInActivity();
-		}else{
-			final String userName = userList.get(0).geteasemob_username();
-			final String password = userList.get(0).getpassword();
-			LogUtil.i(TAG, "userName:"+userName+" password:"+password);
-			Preferences.saveUserAccount(userName);
-			Preferences.saveUserToken(tokenFromPassword(password));
-			DemoCache.getApp().NimInit();
-
-			showMainActivity();
-		}
-
-	}
-
 	private void launchSignInActivity()
 	{
 		Intent newIntent = new Intent(this,SignInActivity.class);
@@ -256,7 +234,13 @@ public class WelcomeActivity extends TActivity {
 	            			launchSignInActivity();
 				}else if(msg.arg2 == SignService.RET_SI_FROM_CLIENT_CONNECT_FAILED){
 					//network is not available, just run into main
-					login_nim_withoutSam();
+					invalideAllLoginRecord();
+					clearPreferences();
+	            			launchSignInActivity();
+				}else{
+					invalideAllLoginRecord();
+					clearPreferences();
+	            			launchSignInActivity();
 				}
 				
 	            	}
