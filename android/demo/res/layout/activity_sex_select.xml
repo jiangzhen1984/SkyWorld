@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+   	android:layout_gravity="center_vertical"
+   	android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp"
+    android:orientation="vertical"
+    android:background="@color/common_white">
+    	
+        <TextView 
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="10dp"
+        	android:layout_marginLeft="10dp"
+        	android:text="@string/sex"
+        	android:textSize="18sp"
+        	android:textColor="@color/common_black"/>
+    	
+        <LinearLayout 
+            android:id="@+id/male_layout"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="5dp"
+    		android:orientation="horizontal">
+        
+            <TextView 
+                android:layout_width="0dp"
+    			android:layout_height="wrap_content"
+    			android:layout_weight="1"
+    			android:layout_marginLeft="20dp"
+    			android:layout_marginTop="10dp"
+    			android:layout_marginBottom="10dp"
+    			android:layout_gravity="center_vertical"
+    			android:textColor="@color/common_black"
+    			android:textSize="16sp"
+    			android:text="@string/male"/>
+            
+            <ImageView
+                android:id="@+id/male_img" 
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+		        android:layout_marginRight="20dp"
+		        android:layout_gravity="center_vertical"
+                android:contentDescription="@null"/>
+        </LinearLayout>
+        
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/common_gray"/>
+        
+        <LinearLayout 
+            android:id="@+id/female_layout"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="5dp"
+    		android:layout_marginBottom="10dp"
+    		android:orientation="horizontal">
+        
+            <TextView 
+                android:layout_width="0dp"
+    			android:layout_height="wrap_content"
+    			android:layout_weight="1"
+    			android:layout_marginLeft="20dp"
+    			android:layout_marginTop="10dp"
+    			android:layout_marginBottom="10dp"
+    			android:layout_gravity="center_vertical"
+    			android:textColor="@color/common_black"
+    			android:textSize="16sp"
+    			android:text="@string/female"/>
+            
+            <ImageView
+                android:id="@+id/female_img" 
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+		        android:layout_marginRight="20dp"
+		        android:layout_gravity="center_vertical"
+                android:contentDescription="@null"/>
+        </LinearLayout>
+        
+        
+</LinearLayout>

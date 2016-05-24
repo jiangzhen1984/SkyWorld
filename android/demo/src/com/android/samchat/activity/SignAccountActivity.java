@@ -36,6 +36,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Selection;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -184,7 +185,8 @@ public class SignAccountActivity extends Activity {
 		final String password = SamService.getInstance().get_current_user().getpassword();
 
 		DemoCache.getApp().NimInit();
-
+             
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

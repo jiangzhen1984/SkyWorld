@@ -34,40 +34,40 @@ import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import java.util.List;
 
 /**
- * UIKitèƒ½åŠ›è¾“å‡ºç±»ã€‚
+ * UIKitÄÜÁ¦Êä³öÀà¡£
  */
 public final class NimUIKit {
 
     // context
     private static Context context;
 
-    // è‡ªå·±çš„ç”¨æˆ·å¸å·
+    // ×Ô¼ºµÄÓÃ»§ÕÊºÅ
     private static String account;
 
-    // ç”¨æˆ·ä¿¡æ¯æä¾›è€…
+    // ÓÃ»§ĞÅÏ¢Ìá¹©Õß
     private static UserInfoProvider userInfoProvider;
 
-    // é€šè®¯å½•ä¿¡æ¯æä¾›è€…
+    // Í¨Ñ¶Â¼ĞÅÏ¢Ìá¹©Õß
     private static ContactProvider contactProvider;
 
-    // åœ°ç†ä½ç½®ä¿¡æ¯æä¾›è€…
+    // µØÀíÎ»ÖÃĞÅÏ¢Ìá¹©Õß
     private static LocationProvider locationProvider;
 
-    // å›¾ç‰‡åŠ è½½ã€ç¼“å­˜ä¸ç®¡ç†ç»„ä»¶
+    // Í¼Æ¬¼ÓÔØ¡¢»º´æÓë¹ÜÀí×é¼ş
     private static ImageLoaderKit imageLoaderKit;
 
-    // ä¼šè¯çª—å£æ¶ˆæ¯åˆ—è¡¨ä¸€äº›ç‚¹å‡»äº‹ä»¶çš„å“åº”å¤„ç†å‡½æ•°
+    // »á»°´°¿ÚÏûÏ¢ÁĞ±íÒ»Ğ©µã»÷ÊÂ¼şµÄÏìÓ¦´¦Àíº¯Êı
     private static SessionEventListener sessionListener;
 
-    // é€šè®¯å½•åˆ—è¡¨ä¸€äº›ç‚¹å‡»äº‹ä»¶çš„å“åº”å¤„ç†å‡½æ•°
+    // Í¨Ñ¶Â¼ÁĞ±íÒ»Ğ©µã»÷ÊÂ¼şµÄÏìÓ¦´¦Àíº¯Êı
     private static ContactEventListener contactEventListener;
 
     /**
-     * åˆå§‹åŒ–UIKitï¼Œé¡»ä¼ å…¥contextä»¥åŠç”¨æˆ·ä¿¡æ¯æä¾›è€…
+     * ³õÊ¼»¯UIKit£¬Ğë´«ÈëcontextÒÔ¼°ÓÃ»§ĞÅÏ¢Ìá¹©Õß
      *
-     * @param context          ä¸Šä¸‹æ–‡
-     * @param userInfoProvider ç”¨æˆ·ä¿¡æ¯æä¾›è€…
-     * @param contactProvider  é€šè®¯å½•ä¿¡æ¯æä¾›è€…
+     * @param context          ÉÏÏÂÎÄ
+     * @param userInfoProvider ÓÃ»§ĞÅÏ¢Ìá¹©Õß
+     * @param contactProvider  Í¨Ñ¶Â¼ĞÅÏ¢Ìá¹©Õß
      */
     public static void init(Context context, UserInfoProvider userInfoProvider, ContactProvider contactProvider) {
         NimUIKit.context = context.getApplicationContext();
@@ -75,9 +75,11 @@ public final class NimUIKit {
         NimUIKit.contactProvider = contactProvider;
         NimUIKit.imageLoaderKit = new ImageLoaderKit(context, null);
 
-        // init data cache
-        LoginSyncDataStatusObserver.getInstance().registerLoginSyncDataStatus(true);  // ç›‘å¬ç™»å½•åŒæ­¥æ•°æ®å®Œæˆé€šçŸ¥
+        // sync listener register
+        LoginSyncDataStatusObserver.getInstance().registerLoginSyncDataStatus(true);  // ¼àÌıµÇÂ¼Í¬²½Êı¾İÍê³ÉÍ¨Öª
+        //observer for friend data, user info and team data
         DataCacheManager.observeSDKDataChanged(true);
+        //build first version of data cache even sync data not finished
         if (!TextUtils.isEmpty(getAccount())) {
             DataCacheManager.buildDataCache(); // build data cache on auto login
         }
@@ -92,22 +94,28 @@ public final class NimUIKit {
         LogUtil.init(path, Log.DEBUG);
     }
 
-    
+
+/* how many observer register
+1. login sync observer
+2. Friend data observer
+3. Team data observer
+4. User info data observer
+*/
 
     /**
-     * é‡Šæ”¾ç¼“å­˜ï¼Œä¸€èˆ¬åœ¨æ³¨é”€æ—¶è°ƒç”¨
+     * ÊÍ·Å»º´æ£¬Ò»°ãÔÚ×¢ÏúÊ±µ÷ÓÃ
      */
     public static void clearCache() {
         DataCacheManager.clearDataCache();
     }
 
     /**
-     * æ‰“å¼€ä¸€ä¸ªèŠå¤©çª—å£ï¼Œå¼€å§‹èŠå¤©
+     * ´ò¿ªÒ»¸öÁÄÌì´°¿Ú£¬¿ªÊ¼ÁÄÌì
      *
-     * @param context       ä¸Šä¸‹æ–‡
-     * @param id            èŠå¤©å¯¹è±¡IDï¼ˆç”¨æˆ·å¸å·accountæˆ–è€…ç¾¤ç»„IDï¼‰
-     * @param sessionType   ä¼šè¯ç±»å‹
-     * @param customization å®šåˆ¶åŒ–ä¿¡æ¯ã€‚é’ˆå¯¹ä¸åŒçš„èŠå¤©å¯¹è±¡ï¼Œå¯æä¾›ä¸åŒçš„å®šåˆ¶åŒ–ã€‚
+     * @param context       ÉÏÏÂÎÄ
+     * @param id            ÁÄÌì¶ÔÏóID£¨ÓÃ»§ÕÊºÅaccount»òÕßÈº×éID£©
+     * @param sessionType   »á»°ÀàĞÍ
+     * @param customization ¶¨ÖÆ»¯ĞÅÏ¢¡£Õë¶Ô²»Í¬µÄÁÄÌì¶ÔÏó£¬¿ÉÌá¹©²»Í¬µÄ¶¨ÖÆ»¯¡£
      */
     public static void startChatting(Context context, String id, SessionTypeEnum sessionType, SessionCustomization customization) {
         if (sessionType == SessionTypeEnum.P2P) {
@@ -128,13 +136,13 @@ public final class NimUIKit {
     /*SAMC_END()*/
 
     /**
-     * æ‰“å¼€ä¸€ä¸ªèŠå¤©çª—å£ï¼ˆç”¨äºä»èŠå¤©ä¿¡æ¯ä¸­åˆ›å»ºç¾¤èŠæ—¶ï¼Œæ‰“å¼€ç¾¤èŠï¼‰
+     * ´ò¿ªÒ»¸öÁÄÌì´°¿Ú£¨ÓÃÓÚ´ÓÁÄÌìĞÅÏ¢ÖĞ´´½¨ÈºÁÄÊ±£¬´ò¿ªÈºÁÄ£©
      *
-     * @param context       ä¸Šä¸‹æ–‡
-     * @param id            èŠå¤©å¯¹è±¡IDï¼ˆç”¨æˆ·å¸å·accountæˆ–è€…ç¾¤ç»„IDï¼‰
-     * @param sessionType   ä¼šè¯ç±»å‹
-     * @param customization å®šåˆ¶åŒ–ä¿¡æ¯ã€‚é’ˆå¯¹ä¸åŒçš„èŠå¤©å¯¹è±¡ï¼Œå¯æä¾›ä¸åŒçš„å®šåˆ¶åŒ–ã€‚
-     * @param backToClass   è¿”å›çš„æŒ‡å®šé¡µé¢
+     * @param context       ÉÏÏÂÎÄ
+     * @param id            ÁÄÌì¶ÔÏóID£¨ÓÃ»§ÕÊºÅaccount»òÕßÈº×éID£©
+     * @param sessionType   »á»°ÀàĞÍ
+     * @param customization ¶¨ÖÆ»¯ĞÅÏ¢¡£Õë¶Ô²»Í¬µÄÁÄÌì¶ÔÏó£¬¿ÉÌá¹©²»Í¬µÄ¶¨ÖÆ»¯¡£
+     * @param backToClass   ·µ»ØµÄÖ¸¶¨Ò³Ãæ
      */
     public static void startChatting(Context context, String id, SessionTypeEnum sessionType, SessionCustomization customization,
                                      Class<? extends Activity> backToClass) {
@@ -144,21 +152,21 @@ public final class NimUIKit {
     }
 
     /**
-     * æ‰“å¼€è”ç³»äººé€‰æ‹©å™¨
+     * ´ò¿ªÁªÏµÈËÑ¡ÔñÆ÷
      *
-     * @param context     ä¸Šä¸‹æ–‡ï¼ˆActivityï¼‰
-     * @param option      è”ç³»äººé€‰æ‹©å™¨å¯é€‰é…ç½®é¡¹
-     * @param requestCode startActivityForResultä½¿ç”¨çš„è¯·æ±‚ç 
+     * @param context     ÉÏÏÂÎÄ£¨Activity£©
+     * @param option      ÁªÏµÈËÑ¡ÔñÆ÷¿ÉÑ¡ÅäÖÃÏî
+     * @param requestCode startActivityForResultÊ¹ÓÃµÄÇëÇóÂë
      */
     public static void startContactSelect(Context context, ContactSelectActivity.Option option, int requestCode) {
         ContactSelectActivity.startActivityForResult(context, option, requestCode);
     }
 
     /**
-     * æ‰“å¼€è®¨è®ºç»„æˆ–é«˜çº§ç¾¤èµ„æ–™é¡µ
+     * ´ò¿ªÌÖÂÛ×é»ò¸ß¼¶Èº×ÊÁÏÒ³
      *
-     * @param context ä¸Šä¸‹æ–‡
-     * @param teamId  ç¾¤id
+     * @param context ÉÏÏÂÎÄ
+     * @param teamId  Èºid
      */
     public static void startTeamInfo(Context context, String teamId) {
         Team team = TeamDataCache.getInstance().getTeamById(teamId);
@@ -166,9 +174,9 @@ public final class NimUIKit {
             return;
         }
         if (team.getType() == TeamTypeEnum.Advanced) {
-            AdvancedTeamInfoActivity.start(context, teamId); // å¯åŠ¨å›ºå®šç¾¤èµ„æ–™é¡µ
+            AdvancedTeamInfoActivity.start(context, teamId); // Æô¶¯¹Ì¶¨Èº×ÊÁÏÒ³
         } else if (team.getType() == TeamTypeEnum.Normal) {
-            NormalTeamInfoActivity.start(context, teamId); // å¯åŠ¨è®¨è®ºç»„èµ„æ–™é¡µ
+            NormalTeamInfoActivity.start(context, teamId); // Æô¶¯ÌÖÂÛ×é×ÊÁÏÒ³
         }
 
     }
@@ -202,34 +210,34 @@ public final class NimUIKit {
     }
 
     /**
-     * æ ¹æ®æ¶ˆæ¯é™„ä»¶ç±»å‹æ³¨å†Œå¯¹åº”çš„æ¶ˆæ¯é¡¹å±•ç¤ºViewHolder
+     * ¸ù¾İÏûÏ¢¸½¼şÀàĞÍ×¢²á¶ÔÓ¦µÄÏûÏ¢ÏîÕ¹Ê¾ViewHolder
      *
-     * @param attach     é™„ä»¶ç±»å‹
-     * @param viewHolder æ¶ˆæ¯ViewHolder
+     * @param attach     ¸½¼şÀàĞÍ
+     * @param viewHolder ÏûÏ¢ViewHolder
      */
     public static void registerMsgItemViewHolder(Class<? extends MsgAttachment> attach, Class<? extends MsgViewHolderBase> viewHolder) {
         MsgViewHolderFactory.register(attach, viewHolder);
     }
 
     /**
-     * æ³¨å†ŒTipç±»å‹æ¶ˆæ¯é¡¹å±•ç¤ºViewHolder
-     * @param viewHolder Tipæ¶ˆæ¯ViewHolder
+     * ×¢²áTipÀàĞÍÏûÏ¢ÏîÕ¹Ê¾ViewHolder
+     * @param viewHolder TipÏûÏ¢ViewHolder
      */
     public static void registerTipMsgViewHolder(Class<? extends MsgViewHolderBase> viewHolder) {
         MsgViewHolderFactory.registerTipMsgViewHolder(viewHolder);
     }
 
     /**
-     * è®¾ç½®å½“å‰ç™»å½•ç”¨æˆ·çš„å¸å·
+     * ÉèÖÃµ±Ç°µÇÂ¼ÓÃ»§µÄÕÊºÅ
      *
-     * @param account å¸å·
+     * @param account ÕÊºÅ
      */
     public static void setAccount(String account) {
         NimUIKit.account = account;
     }
 
     /**
-     * è·å–èŠå¤©ç•Œé¢äº‹ä»¶ç›‘å¬å™¨
+     * »ñÈ¡ÁÄÌì½çÃæÊÂ¼ş¼àÌıÆ÷
      *
      * @return
      */
@@ -238,7 +246,7 @@ public final class NimUIKit {
     }
 
     /**
-     * è®¾ç½®èŠå¤©ç•Œé¢çš„äº‹ä»¶ç›‘å¬å™¨
+     * ÉèÖÃÁÄÌì½çÃæµÄÊÂ¼ş¼àÌıÆ÷
      *
      * @param sessionListener
      */
@@ -247,7 +255,7 @@ public final class NimUIKit {
     }
 
     /**
-     * è·å–é€šè®¯å½•åˆ—è¡¨çš„äº‹ä»¶ç›‘å¬å™¨
+     * »ñÈ¡Í¨Ñ¶Â¼ÁĞ±íµÄÊÂ¼ş¼àÌıÆ÷
      *
      * @return
      */
@@ -256,7 +264,7 @@ public final class NimUIKit {
     }
 
     /**
-     * è®¾ç½®é€šè®¯å½•åˆ—è¡¨çš„äº‹ä»¶ç›‘å¬å™¨
+     * ÉèÖÃÍ¨Ñ¶Â¼ÁĞ±íµÄÊÂ¼ş¼àÌıÆ÷
      *
      * @param contactEventListener
      */
@@ -265,9 +273,9 @@ public final class NimUIKit {
     }
 
     /**
-     * å½“ç”¨æˆ·èµ„æ–™å‘ç”Ÿæ”¹åŠ¨æ—¶ï¼Œè¯·è°ƒç”¨æ­¤æ¥å£ï¼Œé€šçŸ¥æ›´æ–°UI
+     * µ±ÓÃ»§×ÊÁÏ·¢Éú¸Ä¶¯Ê±£¬Çëµ÷ÓÃ´Ë½Ó¿Ú£¬Í¨Öª¸üĞÂUI
      *
-     * @param accounts æœ‰ç”¨æˆ·ä¿¡æ¯æ”¹åŠ¨çš„å¸å·åˆ—è¡¨
+     * @param accounts ÓĞÓÃ»§ĞÅÏ¢¸Ä¶¯µÄÕÊºÅÁĞ±í
      */
     public static void notifyUserInfoChanged(List<String> accounts) {
         UserInfoHelper.notifyChanged(accounts);
@@ -283,6 +291,7 @@ public final class NimUIKit {
     public static interface SamServiceListener{
         List<SendQuestionWraper> getSendQuestionWraper(String responser);
         List<String> getNotResponsedQuestion(String sender);
+        String getAvatar(String account);
     }
 	
     /*SAMC_END*/

@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * ç”¨æˆ·èµ„æ–™æ•°æ®ç¼“å­˜ï¼Œé€‚ç”¨äºç”¨æˆ·ä½“ç³»ä½¿ç”¨ç½‘æ˜“äº‘ä¿¡ç”¨æˆ·èµ„æ–™æ‰˜ç®¡
- * æ³¨å†Œç¼“å­˜å˜æ›´é€šçŸ¥ï¼Œè¯·ä½¿ç”¨UserInfoHelperçš„registerObserveræ–¹æ³•
+ * ÓÃ»§×ÊÁÏÊı¾İ»º´æ£¬ÊÊÓÃÓÚÓÃ»§ÌåÏµÊ¹ÓÃÍøÒ×ÔÆĞÅÓÃ»§×ÊÁÏÍĞ¹Ü
+ * ×¢²á»º´æ±ä¸üÍ¨Öª£¬ÇëÊ¹ÓÃUserInfoHelperµÄregisterObserver·½·¨
  * Created by huangjun on 2015/8/20.
  */
 public class NimUserInfoCache {
@@ -34,10 +34,10 @@ public class NimUserInfoCache {
 
     private Map<String, NimUserInfo> account2UserMap = new ConcurrentHashMap<>();
 
-    private Map<String, List<RequestCallback<NimUserInfo>>> requestUserInfoMap = new ConcurrentHashMap<>(); // é‡å¤è¯·æ±‚å¤„ç†
+    private Map<String, List<RequestCallback<NimUserInfo>>> requestUserInfoMap = new ConcurrentHashMap<>(); // ÖØ¸´ÇëÇó´¦Àí
 
     /**
-     * æ„å»ºç¼“å­˜ä¸æ¸…ç†
+     * ¹¹½¨»º´æÓëÇåÀí
      */
     public void buildCache() {
         List<NimUserInfo> users = NIMClient.getService(UserService.class).getAllUserInfo();
@@ -50,7 +50,7 @@ public class NimUserInfoCache {
     }
 
     /**
-     * ä»äº‘ä¿¡æœåŠ¡å™¨è·å–ç”¨æˆ·ä¿¡æ¯ï¼ˆé‡å¤è¯·æ±‚å¤„ç†ï¼‰[å¼‚æ­¥]
+     * ´ÓÔÆĞÅ·şÎñÆ÷»ñÈ¡ÓÃ»§ĞÅÏ¢£¨ÖØ¸´ÇëÇó´¦Àí£©[Òì²½]
      */
     public void getUserInfoFromRemote(final String account, final RequestCallback<NimUserInfo> callback) {
         if (TextUtils.isEmpty(account)) {
@@ -61,7 +61,7 @@ public class NimUserInfoCache {
             if (callback != null) {
                 requestUserInfoMap.get(account).add(callback);
             }
-            return; // å·²ç»åœ¨è¯·æ±‚ä¸­ï¼Œä¸è¦é‡å¤è¯·æ±‚
+            return; // ÒÑ¾­ÔÚÇëÇóÖĞ£¬²»ÒªÖØ¸´ÇëÇó
         } else {
             List<RequestCallback<NimUserInfo>> cbs = new ArrayList<>();
             if (callback != null) {
@@ -81,10 +81,10 @@ public class NimUserInfoCache {
                 boolean hasCallback = requestUserInfoMap.get(account).size() > 0;
                 if (code == ResponseCode.RES_SUCCESS && users != null && !users.isEmpty()) {
                     user = users.get(0);
-                    // è¿™é‡Œä¸éœ€è¦æ›´æ–°ç¼“å­˜ï¼Œç”±ç›‘å¬ç”¨æˆ·èµ„æ–™å˜æ›´ï¼ˆæ·»åŠ ï¼‰æ¥æ›´æ–°ç¼“å­˜
+                    // ÕâÀï²»ĞèÒª¸üĞÂ»º´æ£¬ÓÉ¼àÌıÓÃ»§×ÊÁÏ±ä¸ü£¨Ìí¼Ó£©À´¸üĞÂ»º´æ
                 }
 
-                // å¤„ç†å›è°ƒ
+                // ´¦Àí»Øµ÷
                 if (hasCallback) {
                     List<RequestCallback<NimUserInfo>> cbs = requestUserInfoMap.get(account);
                     for (RequestCallback<NimUserInfo> cb : cbs) {
@@ -102,14 +102,14 @@ public class NimUserInfoCache {
     }
 
     /**
-     * ä»äº‘ä¿¡æœåŠ¡å™¨è·å–æ‰¹é‡ç”¨æˆ·ä¿¡æ¯[å¼‚æ­¥]
+     * ´ÓÔÆĞÅ·şÎñÆ÷»ñÈ¡ÅúÁ¿ÓÃ»§ĞÅÏ¢[Òì²½]
      */
     public void getUserInfoFromRemote(List<String> accounts, final RequestCallback<List<NimUserInfo>> callback) {
         NIMClient.getService(UserService.class).fetchUserInfo(accounts).setCallback(new RequestCallback<List<NimUserInfo>>() {
             @Override
             public void onSuccess(List<NimUserInfo> users) {
                 Log.i(UIKitLogTag.USER_CACHE, "fetch userInfo completed, add users size =" + users.size());
-                // è¿™é‡Œä¸éœ€è¦æ›´æ–°ç¼“å­˜ï¼Œç”±ç›‘å¬ç”¨æˆ·èµ„æ–™å˜æ›´ï¼ˆæ·»åŠ ï¼‰æ¥æ›´æ–°ç¼“å­˜
+                // ÕâÀï²»ĞèÒª¸üĞÂ»º´æ£¬ÓÉ¼àÌıÓÃ»§×ÊÁÏ±ä¸ü£¨Ìí¼Ó£©À´¸üĞÂ»º´æ
                 if (callback != null) {
                     callback.onSuccess(users);
                 }
@@ -132,7 +132,7 @@ public class NimUserInfoCache {
     }
 
     /**
-     * ******************************* ä¸šåŠ¡æ¥å£ï¼ˆè·å–ç¼“å­˜çš„ç”¨æˆ·ä¿¡æ¯ï¼‰ *********************************
+     * ******************************* ÒµÎñ½Ó¿Ú£¨»ñÈ¡»º´æµÄÓÃ»§ĞÅÏ¢£© *********************************
      */
 
     public List<NimUserInfo> getAllUsersOfMyFriend() {
@@ -147,7 +147,7 @@ public class NimUserInfoCache {
             }
         }
 
-        // fetch unknown userInfoï¼Œæ ¹æœ¬ä¸ä¼šå‘ç”Ÿï¼Œå†æ¬¡ä»…ä½œæµ‹è¯•æ ¡éªŒï¼Œå¯ä»¥åˆ å»
+        // fetch unknown userInfo£¬¸ù±¾²»»á·¢Éú£¬ÔÙ´Î½ö×÷²âÊÔĞ£Ñé£¬¿ÉÒÔÉ¾È¥
         if (!unknownAccounts.isEmpty()) {
             DataCacheManager.Log(unknownAccounts, "lack friend userInfo", UIKitLogTag.USER_CACHE);
             getUserInfoFromRemote(unknownAccounts, null);
@@ -175,11 +175,11 @@ public class NimUserInfoCache {
     }
 
     /**
-     * è·å–ç”¨æˆ·æ˜¾ç¤ºåç§°ã€‚
-     * è‹¥è®¾ç½®äº†å¤‡æ³¨åï¼Œåˆ™æ˜¾ç¤ºå¤‡æ³¨åã€‚
-     * è‹¥æ²¡æœ‰è®¾ç½®å¤‡æ³¨åï¼Œç”¨æˆ·æœ‰æ˜µç§°åˆ™æ˜¾ç¤ºæ˜µç§°ï¼Œç”¨æˆ·æ²¡æœ‰æ˜µç§°åˆ™æ˜¾ç¤ºå¸å·ã€‚
+     * »ñÈ¡ÓÃ»§ÏÔÊ¾Ãû³Æ¡£
+     * ÈôÉèÖÃÁË±¸×¢Ãû£¬ÔòÏÔÊ¾±¸×¢Ãû¡£
+     * ÈôÃ»ÓĞÉèÖÃ±¸×¢Ãû£¬ÓÃ»§ÓĞêÇ³ÆÔòÏÔÊ¾êÇ³Æ£¬ÓÃ»§Ã»ÓĞêÇ³ÆÔòÏÔÊ¾ÕÊºÅ¡£
      *
-     * @param account ç”¨æˆ·å¸å·
+     * @param account ÓÃ»§ÕÊºÅ
      * @return
      */
     public String getUserDisplayName(String account) {
@@ -199,7 +199,7 @@ public class NimUserInfoCache {
         return null;
     }
 
-    // è·å–ç”¨æˆ·åŸæœ¬çš„æ˜µç§°
+    // »ñÈ¡ÓÃ»§Ô­±¾µÄêÇ³Æ
     public String getUserName(String account) {
         NimUserInfo userInfo = getUserInfo(account);
         if (userInfo != null && !TextUtils.isEmpty(userInfo.getName())) {
@@ -211,7 +211,7 @@ public class NimUserInfoCache {
 
     public String getUserDisplayNameEx(String account) {
         if (account.equals(NimUIKit.getAccount())) {
-            return "æˆ‘";
+            return "ÎÒ";
         }
 
         return getUserDisplayName(account);
@@ -219,7 +219,7 @@ public class NimUserInfoCache {
 
     public String getUserDisplayNameYou(String account) {
         if (account.equals(NimUIKit.getAccount())) {
-            return "ä½ ";  // è‹¥ä¸ºç”¨æˆ·è‡ªå·±ï¼Œæ˜¾ç¤ºâ€œä½ â€
+            return "Äã";  // ÈôÎªÓÃ»§×Ô¼º£¬ÏÔÊ¾¡°Äã¡±
         }
 
         return getUserDisplayName(account);
@@ -230,11 +230,11 @@ public class NimUserInfoCache {
     }
 
     /**
-     * ************************************ ç”¨æˆ·èµ„æ–™å˜æ›´ç›‘å¬(ç›‘å¬SDK) *****************************************
+     * ************************************ ÓÃ»§×ÊÁÏ±ä¸ü¼àÌı(¼àÌıSDK) *****************************************
      */
 
     /**
-     * åœ¨Applicationçš„onCreateä¸­å‘SDKæ³¨å†Œç”¨æˆ·èµ„æ–™å˜æ›´è§‚å¯Ÿè€…
+     * ÔÚApplicationµÄonCreateÖĞÏòSDK×¢²áÓÃ»§×ÊÁÏ±ä¸ü¹Û²ìÕß
      */
     public void registerObservers(boolean register) {
         NIMClient.getService(UserServiceObserve.class).observeUserInfoUpdate(userInfoUpdateObserver, register);
@@ -252,7 +252,7 @@ public class NimUserInfoCache {
     };
 
     /**
-     * *************************************** Userç¼“å­˜ç®¡ç†ä¸å˜æ›´é€šçŸ¥ ********************************************
+     * *************************************** User»º´æ¹ÜÀíÓë±ä¸üÍ¨Öª ********************************************
      */
 
     private void addOrUpdateUsers(final List<NimUserInfo> users, boolean notify) {
@@ -269,9 +269,9 @@ public class NimUserInfoCache {
         List<String> accounts = getAccounts(users);
         DataCacheManager.Log(accounts, "on userInfo changed", UIKitLogTag.USER_CACHE);
 
-        // é€šçŸ¥å˜æ›´
+        // Í¨Öª±ä¸ü
         if (notify && accounts != null && !accounts.isEmpty()) {
-            NimUIKit.notifyUserInfoChanged(accounts); // é€šçŸ¥åˆ°UIç»„ä»¶
+            NimUIKit.notifyUserInfoChanged(accounts); // Í¨Öªµ½UI×é¼ş
         }
     }
 
@@ -289,7 +289,7 @@ public class NimUserInfoCache {
     }
 
     /**
-     * ************************************ å•ä¾‹ **********************************************
+     * ************************************ µ¥Àı **********************************************
      */
 
     static class InstanceHolder {

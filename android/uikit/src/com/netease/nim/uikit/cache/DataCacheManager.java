@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UIKitç¼“å­˜æ•°æ®ç®¡ç†ç±»
+ * UIKit»º´æÊı¾İ¹ÜÀíÀà
  * <p/>
  * Created by huangjun on 2015/10/19.
  */
@@ -21,7 +21,7 @@ public class DataCacheManager {
     private static final String TAG = DataCacheManager.class.getSimpleName();
 
     /**
-     * Appåˆå§‹åŒ–æ—¶å‘SDKæ³¨å†Œæ•°æ®å˜æ›´è§‚å¯Ÿè€…
+     * App³õÊ¼»¯Ê±ÏòSDK×¢²áÊı¾İ±ä¸ü¹Û²ìÕß
      */
     public static void observeSDKDataChanged(boolean register) {
         FriendDataCache.getInstance().registerObservers(register);
@@ -30,14 +30,14 @@ public class DataCacheManager {
     }
 
     /**
-     * æœ¬åœ°ç¼“å­˜æ„å»º(å¼‚æ­¥)
+     * ±¾µØ»º´æ¹¹½¨(Òì²½)
      */
     public static void buildDataCacheAsync() {
         buildDataCacheAsync(null, null);
     }
 
     /**
-     * æœ¬åœ°ç¼“å­˜æ„å»º(å¼‚æ­¥)
+     * ±¾µØ»º´æ¹¹½¨(Òì²½)
      */
     public static void buildDataCacheAsync(final Context context, final Observer<Void> buildCompletedObserver) {
         NimSingleThreadExecutor.getInstance().execute(new Runnable() {
@@ -61,15 +61,19 @@ public class DataCacheManager {
     }
 
     /**
-     * æœ¬åœ°ç¼“å­˜æ„å»ºï¼ˆåŒæ­¥ï¼‰
+     * ±¾µØ»º´æ¹¹½¨£¨Í¬²½£©
      */
+    //build the cache based on current db data,not including server data if sync not finished
     public static void buildDataCache() {
         // clear
         clearDataCache();
 
         // build user/friend/team data cache
+        // db data could be new or old, sync observe will update the new information
         FriendDataCache.getInstance().buildCache();
+
         NimUserInfoCache.getInstance().buildCache();
+        //team db data could be new or old, need team observe to update new info
         TeamDataCache.getInstance().buildCache();
 
         // build self avatar cache
@@ -79,7 +83,7 @@ public class DataCacheManager {
     }
 
     /**
-     * æ¸…ç©ºç¼“å­˜ï¼ˆåŒæ­¥ï¼‰
+     * Çå¿Õ»º´æ£¨Í¬²½£©
      */
     public static void clearDataCache() {
         // clear user/friend/team data cache
@@ -92,7 +96,7 @@ public class DataCacheManager {
     }
 
     /**
-     * è¾“å‡ºç¼“å­˜æ•°æ®å˜æ›´æ—¥å¿—
+     * Êä³ö»º´æÊı¾İ±ä¸üÈÕÖ¾
      */
     public static void Log(List<String> accounts, String event, String logTag) {
         StringBuilder sb = new StringBuilder();

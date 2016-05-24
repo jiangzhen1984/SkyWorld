@@ -52,7 +52,7 @@ public class HeadImageView extends CircleImageView {
     }
 
     /**
-     * åŠ è½½ç”¨æˆ·å¤´åƒï¼ˆé»˜è®¤å¤§å°çš„ç¼©ç•¥å›¾ï¼‰
+     * ¼ÓÔØÓÃ»§Í·Ïñ£¨Ä¬ÈÏ´óÐ¡µÄËõÂÔÍ¼£©
      *
      * @param account
      */
@@ -61,7 +61,7 @@ public class HeadImageView extends CircleImageView {
     }
 
     /**
-     * åŠ è½½ç”¨æˆ·å¤´åƒï¼ˆåŽŸå›¾ï¼‰
+     * ¼ÓÔØÓÃ»§Í·Ïñ£¨Ô­Í¼£©
      *
      * @param account
      */
@@ -70,29 +70,29 @@ public class HeadImageView extends CircleImageView {
     }
 
     /**
-     * åŠ è½½ç”¨æˆ·å¤´åƒï¼ˆæŒ‡å®šç¼©ç•¥å¤§å°ï¼‰
+     * ¼ÓÔØÓÃ»§Í·Ïñ£¨Ö¸¶¨ËõÂÔ´óÐ¡£©
      *
      * @param account
-     * @param thumbSize ç¼©ç•¥å›¾çš„å®½ã€é«˜
+     * @param thumbSize ËõÂÔÍ¼µÄ¿í¡¢¸ß
      */
     private void loadBuddyAvatar(final String account, final int thumbSize) {
-        // å…ˆæ˜¾ç¤ºé»˜è®¤å¤´åƒ
+        // ÏÈÏÔÊ¾Ä¬ÈÏÍ·Ïñ
         setImageResource(NimUIKit.getUserInfoProvider().getDefaultIconResId());
 
-        // åˆ¤æ–­æ˜¯å¦éœ€è¦ImageLoaderåŠ è½½
+        // ÅÐ¶ÏÊÇ·ñÐèÒªImageLoader¼ÓÔØ
         final UserInfoProvider.UserInfo userInfo = NimUIKit.getUserInfoProvider().getUserInfo(account);
         boolean needLoad = userInfo != null && ImageLoaderKit.isImageUriValid(userInfo.getAvatar());
 
-        // ImageLoaderå¼‚æ­¥åŠ è½½
+        // ImageLoaderÒì²½¼ÓÔØ
         if (needLoad) {
-            setTag(account); // è§£å†³ViewHolderå¤ç”¨é—®é¢˜
+            setTag(account); // ½â¾öViewHolder¸´ÓÃÎÊÌâ
             /**
-             * è‹¥ä½¿ç”¨ç½‘æ˜“äº‘ä¿¡äº‘å­˜å‚¨ï¼Œè¿™é‡Œå¯ä»¥è®¾ç½®ä¸‹è½½å›¾ç‰‡çš„åŽ‹ç¼©å°ºå¯¸ï¼Œç”Ÿæˆä¸‹è½½URL
-             * å¦‚æžœå›¾ç‰‡æ¥æºæ˜¯éžç½‘æ˜“äº‘ä¿¡äº‘å­˜å‚¨ï¼Œè¯·ä¸è¦ä½¿ç”¨NosThumbImageUtil
+             * ÈôÊ¹ÓÃÍøÒ×ÔÆÐÅÔÆ´æ´¢£¬ÕâÀï¿ÉÒÔÉèÖÃÏÂÔØÍ¼Æ¬µÄÑ¹Ëõ³ß´ç£¬Éú³ÉÏÂÔØURL
+             * Èç¹ûÍ¼Æ¬À´Ô´ÊÇ·ÇÍøÒ×ÔÆÐÅÔÆ´æ´¢£¬Çë²»ÒªÊ¹ÓÃNosThumbImageUtil
              */
             final String thumbUrl = makeAvatarThumbNosUrl(userInfo.getAvatar(), thumbSize);
 
-            // å¼‚æ­¥ä»Žcache or NOSåŠ è½½å›¾ç‰‡
+            // Òì²½´Ócache or NOS¼ÓÔØÍ¼Æ¬
             ImageLoader.getInstance().displayImage(thumbUrl, new NonViewAware(new ImageSize(thumbSize, thumbSize),
                     ViewScaleType.CROP), options, new SimpleImageLoadingListener() {
                 @Override
@@ -113,17 +113,20 @@ public class HeadImageView extends CircleImageView {
     }
 
     /**
-     * è§£å†³ViewHolderå¤ç”¨é—®é¢˜
+     * ½â¾öViewHolder¸´ÓÃÎÊÌâ
      */
     public void resetImageView() {
         setImageBitmap(null);
     }
 
     /**
-     * ç”Ÿæˆå¤´åƒç¼©ç•¥å›¾NOS URLåœ°å€ï¼ˆç”¨ä½œImageLoaderç¼“å­˜çš„keyï¼‰
+     * Éú³ÉÍ·ÏñËõÂÔÍ¼NOS URLµØÖ·£¨ÓÃ×÷ImageLoader»º´æµÄkey£©
      */
     private static String makeAvatarThumbNosUrl(final String url, final int thumbSize) {
-         return thumbSize > 0 ? NosThumbImageUtil.makeImageThumbUrl(url, NosThumbParam.ThumbType.Crop, thumbSize, thumbSize) : url;
+         /*SAMC_BEGIN()*/
+         //return thumbSize > 0 ? NosThumbImageUtil.makeImageThumbUrl(url, NosThumbParam.ThumbType.Crop, thumbSize, thumbSize) : url;
+         return url;
+         /*SAMC_BEGIN()*/
     }
 
     public static String getAvatarCacheKey(final String url) {
