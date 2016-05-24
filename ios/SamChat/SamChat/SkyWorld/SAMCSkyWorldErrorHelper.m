@@ -115,6 +115,7 @@
             localizedDescription = @"未知错误2";
             break;
     }
+    DDLogError(@"SAMCSkyWorldError: %ld, %@", code, localizedDescription);
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey:localizedDescription};
     return [NSError errorWithDomain:SC_SKYWORLD_ERROR_DOMAIN code:code userInfo:userInfo];
 }
