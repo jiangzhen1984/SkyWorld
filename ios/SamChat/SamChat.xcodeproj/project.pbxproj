@@ -22,6 +22,8 @@
 		31287AAE1CD9F8C6005A1966 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 31287AAD1CD9F8C6005A1966 /* Assets.xcassets */; };
 		31287ABC1CD9F8C6005A1966 /* SamChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31287ABB1CD9F8C6005A1966 /* SamChatTests.m */; };
 		31287AC71CD9F8C6005A1966 /* SamChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31287AC61CD9F8C6005A1966 /* SamChatUITests.m */; };
+		3153052F1CF546D2002C6EB4 /* SAMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3153052E1CF546D2002C6EB4 /* SAMCSettingViewController.m */; };
+		315305321CF56C9C002C6EB4 /* SAMCContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 315305311CF56C9C002C6EB4 /* SAMCContactViewController.m */; };
 		3163BF861CDA2760001C9083 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3163BF841CDA2760001C9083 /* LaunchScreen.storyboard */; };
 		316C13A11CDB553E00905499 /* SAMCUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 316C13A01CDB553E00905499 /* SAMCUserProfileManager.m */; };
 		316C13AF1CDB6C0C00905499 /* LoginCtrl.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 316C13A41CDB6C0C00905499 /* LoginCtrl.storyboard */; };
@@ -319,6 +321,10 @@
 		31287AC21CD9F8C6005A1966 /* SamChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SamChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31287AC61CD9F8C6005A1966 /* SamChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SamChatUITests.m; sourceTree = "<group>"; };
 		31287AC81CD9F8C6005A1966 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3153052D1CF546D2002C6EB4 /* SAMCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingViewController.h; path = Controllers/Setting/SAMCSettingViewController.h; sourceTree = "<group>"; };
+		3153052E1CF546D2002C6EB4 /* SAMCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSettingViewController.m; path = Controllers/Setting/SAMCSettingViewController.m; sourceTree = "<group>"; };
+		315305301CF56C9C002C6EB4 /* SAMCContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCContactViewController.h; path = Controllers/Setting/SAMCContactViewController.h; sourceTree = "<group>"; };
+		315305311CF56C9C002C6EB4 /* SAMCContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCContactViewController.m; path = Controllers/Setting/SAMCContactViewController.m; sourceTree = "<group>"; };
 		3163BF851CDA2760001C9083 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		316C139F1CDB553E00905499 /* SAMCUserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCUserProfileManager.h; sourceTree = "<group>"; };
 		316C13A01CDB553E00905499 /* SAMCUserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCUserProfileManager.m; sourceTree = "<group>"; };
@@ -980,12 +986,24 @@
 			path = SamChatUITests;
 			sourceTree = "<group>";
 		};
+		3153052C1CF5469E002C6EB4 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				3153052D1CF546D2002C6EB4 /* SAMCSettingViewController.h */,
+				3153052E1CF546D2002C6EB4 /* SAMCSettingViewController.m */,
+				315305301CF56C9C002C6EB4 /* SAMCContactViewController.h */,
+				315305311CF56C9C002C6EB4 /* SAMCContactViewController.m */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
 		316C13A21CDB6BC100905499 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				311EC2161CDC3A8100083061 /* Main */,
+				3153052C1CF5469E002C6EB4 /* Setting */,
 				31E6820E1CEAE8EA001F92F3 /* Contact */,
 				3194A0981CE5CD91000607C9 /* QRCode */,
-				311EC2161CDC3A8100083061 /* Main */,
 				311EC21D1CDC5BFF00083061 /* Search */,
 				311EC2231CDC604300083061 /* Chat */,
 				311EC2271CDC609F00083061 /* Service */,
@@ -2475,6 +2493,7 @@
 				318B68B91CDA02B3008260A2 /* NTESGroupedDataCollection.m in Sources */,
 				318B68921CDA02B3008260A2 /* NTESNavigationAnimator.m in Sources */,
 				318B68B61CDA02B3008260A2 /* NTESCustomSysNotificationSender.m in Sources */,
+				315305321CF56C9C002C6EB4 /* SAMCContactViewController.m in Sources */,
 				318B68CD1CDA02B3008260A2 /* NTESRegisterViewController.m in Sources */,
 				318B68A21CDA02B3008260A2 /* NTESTeamListViewController.m in Sources */,
 				318B68D41CDA02B3008260A2 /* NTESSearchLocalHistoryObject.m in Sources */,
@@ -2484,6 +2503,7 @@
 				318B68B31CDA02B3008260A2 /* NTESLiveBroadcastView.m in Sources */,
 				318B68D51CDA02B3008260A2 /* NTESSessionMsgConverter.m in Sources */,
 				318B68E11CDA02B3008260A2 /* NTESAudio2TextViewController.m in Sources */,
+				3153052F1CF546D2002C6EB4 /* SAMCSettingViewController.m in Sources */,
 				318B68F41CDA02B3008260A2 /* NTESAudioChatViewController.m in Sources */,
 				318B68F31CDA02B3008260A2 /* NetCallChatInfo.m in Sources */,
 				31BF533D1CDAE00800406E1B /* SAMCOfficalManager.m in Sources */,

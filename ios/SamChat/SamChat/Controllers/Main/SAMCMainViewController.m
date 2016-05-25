@@ -311,7 +311,8 @@ typedef NS_ENUM(NSInteger, SAMCMainTabType) {
                              TabbarItemBadgeValue: @(self.sessionUnreadCount)
                              },
                      @(SAMCMainTabTypeSetting) : @{
-                             TabbarVC: @"NTESSettingViewController",
+                             //TabbarVC: @"NTESSettingViewController",
+                             TabbarVC: @"SAMCSettingViewController",
                              TabbarTitle: @"设置",
                              TabbarImage: @"icon_setting_normal",
                              TabbarSelectedImage: @"icon_setting_pressed",
