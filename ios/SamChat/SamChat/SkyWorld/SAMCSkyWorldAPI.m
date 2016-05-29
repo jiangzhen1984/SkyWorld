@@ -72,6 +72,10 @@
 //}
 + (NSString *)urlRegisterWithCellphone:(NSString *)cellphone countryCode:(NSNumber *)countrycode username:(NSString *)username password:(NSString *)password
 {
+    cellphone = cellphone ?:@"";
+    countrycode = countrycode ?:@(0);
+    username = username ?:@"";
+    password = password ?:@"";
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_REGISTER};
     NSDictionary *body = @{SKYWORLD_CELLPHONE:cellphone,
                            SKYWORLD_USERNAME:username,
@@ -101,6 +105,8 @@
 //}
 + (NSString *)urlLoginWithUsername:(NSString *)username passWord:(NSString *)password
 {
+    username = username?:@"";
+    password = password?:@"";
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_LOGIN};
     NSDictionary *body = @{SKYWORLD_USERNAME:username,
                            SKYWORLD_PWD:password};
@@ -155,6 +161,9 @@
 //}
 + (NSString *)urlUpgradeWithArea:(NSString *)area location:(NSString *)location description:(NSString *)description
 {
+    area = area?:@"";
+    location = location?:@"";
+    description = description?:@"";
     NSString *token = [SAMCSkyWorldAPI token];
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_UPGRADE,
                              SKYWORLD_TOKEN:token};
@@ -186,6 +195,7 @@
 //}
 + (NSString *)urlQueryUser:(NSString *)username
 {
+    username = username?:@"";
     NSString *token = [SAMCSkyWorldAPI token];
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUERY,
                              SKYWORLD_TOKEN:token};
@@ -215,6 +225,7 @@
 //}
 + (NSString *)urlQueryUserList:(NSArray *)usernameArray
 {
+    usernameArray = usernameArray ?:@[];
     NSString *token = [SAMCSkyWorldAPI token];
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUERY,
                              SKYWORLD_TOKEN:token};
@@ -243,6 +254,7 @@
 //}
 + (NSString *)urlQueryUserWithoutToken:(NSString *)username
 {
+    username = username?:@"";
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUERY};
     NSDictionary *body = @{SKYWORLD_OPT:@3,
                            SKYWORLD_PARAM:@{
@@ -273,6 +285,7 @@
 //}
 + (NSString *)urlNewQuestionWithQuestion:(NSString *)question
 {
+    question = question?:@"";
     NSString *token = [SAMCSkyWorldAPI token];
     NSDictionary *header = @{SKYWORLD_ACTION:SKYWORLD_QUESTION,
                              SKYWORLD_TOKEN:token};
@@ -709,10 +722,8 @@
 + (NSString *)token
 {
     NSString *token = [SAMCUserProfileManager sharedManager].currentLoginData.token;
-    if (token == nil) {
-        token = @"";
-    }
-    token = @"95892612343398478"; // TODO: delete later
+    token = token ?:@"";
+    //token = @"95892612343398478"; // TODO: delete later
     return token;
 }
 

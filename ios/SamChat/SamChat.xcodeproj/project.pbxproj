@@ -233,6 +233,9 @@
 		318B69321CDA0390008260A2 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 318B69301CDA0390008260A2 /* SAMCAppDelegate.m */; };
 		318B69351CDA1C8A008260A2 /* samchat.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 318B69331CDA1C8A008260A2 /* samchat.debug.xcconfig */; };
 		318B69361CDA1C8A008260A2 /* samchat.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 318B69341CDA1C8A008260A2 /* samchat.release.xcconfig */; };
+		3191ACF11CF6DCE700E8A446 /* SAMCSkyWorldAPITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191ACF01CF6DCE700E8A446 /* SAMCSkyWorldAPITests.m */; };
+		3191AD1B1CF8272600E8A446 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3191AD101CF8272600E8A446 /* libOCMock.a */; };
+		3191AD251CF82D7000E8A446 /* SAMCUserProfileManager+UnitTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AD241CF82D7000E8A446 /* SAMCUserProfileManager+UnitTest.m */; };
 		3194A0971CE5BC0E000607C9 /* SAMCChatSearchResultController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194A0961CE5BC0E000607C9 /* SAMCChatSearchResultController.m */; };
 		3194A09B1CE5CDBE000607C9 /* SAMCQRCodeScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3194A09A1CE5CDBE000607C9 /* SAMCQRCodeScanViewController.m */; };
 		31A3CEB81CDB23C200ECFD72 /* GCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A3CEB71CDB23C200ECFD72 /* GCDMulticastDelegate.m */; };
@@ -700,6 +703,20 @@
 		318B69311CDA0390008260A2 /* SAMCGlobalMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCGlobalMacro.h; sourceTree = "<group>"; };
 		318B69331CDA1C8A008260A2 /* samchat.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = samchat.debug.xcconfig; path = "Supporting Files/samchat.debug.xcconfig"; sourceTree = "<group>"; };
 		318B69341CDA1C8A008260A2 /* samchat.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = samchat.release.xcconfig; path = "Supporting Files/samchat.release.xcconfig"; sourceTree = "<group>"; };
+		3191ACF01CF6DCE700E8A446 /* SAMCSkyWorldAPITests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSkyWorldAPITests.m; path = SkyWorld/SAMCSkyWorldAPITests.m; sourceTree = "<group>"; };
+		3191AD101CF8272600E8A446 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
+		3191AD111CF8272600E8A446 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
+		3191AD121CF8272600E8A446 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
+		3191AD131CF8272600E8A446 /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
+		3191AD141CF8272600E8A446 /* OCMFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMFunctions.h; sourceTree = "<group>"; };
+		3191AD151CF8272600E8A446 /* OCMLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMLocation.h; sourceTree = "<group>"; };
+		3191AD161CF8272600E8A446 /* OCMMacroState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMMacroState.h; sourceTree = "<group>"; };
+		3191AD171CF8272600E8A446 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
+		3191AD181CF8272600E8A446 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
+		3191AD191CF8272600E8A446 /* OCMRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMRecorder.h; sourceTree = "<group>"; };
+		3191AD1A1CF8272600E8A446 /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
+		3191AD231CF82D7000E8A446 /* SAMCUserProfileManager+UnitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SAMCUserProfileManager+UnitTest.h"; path = "Category/SAMCUserProfileManager+UnitTest.h"; sourceTree = "<group>"; };
+		3191AD241CF82D7000E8A446 /* SAMCUserProfileManager+UnitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SAMCUserProfileManager+UnitTest.m"; path = "Category/SAMCUserProfileManager+UnitTest.m"; sourceTree = "<group>"; };
 		3194A0951CE5BC0E000607C9 /* SAMCChatSearchResultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCChatSearchResultController.h; path = Controllers/Chat/SAMCChatSearchResultController.h; sourceTree = "<group>"; };
 		3194A0961CE5BC0E000607C9 /* SAMCChatSearchResultController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCChatSearchResultController.m; path = Controllers/Chat/SAMCChatSearchResultController.m; sourceTree = "<group>"; };
 		3194A0991CE5CDBE000607C9 /* SAMCQRCodeScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCQRCodeScanViewController.h; path = Controllers/QRCode/SAMCQRCodeScanViewController.h; sourceTree = "<group>"; };
@@ -801,6 +818,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3191AD1B1CF8272600E8A446 /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -971,6 +989,9 @@
 		31287ABA1CD9F8C6005A1966 /* SamChatTests */ = {
 			isa = PBXGroup;
 			children = (
+				3191AD221CF82D4000E8A446 /* Category */,
+				3191AD0F1CF8272600E8A446 /* OCMock */,
+				3191ACED1CF6DC8C00E8A446 /* SkyWorld */,
 				31287ABB1CD9F8C6005A1966 /* SamChatTests.m */,
 				31287ABD1CD9F8C6005A1966 /* Info.plist */,
 			);
@@ -1890,6 +1911,41 @@
 			path = Spelling;
 			sourceTree = "<group>";
 		};
+		3191ACED1CF6DC8C00E8A446 /* SkyWorld */ = {
+			isa = PBXGroup;
+			children = (
+				3191ACF01CF6DCE700E8A446 /* SAMCSkyWorldAPITests.m */,
+			);
+			name = SkyWorld;
+			sourceTree = "<group>";
+		};
+		3191AD0F1CF8272600E8A446 /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				3191AD101CF8272600E8A446 /* libOCMock.a */,
+				3191AD111CF8272600E8A446 /* NSNotificationCenter+OCMAdditions.h */,
+				3191AD121CF8272600E8A446 /* OCMArg.h */,
+				3191AD131CF8272600E8A446 /* OCMConstraint.h */,
+				3191AD141CF8272600E8A446 /* OCMFunctions.h */,
+				3191AD151CF8272600E8A446 /* OCMLocation.h */,
+				3191AD161CF8272600E8A446 /* OCMMacroState.h */,
+				3191AD171CF8272600E8A446 /* OCMock.h */,
+				3191AD181CF8272600E8A446 /* OCMockObject.h */,
+				3191AD191CF8272600E8A446 /* OCMRecorder.h */,
+				3191AD1A1CF8272600E8A446 /* OCMStubRecorder.h */,
+			);
+			path = OCMock;
+			sourceTree = "<group>";
+		};
+		3191AD221CF82D4000E8A446 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				3191AD231CF82D7000E8A446 /* SAMCUserProfileManager+UnitTest.h */,
+				3191AD241CF82D7000E8A446 /* SAMCUserProfileManager+UnitTest.m */,
+			);
+			name = Category;
+			sourceTree = "<group>";
+		};
 		3194A0981CE5CD91000607C9 /* QRCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -2555,7 +2611,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3191AD251CF82D7000E8A446 /* SAMCUserProfileManager+UnitTest.m in Sources */,
 				31287ABC1CD9F8C6005A1966 /* SamChatTests.m in Sources */,
+				3191ACF11CF6DCE700E8A446 /* SAMCSkyWorldAPITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2704,7 +2762,11 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SamChat/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Mock",
+					"$(PROJECT_DIR)/OCMock",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.skyworld.samchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2732,7 +2794,11 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SamChat/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Mock",
+					"$(PROJECT_DIR)/OCMock",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.skyworld.samchat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2742,8 +2808,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SamChatTests";
 				INFOPLIST_FILE = SamChatTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SamChatTests/OCMock",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = SkyWorld.SamChatTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SamChat.app/SamChat";
@@ -2754,8 +2826,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SamChatTests";
 				INFOPLIST_FILE = SamChatTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SamChatTests/OCMock",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = SkyWorld.SamChatTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SamChat.app/SamChat";
